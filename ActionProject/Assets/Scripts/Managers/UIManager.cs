@@ -16,7 +16,7 @@ namespace Action.Manager
             base.Initialize();
             base.SetName("UIManager");
 
-            _CreateMainCanvas();
+            //_CreateMainCanvas();
         }
 
         public GameObject CreateUI(string name)
