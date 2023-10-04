@@ -13,6 +13,7 @@ public class TestScene : MonoBehaviour
         SceneManager.Instance.Initialize();
         UIManager.Instance.Initialize();
         CameraManager.Instance.Initialize();
+        InputManager.Instance.Initialize();
         _CreateVirtualCamera();
     }
 

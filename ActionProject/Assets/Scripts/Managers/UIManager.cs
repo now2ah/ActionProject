@@ -16,7 +16,7 @@ namespace Action.Manager
             base.Initialize();
             base.SetName("UIManager");
 
-            //_CreateMainCanvas();
+            _CreateMainCanvas();
         }
 
         public GameObject CreateUI(string name)
@@ -34,7 +34,7 @@ namespace Action.Manager
 
         void _CreateMainCanvas()
         {
-            mainCanvasObject = Instantiate(Resources.Load("MainCanvas") as GameObject);
+            mainCanvasObject = Instantiate(Resources.Load("Prefabs/UI/MainCanvasObject") as GameObject);
             mainCanvasObject.transform.SetParent(this.transform, false);
             mainCanvas = mainCanvasObject.GetComponentInChildren<Canvas>();
         }
