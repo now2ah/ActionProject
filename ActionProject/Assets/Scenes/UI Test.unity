@@ -515,6 +515,99 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1300436660
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1300436662}
+  - component: {fileID: 1300436661}
+  m_Layer: 0
+  m_Name: ManagerPackageObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1300436661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1300436660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d18f3ddb98ffdfa4d8b461bcd2256e10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  testAction:
+    m_Name: Test
+    m_Type: 0
+    m_ExpectedControlType: Vector2
+    m_Id: a93772b4-0cbe-40a9-98e0-96cbbac46df4
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: 85a1b104-3cff-444b-9c36-9657fdc8e089
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Test
+      m_Flags: 4
+    - m_Name: up
+      m_Id: 825312fe-e735-44b2-a177-1d334dd404d1
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Test
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 61a43a8d-1d55-4f7f-9e10-6206e43fb409
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Test
+      m_Flags: 8
+    - m_Name: left
+      m_Id: d9709050-79c5-43cd-a9d5-056841c7c48d
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Test
+      m_Flags: 8
+    - m_Name: right
+      m_Id: b3a0bac7-7db2-465d-9492-2e476c0b4d06
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Test
+      m_Flags: 8
+    m_Flags: 0
+--- !u!4 &1300436662
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1300436660}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1528537373 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 843837526584155961, guid: 0dc595691b8608c40a014716fc29f25d, type: 3}
@@ -532,6 +625,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d25fe79ad211f41932ab80d8341718, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  action:
+    m_Name: Action
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 4290b676-353e-46e4-982f-256e8128a00c
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: 2d6d9e08-eb6b-40b3-a128-da00ee0ed02e
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 4
+    - m_Name: up
+      m_Id: fcd4b62b-7863-4934-a03e-ae76b7f64db2
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 79cf10d5-b915-4418-b25f-61b720babcdd
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: left
+      m_Id: 3b5a194d-5695-4c09-94e3-e16fe73e41c8
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: right
+      m_Id: 08e72906-052d-4bae-823e-99968e1b0373
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 8
+    - m_Name: 
+      m_Id: 663678cd-9411-4aaa-af6c-09f2131864ec
+      m_Path: <Keyboard>/w
+      m_Interactions: Press
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 0
+    m_Flags: 0
 --- !u!1001 &3544281285854645533
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -587,6 +737,14 @@ PrefabInstance:
     - target: {fileID: 2271284844686831733, guid: 0dc595691b8608c40a014716fc29f25d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005803770291926083, guid: 0dc595691b8608c40a014716fc29f25d, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005803770291926083, guid: 0dc595691b8608c40a014716fc29f25d, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

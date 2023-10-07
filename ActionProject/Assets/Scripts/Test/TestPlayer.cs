@@ -1,19 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TestPlayer : MonoBehaviour
 {
+    Vector2 vec;
+
+    void OnTestAction(InputAction.CallbackContext context)
+    {
+        vec = context.ReadValue<Vector2>();
+    }
     // Start is called before the first frame update
     void Start()
     {
-        
+        Action.Manager.InputManager.Instance.testAction.performed += ctx => { OnTestAction(ctx); };
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Action.Manager.InputManager.Instance.IsKeyUp(Action.Manager.InputManager.Instance.GetActionKey("up")))
-            gameObject.transform.Translate(transform.position + new Vector3(1.0f, 0.0f, 0.0f));
+        Debug.Log(vec);
     }
 }
