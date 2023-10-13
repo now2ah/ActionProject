@@ -14,7 +14,7 @@ namespace Action.Manager
         public override void Initialize()
         {
             base.Initialize();
-            base.SetName("SceneManager");
+            //base.SetName("SceneManager");
         }
 
         public void LoadScene(int sceneNumber, LoadSceneMode mode = LoadSceneMode.Single)

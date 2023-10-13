@@ -14,7 +14,7 @@ public class TestPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Action.Manager.InputManager.Instance.testAction.performed += ctx => { OnTestAction(ctx); };
+        Action.Manager.InputManager.Instance.actionMove.performed += ctx => { OnTestAction(ctx); };
     }
 
     // Update is called once per frame

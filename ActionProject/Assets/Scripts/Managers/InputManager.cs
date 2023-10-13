@@ -8,19 +8,16 @@ namespace Action.Manager
 {
     public class InputManager : Singleton<InputManager>
     {
-        public InputAction testAction;
-
-        private void OnEnable()
-        {
-            testAction.Enable();
-        }
+        public InputAction actionMove;
 
         public override void Initialize()
         {
             base.Initialize();
-            base.SetName("InputManager");
-            
         }
 
+        private void OnEnable()
+        {
+            actionMove.Enable();
+        }
     }
 }

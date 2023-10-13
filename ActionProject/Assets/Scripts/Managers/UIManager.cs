@@ -14,7 +14,7 @@ namespace Action.Manager
         public override void Initialize()
         {
             base.Initialize();
-            base.SetName("UIManager");
+            //base.SetName("UIManager");
 
             _CreateMainCanvas();
         }

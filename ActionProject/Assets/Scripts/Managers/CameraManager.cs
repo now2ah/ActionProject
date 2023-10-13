@@ -13,7 +13,7 @@ namespace Action.Manager
         public override void Initialize()
         {
             base.Initialize();
-            base.SetName("CameraManager");
+            //base.SetName("CameraManager");
             _CreateMainCamera();
         }
 
