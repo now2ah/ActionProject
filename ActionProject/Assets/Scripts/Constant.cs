@@ -13,5 +13,11 @@ namespace Action
         public static float GAMECAMERA_HORIZONTAL_DIST = -10.0f;
 
         public static string[] ACTIONS = { "up", "left", "down", "right" };
+
+        public enum eCharacterState
+        {
+            IDLE,
+            MOVING
+        }
     }
 }

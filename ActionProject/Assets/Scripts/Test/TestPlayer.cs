@@ -2,24 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Action;
+using Action.State;
 
 public class TestPlayer : MonoBehaviour
 {
     Vector2 vec;
+    StateMachine _stateMachine;
+    IdleState _idleState;
+    MovingState _movingState;
 
     void OnTestAction(InputAction.CallbackContext context)
     {
+        _stateMachine.ChangeState(_movingState);
         vec = context.ReadValue<Vector2>();
+        Debug.Log(vec);
     }
+
+    void OnTestActionCanceled(InputAction.CallbackContext context)
+    {
+        _stateMachine.ChangeState(_idleState);
+    }
+
+    void _Move()
+    {
+        Vector3 movePos = new Vector3(vec.x, 0, vec.y);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos), 0.15f);
+
+        transform.Translate(movePos * Time.deltaTime * 5.0f, Space.World);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         Action.Manager.InputManager.Instance.actionMove.performed += ctx => { OnTestAction(ctx); };
+        Action.Manager.InputManager.Instance.actionMove.canceled += ctx => { OnTestActionCanceled(ctx); };
+        _idleState = new IdleState();
+        _movingState = new MovingState();
+        _stateMachine = gameObject.AddComponent<StateMachine>();
+        _stateMachine.Initialize();
+        _stateMachine.ChangeState(_idleState);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(vec);
+        _Move();
     }
 }

@@ -13,10 +13,6 @@ namespace Action.Manager
         public override void Initialize()
         {
             base.Initialize();
-        }
-
-        private void OnEnable()
-        {
             actionMove.Enable();
         }
     }
