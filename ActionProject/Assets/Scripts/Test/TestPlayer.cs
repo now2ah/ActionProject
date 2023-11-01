@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Action;
 using Action.State;
 
 public class TestPlayer : MonoBehaviour

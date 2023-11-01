@@ -14,7 +14,9 @@ public class TestScene : MonoBehaviour
         UIManager.Instance.Initialize();
         CameraManager.Instance.Initialize();
         InputManager.Instance.Initialize();
+        GameManager.Instance.Initialize();
         _CreateVirtualCamera();
+        GameManager.Instance.GameStart();
     }
 
     // Update is called once per frame
