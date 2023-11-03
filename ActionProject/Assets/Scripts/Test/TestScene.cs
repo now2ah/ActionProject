@@ -5,8 +5,6 @@ using Action.Manager;
 
 public class TestScene : MonoBehaviour
 {
-    public GameObject player;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -15,8 +13,9 @@ public class TestScene : MonoBehaviour
         CameraManager.Instance.Initialize();
         InputManager.Instance.Initialize();
         GameManager.Instance.Initialize();
-        _CreateVirtualCamera();
         GameManager.Instance.GameStart();
+
+        _CreateVirtualCamera();
     }
 
     // Update is called once per frame
@@ -30,12 +29,7 @@ public class TestScene : MonoBehaviour
         GameObject virtualCameraObj = new GameObject("VirtualCamera");
         Action.CameraSystem.FixedVirtualCamera fixedVcam = virtualCameraObj.AddComponent<Action.CameraSystem.FixedVirtualCamera>();
         
-        if(null != player)
-        {
-            fixedVcam.SetTarget(player.transform);
-        }
-            
-
-        
+        if(null == fixedVcam.GetTarget())
+            fixedVcam.SetTarget(GameManager.Instance.GetPlayerUnit().gameObject.transform);
     }
 }

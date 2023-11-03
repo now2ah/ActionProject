@@ -8,11 +8,13 @@ namespace Action.CameraSystem
     public class FixedVirtualCamera : MonoBehaviour
     {
         CinemachineVirtualCamera _virtualCamera;
-
+        Transform _target;
+        public Transform GetTarget() { return _target; }
         public void SetTarget(Transform target)
         {
-            _virtualCamera.Follow = target;
-            _virtualCamera.LookAt = target;
+            _target = target;
+            _virtualCamera.Follow = _target;
+            _virtualCamera.LookAt = _target;
 
             //Setting vCam's Body/Aim
             CinemachineTransposer camBody = _virtualCamera.AddCinemachineComponent<CinemachineTransposer>(); //받아오지 못함 null 리턴

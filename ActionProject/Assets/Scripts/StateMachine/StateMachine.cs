@@ -20,10 +20,21 @@ namespace Action.State
             _CurState = nextState;
             _CurState.EnterState();
         }
+        
+        public bool IsState(State state)
+        {
+            if (null == state)
+                return false;
+
+            if (state == _CurState)
+                return true;
+            else
+                return false;
+        }
 
         private void Update()
         {
-            _CurState.Update();
+            _CurState.UpdateState();
         }
     }
 }

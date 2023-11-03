@@ -4,11 +4,10 @@ using UnityEngine;
 
 namespace Action.State
 {
-    public class State : MonoBehaviour
+    public class State
     {
         public virtual void EnterState() { }
         public virtual void ExitState() { }
-
-        public virtual void Update() { }
+        public virtual void UpdateState() { }
     }
 }
