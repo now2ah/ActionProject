@@ -7,6 +7,8 @@ namespace Action.Manager
 {
     public class GameManager : Singleton<GameManager>
     {
+        public Vector3 spawnPoint;
+
         float _time;                //게임 타이머 시간
         float _startTime;           //게임 시작 시간
         bool _isPlaying;            
@@ -22,6 +24,8 @@ namespace Action.Manager
         public override void Initialize()
         {
             base.Initialize();
+            if (spawnPoint == Vector3.zero)
+                spawnPoint = new Vector3(0.0f, 0.1f, 90.0f);
             _time = 0.0f;
             _playerBasePrefab = Resources.Load("Prefabs/Test/TestBase") as GameObject;
             _playerUnitPrefab = Resources.Load("Prefabs/Test/TestPlayer") as GameObject;

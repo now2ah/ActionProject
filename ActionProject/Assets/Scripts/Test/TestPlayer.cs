@@ -21,6 +21,7 @@ public class TestPlayer : MonoBehaviour
     void OnTestActionCanceled(InputAction.CallbackContext context)
     {
         _stateMachine.ChangeState(_idleState);
+        vec = Vector3.zero;
     }
 
     void _Move()
