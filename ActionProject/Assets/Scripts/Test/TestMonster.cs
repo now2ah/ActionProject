@@ -43,8 +43,6 @@ public class TestMonster : MonoBehaviour
         _stateMachine.Initialize();
         _stateMachine.ChangeState(_idleState);
         _target = null;
-        if(null != _target)
-            Debug.Log(_FindNearestTarget().name);
     }
 
     // Update is called once per frame

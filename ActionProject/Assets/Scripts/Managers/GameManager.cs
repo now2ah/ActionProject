@@ -17,6 +17,8 @@ namespace Action.Manager
         GameObject _playerUnitPrefab;
         GameObject _playerBase;
         GameObject _playerUnit;
+        List<GameObject> _MonsterUnitPrefabs;
+        ArrayList _MonsterUnits;
 
         public GameObject GetPlayerBase() { return _playerBase; }
         public GameObject GetPlayerUnit() { return _playerUnit; }
@@ -25,10 +27,13 @@ namespace Action.Manager
         {
             base.Initialize();
             if (spawnPoint == Vector3.zero)
-                spawnPoint = new Vector3(0.0f, 0.1f, 90.0f);
+                spawnPoint = new Vector3(0.0f, 1.8f, 90.0f);
             _time = 0.0f;
             _playerBasePrefab = Resources.Load("Prefabs/Test/TestBase") as GameObject;
             _playerUnitPrefab = Resources.Load("Prefabs/Test/TestPlayer") as GameObject;
+            _MonsterUnitPrefabs = new List<GameObject>();
+            _MonsterUnitPrefabs.Add(Resources.Load("Prefabs/Test/TestMonster") as GameObject);
+            _MonsterUnits = new ArrayList();
         }
 
         public void GameStart()
@@ -38,6 +43,7 @@ namespace Action.Manager
             _StartTimer();
             _CreateStartBase();
             _CreatePlayerUnit();
+            _StartWave();
         }
 
         public void GameOver()
@@ -81,7 +87,13 @@ namespace Action.Manager
 
         void _StartWave()
         {
+            _CreateMonsterUnit(_MonsterUnitPrefabs[0]);
+        }
 
+        void _CreateMonsterUnit(GameObject monsterObj)
+        {
+            GameObject obj = Instantiate(monsterObj, spawnPoint, Quaternion.identity);
+            _MonsterUnits.Add(obj);
         }
 
         private void Update()
