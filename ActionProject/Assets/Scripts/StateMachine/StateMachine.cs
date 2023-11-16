@@ -5,13 +5,14 @@ using Action;
 
 namespace Action.State
 {
-    public class StateMachine : MonoBehaviour
+    public class StateMachine
     {
         State _CurState;
 
-        public virtual void Initialize()
+        public virtual void Initialize(State startState)
         {
             _CurState = new State();
+            ChangeState(startState);
         }
 
         public virtual void ChangeState(State nextState)
@@ -32,7 +33,7 @@ namespace Action.State
                 return false;
         }
 
-        private void Update()
+        public void Update()
         {
             _CurState.UpdateState();
         }

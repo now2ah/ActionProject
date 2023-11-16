@@ -2,36 +2,61 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Action.State;
+using Action.Units;
 
 namespace Action.State
 {
-    public class PlayerIdleState : MonoBehaviour
+    public class PlayerIdleState : IdleState
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        PlayerUnit playerUnit;
 
+        public PlayerIdleState(PlayerUnit playerUnit)
+        {
+            this.playerUnit = playerUnit;
+        }
+
+        public override void EnterState()
+        {
+            Debug.Log("Enter Idle");
+        }
+
+        public override void ExitState()
+        {
+            Debug.Log("Exit Idle");
         }
 
         // Update is called once per frame
-        void Update()
+        public override void UpdateState()
         {
-
+            base.UpdateState();
         }
     }
 
-    public class PlayerMovingState : MonoBehaviour
+    public class PlayerMovingState : MovingState
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        PlayerUnit playerUnit;
 
+        public PlayerMovingState(PlayerUnit playerUnit)
+        {
+            this.playerUnit = playerUnit;
+        }
+
+        public override void EnterState()
+        {
+            Debug.Log("Enter Idle");
+        }
+
+        public override void ExitState()
+        {
+            Debug.Log("Exit Idle");
         }
 
         // Update is called once per frame
-        void Update()
+        public override void UpdateState()
         {
-
+            base.UpdateState();
+            if (null != playerUnit)
+                playerUnit.Move();
         }
     }
 }

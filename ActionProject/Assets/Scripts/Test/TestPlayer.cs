@@ -6,7 +6,7 @@ using Action.State;
 
 public class TestPlayer : MonoBehaviour
 {
-    Vector2 vec;
+    Vector2 inputVector;
     StateMachine _stateMachine;
     IdleState _idleState;
     MovingState _movingState;
@@ -14,21 +14,21 @@ public class TestPlayer : MonoBehaviour
     void OnTestAction(InputAction.CallbackContext context)
     {
         _stateMachine.ChangeState(_movingState);
-        vec = context.ReadValue<Vector2>();
-        Debug.Log(vec);
+        inputVector = context.ReadValue<Vector2>();
     }
 
     void OnTestActionCanceled(InputAction.CallbackContext context)
     {
         _stateMachine.ChangeState(_idleState);
-        vec = Vector3.zero;
+        inputVector = Vector3.zero;
     }
 
-    void _Move()
+    public void Move()
     {
-        Vector3 movePos = new Vector3(vec.x, 0, vec.y);
-
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos), 0.15f);
+        Vector3 movePos = new Vector3(inputVector.x, 0, inputVector.y);
+        
+        if(_stateMachine.IsState(_movingState))
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos), 0.15f);
 
         transform.Translate(movePos * Time.deltaTime * 5.0f, Space.World);
     }
@@ -40,14 +40,13 @@ public class TestPlayer : MonoBehaviour
         Action.Manager.InputManager.Instance.actionMove.canceled += ctx => { OnTestActionCanceled(ctx); };
         _idleState = new IdleState();
         _movingState = new MovingState();
-        _stateMachine = gameObject.AddComponent<StateMachine>();
-        _stateMachine.Initialize();
-        _stateMachine.ChangeState(_idleState);
+        _stateMachine = new StateMachine();
+        _stateMachine.Initialize(_idleState);
     }
 
     // Update is called once per frame
     void Update()
     {
-        _Move();
+        _stateMachine.Update();
     }
 }

@@ -16,6 +16,7 @@ namespace Action.Manager
         GameObject _playerBasePrefab;
         GameObject _playerUnitPrefab;
         GameObject _playerBase;
+        public GameObject PlayerBase => _playerBase;
         GameObject _playerUnit;
         List<GameObject> _MonsterUnitPrefabs;
         ArrayList _MonsterUnits;
@@ -30,9 +31,9 @@ namespace Action.Manager
                 spawnPoint = new Vector3(0.0f, 1.8f, 90.0f);
             _time = 0.0f;
             _playerBasePrefab = Resources.Load("Prefabs/Test/TestBase") as GameObject;
-            _playerUnitPrefab = Resources.Load("Prefabs/Test/TestPlayer") as GameObject;
+            _playerUnitPrefab = Resources.Load("Prefabs/PlayerUnit") as GameObject;
             _MonsterUnitPrefabs = new List<GameObject>();
-            _MonsterUnitPrefabs.Add(Resources.Load("Prefabs/Test/TestMonster") as GameObject);
+            _MonsterUnitPrefabs.Add(Resources.Load("Prefabs/MonsterUnit") as GameObject);
             _MonsterUnits = new ArrayList();
         }
 
@@ -43,7 +44,7 @@ namespace Action.Manager
             _StartTimer();
             _CreateStartBase();
             _CreatePlayerUnit();
-            _StartWave();
+            StartCoroutine(_StartWave(5, 1));
         }
 
         public void GameOver()
@@ -85,15 +86,23 @@ namespace Action.Manager
             }
         }
 
-        void _StartWave()
+        IEnumerator _StartWave(int unitCountPerWave, float timeRate)
         {
-            _CreateMonsterUnit(_MonsterUnitPrefabs[0]);
+            int count = unitCountPerWave;
+
+            while (count > 0)
+            {
+                _CreateMonsterUnit(_MonsterUnitPrefabs[0]);
+                count--;
+                yield return new WaitForSeconds(timeRate);
+            }
         }
 
         void _CreateMonsterUnit(GameObject monsterObj)
         {
             GameObject obj = Instantiate(monsterObj, spawnPoint, Quaternion.identity);
             _MonsterUnits.Add(obj);
+            Debug.Log("SPAWNED");
         }
 
         private void Update()
