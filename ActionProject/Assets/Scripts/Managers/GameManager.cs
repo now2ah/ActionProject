@@ -13,6 +13,8 @@ namespace Action.Manager
         float _startTime;           //게임 시작 시간
         bool _isPlaying;            
         Vector3 _startPosition;     //베이스 위치
+        IEnumerator _waveStartCoroutine;
+
         GameObject _playerBasePrefab;
         GameObject _playerUnitPrefab;
         GameObject _playerBase;
@@ -20,6 +22,7 @@ namespace Action.Manager
         GameObject _playerUnit;
         List<GameObject> _MonsterUnitPrefabs;
         ArrayList _MonsterUnits;
+
 
         public GameObject GetPlayerBase() { return _playerBase; }
         public GameObject GetPlayerUnit() { return _playerUnit; }
@@ -30,6 +33,8 @@ namespace Action.Manager
             if (spawnPoint == Vector3.zero)
                 spawnPoint = new Vector3(0.0f, 1.8f, 90.0f);
             _time = 0.0f;
+            _waveStartCoroutine = _StartWaveCoroutine(5,1);
+
             _playerBasePrefab = Resources.Load("Prefabs/Test/TestBase") as GameObject;
             _playerUnitPrefab = Resources.Load("Prefabs/PlayerUnit") as GameObject;
             _MonsterUnitPrefabs = new List<GameObject>();
@@ -44,7 +49,7 @@ namespace Action.Manager
             _StartTimer();
             _CreateStartBase();
             _CreatePlayerUnit();
-            StartCoroutine(_StartWave(5, 1));
+            _StartWave(1, 1);
         }
 
         public void GameOver()
@@ -86,7 +91,16 @@ namespace Action.Manager
             }
         }
 
-        IEnumerator _StartWave(int unitCountPerWave, float timeRate)
+        void _StartWave(int unitCountPerWave, float timeRate)
+        {
+            if (null != _waveStartCoroutine)
+            {
+                StopCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate));
+                StartCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate));
+            }
+        }
+
+        IEnumerator _StartWaveCoroutine(int unitCountPerWave, float timeRate)
         {
             int count = unitCountPerWave;
 

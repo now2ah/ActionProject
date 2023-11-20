@@ -17,12 +17,12 @@ namespace Action.State
 
         public override void EnterState()
         {
-            Debug.Log("Enter Idle");
+            //Debug.Log("Enter Idle");
         }
 
         public override void ExitState()
         {
-            Debug.Log("Exit Idle");
+            //Debug.Log("Exit Idle");
         }
 
         // Update is called once per frame
@@ -43,12 +43,12 @@ namespace Action.State
 
         public override void EnterState()
         {
-            Debug.Log("Enter Idle");
+            //Debug.Log("Enter Idle");
         }
 
         public override void ExitState()
         {
-            Debug.Log("Exit Idle");
+            //Debug.Log("Exit Idle");
         }
 
         // Update is called once per frame

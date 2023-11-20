@@ -18,16 +18,17 @@ namespace Action.State
 
         public override void EnterState()
         {
+            Debug.Log("Idle");
             if (null != _monsterUnit)
             {
                 _monsterUnit.Target = _monsterUnit.FindNearestTarget();
-
+                Debug.Log("Target : " + _monsterUnit.Target);
                 if (null == _monsterUnit.Target || null == GameManager.Instance.PlayerBase)
                     return;
 
                 //base¶û °Å¸® ºñ±³
-                GameObject target = Utility.GetNearerObject(_monsterUnit.transform.position, _monsterUnit.Target, GameManager.Instance.PlayerBase);
-                _monsterUnit.Target = target;
+                //GameObject target = Utility.GetNearerObject(_monsterUnit.transform.position, _monsterUnit.Target, GameManager.Instance.PlayerBase);
+                //_monsterUnit.Target = target;
             }
         }
 
@@ -53,7 +54,10 @@ namespace Action.State
         public override void EnterState()
         {
             if (null != _monsterUnit)
+            {
                 _monsterUnit.Look(_monsterUnit.Target);
+                Debug.Log("Moving & Target : " + _monsterUnit.Target);
+            }
         }
 
         public override void ExitState()
@@ -64,7 +68,41 @@ namespace Action.State
         {
             base.UpdateState();
             if (null != _monsterUnit)
+            {
+                _monsterUnit.Look(_monsterUnit.Target);
                 _monsterUnit.Move();
+
+                if (_monsterUnit.AttackDistance > _monsterUnit.GetTargetDistance())
+                    _monsterUnit.StateMachine.ChangeState(_monsterUnit.AttackingState);
+            }
+        }
+    }
+
+    public class MonsterAttackingState : AttackingState
+    {
+        MonsterUnit _monsterUnit;
+        public MonsterAttackingState(MonsterUnit monsterUnit)
+        {
+            _monsterUnit = monsterUnit;
+        }
+        public override void EnterState()
+        {
+            Debug.Log("Attacking State");
+            if (null != _monsterUnit)
+                _monsterUnit.Look(_monsterUnit.Target);
+        }
+
+        public override void ExitState()
+        {
+        }
+
+        public override void UpdateState()
+        {
+            base.UpdateState();
+            if (null != _monsterUnit && null != _monsterUnit.Target && !_monsterUnit.isAttackCooltime())
+                _monsterUnit.Attack(_monsterUnit.AttackDamage);
+            else if(null == _monsterUnit.Target || _monsterUnit.AttackDistance < _monsterUnit.GetTargetDistance())
+                _monsterUnit.StateMachine.ChangeState(_monsterUnit.IdleState);
         }
     }
 }

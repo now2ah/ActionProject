@@ -7,11 +7,21 @@ namespace Action.Units
 {
     public class MonsterUnit : Unit
     {
+        int _attackDamage = 0;
+        float _attackSpeed = 0.0f;
+        float _attackDistance = 0.0f;
+        float _lastAttackTime = 0.0f;
         MonsterIdleState _idleState;
-        public MonsterIdleState IdleState => _idleState;
         MonsterMovingState _movingState;
-        public MonsterMovingState MovingState => _movingState;
+        MonsterAttackingState _attackingState;
         GameObject _target;
+
+        public int AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
+        public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
+        public float AttackDistance { get { return _attackDistance; } set { _attackDistance = value; } }
+        public MonsterIdleState IdleState => _idleState;
+        public MonsterMovingState MovingState => _movingState;
+        public MonsterAttackingState AttackingState => _attackingState;
         public GameObject Target { get { return _target; } 
             set { _target = value; } }
 
@@ -38,6 +48,16 @@ namespace Action.Units
             return nearestObj;
         }
 
+        public float GetTargetDistance()
+        {
+            if (null == _target)
+                return 0;
+
+            Vector3 distVector = _target.gameObject.transform.position - gameObject.transform.position;
+            float dist = distVector.sqrMagnitude;
+            return dist;
+        }
+
         public void Move()
         {
             transform.Translate(Vector3.forward * Time.deltaTime * 5.0f, Space.Self);
@@ -48,13 +68,37 @@ namespace Action.Units
             gameObject.transform.LookAt(target.transform);
         }
 
+        public void Attack(int damage)
+        {
+            if (null != _target)
+            {
+                if(_target.TryGetComponent<Unit>(out Unit unit))
+                {
+                    unit.GetDamaged(damage);
+                    _lastAttackTime = Time.realtimeSinceStartup;
+                    Debug.Log("Attack! : " + damage);
+                }
+            }
+        }
+
+        public bool isAttackCooltime()
+        {
+            if (Time.realtimeSinceStartup < _lastAttackTime + _attackSpeed)
+                return true;
+            else
+                return false;
+        }
+
         public override void Start()
         {
             base.Start();
             _target = null;
             _idleState = new MonsterIdleState(this);
             _movingState = new MonsterMovingState(this);
+            _attackingState = new MonsterAttackingState(this);
             base.StateMachine.Initialize(_idleState);
+            _attackSpeed = 1.0f;
+            _attackDistance = 2.0f;
         }
 
         public override void Update()
