@@ -18,14 +18,12 @@ namespace Action.Manager
         GameObject _playerBasePrefab;
         GameObject _playerUnitPrefab;
         GameObject _playerBase;
-        public GameObject PlayerBase => _playerBase;
         GameObject _playerUnit;
         List<GameObject> _MonsterUnitPrefabs;
         ArrayList _MonsterUnits;
 
-
-        public GameObject GetPlayerBase() { return _playerBase; }
-        public GameObject GetPlayerUnit() { return _playerUnit; }
+        public GameObject PlayerBase { get { return _playerBase; } set { _playerBase = value; } }
+        public GameObject PlayerUnit { get { return _playerUnit; } set { _playerUnit = value; } }
 
         public override void Initialize()
         {

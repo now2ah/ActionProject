@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Action.State;
+using Action.Util;
+using Action.Manager;
 
 namespace Action.Units
 {
@@ -15,6 +17,8 @@ namespace Action.Units
         MonsterMovingState _movingState;
         MonsterAttackingState _attackingState;
         GameObject _target;
+        GameObject _nearestTarget;
+        GameObject _playerUnit;
 
         public int AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
         public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
@@ -22,8 +26,8 @@ namespace Action.Units
         public MonsterIdleState IdleState => _idleState;
         public MonsterMovingState MovingState => _movingState;
         public MonsterAttackingState AttackingState => _attackingState;
-        public GameObject Target { get { return _target; } 
-            set { _target = value; } }
+        public GameObject Target { get { return _target; } set { _target = value; } }
+        public GameObject NearestTarget { get { return _nearestTarget; } set { _nearestTarget = value; } }
 
         public GameObject FindNearestTarget()
         {
@@ -37,6 +41,9 @@ namespace Action.Units
             float nearest = Mathf.Infinity;
             for (int i = 0; i < objs.Length; i++)
             {
+                if (objs[i] == GameManager.Instance.PlayerUnit)
+                    continue;
+
                 Vector3 dist = objs[i].gameObject.transform.position - gameObject.transform.position;
                 if (nearest > dist.sqrMagnitude)
                 {
@@ -44,6 +51,10 @@ namespace Action.Units
                     nearestObj = objs[i];
                 }
             }
+
+            //base¶û °Å¸® ºñ±³
+            GameObject target = Utility.GetNearerObject(gameObject.transform.position, nearestObj, GameManager.Instance.PlayerBase);
+            nearestObj = target;
 
             return nearestObj;
         }
@@ -89,10 +100,26 @@ namespace Action.Units
                 return false;
         }
 
+        
+        bool _CompareDistance(GameObject obj)
+        {
+            GameObject nearestObj = Utility.GetNearerObject(gameObject.transform.position, _nearestTarget, obj);
+
+            if (_target == nearestObj) 
+                return false;
+            else
+            {
+                _target = nearestObj;
+                base.StateMachine.ChangeState(_idleState);
+                return true;
+            }
+        }
+
         public override void Start()
         {
             base.Start();
             _target = null;
+            _playerUnit = GameManager.Instance.PlayerUnit;
             _idleState = new MonsterIdleState(this);
             _movingState = new MonsterMovingState(this);
             _attackingState = new MonsterAttackingState(this);
@@ -104,7 +131,7 @@ namespace Action.Units
         public override void Update()
         {
             base.Update();
-
+            _CompareDistance(_playerUnit);
         }
     }
 

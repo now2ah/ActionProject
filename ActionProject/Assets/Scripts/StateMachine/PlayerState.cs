@@ -59,4 +59,30 @@ namespace Action.State
                 playerUnit.Move();
         }
     }
+
+    public class PlayerBuildingIdleState : IdleState
+    {
+        PlayerBuilding playerBuilding;
+
+        public PlayerBuildingIdleState(PlayerBuilding playerBuilding)
+        {
+            this.playerBuilding = playerBuilding;
+        }
+
+        public override void EnterState()
+        {
+            //Debug.Log("Enter Idle");
+        }
+
+        public override void ExitState()
+        {
+            //Debug.Log("Exit Idle");
+        }
+
+        // Update is called once per frame
+        public override void UpdateState()
+        {
+            base.UpdateState();
+        }
+    }
 }

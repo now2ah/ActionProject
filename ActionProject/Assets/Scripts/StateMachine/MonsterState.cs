@@ -18,17 +18,11 @@ namespace Action.State
 
         public override void EnterState()
         {
-            Debug.Log("Idle");
             if (null != _monsterUnit)
             {
-                _monsterUnit.Target = _monsterUnit.FindNearestTarget();
-                Debug.Log("Target : " + _monsterUnit.Target);
-                if (null == _monsterUnit.Target || null == GameManager.Instance.PlayerBase)
+                _monsterUnit.NearestTarget = _monsterUnit.FindNearestTarget();
+                if (null == _monsterUnit.NearestTarget || null == GameManager.Instance.PlayerBase)
                     return;
-
-                //base¶û °Å¸® ºñ±³
-                //GameObject target = Utility.GetNearerObject(_monsterUnit.transform.position, _monsterUnit.Target, GameManager.Instance.PlayerBase);
-                //_monsterUnit.Target = target;
             }
         }
 
