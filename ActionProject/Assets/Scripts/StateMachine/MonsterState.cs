@@ -50,7 +50,6 @@ namespace Action.State
             if (null != _monsterUnit)
             {
                 _monsterUnit.Look(_monsterUnit.Target);
-                Debug.Log("Moving & Target : " + _monsterUnit.Target);
             }
         }
 
@@ -81,7 +80,6 @@ namespace Action.State
         }
         public override void EnterState()
         {
-            Debug.Log("Attacking State");
             if (null != _monsterUnit)
                 _monsterUnit.Look(_monsterUnit.Target);
         }

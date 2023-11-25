@@ -114,7 +114,6 @@ namespace Action.Manager
         {
             GameObject obj = Instantiate(monsterObj, spawnPoint, Quaternion.identity);
             _MonsterUnits.Add(obj);
-            Debug.Log("SPAWNED");
         }
 
         private void Update()

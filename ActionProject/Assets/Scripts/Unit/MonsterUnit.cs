@@ -87,7 +87,6 @@ namespace Action.Units
                 {
                     unit.GetDamaged(damage);
                     _lastAttackTime = Time.realtimeSinceStartup;
-                    Debug.Log("Attack! : " + damage);
                 }
             }
         }
