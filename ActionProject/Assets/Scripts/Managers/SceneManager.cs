@@ -10,6 +10,9 @@ namespace Action.Manager
 {
     public class SceneManager : Singleton<SceneManager>
     {
+        int _sceneNumToLoad;
+        public int SceneNumToLoad => _sceneNumToLoad;
+
         public enum eFade
         {
             FadeIn,
@@ -24,20 +27,18 @@ namespace Action.Manager
         {
             base.Initialize();
             //base.SetName("SceneManager");
+            _sceneNumToLoad = 0;
             _LoadFadeImage();
             _fadeSpeed = 0.5f;
         }
 
         public void LoadGameScene(int sceneNumber, LoadSceneMode mode = LoadSceneMode.Single)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneNumber, mode);
+            _sceneNumToLoad = sceneNumber;
+            UnityEngine.SceneManagement.SceneManager.LoadScene("99.Loading", mode);
         }
 
-        public void LoadGameScene(string sceneName, LoadSceneMode mode = LoadSceneMode.Single)
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName, mode);
-        }
-
+        #region FADE IN AND OUT
         public void Fade(eFade fade, UnityAction action = null)
         {
             StopCoroutine("FadeCoroutine");
@@ -81,5 +82,8 @@ namespace Action.Manager
             yield return new WaitForSeconds(0.5f);
             _fadeUI?.SetActive(false);
         }
+        #endregion
+
+
     }
 }
