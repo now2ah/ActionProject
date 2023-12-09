@@ -1,23 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Action.Manager;
 
 namespace Action.Scene
 {
     public class MainMenuScene : MonoBehaviour
     {
+        GameObject _mainMenuPanel;
+        Button _startButton;
 
-        // Start is called before the first frame update
-        void Start()
+        void _LoadNextScene()
         {
-            //UIManager.Instance.Initialize();
+            SceneManager.Instance.LoadGameScene(2);
         }
 
-        // Update is called once per frame
-        void Update()
+        void Start()
         {
+            _mainMenuPanel = UIManager.Instance.CreateUI("MainMenuPanel");
+            _startButton = _mainMenuPanel.transform.GetComponentInChildren<Button>();
+            _startButton.onClick.AddListener(() =>
+            {
+                _LoadNextScene();
+            });
+        }
 
+        private void OnDestroy()
+        {
+            Destroy(_mainMenuPanel);
         }
     }
 }

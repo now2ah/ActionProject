@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using Action.Util;
 
 namespace Action.Manager
@@ -27,20 +28,20 @@ namespace Action.Manager
             _fadeSpeed = 0.5f;
         }
 
-        public void LoadScene(int sceneNumber, LoadSceneMode mode = LoadSceneMode.Single)
+        public void LoadGameScene(int sceneNumber, LoadSceneMode mode = LoadSceneMode.Single)
         {
-            LoadScene(sceneNumber, mode);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneNumber, mode);
         }
 
-        public void LoadScene(string sceneName, LoadSceneMode mode = LoadSceneMode.Single)
+        public void LoadGameScene(string sceneName, LoadSceneMode mode = LoadSceneMode.Single)
         {
-            LoadScene(sceneName, mode);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName, mode);
         }
 
-        public void Fade(eFade fade)
+        public void Fade(eFade fade, UnityAction action = null)
         {
             StopCoroutine("FadeCoroutine");
-            StartCoroutine(FadeCoroutine(fade));
+            StartCoroutine(FadeCoroutine(fade, action));
         }
 
         void _LoadFadeImage()
@@ -50,7 +51,7 @@ namespace Action.Manager
             _fadeUI.SetActive(false);
         }
 
-        IEnumerator FadeCoroutine(eFade fade)
+        IEnumerator FadeCoroutine(eFade fade, UnityAction action = null)
         {
             _fadeUI?.SetActive(true);
             _fadeUI.transform.SetSiblingIndex(UIManager.Instance.MainCanvas.transform.childCount - 1);
@@ -76,6 +77,9 @@ namespace Action.Manager
                     yield return null;
                 }
             }
+            action?.Invoke();
+            yield return new WaitForSeconds(0.5f);
+            _fadeUI?.SetActive(false);
         }
     }
 }
