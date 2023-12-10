@@ -43,7 +43,7 @@ namespace Action.Manager
         public void GameStart()
         {
             _isPlaying = true;
-            _startPosition = new Vector3(0.0f, Constant.GROUND_Y_POS, 5.0f);
+            _startPosition = new Vector3(0.0f, Constant.GROUND_Y_POS, 60.0f);
             _StartTimer();
             _CreateStartBase();
             _CreatePlayerUnit();

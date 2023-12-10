@@ -8,6 +8,7 @@ namespace Action.CameraSystem
     public class MainCamera : MonoBehaviour
     {
         Camera _camera;
+        public Camera Camera => _camera;
         CinemachineBrain _cinemachineBrain;
 
         public void InitializeMainCamera()

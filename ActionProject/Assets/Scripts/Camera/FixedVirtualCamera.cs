@@ -10,6 +10,7 @@ namespace Action.CameraSystem
         CinemachineVirtualCamera _virtualCamera;
         Transform _target;
         public Transform GetTarget() { return _target; }
+
         public void SetTarget(Transform target)
         {
             _target = target;
@@ -21,6 +22,11 @@ namespace Action.CameraSystem
             camBody.m_BindingMode = CinemachineTransposer.BindingMode.LockToTargetOnAssign;
             camBody.m_FollowOffset.Set(0.0f, Constant.GAMECAMERA_VERTICAL_DIST, Constant.GAMECAMERA_HORIZONTAL_DIST);
             CinemachineComposer camAim = _virtualCamera.AddCinemachineComponent<CinemachineComposer>();
+        }
+
+        public void SetFov(float value)
+        {
+            _virtualCamera.m_Lens.FieldOfView = value;
         }
 
         // Start is called before the first frame update

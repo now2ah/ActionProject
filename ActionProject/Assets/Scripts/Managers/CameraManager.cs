@@ -9,6 +9,8 @@ namespace Action.Manager
     public class CameraManager : Singleton<CameraManager>
     {
         GameObject _mainCameraObj;
+        MainCamera _mainCamera;
+        public MainCamera MainCamera => _mainCamera;
         GameObject _fixedVCamObj;
         FixedVirtualCamera _fixedVCam;
 
@@ -24,6 +26,8 @@ namespace Action.Manager
             _fixedVCamObj = new GameObject("VirtualCamera");
             _fixedVCam = _fixedVCamObj.AddComponent<Action.CameraSystem.FixedVirtualCamera>();
 
+            _fixedVCam.SetFov(Constant.GAMECAMERA_FOV);
+
             if (null == _fixedVCam.GetTarget())
                 _fixedVCam.SetTarget(GameManager.Instance.PlayerUnit.gameObject.transform);
         }
@@ -32,8 +36,8 @@ namespace Action.Manager
         {
             _mainCameraObj = new GameObject("MainCameraObj");
             _mainCameraObj.transform.SetParent(this.transform);
-            MainCamera mainCam = _mainCameraObj.AddComponent<MainCamera>();
-            mainCam.InitializeMainCamera();
+            _mainCamera = _mainCameraObj.AddComponent<MainCamera>();
+            _mainCamera.InitializeMainCamera();
         }
     }
 }
