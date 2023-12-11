@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Action.Util;
+using Action.UI;
 
 namespace Action.Manager
 {
@@ -11,8 +12,8 @@ namespace Action.Manager
         GameObject _mainCanvasObject;
         Canvas _mainCanvas;
         public Canvas MainCanvas => _mainCanvas;
-        bool _isOnOffScreenIndicator;
-        GameObject _OffScreenIndicator;
+        GameObject _BaseIndicatorObj;
+        BaseIndicator _BaseIndicator;
 
         public override void Initialize()
         {
@@ -20,9 +21,9 @@ namespace Action.Manager
             //base.SetName("UIManager");
 
             _CreateMainCanvas();
-            _isOnOffScreenIndicator = false;
-            _OffScreenIndicator = CreateUI("OffScreenIndicator");
-            _OffScreenIndicator.SetActive(false);
+            _BaseIndicatorObj = CreateUI("BaseIndicator");
+            _BaseIndicator = _BaseIndicatorObj.GetComponent<BaseIndicator>();
+            _BaseIndicator.Hide();
         }
 
         public GameObject CreateUI(string name)
@@ -39,12 +40,6 @@ namespace Action.Manager
             return obj;
         }
 
-        public void TurnOffScreenIndicator(bool isOn)
-        {
-            _OffScreenIndicator.SetActive(true);
-            _isOnOffScreenIndicator = isOn;
-        }
-
         void _CreateMainCanvas()
         {
             _mainCanvasObject = Instantiate(Resources.Load("Prefabs/UI/MainCanvasObject") as GameObject);
@@ -54,16 +49,37 @@ namespace Action.Manager
 
         void _CalculateOffScreenIndicator()
         {
-            if (null == _OffScreenIndicator)
+            if (null == _BaseIndicatorObj || null == GameManager.Instance.PlayerBase)
                 return;
 
-            Vector3 screenPos = CameraManager.Instance.MainCamera.Camera.WorldToScreenPoint(_OffScreenIndicator.transform.position);
+            Vector3 screenPos = CameraManager.Instance.MainCamera.Camera.WorldToScreenPoint(GameManager.Instance.PlayerBase.transform.position);
 
-            if (screenPos.x < 0 || screenPos.x > Screen.width || screenPos.y < 0 || screenPos.y > Screen.height)
+            if (_BaseIndicatorObj.TryGetComponent<BaseIndicator>(out BaseIndicator comp))
             {
-                TurnOffScreenIndicator(true);
+                if (screenPos.x < 0 || screenPos.x > Screen.width || screenPos.y < 0 || screenPos.y > Screen.height)
+                {
+                    comp.Show();
+                    RectTransform rectTr = comp.rectTransform;
 
-                //float angle = Mathf.Atan2(screenPos.y - 
+                    if (_mainCanvas.TryGetComponent<RectTransform>(out RectTransform screenRect))
+                    {
+                        Vector2 halfSize = screenRect.rect.size / 2.0f;
+
+                        float angle = Mathf.Atan2(screenPos.y - halfSize.y, screenPos.x - halfSize.x);
+
+                        Vector3 position = new Vector3(Mathf.Cos(angle) * halfSize.x, Mathf.Sin(angle) * halfSize.y, 0.0f);
+                        rectTr.localPosition = position;
+
+                        Vector3 rotation = rectTr.localRotation.eulerAngles;
+                        rotation.z = angle * Mathf.Rad2Deg;
+
+                        rectTr.localRotation = Quaternion.Euler(rotation);
+                    }
+                }
+                else
+                {
+                    comp.Hide();
+                }
             }
         }
 

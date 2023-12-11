@@ -43,7 +43,7 @@ namespace Action.Manager
         public void GameStart()
         {
             _isPlaying = true;
-            _startPosition = new Vector3(0.0f, Constant.GROUND_Y_POS, 60.0f);
+            _startPosition = new Vector3(0.0f, Constant.GROUND_Y_POS, 0.0f);
             _StartTimer();
             _CreateStartBase();
             _CreatePlayerUnit();
@@ -83,7 +83,7 @@ namespace Action.Manager
                 {
                     baseExtentsZ = comp.size.z + 5.0f;     //юс╫ц
                 }
-                Vector3 startPos = _playerBase.gameObject.transform.position + new Vector3(0.0f, 0.0f, -(baseExtentsZ + 1.0f));
+                Vector3 startPos = _playerBase.gameObject.transform.position + new Vector3(0.0f, 0.0f, /*-(baseExtentsZ + 1.0f)*/ 10.0f);
 
                 _playerUnit = GameObject.Instantiate(_playerUnitPrefab, startPos, Quaternion.identity);
             }
