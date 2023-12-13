@@ -5,14 +5,13 @@ using UnityEngine.UI;
 
 namespace Action.UI
 {
-    public class BaseIndicator : Image
+    public class BaseIndicator : UI
     {
-        public void Hide() { gameObject.SetActive(false); }
-        public void Show() { gameObject.SetActive(true); }
+        public Image IndicatorImage;
 
-        public void SetParent( Transform parent)
+        public override void SetParent( Transform parent)
         {
-            rectTransform.SetParent(parent, false);
+            IndicatorImage.rectTransform.SetParent(parent, false);
         }
     }
 }

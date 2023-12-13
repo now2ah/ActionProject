@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Action.Util;
+using Action.UI;
+using Action.Units;
 
 namespace Action.Manager
 {
@@ -86,6 +88,16 @@ namespace Action.Manager
                 Vector3 startPos = _playerBase.gameObject.transform.position + new Vector3(0.0f, 0.0f, /*-(baseExtentsZ + 1.0f)*/ 10.0f);
 
                 _playerUnit = GameObject.Instantiate(_playerUnitPrefab, startPos, Quaternion.identity);
+                if (_playerUnit.TryGetComponent<PlayerUnit>(out PlayerUnit unit))
+                {
+                    unit.UnitName = "Commander";
+                }
+
+                GameObject obj = UIManager.Instance.CreateInGameUI("NamePanel", _playerUnit.transform);
+                if (obj.TryGetComponent<UnitNameTag>(out UnitNameTag nameTag))
+                {
+                    nameTag.Initialize(obj.transform.parent.GetComponent<PlayerUnit>().UnitName);
+                }
             }
         }
 

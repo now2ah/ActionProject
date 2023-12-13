@@ -40,6 +40,20 @@ namespace Action.Manager
             return obj;
         }
 
+        public GameObject CreateInGameUI(string name, Transform tr)
+        {
+            string uiPath = "Prefabs/UI/";
+            GameObject obj = Instantiate(Resources.Load(uiPath + name) as GameObject);
+
+            if (null == obj)
+                Debug.LogError("UI Prefab is missing.");
+            
+            if (null != tr)
+                obj.transform.SetParent(tr, false);
+
+            return obj;
+        }
+
         void _CreateMainCanvas()
         {
             _mainCanvasObject = Instantiate(Resources.Load("Prefabs/UI/MainCanvasObject") as GameObject);
@@ -59,7 +73,7 @@ namespace Action.Manager
                 if (screenPos.x < 0 || screenPos.x > Screen.width || screenPos.y < 0 || screenPos.y > Screen.height)
                 {
                     comp.Show();
-                    RectTransform rectTr = comp.rectTransform;
+                    RectTransform rectTr = comp.IndicatorImage.rectTransform;
 
                     if (_mainCanvas.TryGetComponent<RectTransform>(out RectTransform screenRect))
                     {
