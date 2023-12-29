@@ -21,8 +21,12 @@ namespace Action.Manager
         GameObject _playerUnitPrefab;
         GameObject _playerBase;
         GameObject _playerUnit;
-        List<GameObject> _MonsterUnitPrefabs;
-        ArrayList _MonsterUnits;
+
+        List<GameObject> _playerUnitPrefabs;
+        ArrayList _playerUnits;
+        
+        List<GameObject> _monsterUnitPrefabs;
+        ArrayList _monsterUnits;
 
         public GameObject PlayerBase { get { return _playerBase; } set { _playerBase = value; } }
         public GameObject PlayerUnit { get { return _playerUnit; } set { _playerUnit = value; } }
@@ -37,9 +41,11 @@ namespace Action.Manager
 
             _playerBasePrefab = Resources.Load("Prefabs/Test/TestBase") as GameObject;
             _playerUnitPrefab = Resources.Load("Prefabs/PlayerUnit") as GameObject;
-            _MonsterUnitPrefabs = new List<GameObject>();
-            _MonsterUnitPrefabs.Add(Resources.Load("Prefabs/MonsterUnit") as GameObject);
-            _MonsterUnits = new ArrayList();
+            _playerUnitPrefabs = new List<GameObject>();
+            _playerUnits = new ArrayList();
+            _monsterUnitPrefabs = new List<GameObject>();
+            _monsterUnitPrefabs.Add(Resources.Load("Prefabs/MonsterUnit") as GameObject);
+            _monsterUnits = new ArrayList();
         }
 
         public void GameStart()
@@ -91,13 +97,17 @@ namespace Action.Manager
                 if (_playerUnit.TryGetComponent<PlayerUnit>(out PlayerUnit unit))
                 {
                     unit.UnitName = "Commander";
+
+                    UnitInfoPanel unitInfo = _playerUnit.GetComponentInChildren<UnitInfoPanel>();
+                    if (null != unitInfo)
+                    {
+                        float testHP = 1000f;
+                        unitInfo.SetName(unit.UnitName);
+                        unitInfo.ApplyHPValue(testHP);
+                    }
                 }
 
-                GameObject obj = UIManager.Instance.CreateInGameUI("NamePanel", _playerUnit.transform);
-                if (obj.TryGetComponent<UnitNameTag>(out UnitNameTag nameTag))
-                {
-                    nameTag.Initialize(obj.transform.parent.GetComponent<PlayerUnit>().UnitName);
-                }
+
             }
         }
 
@@ -116,7 +126,7 @@ namespace Action.Manager
 
             while (count > 0)
             {
-                _CreateMonsterUnit(_MonsterUnitPrefabs[0]);
+                _CreateMonsterUnit(_monsterUnitPrefabs[0]);
                 count--;
                 yield return new WaitForSeconds(timeRate);
             }
@@ -125,7 +135,7 @@ namespace Action.Manager
         void _CreateMonsterUnit(GameObject monsterObj)
         {
             GameObject obj = Instantiate(monsterObj, spawnPoint, Quaternion.identity);
-            _MonsterUnits.Add(obj);
+            _monsterUnits.Add(obj);
         }
 
         private void Update()
