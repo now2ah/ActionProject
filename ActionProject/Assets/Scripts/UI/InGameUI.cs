@@ -9,6 +9,15 @@ namespace Action.UI
     {
         RectTransform rectTr;
 
+        public void ApplyRect(float width, float height)
+        {
+            if (null != rectTr)
+            {
+                rectTr.sizeDelta = new Vector2(width, height);
+                //rectTr.rect.Set(width, height);
+            }
+        }
+
         void _FollowUnit()
         {
             if (null != rectTr)
@@ -23,7 +32,7 @@ namespace Action.UI
         // Update is called once per frame
         void Update()
         {
-            _FollowUnit();
+            //_FollowUnit();
         }
     }
 }

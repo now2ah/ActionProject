@@ -7,11 +7,17 @@ namespace Action.UI
 {
     public class BaseIndicator : UI
     {
-        public Image IndicatorImage;
+        Image _IndicatorImage;
+        public Image IndicatorImage => _IndicatorImage;
 
         public override void SetParent( Transform parent)
         {
-            IndicatorImage.rectTransform.SetParent(parent, false);
+            _IndicatorImage.rectTransform.SetParent(parent, false);
+        }
+
+        private void Start()
+        {
+            _IndicatorImage = GetComponent<Image>();
         }
     }
 }

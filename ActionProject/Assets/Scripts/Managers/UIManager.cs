@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Action.Util;
 using Action.UI;
+using Action.Units;
 
 namespace Action.Manager
 {
@@ -14,6 +15,10 @@ namespace Action.Manager
         public Canvas MainCanvas => _mainCanvas;
         GameObject _BaseIndicatorObj;
         BaseIndicator _BaseIndicator;
+
+
+        bool _isShowUnitPanel = true;
+        public bool IsShowUnitPanel { get { return _isShowUnitPanel; } set { _isShowUnitPanel = value; } }
 
         public override void Initialize()
         {
@@ -38,6 +43,68 @@ namespace Action.Manager
                 obj.transform.SetParent(_mainCanvas.transform, false);
 
             return obj;
+        }
+
+        public void ShowUnitInfoUI(bool isOn)
+        {
+            if (_isShowUnitPanel == isOn)
+                return;
+
+            foreach(GameObject obj in GameManager.Instance.PlayerBuildings)
+            {
+                if (obj.TryGetComponent<Unit>(out Unit comp))
+                    comp.ShowInfoPanel(isOn);
+            }
+
+            foreach (GameObject obj in GameManager.Instance.PlayerUnits)
+            {
+                if (obj.TryGetComponent<Unit>(out Unit comp))
+                    comp.ShowInfoPanel(isOn);
+            }
+
+            foreach (GameObject obj in GameManager.Instance.MonsterUnits)
+            {
+                if (obj.TryGetComponent<Unit>(out Unit comp))
+                    comp.ShowInfoPanel(isOn);
+            }
+
+            _isShowUnitPanel = isOn;
+        }
+
+        public void SetUnitInfoRect(float width, float height)
+        {
+            foreach (GameObject obj in GameManager.Instance.PlayerBuildings)
+            {
+                if (obj.TryGetComponent<Unit>(out Unit comp))
+                {
+                    if (comp.InfoPanel.TryGetComponent<InGameUI>(out InGameUI ui))
+                    {
+                        ui.ApplyRect(width, height);
+                    }
+                }
+            }
+
+            foreach (GameObject obj in GameManager.Instance.PlayerUnits)
+            {
+                if (obj.TryGetComponent<Unit>(out Unit comp))
+                {
+                    if (comp.InfoPanel.TryGetComponent<InGameUI>(out InGameUI ui))
+                    {
+                        ui.ApplyRect(width, height);
+                    }
+                }
+            }
+
+            foreach (GameObject obj in GameManager.Instance.MonsterUnits)
+            {
+                if (obj.TryGetComponent<Unit>(out Unit comp))
+                {
+                    if (comp.InfoPanel.TryGetComponent<InGameUI>(out InGameUI ui))
+                    {
+                        ui.ApplyRect(width, height);
+                    }
+                }
+            }
         }
 
         void _CreateMainCanvas()

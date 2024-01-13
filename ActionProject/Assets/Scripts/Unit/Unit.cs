@@ -10,6 +10,7 @@ namespace Action.Units
     public class Unit : MonoBehaviour
     {
         GameObject _infoPanel;
+        public GameObject InfoPanel { get { return _infoPanel; } set { _infoPanel = value; } }
         string unitName = "none";
         public string UnitName { get { return unitName; } set { unitName = value; } }
         int hp = 0;
@@ -19,6 +20,11 @@ namespace Action.Units
 
         StateMachine _stateMachine;
         public StateMachine StateMachine => _stateMachine;
+
+        public void ShowInfoPanel(bool isOn)
+        {
+            _infoPanel.SetActive(isOn);
+        }
 
         public void GetDamaged(int damage)
         {
