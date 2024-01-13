@@ -158,7 +158,10 @@ namespace Action.Manager
         void _PrepareResources()
         {
             if (null == _resources)
+            {
                 _resources = new Resources();
+
+            }
         }
 
         private void Update()
