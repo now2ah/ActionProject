@@ -7,15 +7,28 @@ using Action.Units;
 
 namespace Action.Manager
 {
+    public enum eGamePhase
+    {
+        TownBuild,
+        Hunt,
+        Defense
+    }
+
     public class GameManager : Singleton<GameManager>
     {
         public Vector3 spawnPoint;
 
-        float _time;                //게임 타이머 시간
-        float _startTime;           //게임 시작 시간
+        float _gameTime;                //게임 타이머 시간
+        float _gameStartTime;           //게임 시작 시간
+        eGamePhase _gamePhase;
+        float _phaseTime;               //페이즈 타이머 시간
+        float _phaseStartTime;          //페이즈 시작 시간
+        float _phaseEndTime;            //페이즈 종료 시간
         bool _isPlaying;            
-        Vector3 _startPosition;     //베이스 위치
+        
+        Vector3 _startPosition;         //베이스 위치
         IEnumerator _waveStartCoroutine;
+
 
         GameObject _playerBase;
         GameObject _playerUnit;
@@ -47,7 +60,8 @@ namespace Action.Manager
             base.Initialize();
             if (spawnPoint == Vector3.zero)
                 spawnPoint = new Vector3(0.0f, Constant.GROUND_Y_POS, 90.0f);
-            _time = 0.0f;
+            _gameTime = 0.0f;
+            _phaseTime = 0.0f;
             _waveStartCoroutine = _StartWaveCoroutine(5,1);
 
             _playerBasePrefab = Resources.Load("Prefabs/Buildings/PlayerBase") as GameObject;
@@ -65,9 +79,14 @@ namespace Action.Manager
         {
             _isPlaying = true;
             _startPosition = Constant.VILLAGE_BASE_START_POS;
-            _StartTimer();
+            
             _CreateStartBase();
             _CreatePlayerUnit();
+
+            _StartGameTimer();
+
+            StartPhase(eGamePhase.TownBuild);
+
             _StartWave(1, 1);
         }
 
@@ -76,16 +95,60 @@ namespace Action.Manager
 
         }
 
-
-        void _StartTimer()
+        public void StartPhase(eGamePhase phase)
         {
-            _startTime = Time.realtimeSinceStartup;
+            _gamePhase = phase;
+            _StartPhaseTimer(phase);
+            Logger.Log(phase.ToString());
+        }
+
+        void _StartGameTimer()
+        {
+            _gameStartTime = Time.time;
         }
         
         void _CalculateTime()
         {
-            _time = Time.realtimeSinceStartup - _startTime;
-            Logger.Log(_time.ToString());
+            _gameTime = Time.time - _gameStartTime;
+            _phaseTime = Time.time - _phaseStartTime;
+            Logger.Log((Mathf.Floor(_phaseTime * 10.0f) / 10.0f).ToString());
+
+            if (_phaseTime > _phaseEndTime)
+            {
+                _EndPhase();
+                _phaseTime = 0.0f;
+            }
+        }
+
+        void _StartPhaseTimer(eGamePhase phase)
+        {
+            _phaseStartTime = Time.time;
+            _phaseTime = 0.0f;
+
+            switch (phase)
+            {
+                case eGamePhase.TownBuild:
+                    _phaseEndTime = Constant.TOWNBUILD_PHASE_TIME;
+                    break;
+                case eGamePhase.Hunt:
+                    _phaseEndTime = Constant.HUNT_PHASE_TIME;
+                    break;
+                case eGamePhase.Defense:
+                    _phaseEndTime = Constant.DEFENSE_PHASE_TIME;
+                    break;
+            }
+        }
+
+        void _EndPhase()
+        {
+            _phaseTime = 0.0f;
+
+            if ((int)_gamePhase + 1 > 2)
+                _gamePhase = 0;
+            else
+                _gamePhase++;
+
+            StartPhase(_gamePhase);
         }
 
         void _CreateStartBase()
