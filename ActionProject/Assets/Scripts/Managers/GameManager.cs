@@ -65,7 +65,7 @@ namespace Action.Manager
             _waveStartCoroutine = _StartWaveCoroutine(5,1);
 
             _playerBasePrefab = Resources.Load("Prefabs/Buildings/PlayerBase") as GameObject;
-            _playerUnitPrefab = Resources.Load("Prefabs/PlayerUnit") as GameObject;
+            _playerUnitPrefab = Resources.Load("Prefabs/Units/Player/PlayerUnit") as GameObject;
             _playerBuildingPrefabs = new List<GameObject>();
             _playerBuildings = new ArrayList();
             _playerUnitPrefabs = new List<GameObject>();
@@ -87,7 +87,7 @@ namespace Action.Manager
 
             StartPhase(eGamePhase.TownBuild);
 
-            _StartWave(1, 1);
+            //_StartWave(1, 1);
         }
 
         public void GameOver()

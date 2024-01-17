@@ -7,24 +7,17 @@ namespace Action.UI
 {
     public class InGameUI : UI
     {
-        RectTransform rectTr;
+        protected RectTransform rectTr;
 
         public void ApplyRect(float width, float height)
         {
             if (null != rectTr)
             {
                 rectTr.sizeDelta = new Vector2(width, height);
-                //rectTr.rect.Set(width, height);
             }
         }
 
-        void _FollowUnit()
-        {
-            if (null != rectTr)
-                rectTr.position = CameraManager.Instance.MainCamera.Camera.WorldToScreenPoint(transform.position);
-        }
-
-        private void Start()
+        private void Awake()
         {
             rectTr = transform.GetComponent<RectTransform>();
         }
@@ -32,7 +25,6 @@ namespace Action.UI
         // Update is called once per frame
         void Update()
         {
-            //_FollowUnit();
         }
     }
 }

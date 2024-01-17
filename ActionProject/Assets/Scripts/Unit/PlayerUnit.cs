@@ -9,9 +9,16 @@ namespace Action.Units
 {
     public class PlayerUnit : Unit
     {
+        bool _isMoving = false;
+        public bool IsMoving { get { return _isMoving; } set { _isMoving = value; } }
+
         Vector2 inputVector;
+
         PlayerIdleState _idleState;
         PlayerMovingState _movingState;
+
+        Animator _animator;
+        public Animator Animator => _animator;
 
         void OnTestAction(InputAction.CallbackContext context)
         {
@@ -38,10 +45,13 @@ namespace Action.Units
         public override void Start()
         {
             base.Start();
+            _isMoving = false;
             InputManager.Instance.actionMove.performed += ctx => { OnTestAction(ctx); };
             InputManager.Instance.actionMove.canceled += ctx => { OnTestActionCanceled(ctx); };
             _idleState = new PlayerIdleState(this);
             _movingState = new PlayerMovingState(this);
+            _animator = GetComponentInChildren<Animator>();
+
             base.StateMachine.Initialize(_idleState);
         }
 

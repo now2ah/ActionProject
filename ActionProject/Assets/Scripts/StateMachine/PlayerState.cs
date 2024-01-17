@@ -44,11 +44,15 @@ namespace Action.State
         public override void EnterState()
         {
             //Debug.Log("Enter Idle");
+            playerUnit.IsMoving = true;
+            playerUnit.Animator.SetBool("isMoving", playerUnit.IsMoving);
         }
 
         public override void ExitState()
         {
             //Debug.Log("Exit Idle");
+            playerUnit.IsMoving = false;
+            playerUnit.Animator.SetBool("isMoving", playerUnit.IsMoving);
         }
 
         // Update is called once per frame

@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Action.Manager;
+using Action.Units;
 
 namespace Action.UI
 {
     public class UnitInfoPanel : InGameUI
     {
         GameObject _target;
+        Unit _unit;
         Image _fillimage;
         TextMesh _nameText;
-
+        float _panelHeight;
         public void Initialize(GameObject target, string name = "defalut")
         {
             _target = target;
@@ -19,7 +21,8 @@ namespace Action.UI
             _fillimage.type = Image.Type.Filled;
             _nameText = transform.GetChild(1).transform.GetComponent<TextMesh>();
             _nameText.text = name;
-            ApplyHPValue(100f); //default hp
+            _panelHeight = base.rectTr.rect.height;
+            ApplyHPValue(_unit.HP); //default hp
         }
 
         public void SetName(string name)
@@ -41,7 +44,17 @@ namespace Action.UI
         void _FollowTargetPosition()
         {
             if (null != _target)
-                transform.position = CameraManager.Instance.MainCamera.Camera.WorldToScreenPoint(_target.transform.position);
+            {
+                transform.position = CameraManager.Instance.MainCamera.Camera.WorldToScreenPoint(_GetBottomPosition()) - new Vector3(0.0f, _panelHeight, 0.0f); ;
+            }
+        }
+
+        Vector3 _GetBottomPosition()
+        {
+            Collider col = _target.GetComponentInChildren<Collider>();
+            Vector3 panelPos = new Vector3(col.bounds.center.x, col.bounds.min.y, col.bounds.min.z);
+
+            return panelPos;
         }
 
         private void Update()
