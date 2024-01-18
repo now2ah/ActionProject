@@ -12,17 +12,18 @@ namespace Action.UI
         GameObject _target;
         Unit _unit;
         Image _fillimage;
-        TextMesh _nameText;
+        Text _nameText;
         float _panelHeight;
         public void Initialize(GameObject target, string name = "defalut")
         {
             _target = target;
+            _unit = target.GetComponent<Unit>();
             _fillimage = transform.GetChild(0).transform.GetComponent<Image>();
             _fillimage.type = Image.Type.Filled;
-            _nameText = transform.GetChild(1).transform.GetComponent<TextMesh>();
+            _nameText = transform.GetChild(1).transform.GetComponent<Text>();
             _nameText.text = name;
             _panelHeight = base.rectTr.rect.height;
-            ApplyHPValue(_unit.HP); //default hp
+            ApplyHPValue(_unit.HP, _unit.FullHp); //default hp
         }
 
         public void SetName(string name)
@@ -36,9 +37,9 @@ namespace Action.UI
             _nameText.color = color;
         }
 
-        public void ApplyHPValue(float hp)
+        public void ApplyHPValue(float hp, float fullHP)
         {
-            _fillimage.fillAmount = Mathf.Clamp01(hp / 0.9f);
+            _fillimage.fillAmount = Mathf.Clamp01(hp / fullHP);
         }
 
         void _FollowTargetPosition()

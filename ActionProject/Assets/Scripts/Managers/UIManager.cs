@@ -16,15 +16,16 @@ namespace Action.Manager
         GameObject _BaseIndicatorObj;
         BaseIndicator _BaseIndicator;
 
-
         bool _isShowUnitPanel = true;
         public bool IsShowUnitPanel { get { return _isShowUnitPanel; } set { _isShowUnitPanel = value; } }
+
+        GameObject _townStageUI;
+        public GameObject TownStageUI { get { return _townStageUI; } set { _townStageUI = value; } }
+        TownStagePanel _townStagePanel;
 
         public override void Initialize()
         {
             base.Initialize();
-            //base.SetName("UIManager");
-
             _CreateMainCanvas();
             _BaseIndicatorObj = CreateUI("BaseIndicator");
             _BaseIndicator = _BaseIndicatorObj.GetComponent<BaseIndicator>();
@@ -148,6 +149,13 @@ namespace Action.Manager
                     comp.Hide();
                 }
             }
+        }
+
+        public void CreateTownStagePanel()
+        {
+            _townStageUI = CreateUI("TownStagePanel");
+            _townStagePanel = _townStageUI.GetComponent<TownStagePanel>();
+            _townStagePanel.RefreshResource();
         }
 
         private void Update()

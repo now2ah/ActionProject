@@ -4,6 +4,7 @@ using UnityEngine;
 using Action.Util;
 using Action.UI;
 using Action.Units;
+using Action.Game;
 
 namespace Action.Manager
 {
@@ -47,7 +48,8 @@ namespace Action.Manager
         ArrayList _monsterUnits;
 
         [SerializeField]
-        Resources _resources;
+        Resource _resource;
+        public Resource Resource => _resource;
 
         public GameObject PlayerBase { get { return _playerBase; } set { _playerBase = value; } }
         public GameObject PlayerUnit { get { return _playerUnit; } set { _playerUnit = value; } }
@@ -82,6 +84,8 @@ namespace Action.Manager
             
             _CreateStartBase();
             _CreatePlayerUnit();
+
+            _PrepareResource();
 
             _StartGameTimer();
 
@@ -158,7 +162,6 @@ namespace Action.Manager
                 _playerBase = GameObject.Instantiate(_playerBasePrefab, _startPosition, Quaternion.identity);
                 _playerBuildings.Add(_playerBase);
             }
-                
         }
 
         void _CreatePlayerUnit()
@@ -174,18 +177,6 @@ namespace Action.Manager
                 Vector3 startPos = _playerBase.gameObject.transform.position + new Vector3(20.0f, 0.0f, /*-(baseExtentsZ + 1.0f)*/ 0.0f);
 
                 _playerUnit = GameObject.Instantiate(_playerUnitPrefab, startPos, Quaternion.identity);
-                if (_playerUnit.TryGetComponent<PlayerUnit>(out PlayerUnit unit))
-                {
-                    unit.UnitName = "Commander";
-
-                    UnitInfoPanel unitInfo = _playerUnit.GetComponentInChildren<UnitInfoPanel>();
-                    if (null != unitInfo)
-                    {
-                        float testHP = 1000f;
-                        unitInfo.SetName(unit.UnitName);
-                        unitInfo.ApplyHPValue(testHP);
-                    }
-                }
 
                 _playerUnits.Add(_playerUnit);
             }
@@ -218,12 +209,11 @@ namespace Action.Manager
             _monsterUnits.Add(obj);
         }
 
-        void _PrepareResources()
+        void _PrepareResource()
         {
-            if (null == _resources)
+            if (null == _resource)
             {
-                _resources = new Resources();
-
+                _resource = new Resource();
             }
         }
 

@@ -7,8 +7,6 @@ namespace Action.Scene
 {
     public class InGameScene : MonoBehaviour
     {
-        GameObject _resourcePanel;
-
         void _InitializeSingletons()
         {
             CameraManager.Instance.Initialize();
@@ -24,6 +22,8 @@ namespace Action.Scene
             GameManager.Instance.GameStart();
 
             CameraManager.Instance.CreateVirtualCamera();
+
+            UIManager.Instance.CreateTownStagePanel();
         }
     }
 }

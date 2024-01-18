@@ -11,6 +11,8 @@ namespace Action.Units
 
         public override void Start()
         {
+            FullHp = 1000;
+            HP = FullHp;
             base.Start();
             _idleState = new PlayerBuildingIdleState(this);
             base.StateMachine.Initialize(_idleState);

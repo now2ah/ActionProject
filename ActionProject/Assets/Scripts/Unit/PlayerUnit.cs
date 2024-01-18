@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Action.State;
 using Action.Manager;
+using Action.UI;
 
 namespace Action.Units
 {
@@ -44,14 +45,18 @@ namespace Action.Units
 
         public override void Start()
         {
+            FullHp = 200;
+            HP = FullHp - 50;
+
             base.Start();
+
             _isMoving = false;
             InputManager.Instance.actionMove.performed += ctx => { OnTestAction(ctx); };
             InputManager.Instance.actionMove.canceled += ctx => { OnTestActionCanceled(ctx); };
             _idleState = new PlayerIdleState(this);
             _movingState = new PlayerMovingState(this);
             _animator = GetComponentInChildren<Animator>();
-
+            
             base.StateMachine.Initialize(_idleState);
         }
 
