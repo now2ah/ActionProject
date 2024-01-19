@@ -28,7 +28,7 @@ namespace Action.Scene
         // Start is called before the first frame update
         void Start()
         {
-            _loadingPanel = UIManager.Instance.CreateUI("LoadingPanel");
+            _loadingPanel = UIManager.Instance.CreateUI("LoadingPanel", UIManager.Instance.MainCanvas);
             _fillImage = _loadingPanel.transform.GetChild(1).GetChild(0).GetComponent<Image>();
             StartCoroutine(LoadGameSceneAsync(SceneManager.Instance.SceneNumToLoad));
         }

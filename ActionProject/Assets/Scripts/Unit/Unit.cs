@@ -40,7 +40,7 @@ namespace Action.Units
 
         public virtual void Start()
         {
-            _infoPanel = UIManager.Instance.CreateUI("UnitInfoPanel");
+            _infoPanel = UIManager.Instance.CreateUI("UnitInfoPanel", UIManager.Instance.InGameCanvas);
             UnitInfoPanel infoPanel = _infoPanel.GetComponent<UnitInfoPanel>();
             infoPanel.Initialize(this.gameObject);
 

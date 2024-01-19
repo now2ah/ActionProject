@@ -18,7 +18,7 @@ namespace Action.Scene
 
         void Start()
         {
-            _mainMenuPanel = UIManager.Instance.CreateUI("MainMenuPanel");
+            _mainMenuPanel = UIManager.Instance.CreateUI("MainMenuPanel", UIManager.Instance.MainCanvas);
             _startButton = _mainMenuPanel.transform.GetComponentInChildren<Button>();
             _startButton.onClick.AddListener(() =>
             {

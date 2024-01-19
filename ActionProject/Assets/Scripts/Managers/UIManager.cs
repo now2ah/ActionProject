@@ -13,6 +13,11 @@ namespace Action.Manager
         GameObject _mainCanvasObject;
         Canvas _mainCanvas;
         public Canvas MainCanvas => _mainCanvas;
+        GameObject _inGameCanvasObject;
+        Canvas _inGameCanvas;
+        public Canvas InGameCanvas => _inGameCanvas;
+        GameObject _eventSystemObject;
+
         GameObject _BaseIndicatorObj;
         BaseIndicator _BaseIndicator;
 
@@ -27,12 +32,14 @@ namespace Action.Manager
         {
             base.Initialize();
             _CreateMainCanvas();
-            _BaseIndicatorObj = CreateUI("BaseIndicator");
+            _CreateInGameCanvas();
+            _CreateEventSystem();
+            _BaseIndicatorObj = CreateUI("BaseIndicator", _inGameCanvas);
             _BaseIndicator = _BaseIndicatorObj.GetComponent<BaseIndicator>();
             _BaseIndicator.Hide();
         }
 
-        public GameObject CreateUI(string name)
+        public GameObject CreateUI(string name, Canvas canvas)
         {
             string uiPath = "Prefabs/UI/";
             GameObject obj = Instantiate(Resources.Load(uiPath + name) as GameObject);
@@ -40,8 +47,8 @@ namespace Action.Manager
             if (null == obj)
                 Debug.LogError("UI Prefab is missing.");
 
-            if (null != _mainCanvas)
-                obj.transform.SetParent(_mainCanvas.transform, false);
+            if (null != canvas)
+                obj.transform.SetParent(canvas.transform, false);
 
             return obj;
         }
@@ -110,9 +117,24 @@ namespace Action.Manager
 
         void _CreateMainCanvas()
         {
-            _mainCanvasObject = Instantiate(Resources.Load("Prefabs/UI/MainCanvasObject") as GameObject);
+            _mainCanvasObject = Instantiate(Resources.Load("Prefabs/UI/CanvasObject") as GameObject);
+            _mainCanvasObject.name = "MainCanvas";
             _mainCanvasObject.transform.SetParent(this.transform, false);
             _mainCanvas = _mainCanvasObject.GetComponentInChildren<Canvas>();
+        }
+
+        void _CreateInGameCanvas()
+        {
+            _inGameCanvasObject = Instantiate(Resources.Load("Prefabs/UI/CanvasObject") as GameObject);
+            _inGameCanvasObject.name = "InGameCanvas";
+            _inGameCanvasObject.transform.SetParent(this.transform, false);
+            _inGameCanvas = _inGameCanvasObject.GetComponentInChildren<Canvas>();
+        }
+
+        void _CreateEventSystem()
+        {
+            _eventSystemObject = Instantiate(Resources.Load("Prefabs/UI/EventSystem") as GameObject);
+            _eventSystemObject.transform.SetParent(this.transform, false);
         }
 
         void _CalculateOffScreenIndicator()
@@ -153,7 +175,7 @@ namespace Action.Manager
 
         public void CreateTownStagePanel()
         {
-            _townStageUI = CreateUI("TownStagePanel");
+            _townStageUI = CreateUI("TownStagePanel", UIManager.Instance.MainCanvas);
             _townStagePanel = _townStageUI.GetComponent<TownStagePanel>();
             _townStagePanel.RefreshResource();
         }

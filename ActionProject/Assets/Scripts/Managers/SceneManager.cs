@@ -47,7 +47,7 @@ namespace Action.Manager
 
         void _LoadFadeImage()
         {
-            _fadeUI = UIManager.Instance.CreateUI("FadeInNOutPanel");
+            _fadeUI = UIManager.Instance.CreateUI("FadeInNOutPanel", UIManager.Instance.MainCanvas);
             _fadeImage = _fadeUI.GetComponent<Image>();
             _fadeUI.SetActive(false);
         }

@@ -34,7 +34,7 @@ namespace Action.Scene
 
         void Start()
         {
-            _introPanel = UIManager.Instance.CreateUI("IntroPanel");
+            _introPanel = UIManager.Instance.CreateUI("IntroPanel", UIManager.Instance.MainCanvas);
             StartCoroutine(IntroCoroutine());
         }
 
