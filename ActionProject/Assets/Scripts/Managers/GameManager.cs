@@ -23,6 +23,7 @@ namespace Action.Manager
         float _gameStartTime;           //게임 시작 시간
         eGamePhase _gamePhase;
         float _phaseTime;               //페이즈 타이머 시간
+        public float PhaseTime => _phaseTime;
         float _phaseStartTime;          //페이즈 시작 시간
         float _phaseEndTime;            //페이즈 종료 시간
         bool _isPlaying;            
@@ -110,12 +111,17 @@ namespace Action.Manager
         {
             _gameStartTime = Time.time;
         }
-        
+
         void _CalculateTime()
         {
             _gameTime = Time.time - _gameStartTime;
             _phaseTime = Time.time - _phaseStartTime;
-            Logger.Log((Mathf.Floor(_phaseTime * 10.0f) / 10.0f).ToString());
+
+            if (_phaseTime != Mathf.Floor(_phaseTime * 10.0f) / 10.0f)
+            {
+                _phaseTime = Mathf.Floor(_phaseTime * 10.0f) / 10.0f;
+                UIManager.Instance.RefreshTownStageUI();
+            }
 
             if (_phaseTime > _phaseEndTime)
             {
@@ -220,7 +226,9 @@ namespace Action.Manager
         private void Update()
         {
             if(_isPlaying)
+            {
                 _CalculateTime();
+            }
         }
     }
 }

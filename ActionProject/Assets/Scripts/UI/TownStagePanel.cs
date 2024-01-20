@@ -12,10 +12,12 @@ namespace Action.UI
         GameObject _foodPanel;
         GameObject _woodPanel;
         GameObject _ironPanel;
+        GameObject _timerPanel;
         TextMeshProUGUI _goldText;
         TextMeshProUGUI _foodText;
         TextMeshProUGUI _woodText;
         TextMeshProUGUI _ironText;
+        TextMeshProUGUI _timerText;
 
         private void Awake()
         {
@@ -23,10 +25,12 @@ namespace Action.UI
             _foodPanel = transform.GetChild(0).GetChild(0).GetChild(1).gameObject;
             _woodPanel = transform.GetChild(0).GetChild(0).GetChild(2).gameObject;
             _ironPanel = transform.GetChild(0).GetChild(0).GetChild(3).gameObject;
+            _timerPanel = transform.GetChild(0).GetChild(1).GetChild(0).gameObject;
             _goldText = _goldPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
             _foodText = _foodPanel.GetComponentInChildren<TextMeshProUGUI>();
             _woodText = _woodPanel.GetComponentInChildren<TextMeshProUGUI>();
             _ironText = _ironPanel.GetComponentInChildren<TextMeshProUGUI>();
+            _timerText = _timerPanel.GetComponentInChildren<TextMeshProUGUI>();
         }
 
         public void RefreshResource()
@@ -35,6 +39,11 @@ namespace Action.UI
             _foodText.text = GameManager.Instance.Resource.Food.ToString();
             _woodText.text = GameManager.Instance.Resource.Wood.ToString();
             _ironText.text = GameManager.Instance.Resource.Iron.ToString();
+        }
+
+        public void RefreshTimer()
+        {
+            _timerText.text = GameManager.Instance.PhaseTime.ToString();
         }
     }
 

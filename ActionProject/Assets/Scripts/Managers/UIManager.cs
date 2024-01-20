@@ -180,6 +180,15 @@ namespace Action.Manager
             _townStagePanel.RefreshResource();
         }
 
+        public void RefreshTownStageUI()
+        {
+            if (null != _townStagePanel)
+            {
+                _townStagePanel.RefreshResource();
+                _townStagePanel.RefreshTimer();
+            }   
+        }
+
         private void Update()
         {
             _CalculateOffScreenIndicator();
