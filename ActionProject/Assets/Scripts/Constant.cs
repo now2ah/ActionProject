@@ -21,6 +21,9 @@ namespace Action
         //Town Stage 베이스 건물 위치
         public static Vector3 VILLAGE_BASE_START_POS = new Vector3(-200.0f, GROUND_Y_POS, 0.0f);
 
+        //InGame UI 표시 거리
+        public static float INGAMEUI_VISIBLE_DISTANT = 15.0f;
+
         //Phase 시간
         public static float TOWNBUILD_PHASE_TIME = 10.0f;
         public static float HUNT_PHASE_TIME = 10.0f;

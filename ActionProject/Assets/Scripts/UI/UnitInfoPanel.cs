@@ -14,6 +14,8 @@ namespace Action.UI
         Image _fillimage;
         Text _nameText;
         float _panelHeight;
+        bool _isVisible = true;
+
         public void Initialize(GameObject target, string name = "defalut")
         {
             _target = target;
@@ -24,6 +26,16 @@ namespace Action.UI
             _nameText.text = name;
             _panelHeight = base.rectTr.rect.height;
             ApplyHPValue(_unit.HP, _unit.FullHp); //default hp
+        }
+
+        public void SetVisible(bool isOn)
+        {
+            if (_fillimage.enabled != isOn && _nameText.enabled != isOn)
+            {
+                _fillimage.enabled = isOn;
+                _nameText.enabled = isOn;
+                _isVisible = isOn;
+            }
         }
 
         public void SetName(string name)
@@ -40,6 +52,15 @@ namespace Action.UI
         public void ApplyHPValue(float hp, float fullHP)
         {
             _fillimage.fillAmount = Mathf.Clamp01(hp / fullHP);
+        }
+
+        void _CheckVisibleDistant()
+        {
+            if (Vector3.Distance(GameManager.Instance.PlayerUnit.transform.position, _target.transform.position) <
+                Constant.INGAMEUI_VISIBLE_DISTANT)
+                SetVisible(true);
+            else
+                SetVisible(false);
         }
 
         void _FollowTargetPosition()
@@ -60,7 +81,9 @@ namespace Action.UI
 
         private void Update()
         {
-            _FollowTargetPosition();
+            _CheckVisibleDistant();
+            if (_isVisible)
+                _FollowTargetPosition();
         }
     }
 
