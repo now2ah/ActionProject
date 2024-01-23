@@ -34,14 +34,14 @@ namespace Action.State
         {
             base.UpdateState();
             if (null != _monsterUnit.Target)
-                _monsterUnit.StateMachine.ChangeState(_monsterUnit.MovingState);
+                _monsterUnit.StateMachine.ChangeState(_monsterUnit.MoveState);
         }
     }
 
-    public class MonsterMovingState : MovingState
+    public class MonsterMoveState : MoveState
     {
         MonsterUnit _monsterUnit;
-        public MonsterMovingState(MonsterUnit monsterUnit)
+        public MonsterMoveState(MonsterUnit monsterUnit)
         {
             _monsterUnit = monsterUnit;
         }
@@ -66,15 +66,15 @@ namespace Action.State
                 _monsterUnit.Move();
 
                 if (_monsterUnit.AttackDistance > _monsterUnit.GetTargetDistance())
-                    _monsterUnit.StateMachine.ChangeState(_monsterUnit.AttackingState);
+                    _monsterUnit.StateMachine.ChangeState(_monsterUnit.AttackState);
             }
         }
     }
 
-    public class MonsterAttackingState : AttackingState
+    public class MonsterAttackState : AttackState
     {
         MonsterUnit _monsterUnit;
-        public MonsterAttackingState(MonsterUnit monsterUnit)
+        public MonsterAttackState(MonsterUnit monsterUnit)
         {
             _monsterUnit = monsterUnit;
         }

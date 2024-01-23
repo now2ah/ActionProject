@@ -14,8 +14,8 @@ namespace Action.Units
         float _attackDistance = 0.0f;
         float _lastAttackTime = 0.0f;
         MonsterIdleState _idleState;
-        MonsterMovingState _movingState;
-        MonsterAttackingState _attackingState;
+        MonsterMoveState _moveState;
+        MonsterAttackState _attackState;
         GameObject _target;
         GameObject _nearestTarget;
         GameObject _playerUnit;
@@ -24,8 +24,8 @@ namespace Action.Units
         public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
         public float AttackDistance { get { return _attackDistance; } set { _attackDistance = value; } }
         public MonsterIdleState IdleState => _idleState;
-        public MonsterMovingState MovingState => _movingState;
-        public MonsterAttackingState AttackingState => _attackingState;
+        public MonsterMoveState MoveState => _moveState;
+        public MonsterAttackState AttackState => _attackState;
         public GameObject Target { get { return _target; } set { _target = value; } }
         public GameObject NearestTarget { get { return _nearestTarget; } set { _nearestTarget = value; } }
 
@@ -114,20 +114,20 @@ namespace Action.Units
             }
         }
 
-        public override void Start()
+        protected override void Start()
         {
             base.Start();
             _target = null;
             _playerUnit = GameManager.Instance.PlayerUnit;
             _idleState = new MonsterIdleState(this);
-            _movingState = new MonsterMovingState(this);
-            _attackingState = new MonsterAttackingState(this);
+            _moveState = new MonsterMoveState(this);
+            _attackState = new MonsterAttackState(this);
             base.StateMachine.Initialize(_idleState);
             _attackSpeed = 1.0f;
             _attackDistance = 2.0f;
         }
 
-        public override void Update()
+        protected override void Update()
         {
             base.Update();
             _CompareDistance(_playerUnit);

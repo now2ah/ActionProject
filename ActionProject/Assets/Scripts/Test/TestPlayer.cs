@@ -9,7 +9,7 @@ public class TestPlayer : MonoBehaviour
     Vector2 inputVector;
     StateMachine _stateMachine;
     IdleState _idleState;
-    MovingState _movingState;
+    MoveState _movingState;
 
     void OnTestAction(InputAction.CallbackContext context)
     {
@@ -39,7 +39,7 @@ public class TestPlayer : MonoBehaviour
         Action.Manager.InputManager.Instance.actionMove.performed += ctx => { OnTestAction(ctx); };
         Action.Manager.InputManager.Instance.actionMove.canceled += ctx => { OnTestActionCanceled(ctx); };
         _idleState = new IdleState();
-        _movingState = new MovingState();
+        _movingState = new MoveState();
         _stateMachine = new StateMachine();
         _stateMachine.Initialize(_idleState);
     }

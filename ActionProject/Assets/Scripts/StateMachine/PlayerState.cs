@@ -32,11 +32,11 @@ namespace Action.State
         }
     }
 
-    public class PlayerMovingState : MovingState
+    public class PlayerMoveState : MoveState
     {
         PlayerUnit playerUnit;
 
-        public PlayerMovingState(PlayerUnit playerUnit)
+        public PlayerMoveState(PlayerUnit playerUnit)
         {
             this.playerUnit = playerUnit;
         }
@@ -66,11 +66,11 @@ namespace Action.State
 
     public class PlayerBuildingIdleState : IdleState
     {
-        PlayerBuilding playerBuilding;
+        Building _building;
 
-        public PlayerBuildingIdleState(PlayerBuilding playerBuilding)
+        public PlayerBuildingIdleState(Building building)
         {
-            this.playerBuilding = playerBuilding;
+            this._building = building;
         }
 
         public override void EnterState()

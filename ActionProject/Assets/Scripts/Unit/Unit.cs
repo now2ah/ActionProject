@@ -38,7 +38,7 @@ namespace Action.Units
 
         }
 
-        public virtual void Start()
+        protected virtual void Start()
         {
             _infoPanel = UIManager.Instance.CreateUI("UnitInfoPanel", UIManager.Instance.InGameCanvas);
             UnitInfoPanel infoPanel = _infoPanel.GetComponent<UnitInfoPanel>();
@@ -47,7 +47,7 @@ namespace Action.Units
             _stateMachine = new StateMachine();
         }
 
-        public virtual void Update()
+        protected virtual void Update()
         {
             if(null != _stateMachine)
                 _stateMachine.Update();

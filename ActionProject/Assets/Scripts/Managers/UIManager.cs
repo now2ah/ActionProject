@@ -151,7 +151,7 @@ namespace Action.Manager
                     comp.Show();
                     RectTransform rectTr = comp.IndicatorImage.rectTransform;
 
-                    if (_mainCanvas.TryGetComponent<RectTransform>(out RectTransform screenRect))
+                    if (_inGameCanvas.TryGetComponent<RectTransform>(out RectTransform screenRect))
                     {
                         Vector2 halfSize = screenRect.rect.size / 2.0f;
 

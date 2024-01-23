@@ -16,14 +16,14 @@ namespace Action.Units
         Vector2 inputVector;
 
         PlayerIdleState _idleState;
-        PlayerMovingState _movingState;
+        PlayerMoveState _moveState;
 
         Animator _animator;
         public Animator Animator => _animator;
 
         void OnTestAction(InputAction.CallbackContext context)
         {
-            base.StateMachine.ChangeState(_movingState);
+            base.StateMachine.ChangeState(_moveState);
             inputVector = context.ReadValue<Vector2>();
         }
 
@@ -37,13 +37,13 @@ namespace Action.Units
         {
             Vector3 movePos = new Vector3(inputVector.x, 0, inputVector.y);
 
-            if (base.StateMachine.IsState(_movingState))
+            if (base.StateMachine.IsState(_moveState))
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos), 0.15f);
 
             transform.Translate(movePos * Time.deltaTime * 5.0f, Space.World);
         }
 
-        public override void Start()
+        protected override void Start()
         {
             FullHp = 200;
             HP = FullHp - 50;
@@ -54,13 +54,13 @@ namespace Action.Units
             InputManager.Instance.actionMove.performed += ctx => { OnTestAction(ctx); };
             InputManager.Instance.actionMove.canceled += ctx => { OnTestActionCanceled(ctx); };
             _idleState = new PlayerIdleState(this);
-            _movingState = new PlayerMovingState(this);
+            _moveState = new PlayerMoveState(this);
             _animator = GetComponentInChildren<Animator>();
             
             base.StateMachine.Initialize(_idleState);
         }
 
-        public override void Update()
+        protected override void Update()
         {
             base.Update();
         }

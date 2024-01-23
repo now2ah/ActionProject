@@ -8,7 +8,7 @@ public class TestMonster : MonoBehaviour
 {
     StateMachine _stateMachine;
     MonsterIdleState _idleState;
-    MonsterMovingState _movingState;
+    //MonsterMovingState _movingState;
     //GameObject _target;
 
 

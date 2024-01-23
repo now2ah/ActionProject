@@ -5,17 +5,19 @@ using Action.State;
 
 namespace Action.Units
 {
-    public class PlayerBuilding : Building
+    public class Building : Unit
     {
+        PlayerBuildingIdleState _idleState;
 
+        // Start is called before the first frame update
         protected override void Start()
         {
-            FullHp = 1000;
-            HP = FullHp;
             base.Start();
-            
+            _idleState = new PlayerBuildingIdleState(this);
+            base.StateMachine.Initialize(_idleState);
         }
 
+        // Update is called once per frame
         protected override void Update()
         {
             base.Update();

@@ -1,70 +1,82 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Action.Units;
 
 namespace Action.State
 {
-    public class State
+    public class WorkerIdleState : IdleState
     {
-        public virtual void EnterState() { }
-        public virtual void ExitState() { }
-        public virtual void UpdateState() { }
-    }
+        WorkerUnit workerUnit;
 
-    public class IdleState : State
-    {
+        public WorkerIdleState(WorkerUnit workerUnit)
+        {
+            this.workerUnit = workerUnit;
+        }
+
         public override void EnterState()
         {
-            //Debug.Log("Enter Idle");
+            base.EnterState();
         }
 
         public override void ExitState()
         {
-            //Debug.Log("Exit Idle");
+            base.ExitState();
         }
 
-        // Update is called once per frame
         public override void UpdateState()
         {
             base.UpdateState();
         }
     }
 
-    public class MoveState : State
+    public class WorkerMoveState : MoveState
     {
+        WorkerUnit workerUnit;
+
+        public WorkerMoveState(WorkerUnit workerUnit)
+        {
+            this.workerUnit = workerUnit;
+        }
+
         public override void EnterState()
         {
-            
+            base.EnterState();
         }
 
         public override void ExitState()
         {
-
+            base.ExitState();
         }
 
-        // Update is called once per frame
         public override void UpdateState()
         {
             base.UpdateState();
-
         }
     }
 
-    public class AttackState : State
+    public class WorkerWorkState : State
     {
+        WorkerUnit workerUnit;
+
+        public WorkerWorkState(WorkerUnit workerUnit)
+        {
+            this.workerUnit = workerUnit;
+        }
+
         public override void EnterState()
         {
+            base.EnterState();
         }
 
         public override void ExitState()
         {
+            base.ExitState();
         }
 
-        // Update is called once per frame
         public override void UpdateState()
         {
             base.UpdateState();
-
         }
     }
 }
