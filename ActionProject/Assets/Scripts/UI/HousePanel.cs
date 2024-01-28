@@ -10,23 +10,17 @@ namespace Action.UI
     {
         House _house;
         
-        public void Initialize(House house)
+        public override void Initialize(GameObject target, string name = "default")
         {
-            _owner = house.gameObject;
-            _house = house;
-            
-        }
-
-        // Start is called before the first frame update
-        void Start()
-        {
-            
+            base.Initialize(target, name);
+            _house = _target.GetComponent<House>();
         }
 
         // Update is called once per frame
-        void Update()
+        protected override void Update()
         {
-            _FollowTargetPosition();
+            base.Update();
+            _FollowTargetPosition(ePanelPosition.TOP);
         }
     }
 

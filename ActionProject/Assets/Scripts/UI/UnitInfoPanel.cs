@@ -7,24 +7,23 @@ using Action.Units;
 
 namespace Action.UI
 {
-    public class UnitInfoPanel : InGameUI
+    public class UnitInfoPanel : InGameTargetUI
     {
-        GameObject _target;
         Unit _unit;
         Image _fillimage;
         Text _nameText;
-        float _panelHeight;
+        
         bool _isVisible = true;
 
-        public void Initialize(GameObject target, string name = "defalut")
+        public override void Initialize(GameObject target, string name = "defalut")
         {
-            _target = target;
+            base.Initialize(target, name);
             _unit = target.GetComponent<Unit>();
             _fillimage = transform.GetChild(0).transform.GetComponent<Image>();
             _fillimage.type = Image.Type.Filled;
             _nameText = transform.GetChild(1).transform.GetComponent<Text>();
             _nameText.text = name;
-            _panelHeight = base.rectTr.rect.height;
+            
             ApplyHPValue(_unit.HP, _unit.FullHp); //default hp
         }
 
@@ -63,27 +62,12 @@ namespace Action.UI
                 SetVisible(false);
         }
 
-        void _FollowTargetPosition()
-        {
-            if (null != _target)
-            {
-                transform.position = CameraManager.Instance.MainCamera.Camera.WorldToScreenPoint(_GetBottomPosition()) - new Vector3(0.0f, _panelHeight, 0.0f); ;
-            }
-        }
 
-        Vector3 _GetBottomPosition()
-        {
-            Collider col = _target.GetComponentInChildren<Collider>();
-            Vector3 panelPos = new Vector3(col.bounds.center.x, col.bounds.min.y, col.bounds.min.z);
-
-            return panelPos;
-        }
-
-        private void Update()
+        protected override void Update()
         {
             _CheckVisibleDistant();
             if (_isVisible)
-                _FollowTargetPosition();
+                _FollowTargetPosition(ePanelPosition.BOTTOM);
         }
     }
 

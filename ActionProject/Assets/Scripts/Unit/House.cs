@@ -6,7 +6,7 @@ using Action.UI;
 
 namespace Action.Units
 {
-    public class House : Unit
+    public class House : Building
     {
         GameObject _building;
         GameObject _uiPanelObject;
@@ -28,7 +28,7 @@ namespace Action.Units
         {
             _uiPanelObject = UIManager.Instance.CreateUI("HousePanel", UIManager.Instance.InGameCanvas);
             _housePanel = _uiPanelObject.GetComponent<HousePanel>();
-            _housePanel.Initialize(this);
+            _housePanel.Initialize(this.gameObject);
             _activeDistance = 10.0f;
             _isBuilt = false;
         }

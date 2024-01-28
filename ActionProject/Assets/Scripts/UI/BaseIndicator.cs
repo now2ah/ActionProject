@@ -15,8 +15,9 @@ namespace Action.UI
             _IndicatorImage.rectTransform.SetParent(parent, false);
         }
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             _IndicatorImage = GetComponent<Image>();
         }
     }
