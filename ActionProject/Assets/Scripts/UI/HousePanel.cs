@@ -23,5 +23,4 @@ namespace Action.UI
             _FollowTargetPosition(ePanelPosition.TOP);
         }
     }
-
 }

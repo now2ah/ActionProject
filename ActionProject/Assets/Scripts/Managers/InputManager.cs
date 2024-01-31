@@ -9,11 +9,13 @@ namespace Action.Manager
     public class InputManager : Singleton<InputManager>
     {
         public InputAction actionMove;
+        public InputAction actionAction;
 
         public override void Initialize()
         {
             base.Initialize();
             actionMove.Enable();
+            actionAction.Enable();
         }
     }
 }

@@ -93,3 +93,20 @@ MonoBehaviour:
       m_Action: Action Move
       m_Flags: 8
     m_Flags: 0
+  actionAction:
+    m_Name: Action
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: a98d5d1b-5ec8-430b-af12-15dcf611df46
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: eb876a99-caae-4fae-b68a-0068e53fef9e
+      m_Path: <Keyboard>/r
+      m_Interactions: Press
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action
+      m_Flags: 0
+    m_Flags: 0

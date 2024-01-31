@@ -33,6 +33,15 @@ namespace Action.Units
             inputVector = Vector3.zero;
         }
 
+        void OnActionCallback(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                bool isPressed = context.ReadValueAsButton();
+                Logger.Log(isPressed.ToString());
+            }
+        }
+
         public void Move()
         {
             Vector3 movePos = new Vector3(inputVector.x, 0, inputVector.y);
@@ -53,6 +62,7 @@ namespace Action.Units
             _isMoving = false;
             InputManager.Instance.actionMove.performed += ctx => { OnTestAction(ctx); };
             InputManager.Instance.actionMove.canceled += ctx => { OnTestActionCanceled(ctx); };
+            InputManager.Instance.actionAction.performed += ctx => { OnActionCallback(ctx); };
             _idleState = new PlayerIdleState(this);
             _moveState = new PlayerMoveState(this);
             _animator = GetComponentInChildren<Animator>();
