@@ -11,26 +11,20 @@ namespace Action.Units
         GameObject _building;
         GameObject _uiPanelObject;
         HousePanel _housePanel;
-        float _activeDistance;
-        bool _isBuilt = false;
 
-        public bool _CheckPlayerUnitDistance()
+        public override void Activate()
         {
-            float dist = Vector3.Distance(GameManager.Instance.PlayerUnit.transform.position, transform.position);
-
-            if (dist < _activeDistance)
-                return true;
-            else
-                return false;
+            base.Activate();
+            //Logger.Log("House Activate");
         }
 
-        void _Initialize()
+        public override void Initialize()
         {
+            base.Initialize();
             _uiPanelObject = UIManager.Instance.CreateUI("HousePanel", UIManager.Instance.InGameCanvas);
             _housePanel = _uiPanelObject.GetComponent<HousePanel>();
             _housePanel.Initialize(this.gameObject);
-            _activeDistance = 10.0f;
-            _isBuilt = false;
+            Logger.Log("House Init");
         }
 
         private void Awake()
@@ -41,7 +35,10 @@ namespace Action.Units
         // Start is called before the first frame update
         protected override void Start()
         {
-            _Initialize();
+            FullHp = 1000;
+            HP = FullHp;
+            base.Start();
+            Initialize();
         }
 
         // Update is called once per frame
@@ -52,6 +49,8 @@ namespace Action.Units
                 if (_CheckPlayerUnitDistance())
                 {
                     _uiPanelObject?.SetActive(true);
+                    GameManager.Instance.PlayerUnit.InteractingBuilding = this.gameObject;
+
                     if (!_isBuilt)
                     {
                         _housePanel?.BuildPanel?.SetActive(true);
@@ -65,6 +64,7 @@ namespace Action.Units
                 }
                 else
                 {
+                    GameManager.Instance.PlayerUnit.InteractingBuilding = null;
                     _uiPanelObject?.SetActive(false);
                 }
             }

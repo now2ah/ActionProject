@@ -41,7 +41,7 @@ namespace Action.Units
             float nearest = Mathf.Infinity;
             for (int i = 0; i < objs.Length; i++)
             {
-                if (objs[i] == GameManager.Instance.PlayerUnit)
+                if (objs[i] == GameManager.Instance.PlayerUnitObj)
                     continue;
 
                 Vector3 dist = objs[i].gameObject.transform.position - gameObject.transform.position;
@@ -118,7 +118,7 @@ namespace Action.Units
         {
             base.Start();
             _target = null;
-            _playerUnit = GameManager.Instance.PlayerUnit;
+            _playerUnit = GameManager.Instance.PlayerUnitObj;
             _idleState = new MonsterIdleState(this);
             _moveState = new MonsterMoveState(this);
             _attackState = new MonsterAttackState(this);

@@ -21,25 +21,35 @@ namespace Action.Units
         Animator _animator;
         public Animator Animator => _animator;
 
-        void OnTestAction(InputAction.CallbackContext context)
+        GameObject _interactingBuilding;
+        public GameObject InteractingBuilding { get { return _interactingBuilding; } set { _interactingBuilding = value; } }
+
+        void OnMove(InputAction.CallbackContext context)
         {
             base.StateMachine.ChangeState(_moveState);
             inputVector = context.ReadValue<Vector2>();
         }
 
-        void OnTestActionCanceled(InputAction.CallbackContext context)
+        void OnMoveCanceled(InputAction.CallbackContext context)
         {
             base.StateMachine.ChangeState(_idleState);
             inputVector = Vector3.zero;
         }
 
-        void OnActionCallback(InputAction.CallbackContext context)
+        void OnActionPressed(InputAction.CallbackContext context)
         {
             if (context.performed)
             {
                 bool isPressed = context.ReadValueAsButton();
+                Interaction();
                 Logger.Log(isPressed.ToString());
             }
+        }
+
+        public void Interaction()
+        {
+            if(null != _interactingBuilding)
+                _interactingBuilding.GetComponent<Building>().Activate();
         }
 
         public void Move()
@@ -60,13 +70,14 @@ namespace Action.Units
             base.Start();
 
             _isMoving = false;
-            InputManager.Instance.actionMove.performed += ctx => { OnTestAction(ctx); };
-            InputManager.Instance.actionMove.canceled += ctx => { OnTestActionCanceled(ctx); };
-            InputManager.Instance.actionAction.performed += ctx => { OnActionCallback(ctx); };
+            InputManager.Instance.actionMove.performed += ctx => { OnMove(ctx); };
+            InputManager.Instance.actionMove.canceled += ctx => { OnMoveCanceled(ctx); };
+            InputManager.Instance.actionAction.performed += ctx => { OnActionPressed(ctx); };
             _idleState = new PlayerIdleState(this);
             _moveState = new PlayerMoveState(this);
             _animator = GetComponentInChildren<Animator>();
-            
+            _interactingBuilding = null;
+
             base.StateMachine.Initialize(_idleState);
         }
 

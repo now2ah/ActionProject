@@ -55,7 +55,7 @@ namespace Action.UI
 
         void _CheckVisibleDistant()
         {
-            if (Vector3.Distance(GameManager.Instance.PlayerUnit.transform.position, _target.transform.position) <
+            if (Vector3.Distance(GameManager.Instance.PlayerUnitObj.transform.position, _target.transform.position) <
                 Constant.INGAMEUI_VISIBLE_DISTANT)
                 SetVisible(true);
             else

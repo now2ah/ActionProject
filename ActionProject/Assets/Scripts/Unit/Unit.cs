@@ -13,10 +13,10 @@ namespace Action.Units
         public GameObject InfoPanel { get { return _infoPanel; } set { _infoPanel = value; } }
         string unitName = "none";
         public string UnitName { get { return unitName; } set { unitName = value; } }
-        int hp = 0;
-        public int HP { get { return hp; } set { hp = value; } }
-        int fullHp = 0;
-        public int FullHp { get { return fullHp; } set { fullHp = value; } }
+        int _hp = 0;
+        public int HP { get { return _hp; } set { _hp = value; } }
+        int _fullHp = 0;
+        public int FullHp { get { return _fullHp; } set { _fullHp = value; } }
 
         StateMachine _stateMachine;
         public StateMachine StateMachine => _stateMachine;
@@ -28,8 +28,8 @@ namespace Action.Units
 
         public void GetDamaged(int damage)
         {
-            hp -= damage;
-            if (hp < 0)
+            _hp -= damage;
+            if (_hp < 0)
                 _Death();
         }
 

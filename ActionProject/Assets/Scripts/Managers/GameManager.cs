@@ -33,7 +33,9 @@ namespace Action.Manager
 
 
         GameObject _playerBase;
-        GameObject _playerUnit;
+        GameObject _playerUnitObj;
+
+        PlayerUnit _playerUnit;
 
         //temporary
         GameObject _playerBasePrefab;
@@ -53,7 +55,8 @@ namespace Action.Manager
         public Resource Resource => _resource;
 
         public GameObject PlayerBase { get { return _playerBase; } set { _playerBase = value; } }
-        public GameObject PlayerUnit { get { return _playerUnit; } set { _playerUnit = value; } }
+        public GameObject PlayerUnitObj { get { return _playerUnitObj; } set { _playerUnitObj = value; } }
+        public PlayerUnit PlayerUnit { get { return _playerUnit; } }
         public ArrayList PlayerBuildings { get { return _playerBuildings; } }
         public ArrayList PlayerUnits { get { return _playerUnits; } }
         public ArrayList MonsterUnits { get { return _monsterUnits; } }
@@ -172,7 +175,7 @@ namespace Action.Manager
 
         void _CreatePlayerUnit()
         {
-            if(null == _playerUnit)
+            if(null == _playerUnitObj)
             {
                 //임시 베이스 사이즈 계산식(에셋 적용 후 변경)
                 float baseExtentsZ = 0.0f;
@@ -182,9 +185,9 @@ namespace Action.Manager
                 }
                 Vector3 startPos = _playerBase.gameObject.transform.position + new Vector3(20.0f, 0.0f, /*-(baseExtentsZ + 1.0f)*/ 0.0f);
 
-                _playerUnit = GameObject.Instantiate(_playerUnitPrefab, startPos, Quaternion.identity);
-
-                _playerUnits.Add(_playerUnit);
+                _playerUnitObj = GameObject.Instantiate(_playerUnitPrefab, startPos, Quaternion.identity);
+                _playerUnit = _playerUnitObj.GetComponent<PlayerUnit>();
+                _playerUnits.Add(_playerUnitObj);
             }
         }
 

@@ -29,7 +29,7 @@ namespace Action.Manager
             _fixedVCam.SetFov(Constant.GAMECAMERA_FOV);
 
             if (null == _fixedVCam.GetTarget())
-                _fixedVCam.SetTarget(GameManager.Instance.PlayerUnit.gameObject.transform);
+                _fixedVCam.SetTarget(GameManager.Instance.PlayerUnitObj.transform);
         }
 
         void _CreateMainCamera()
