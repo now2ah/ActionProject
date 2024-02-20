@@ -89,4 +89,50 @@ namespace Action.State
             base.UpdateState();
         }
     }
+
+    public class PlayerBuildingPrepareState : State
+    {
+        Building _building;
+
+        public PlayerBuildingPrepareState(Building building)
+        {
+            this._building = building;
+        }
+
+        public override void EnterState()
+        {
+        }
+
+        public override void ExitState()
+        {
+        }
+
+        public override void UpdateState()
+        {
+
+        }
+    }
+
+    public class PlayerBuildingConstructState : State
+    {
+        Building _building;
+
+        public PlayerBuildingConstructState(Building building)
+        {
+            this._building = building;
+        }
+
+        public override void EnterState()
+        {
+        }
+
+        public override void ExitState()
+        {
+        }
+
+        public override void UpdateState()
+        {
+
+        }
+    }
 }

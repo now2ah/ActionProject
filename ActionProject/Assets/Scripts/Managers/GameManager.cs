@@ -17,7 +17,7 @@ namespace Action.Manager
 
     public class GameManager : Singleton<GameManager>
     {
-        public Vector3 spawnPoint;
+        public Vector3 spawnPoint;      //임시 몬스터 스폰포인트
 
         float _gameTime;                //게임 타이머 시간
         float _gameStartTime;           //게임 시작 시간
@@ -42,13 +42,13 @@ namespace Action.Manager
         GameObject _playerUnitPrefab;
 
         List<GameObject> _playerBuildingPrefabs;
-        ArrayList _playerBuildings;
+        List<GameObject> _playerBuildings;
 
         List<GameObject> _playerUnitPrefabs;
-        ArrayList _playerUnits;
+        List<GameObject> _playerUnits;
         
         List<GameObject> _monsterUnitPrefabs;
-        ArrayList _monsterUnits;
+        List<GameObject> _monsterUnits;
 
         [SerializeField]
         Resource _resource;
@@ -57,9 +57,9 @@ namespace Action.Manager
         public GameObject PlayerBase { get { return _playerBase; } set { _playerBase = value; } }
         public GameObject PlayerUnitObj { get { return _playerUnitObj; } set { _playerUnitObj = value; } }
         public PlayerUnit PlayerUnit { get { return _playerUnit; } }
-        public ArrayList PlayerBuildings { get { return _playerBuildings; } }
-        public ArrayList PlayerUnits { get { return _playerUnits; } }
-        public ArrayList MonsterUnits { get { return _monsterUnits; } }
+        public List<GameObject> PlayerBuildings { get { return _playerBuildings; } }
+        public List<GameObject> PlayerUnits { get { return _playerUnits; } }
+        public List<GameObject> MonsterUnits { get { return _monsterUnits; } }
 
         public override void Initialize()
         {
@@ -73,12 +73,12 @@ namespace Action.Manager
             _playerBasePrefab = Resources.Load("Prefabs/Buildings/PlayerBase") as GameObject;
             _playerUnitPrefab = Resources.Load("Prefabs/Units/Player/PlayerUnit") as GameObject;
             _playerBuildingPrefabs = new List<GameObject>();
-            _playerBuildings = new ArrayList();
+            _playerBuildings = new List<GameObject>();
             _playerUnitPrefabs = new List<GameObject>();
-            _playerUnits = new ArrayList();
+            _playerUnits = new List<GameObject>();
             _monsterUnitPrefabs = new List<GameObject>();
             _monsterUnitPrefabs.Add(Resources.Load("Prefabs/MonsterUnit") as GameObject);
-            _monsterUnits = new ArrayList();
+            _monsterUnits = new List<GameObject>();
         }
 
         public void GameStart()

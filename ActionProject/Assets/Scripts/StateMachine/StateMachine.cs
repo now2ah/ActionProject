@@ -8,6 +8,7 @@ namespace Action.State
     public class StateMachine
     {
         State _CurState;
+        public State CurState => _CurState;
 
         public virtual void Initialize(State startState)
         {

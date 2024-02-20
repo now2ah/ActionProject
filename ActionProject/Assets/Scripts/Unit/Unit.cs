@@ -15,8 +15,10 @@ namespace Action.Units
         public string UnitName { get { return unitName; } set { unitName = value; } }
         int _hp = 0;
         public int HP { get { return _hp; } set { _hp = value; } }
-        int _fullHp = 0;
-        public int FullHp { get { return _fullHp; } set { _fullHp = value; } }
+        int _maxHp = 0;
+        public int MaxHp { get { return _maxHp; } set { _maxHp = value; } }
+        float _speed;
+        public float Speed { get { return _speed; } set { _speed = value; } }
 
         StateMachine _stateMachine;
         public StateMachine StateMachine => _stateMachine;

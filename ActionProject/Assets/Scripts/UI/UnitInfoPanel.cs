@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Action.Manager;
 using Action.Units;
+using TMPro;
 
 namespace Action.UI
 {
@@ -11,7 +12,8 @@ namespace Action.UI
     {
         Unit _unit;
         Image _fillimage;
-        Text _nameText;
+        string _nameText;
+        TextMeshProUGUI _textMesh;
         
         bool _isVisible = true;
 
@@ -21,31 +23,20 @@ namespace Action.UI
             _unit = target.GetComponent<Unit>();
             _fillimage = transform.GetChild(0).transform.GetComponent<Image>();
             _fillimage.type = Image.Type.Filled;
-            _nameText = transform.GetChild(1).transform.GetComponent<Text>();
-            _nameText.text = name;
+            _textMesh = transform.GetChild(1).transform.GetComponent<TextMeshProUGUI>();
+            _textMesh.text = name;
             
-            ApplyHPValue(_unit.HP, _unit.FullHp); //default hp
+            ApplyHPValue(_unit.HP, _unit.MaxHp); //default hp
         }
 
         public void SetVisible(bool isOn)
         {
-            if (_fillimage.enabled != isOn && _nameText.enabled != isOn)
+            if (_fillimage.enabled != isOn && _textMesh.enabled != isOn)
             {
                 _fillimage.enabled = isOn;
-                _nameText.enabled = isOn;
+                _textMesh.enabled = isOn;
                 _isVisible = isOn;
             }
-        }
-
-        public void SetName(string name)
-        {
-            _nameText.text = name;
-        }
-
-        public void SetTextStyle(int size, Color color)
-        {
-            _nameText.fontSize = size;
-            _nameText.color = color;
         }
 
         public void ApplyHPValue(float hp, float fullHP)

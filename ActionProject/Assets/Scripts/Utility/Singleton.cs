@@ -52,27 +52,9 @@ namespace Action.Util
 
         }
 
-        //public void SetName(string name)
-        //{
-        //    _singletonObject.name = name;
-        //}
-
         private void OnDestroy()
         {
             isQuitting = true;
         }
-
-        //private void Awake()
-        //{
-        //    if (_instance == null)
-        //    {
-        //        _instance = this as T;
-        //        DontDestroyOnLoad(this);
-        //    }
-        //    else
-        //    {
-        //        Destroy(gameObject);
-        //    }
-        //}
     }
 }

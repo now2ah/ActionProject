@@ -10,8 +10,8 @@ namespace Action.Units
 
         protected override void Start()
         {
-            FullHp = 1000;
-            HP = FullHp;
+            MaxHp = 1000;
+            HP = MaxHp;
             base.Start();
             
         }

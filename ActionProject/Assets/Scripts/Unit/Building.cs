@@ -8,23 +8,25 @@ namespace Action.Units
 {
     public class Building : Unit
     {
-        PlayerBuildingIdleState _idleState;
+        protected PlayerBuildingIdleState _idleState;
+        protected PlayerBuildingPrepareState _prepareState;
+        protected PlayerBuildingConstructState _constructState;
 
         protected float _activeDistance;
-        protected bool _isBuilt;
-
-        public virtual void Activate()
-        {
-            //Logger.Log("Building Activate");
-        }
 
         public virtual void Initialize()
         {
             Logger.Log("Building Init");
             _activeDistance = 10.0f;
-            _isBuilt = false;
         }
 
+        public virtual void Interact()
+        {
+            if (StateMachine.CurState == _idleState)
+                _StartConstruct();
+
+            //Logger.Log("Building Activate");
+        }
 
         protected bool _CheckPlayerUnitDistance()
         {
@@ -36,11 +38,18 @@ namespace Action.Units
                 return false;
         }
 
+        void _StartConstruct()
+        {
+            StateMachine.ChangeState(_prepareState);
+        }
+
         // Start is called before the first frame update
         protected override void Start()
         {
             base.Start();
             _idleState = new PlayerBuildingIdleState(this);
+            _prepareState = new PlayerBuildingPrepareState(this);
+            _constructState = new PlayerBuildingConstructState(this);
             base.StateMachine.Initialize(_idleState);
         }
 

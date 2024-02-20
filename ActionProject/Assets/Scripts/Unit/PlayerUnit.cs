@@ -41,15 +41,15 @@ namespace Action.Units
             if (context.performed)
             {
                 bool isPressed = context.ReadValueAsButton();
-                Interaction();
+                Interact();
                 Logger.Log(isPressed.ToString());
             }
         }
 
-        public void Interaction()
+        public void Interact()
         {
             if(null != _interactingBuilding)
-                _interactingBuilding.GetComponent<Building>().Activate();
+                _interactingBuilding.GetComponent<Building>().Interact();
         }
 
         public void Move()
@@ -64,8 +64,8 @@ namespace Action.Units
 
         protected override void Start()
         {
-            FullHp = 200;
-            HP = FullHp - 50;
+            MaxHp = 200;
+            HP = MaxHp - 50;
 
             base.Start();
 

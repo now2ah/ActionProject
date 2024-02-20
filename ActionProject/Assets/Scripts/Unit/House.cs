@@ -12,9 +12,9 @@ namespace Action.Units
         GameObject _uiPanelObject;
         HousePanel _housePanel;
 
-        public override void Activate()
+        public override void Interact()
         {
-            base.Activate();
+            base.Interact();
             //Logger.Log("House Activate");
         }
 
@@ -35,8 +35,8 @@ namespace Action.Units
         // Start is called before the first frame update
         protected override void Start()
         {
-            FullHp = 1000;
-            HP = FullHp;
+            MaxHp = 1000;
+            HP = MaxHp;
             base.Start();
             Initialize();
         }
@@ -51,7 +51,7 @@ namespace Action.Units
                     _uiPanelObject?.SetActive(true);
                     GameManager.Instance.PlayerUnit.InteractingBuilding = this.gameObject;
 
-                    if (!_isBuilt)
+                    if (StateMachine.CurState != _idleState)
                     {
                         _housePanel?.BuildPanel?.SetActive(true);
                         _housePanel?.ControlPanel?.SetActive(false);

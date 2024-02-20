@@ -15,14 +15,15 @@ namespace Action.Units
         Animator _animator;
         public Animator Animator => _animator;
 
-        public void Move(Vector3 position)
+        public void SeekJobs()
         {
-            
+
         }
 
-        public void Wander()
+        public void Move(Vector3 position)
         {
-
+            transform.LookAt(position);
+            transform.Translate(position * Speed * Time.deltaTime);
         }
 
         // Start is called before the first frame update
