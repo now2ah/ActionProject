@@ -18,10 +18,10 @@ public class UIManagerGUI : Editor
 
         GUILayout.BeginVertical();
 
-        if (GUILayout.Button("Hide Unit Info UI"))
-        {
-            UIManager.Instance.ShowUnitInfoUI(!UIManager.Instance.IsShowUnitPanel);
-        }
+        //if (GUILayout.Button("Hide Unit Info UI"))
+        //{
+        //    UIManager.Instance.ShowUnitInfoUI(!UIManager.Instance.IsShowUnitPanel);
+        //}
 
         GUILayout.BeginHorizontal();
         //GUILayout.Label("X");

@@ -8,11 +8,10 @@ using TMPro;
 
 namespace Action.UI
 {
-    public class UnitInfoPanel : InGameTargetUI
+    public class UnitPanel : InGameTargetUI
     {
         Unit _unit;
         Image _fillimage;
-        string _nameText;
         TextMeshProUGUI _textMesh;
         
         bool _isVisible = true;
@@ -29,14 +28,9 @@ namespace Action.UI
             ApplyHPValue(_unit.HP, _unit.MaxHp); //default hp
         }
 
-        public void SetVisible(bool isOn)
+        public void SetNameText(string name)
         {
-            if (_fillimage.enabled != isOn && _textMesh.enabled != isOn)
-            {
-                _fillimage.enabled = isOn;
-                _textMesh.enabled = isOn;
-                _isVisible = isOn;
-            }
+            _textMesh.text = name;
         }
 
         public void ApplyHPValue(float hp, float fullHP)
@@ -44,19 +38,8 @@ namespace Action.UI
             _fillimage.fillAmount = Mathf.Clamp01(hp / fullHP);
         }
 
-        void _CheckVisibleDistant()
-        {
-            if (Vector3.Distance(GameManager.Instance.PlayerUnitObj.transform.position, _target.transform.position) <
-                Constant.INGAMEUI_VISIBLE_DISTANT)
-                SetVisible(true);
-            else
-                SetVisible(false);
-        }
-
-
         protected override void Update()
         {
-            _CheckVisibleDistant();
             if (_isVisible)
                 _FollowTargetPosition(ePanelPosition.BOTTOM);
         }

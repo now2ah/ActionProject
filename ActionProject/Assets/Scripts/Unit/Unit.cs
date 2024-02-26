@@ -9,23 +9,38 @@ namespace Action.Units
 {
     public class Unit : MonoBehaviour
     {
-        GameObject _infoPanel;
-        public GameObject InfoPanel { get { return _infoPanel; } set { _infoPanel = value; } }
-        string unitName = "none";
-        public string UnitName { get { return unitName; } set { unitName = value; } }
-        int _hp = 0;
+        GameObject _infoPanelObject;
+        public GameObject InfoPanelObject { get { return _infoPanelObject; } set { _infoPanelObject = value; } }
+        UnitPanel _unitPanel;
+        public UnitPanel InfoPanel { get { return _unitPanel; } set { _unitPanel = value; } }
+
+        string _unitName;
+        public string UnitName { get { return _unitName; } set { _unitName = value; } }
+        int _hp;
         public int HP { get { return _hp; } set { _hp = value; } }
-        int _maxHp = 0;
+        int _maxHp;
         public int MaxHp { get { return _maxHp; } set { _maxHp = value; } }
         float _speed;
         public float Speed { get { return _speed; } set { _speed = value; } }
+        float _infoActiveDistant;
+        public float InfoActiveDistant { get { return _infoActiveDistant; } set { _infoActiveDistant = value; } }
 
         StateMachine _stateMachine;
         public StateMachine StateMachine => _stateMachine;
 
-        public void ShowInfoPanel(bool isOn)
+        public virtual void Initialize()
         {
-            _infoPanel.SetActive(isOn);
+            _unitName = "default_name";
+            _hp = 10;
+            _maxHp = 10;
+            _speed = 1;
+            _infoActiveDistant = Constant.INGAMEUI_VISIBLE_DISTANT;
+            _infoPanelObject = UIManager.Instance.CreateUI("UnitPanel", UIManager.Instance.InGameCanvas);
+            _unitPanel = _infoPanelObject.GetComponent<UnitPanel>();
+            _unitPanel.Initialize(this.gameObject);
+            _unitPanel.Hide();
+
+            _stateMachine = new StateMachine();
         }
 
         public void GetDamaged(int damage)
@@ -35,23 +50,34 @@ namespace Action.Units
                 _Death();
         }
 
+        public void SetNameUI(string name)
+        {
+            if (null != _unitPanel)
+                _unitPanel.SetNameText(name);
+        }
+
         void _Death()
         {
 
         }
 
+        void _CheckVisibleDistant()
+        {
+            if (Vector3.Distance(GameManager.Instance.PlayerUnitObj.transform.position, gameObject.transform.position) < _infoActiveDistant)
+                _unitPanel.Show();
+            else
+                _unitPanel.Hide();
+        }
+
         protected virtual void Start()
         {
-            _infoPanel = UIManager.Instance.CreateUI("UnitInfoPanel", UIManager.Instance.InGameCanvas);
-            UnitInfoPanel infoPanel = _infoPanel.GetComponent<UnitInfoPanel>();
-            infoPanel.Initialize(this.gameObject);
-
-            _stateMachine = new StateMachine();
+            Initialize();
         }
 
         protected virtual void Update()
         {
-            if(null != _stateMachine)
+            _CheckVisibleDistant();
+            if (null != _stateMachine)
                 _stateMachine.Update();
         }
     }

@@ -53,31 +53,31 @@ namespace Action.Manager
             return obj;
         }
 
-        public void ShowUnitInfoUI(bool isOn)
-        {
-            if (_isShowUnitPanel == isOn)
-                return;
+        //public void ShowUnitInfoUI(bool isOn)
+        //{
+        //    if (_isShowUnitPanel == isOn)
+        //        return;
 
-            foreach(GameObject obj in GameManager.Instance.PlayerBuildings)
-            {
-                if (obj.TryGetComponent<Unit>(out Unit comp))
-                    comp.ShowInfoPanel(isOn);
-            }
+        //    foreach(GameObject obj in GameManager.Instance.PlayerBuildings)
+        //    {
+        //        if (obj.TryGetComponent<Unit>(out Unit comp))
+        //            comp.ShowInfoPanel(isOn);
+        //    }
 
-            foreach (GameObject obj in GameManager.Instance.PlayerUnits)
-            {
-                if (obj.TryGetComponent<Unit>(out Unit comp))
-                    comp.ShowInfoPanel(isOn);
-            }
+        //    foreach (GameObject obj in GameManager.Instance.PlayerUnits)
+        //    {
+        //        if (obj.TryGetComponent<Unit>(out Unit comp))
+        //            comp.ShowInfoPanel(isOn);
+        //    }
 
-            foreach (GameObject obj in GameManager.Instance.MonsterUnits)
-            {
-                if (obj.TryGetComponent<Unit>(out Unit comp))
-                    comp.ShowInfoPanel(isOn);
-            }
+        //    foreach (GameObject obj in GameManager.Instance.MonsterUnits)
+        //    {
+        //        if (obj.TryGetComponent<Unit>(out Unit comp))
+        //            comp.ShowInfoPanel(isOn);
+        //    }
 
-            _isShowUnitPanel = isOn;
-        }
+        //    _isShowUnitPanel = isOn;
+        //}
 
         public void SetUnitInfoRect(float width, float height)
         {

@@ -44,6 +44,7 @@ namespace Action.Units
         // Update is called once per frame
         protected override void Update()
         {
+            base.Update();
             if (null != _housePanel)
             {
                 if (_CheckPlayerUnitDistance())

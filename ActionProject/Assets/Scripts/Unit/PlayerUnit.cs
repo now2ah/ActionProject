@@ -46,6 +46,15 @@ namespace Action.Units
             }
         }
 
+        public override void Initialize()
+        {
+            base.Initialize();
+            name = "Commander";
+            MaxHp = 200;
+            HP = MaxHp - 50;
+            SetNameUI(name);
+        }
+
         public void Interact()
         {
             if(null != _interactingBuilding)
@@ -64,11 +73,8 @@ namespace Action.Units
 
         protected override void Start()
         {
-            MaxHp = 200;
-            HP = MaxHp - 50;
-
             base.Start();
-
+            Initialize();
             _isMoving = false;
             InputManager.Instance.actionMove.performed += ctx => { OnMove(ctx); };
             InputManager.Instance.actionMove.canceled += ctx => { OnMoveCanceled(ctx); };

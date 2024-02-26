@@ -14,10 +14,10 @@ namespace Action.Units
 
         protected float _activeDistance;
 
-        public virtual void Initialize()
+        public override void Initialize()
         {
-            Logger.Log("Building Init");
-            _activeDistance = 10.0f;
+            base.Initialize();
+            _activeDistance = Constant.INGAMEUI_VISIBLE_DISTANT;
         }
 
         public virtual void Interact()
