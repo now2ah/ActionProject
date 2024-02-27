@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Action.Manager;
 using Action.State;
+using Action.UI;
 
 namespace Action.Units
 {
     public class Building : Unit
     {
+        protected GameObject _controlPanel;
+        ControlUI _controlUI;
+
         protected PlayerBuildingIdleState _idleState;
         protected PlayerBuildingPrepareState _prepareState;
         protected PlayerBuildingConstructState _constructState;
@@ -17,6 +21,14 @@ namespace Action.Units
         public override void Initialize()
         {
             base.Initialize();
+            _controlPanel = UIManager.Instance.CreateUI("ControlPanel", UIManager.Instance.InGameCanvas);
+            _controlUI = _controlPanel.GetComponent<ControlUI>();
+            _controlUI.Initialize(this.gameObject);
+            _controlUI.Hide();
+            _idleState = new PlayerBuildingIdleState(this);
+            _prepareState = new PlayerBuildingPrepareState(this);
+            _constructState = new PlayerBuildingConstructState(this);
+            base.StateMachine.Initialize(_idleState);
             _activeDistance = Constant.INGAMEUI_VISIBLE_DISTANT;
         }
 
@@ -28,35 +40,35 @@ namespace Action.Units
             //Logger.Log("Building Activate");
         }
 
-        protected bool _CheckPlayerUnitDistance()
-        {
-            float dist = Vector3.Distance(GameManager.Instance.PlayerUnitObj.transform.position, transform.position);
-
-            if (dist < _activeDistance)
-                return true;
-            else
-                return false;
-        }
-
         void _StartConstruct()
         {
             StateMachine.ChangeState(_prepareState);
+        }
+
+        void _VisualizeControlPanel()
+        {
+            if (_IsNearPlayerUnit())
+                _controlUI.Show();
+            else
+                _controlUI.Hide();
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
         }
 
         // Start is called before the first frame update
         protected override void Start()
         {
             base.Start();
-            _idleState = new PlayerBuildingIdleState(this);
-            _prepareState = new PlayerBuildingPrepareState(this);
-            _constructState = new PlayerBuildingConstructState(this);
-            base.StateMachine.Initialize(_idleState);
         }
 
         // Update is called once per frame
         protected override void Update()
         {
             base.Update();
+            _VisualizeControlPanel();
         }
     }
 

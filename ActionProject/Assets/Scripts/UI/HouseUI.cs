@@ -6,7 +6,7 @@ using Action.Manager;
 
 namespace Action.UI
 {
-    public class HousePanel : ControlUI
+    public class HouseUI : BuildingUI
     {
         House _house;
         
@@ -20,7 +20,6 @@ namespace Action.UI
         protected override void Update()
         {
             base.Update();
-            _FollowTargetPosition(ePanelPosition.TOP);
         }
     }
 }

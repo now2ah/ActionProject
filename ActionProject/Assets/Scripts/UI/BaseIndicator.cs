@@ -10,7 +10,7 @@ namespace Action.UI
         Image _IndicatorImage;
         public Image IndicatorImage => _IndicatorImage;
 
-        public override void SetParent( Transform parent)
+        public override void SetParent(Transform parent)
         {
             _IndicatorImage.rectTransform.SetParent(parent, false);
         }

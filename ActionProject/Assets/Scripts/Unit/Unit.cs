@@ -61,12 +61,27 @@ namespace Action.Units
 
         }
 
-        void _CheckVisibleDistant()
+        protected bool _IsNearPlayerUnit()
         {
-            if (Vector3.Distance(GameManager.Instance.PlayerUnitObj.transform.position, gameObject.transform.position) < _infoActiveDistant)
+            float dist = Vector3.Distance(GameManager.Instance.PlayerUnitObj.transform.position, transform.position);
+
+            if (dist < _infoActiveDistant)
+                return true;
+            else
+                return false;
+        }
+
+        void _VisualizeUnitPanel()
+        {
+            if (_IsNearPlayerUnit())
                 _unitPanel.Show();
             else
                 _unitPanel.Hide();
+        }
+
+        protected virtual void Awake()
+        {
+
         }
 
         protected virtual void Start()
@@ -76,7 +91,7 @@ namespace Action.Units
 
         protected virtual void Update()
         {
-            _CheckVisibleDistant();
+            _VisualizeUnitPanel();
             if (null != _stateMachine)
                 _stateMachine.Update();
         }

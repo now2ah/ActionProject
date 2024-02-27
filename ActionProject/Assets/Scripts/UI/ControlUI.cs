@@ -8,11 +8,16 @@ namespace Action.UI
 {
     public class ControlUI : InGameTargetUI
     {
-        protected GameObject _buildPanel;
-        public GameObject BuildPanel { get { return _buildPanel; } }
         protected GameObject _controlPanel;
-        public GameObject ControlPanel { get { return _controlPanel; } }
-        
+        protected bool _isChild = false;
+
+        public override void SetParent(Transform tr)
+        {
+            transform.SetParent(tr);
+            transform.localPosition = Vector3.zero;
+            _isChild = true;
+        }
+
         public override void Initialize(GameObject target, string name = "default")
         {
             base.Initialize(target, name);
@@ -21,8 +26,6 @@ namespace Action.UI
         protected override void Awake()
         {
             base.Awake();
-            _buildPanel = transform.GetChild(0).gameObject;
-            _controlPanel = transform.GetChild(1).gameObject;
         }
 
         protected override void Start()
@@ -34,6 +37,8 @@ namespace Action.UI
         protected override void Update()
         {
             base.Update();
+            if (!_isChild)
+                _FollowTargetPosition(ePanelPosition.TOP);
         }
     }
 }

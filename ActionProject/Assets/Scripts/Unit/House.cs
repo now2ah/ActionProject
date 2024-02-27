@@ -8,9 +8,8 @@ namespace Action.Units
 {
     public class House : Building
     {
-        GameObject _building;
-        GameObject _uiPanelObject;
-        HousePanel _housePanel;
+        GameObject _housePanel;
+        HouseUI _houseUI;
 
         public override void Interact()
         {
@@ -21,15 +20,15 @@ namespace Action.Units
         public override void Initialize()
         {
             base.Initialize();
-            _uiPanelObject = UIManager.Instance.CreateUI("HousePanel", UIManager.Instance.InGameCanvas);
-            _housePanel = _uiPanelObject.GetComponent<HousePanel>();
-            _housePanel.Initialize(this.gameObject);
-            Logger.Log("House Init");
+            _housePanel = UIManager.Instance.CreateUI("HouseUI", UIManager.Instance.InGameCanvas);
+            _houseUI = _housePanel.GetComponent<HouseUI>();
+            _houseUI.Initialize(this.gameObject);
+            _houseUI.SetParent(_controlPanel.transform);
+            _houseUI.Hide();
         }
 
-        private void Awake()
+        protected override void Awake()
         {
-            _building = gameObject.transform.GetChild(0).gameObject;
         }
 
         // Start is called before the first frame update
@@ -45,30 +44,43 @@ namespace Action.Units
         protected override void Update()
         {
             base.Update();
-            if (null != _housePanel)
+            if (null != _houseUI)
             {
-                if (_CheckPlayerUnitDistance())
+                if (_IsNearPlayerUnit())
                 {
-                    _uiPanelObject?.SetActive(true);
+                    _houseUI?.Show();
                     GameManager.Instance.PlayerUnit.InteractingBuilding = this.gameObject;
-
-                    if (StateMachine.CurState != _idleState)
-                    {
-                        _housePanel?.BuildPanel?.SetActive(true);
-                        _housePanel?.ControlPanel?.SetActive(false);
-                    }
-                    else
-                    {
-                        _housePanel?.BuildPanel?.SetActive(false);
-                        _housePanel?.ControlPanel?.SetActive(true);
-                    }
                 }
                 else
                 {
                     GameManager.Instance.PlayerUnit.InteractingBuilding = null;
-                    _uiPanelObject?.SetActive(false);
+                    _houseUI?.Hide();
                 }
             }
+            //if (null != _housePanel)
+            //{
+            //    if (_CheckPlayerUnitDistance())
+            //    {
+            //        _uiPanelObject?.SetActive(true);
+            //        GameManager.Instance.PlayerUnit.InteractingBuilding = this.gameObject;
+
+            //        if (StateMachine.CurState != _idleState)
+            //        {
+            //            _housePanel?.BuildPanel?.SetActive(true);
+            //            _housePanel?.ControlPanel?.SetActive(false);
+            //        }
+            //        else
+            //        {
+            //            _housePanel?.BuildPanel?.SetActive(false);
+            //            _housePanel?.ControlPanel?.SetActive(true);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        GameManager.Instance.PlayerUnit.InteractingBuilding = null;
+            //        _uiPanelObject?.SetActive(false);
+            //    }
+            //}
         }
     }
 }
