@@ -8,7 +8,6 @@ namespace Action.UI
 {
     public class ControlUI : InGameTargetUI
     {
-        protected GameObject _controlPanel;
         protected bool _isChild = false;
 
         public override void SetParent(Transform tr)

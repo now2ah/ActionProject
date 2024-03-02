@@ -25,6 +25,7 @@ namespace Action.Units
             _houseUI.Initialize(this.gameObject);
             _houseUI.SetParent(_controlPanel.transform);
             _houseUI.Hide();
+            _constructTime = 2.0f;
         }
 
         protected override void Awake()
@@ -57,30 +58,6 @@ namespace Action.Units
                     _houseUI?.Hide();
                 }
             }
-            //if (null != _housePanel)
-            //{
-            //    if (_CheckPlayerUnitDistance())
-            //    {
-            //        _uiPanelObject?.SetActive(true);
-            //        GameManager.Instance.PlayerUnit.InteractingBuilding = this.gameObject;
-
-            //        if (StateMachine.CurState != _idleState)
-            //        {
-            //            _housePanel?.BuildPanel?.SetActive(true);
-            //            _housePanel?.ControlPanel?.SetActive(false);
-            //        }
-            //        else
-            //        {
-            //            _housePanel?.BuildPanel?.SetActive(false);
-            //            _housePanel?.ControlPanel?.SetActive(true);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        GameManager.Instance.PlayerUnit.InteractingBuilding = null;
-            //        _uiPanelObject?.SetActive(false);
-            //    }
-            //}
         }
     }
 }

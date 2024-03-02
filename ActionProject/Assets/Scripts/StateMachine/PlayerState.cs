@@ -101,6 +101,7 @@ namespace Action.State
 
         public override void EnterState()
         {
+            Logger.Log("prepare");
         }
 
         public override void ExitState()
@@ -113,11 +114,35 @@ namespace Action.State
         }
     }
 
-    public class PlayerBuildingConstructState : State
+    public class PlayerBuildingDoneState : State
     {
         Building _building;
 
-        public PlayerBuildingConstructState(Building building)
+        public PlayerBuildingDoneState(Building building)
+        {
+            this._building = building;
+        }
+
+        public override void EnterState()
+        {
+            Logger.Log("done");
+        }
+
+        public override void ExitState()
+        {
+        }
+
+        public override void UpdateState()
+        {
+
+        }
+    }
+
+    public class PlayerBuildingCollapseState : State
+    {
+        Building _building;
+
+        public PlayerBuildingCollapseState(Building building)
         {
             this._building = building;
         }

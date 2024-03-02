@@ -14,9 +14,11 @@ namespace Action.Units
 
         protected PlayerBuildingIdleState _idleState;
         protected PlayerBuildingPrepareState _prepareState;
-        protected PlayerBuildingConstructState _constructState;
+        protected PlayerBuildingDoneState _doneState;
+        protected PlayerBuildingCollapseState _collapseState;
 
         protected float _activeDistance;
+        protected float _constructTime;
 
         public override void Initialize()
         {
@@ -25,9 +27,11 @@ namespace Action.Units
             _controlUI = _controlPanel.GetComponent<ControlUI>();
             _controlUI.Initialize(this.gameObject);
             _controlUI.Hide();
+            _constructTime = 5.0f;  //default
             _idleState = new PlayerBuildingIdleState(this);
             _prepareState = new PlayerBuildingPrepareState(this);
-            _constructState = new PlayerBuildingConstructState(this);
+            _doneState = new PlayerBuildingDoneState(this);
+
             base.StateMachine.Initialize(_idleState);
             _activeDistance = Constant.INGAMEUI_VISIBLE_DISTANT;
         }
@@ -36,13 +40,6 @@ namespace Action.Units
         {
             if (StateMachine.CurState == _idleState)
                 _StartConstruct();
-
-            //Logger.Log("Building Activate");
-        }
-
-        void _StartConstruct()
-        {
-            StateMachine.ChangeState(_prepareState);
         }
 
         void _VisualizeControlPanel()
@@ -51,6 +48,18 @@ namespace Action.Units
                 _controlUI.Show();
             else
                 _controlUI.Hide();
+        }
+
+        void _StartConstruct()
+        {
+            StateMachine.ChangeState(_prepareState);
+            StartConstructCoroutine();
+        }
+
+        IEnumerator StartConstructCoroutine()
+        {
+            yield return new WaitForSeconds(_constructTime);
+            StateMachine.ChangeState(_doneState);
         }
 
         protected override void Awake()
