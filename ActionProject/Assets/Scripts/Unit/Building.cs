@@ -4,12 +4,14 @@ using UnityEngine;
 using Action.Manager;
 using Action.State;
 using Action.UI;
+using Action.Util;
 
 namespace Action.Units
 {
     public class Building : Unit
     {
         protected GameObject _building;
+        protected ActionTime _buildingTimer;
 
         protected GameObject _controlPanel;
         ControlUI _controlUI;
@@ -48,6 +50,12 @@ namespace Action.Units
         public void SetVisibleBuilding(bool isOn)
         {
             _building.SetActive(isOn);
+        }
+
+        public void StartConstructTimer()
+        {
+            _buildingTimer = gameObject.AddComponent<ActionTime>();
+            _buildingTimer.TickStart(_constructTime);
         }
 
         void _VisualizeControlPanel()

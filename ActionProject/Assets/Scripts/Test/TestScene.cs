@@ -5,6 +5,8 @@ using Action.Manager;
 
 public class TestScene : MonoBehaviour
 {
+    Action.Util.ActionTime timeTest;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,12 +18,19 @@ public class TestScene : MonoBehaviour
         GameManager.Instance.GameStart();
 
         _CreateVirtualCamera();
+
+        timeTest = gameObject.AddComponent<Action.Util.ActionTime>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public void TimeTest()
+    {
+        timeTest.TickStart(3.0f);
     }
 
     void _CreateVirtualCamera()

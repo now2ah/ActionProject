@@ -101,7 +101,7 @@ namespace Action.State
 
         public override void EnterState()
         {
-            Logger.Log("prepare");
+            _building.StartConstructTimer();
         }
 
         public override void ExitState()
@@ -110,7 +110,7 @@ namespace Action.State
 
         public override void UpdateState()
         {
-
+            
         }
     }
 
