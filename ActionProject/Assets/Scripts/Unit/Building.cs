@@ -9,6 +9,8 @@ namespace Action.Units
 {
     public class Building : Unit
     {
+        protected GameObject _building;
+
         protected GameObject _controlPanel;
         ControlUI _controlUI;
 
@@ -23,6 +25,7 @@ namespace Action.Units
         public override void Initialize()
         {
             base.Initialize();
+            _building = transform.GetChild(0).gameObject;
             _controlPanel = UIManager.Instance.CreateUI("ControlPanel", UIManager.Instance.InGameCanvas);
             _controlUI = _controlPanel.GetComponent<ControlUI>();
             _controlUI.Initialize(this.gameObject);
@@ -42,6 +45,11 @@ namespace Action.Units
                 _StartConstruct();
         }
 
+        public void SetVisibleBuilding(bool isOn)
+        {
+            _building.SetActive(isOn);
+        }
+
         void _VisualizeControlPanel()
         {
             if (_IsNearPlayerUnit())
@@ -53,7 +61,7 @@ namespace Action.Units
         void _StartConstruct()
         {
             StateMachine.ChangeState(_prepareState);
-            StartConstructCoroutine();
+            StartCoroutine(StartConstructCoroutine());
         }
 
         IEnumerator StartConstructCoroutine()

@@ -126,6 +126,7 @@ namespace Action.State
         public override void EnterState()
         {
             Logger.Log("done");
+            _building.SetVisibleBuilding(true);
         }
 
         public override void ExitState()
