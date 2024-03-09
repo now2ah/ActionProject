@@ -4,12 +4,10 @@ using UnityEngine;
 
 namespace Action.UI
 {
-    public class BuildingUI : ControlUI
+    public class FoundationUI : ControlUI
     {
         protected GameObject _buildPanel;
         public GameObject BuildPanel { get { return _buildPanel; } }
-        protected GameObject _usePanel;
-        public GameObject UsePanel { get { return _usePanel; } }
 
         public override void Initialize(GameObject target, string name = "default")
         {
@@ -19,7 +17,6 @@ namespace Action.UI
         {
             base.Awake();
             _buildPanel = transform.GetChild(0).gameObject;
-            _usePanel = transform.GetChild(1).gameObject;
         }
 
         // Update is called once per frame

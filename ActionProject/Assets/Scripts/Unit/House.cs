@@ -8,8 +8,8 @@ namespace Action.Units
 {
     public class House : Building
     {
-        GameObject _housePanel;
-        HouseUI _houseUI;
+        //GameObject _housePanel;
+        //HouseUI _houseUI;
 
         public override void Interact()
         {
@@ -20,11 +20,11 @@ namespace Action.Units
         public override void Initialize()
         {
             base.Initialize();
-            _housePanel = UIManager.Instance.CreateUI("HouseUI", UIManager.Instance.InGameCanvas);
-            _houseUI = _housePanel.GetComponent<HouseUI>();
-            _houseUI.Initialize(this.gameObject);
-            _houseUI.SetParent(_controlPanel.transform);
-            _houseUI.Hide();
+            //_housePanel = UIManager.Instance.CreateUI("HouseUI", UIManager.Instance.InGameCanvas);
+            //_houseUI = _housePanel.GetComponent<HouseUI>();
+            //_houseUI.Initialize(this.gameObject);
+            //_houseUI.SetParent(_controlPanel.transform);
+            //_houseUI.Hide();
             _constructTime = 2.0f;
         }
 
@@ -45,19 +45,6 @@ namespace Action.Units
         protected override void Update()
         {
             base.Update();
-            if (null != _houseUI)
-            {
-                if (_IsNearPlayerUnit())
-                {
-                    _houseUI?.Show();
-                    GameManager.Instance.PlayerUnit.InteractingBuilding = this.gameObject;
-                }
-                else
-                {
-                    GameManager.Instance.PlayerUnit.InteractingBuilding = null;
-                    _houseUI?.Hide();
-                }
-            }
         }
     }
 }

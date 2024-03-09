@@ -15,6 +15,8 @@ namespace Action.Units
 
         protected GameObject _controlPanel;
         ControlUI _controlUI;
+        protected GameObject _foundationPanel;
+        FoundationUI _foundationUI;
 
         protected PlayerBuildingIdleState _idleState;
         protected PlayerBuildingPrepareState _prepareState;
@@ -22,6 +24,7 @@ namespace Action.Units
         protected PlayerBuildingCollapseState _collapseState;
 
         protected float _activeDistance;
+        public float ActiveDistance => _activeDistance;
         protected float _constructTime;
 
         public override void Initialize()
@@ -32,6 +35,11 @@ namespace Action.Units
             _controlUI = _controlPanel.GetComponent<ControlUI>();
             _controlUI.Initialize(this.gameObject);
             _controlUI.Hide();
+            _foundationPanel = UIManager.Instance.CreateUI("FoundationPanel", UIManager.Instance.InGameCanvas);
+            _foundationUI = _foundationPanel.GetComponent<FoundationUI>();
+            _foundationUI.Initialize(this.gameObject);
+            _foundationUI.SetParent(_controlPanel.transform);
+            _foundationUI.Hide();
             _constructTime = 5.0f;  //default
             _idleState = new PlayerBuildingIdleState(this);
             _prepareState = new PlayerBuildingPrepareState(this);
@@ -55,15 +63,27 @@ namespace Action.Units
         public void StartConstructTimer()
         {
             _buildingTimer = gameObject.AddComponent<ActionTime>();
+            
+            GameObject timerObj = UIManager.Instance.CreateUI("TimerPanel", UIManager.Instance.InGameCanvas);
+            TimerUI timerUI = timerObj.GetComponent<TimerUI>();
+            timerUI.Initialize(gameObject);
+            timerUI.ActionTime = _buildingTimer;
             _buildingTimer.TickStart(_constructTime);
         }
 
-        void _VisualizeControlPanel()
+        void _CheckCommander()
         {
             if (_IsNearPlayerUnit())
-                _controlUI.Show();
+            {
+                _controlUI?.Show();
+                _foundationUI?.Show();
+                GameManager.Instance.PlayerUnit.InteractingBuilding = this.gameObject;
+            }
             else
+            {
                 _controlUI.Hide();
+                _foundationUI?.Hide();
+            }
         }
 
         void _StartConstruct()
@@ -93,7 +113,7 @@ namespace Action.Units
         protected override void Update()
         {
             base.Update();
-            _VisualizeControlPanel();
+            _CheckCommander();
         }
     }
 

@@ -46,6 +46,18 @@ namespace Action.Units
             }
         }
 
+        void _CheckUnableInteractBuilding()
+        {
+            if (null == _interactingBuilding)
+                return;
+            else
+            {
+                float dist = Vector3.Distance(transform.position, _interactingBuilding.transform.position);
+                if (_interactingBuilding.GetComponent<Building>().ActiveDistance < dist)
+                    _interactingBuilding = null;
+            }
+        }
+
         public override void Initialize()
         {
             base.Initialize();
@@ -90,6 +102,7 @@ namespace Action.Units
         protected override void Update()
         {
             base.Update();
+            _CheckUnableInteractBuilding();
         }
     }
 

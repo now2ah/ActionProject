@@ -34,6 +34,9 @@ namespace Action.UI
                     case ePanelPosition.TOP:
                         _offset.y = _panelHeight;
                         break;
+                    case ePanelPosition.CENTER:
+                        
+                        break;
                     case ePanelPosition.BOTTOM:
                         _offset.y = _panelHeight * -2.0f;
                         break;
@@ -51,6 +54,10 @@ namespace Action.UI
             {
                 case ePanelPosition.TOP:
                     panelPos = new Vector3(col.bounds.center.x, col.bounds.max.y, col.bounds.max.z);
+                    break;
+
+                case ePanelPosition.CENTER:
+                    panelPos = new Vector3(col.bounds.center.x, col.bounds.center.y, col.bounds.min.z);
                     break;
 
                 case ePanelPosition.BOTTOM:

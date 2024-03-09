@@ -6,6 +6,11 @@ namespace Action.UI
 {
     public class UI : MonoBehaviour
     {
+        public virtual void Initialize()
+        {
+
+        }
+
         public void Show()
         {
             gameObject.SetActive(true);

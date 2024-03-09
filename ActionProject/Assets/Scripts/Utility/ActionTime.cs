@@ -11,6 +11,8 @@ namespace Action.Util
         float _endTime;
         string _timeString;
         bool _isStart;
+        bool _isFinish;
+        public bool IsFinish => _isFinish;
 
         public ActionTime(float endTime)
         {
@@ -37,8 +39,10 @@ namespace Action.Util
             _time = Time.time - _startTime;
 
             if (_time > _endTime)
+            {
                 _isStart = false;
-                
+                _isFinish = true;
+            }
         }
 
         private void Awake()
@@ -48,6 +52,7 @@ namespace Action.Util
             _endTime = 0;
             _timeString = "default time string";
             _isStart = false;
+            _isFinish = false;
         }
         // Update is called once per frame
         void Update()

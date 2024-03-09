@@ -9,9 +9,9 @@ namespace Action.UI
     {
         protected RectTransform rectTr;
 
-        public void Initialize()
+        public override void Initialize()
         {
-
+            base.Initialize();
         }
 
         public void ApplyRect(float width, float height)

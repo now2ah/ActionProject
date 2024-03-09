@@ -6,7 +6,7 @@ using Action.Manager;
 
 namespace Action.UI
 {
-    public class HouseUI : BuildingUI
+    public class HouseUI : FoundationUI
     {
         House _house;
         

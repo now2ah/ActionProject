@@ -73,6 +73,9 @@ namespace Action.Units
 
         void _VisualizeUnitPanel()
         {
+            if (this.gameObject == GameManager.Instance.PlayerUnit)
+                return;
+
             if (_IsNearPlayerUnit())
                 _unitPanel.Show();
             else
