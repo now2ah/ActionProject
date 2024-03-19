@@ -19,18 +19,15 @@ namespace Action.Manager
     {
         public Vector3 spawnPoint;      //임시 몬스터 스폰포인트
 
-        float _gameTime;                //게임 타이머 시간
-        float _gameStartTime;           //게임 시작 시간
         eGamePhase _gamePhase;
-        float _phaseTime;               //페이즈 타이머 시간
-        public float PhaseTime => _phaseTime;
-        float _phaseStartTime;          //페이즈 시작 시간
-        float _phaseEndTime;            //페이즈 종료 시간
         bool _isPlaying;            
         
         Vector3 _startPosition;         //베이스 위치
         IEnumerator _waveStartCoroutine;
 
+        ActionTime _gameTimer;
+        ActionTime _phaseTimer;
+        public ActionTime PhaseTimer => _phaseTimer;
 
         GameObject _playerBase;
         GameObject _playerUnitObj;
@@ -66,10 +63,10 @@ namespace Action.Manager
             base.Initialize();
             if (spawnPoint == Vector3.zero)
                 spawnPoint = new Vector3(0.0f, Constant.GROUND_Y_POS, 90.0f);
-            _gameTime = 0.0f;
-            _phaseTime = 0.0f;
             _waveStartCoroutine = _StartWaveCoroutine(5,1);
 
+            _gameTimer = gameObject.AddComponent<ActionTime>();
+            _phaseTimer = gameObject.AddComponent<ActionTime>();
             _playerBasePrefab = Resources.Load("Prefabs/Buildings/PlayerBase") as GameObject;
             _playerUnitPrefab = Resources.Load("Prefabs/Units/Player/PlayerUnit") as GameObject;
             _playerBuildingPrefabs = new List<GameObject>();
@@ -112,58 +109,41 @@ namespace Action.Manager
 
         void _StartGameTimer()
         {
-            _gameStartTime = Time.time;
+            _gameTimer.TickStart();
         }
 
-        void _CalculateTime()
+        void _CheckPhaseTime()
         {
-            _gameTime = Time.time - _gameStartTime;
-            _phaseTime = Time.time - _phaseStartTime;
+            UIManager.Instance.RefreshTownStageUI();
 
-            if (_phaseTime != Mathf.Floor(_phaseTime * 10.0f) / 10.0f)
+            if(_phaseTimer.IsFinish)
             {
-                _phaseTime = Mathf.Floor(_phaseTime * 10.0f) / 10.0f;
-                UIManager.Instance.RefreshTownStageUI();
-            }
+                if ((int)_gamePhase + 1 > 2)
+                    _gamePhase = 0;
+                else
+                    _gamePhase++;
 
-            if (_phaseTime > _phaseEndTime)
-            {
-                _EndPhase();
-                _phaseTime = 0.0f;
+
+                _phaseTimer.ResetTimer();
+                StartPhase(_gamePhase);
             }
         }
 
         void _StartPhaseTimer(eGamePhase phase)
         {
-            _phaseStartTime = Time.time;
-            _phaseTime = 0.0f;
-
             switch (phase)
             {
                 case eGamePhase.TownBuild:
-                    _phaseEndTime = Constant.TOWNBUILD_PHASE_TIME;
+                    _phaseTimer.TickStart(Constant.TOWNBUILD_PHASE_TIME);
                     break;
                 case eGamePhase.Hunt:
-                    _phaseEndTime = Constant.HUNT_PHASE_TIME;
+                    _phaseTimer.TickStart(Constant.HUNT_PHASE_TIME);
                     break;
                 case eGamePhase.Defense:
-                    _phaseEndTime = Constant.DEFENSE_PHASE_TIME;
+                    _phaseTimer.TickStart(Constant.DEFENSE_PHASE_TIME);
                     break;
             }
         }
-
-        void _EndPhase()
-        {
-            _phaseTime = 0.0f;
-
-            if ((int)_gamePhase + 1 > 2)
-                _gamePhase = 0;
-            else
-                _gamePhase++;
-
-            StartPhase(_gamePhase);
-        }
-
         void _CreateStartBase()
         {
             if (null == _playerBase)
@@ -230,7 +210,7 @@ namespace Action.Manager
         {
             if(_isPlaying)
             {
-                _CalculateTime();
+                _CheckPhaseTime();
             }
         }
     }

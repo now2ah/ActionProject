@@ -20,11 +20,24 @@ namespace Action.Util
             _endTime = _startTime + endTime;
         }
 
+        public void TickStart()
+        {
+            _isStart = true;
+            _isFinish = false;
+            _startTime = Time.time;
+        }
+
         public void TickStart(float endTime)
         {
             _isStart = true;
+            _isFinish = false;
             _startTime = Time.time;
             _endTime = endTime;
+        }
+
+        public float GetTimeFloat()
+        {
+            return _time;
         }
 
         public string GetTimeString()
@@ -32,6 +45,17 @@ namespace Action.Util
             float time = Mathf.Floor(_time * 10.0f) / 10.0f;
             _timeString = time.ToString();
             return _timeString;
+        }
+
+        public void ResetTimer()
+        {
+            _time = Time.time;
+            _isStart = false;
+        }
+
+        public void SetEndTime(float endTime)
+        {
+            _endTime = endTime;
         }
 
         void _Tick()

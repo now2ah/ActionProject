@@ -43,7 +43,7 @@ namespace Action.UI
 
         public void RefreshTimer()
         {
-            _timerText.text = GameManager.Instance.PhaseTime.ToString();
+            _timerText.text = GameManager.Instance.PhaseTimer.GetTimeString();
         }
     }
 
