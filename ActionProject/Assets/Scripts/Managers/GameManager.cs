@@ -29,6 +29,7 @@ namespace Action.Manager
         ActionTime _phaseTimer;
         public ActionTime PhaseTimer => _phaseTimer;
 
+        Spawner _spawner;
         GameObject _playerBase;
         GameObject _playerUnitObj;
 
@@ -51,6 +52,7 @@ namespace Action.Manager
         Resource _resource;
         public Resource Resource => _resource;
 
+        public Spawner Spawner { get { return _spawner; } set { _spawner = value; } }
         public GameObject PlayerBase { get { return _playerBase; } set { _playerBase = value; } }
         public GameObject PlayerUnitObj { get { return _playerUnitObj; } set { _playerUnitObj = value; } }
         public PlayerUnit PlayerUnit { get { return _playerUnit; } }
@@ -82,7 +84,8 @@ namespace Action.Manager
         {
             _isPlaying = true;
             _startPosition = Constant.VILLAGE_BASE_START_POS;
-            
+            _spawner = FindObjectOfType<Spawner>();
+
             _CreateStartBase();
             _CreatePlayerUnit();
 
@@ -92,7 +95,7 @@ namespace Action.Manager
 
             StartPhase(eGamePhase.TownBuild);
 
-            //_StartWave(1, 1);
+            _StartWave(5, 1);
         }
 
         public void GameOver()
@@ -184,11 +187,15 @@ namespace Action.Manager
         {
             int count = unitCountPerWave;
 
-            while (count > 0)
+            if (null != _spawner)
             {
-                _CreateMonsterUnit(_monsterUnitPrefabs[0]);
-                count--;
-                yield return new WaitForSeconds(timeRate);
+                while (count > 0)
+                {
+                    _spawner.CreateObject(_monsterUnitPrefabs[0]);
+                    //_CreateMonsterUnit(_monsterUnitPrefabs[0]);
+                    count--;
+                    yield return new WaitForSeconds(timeRate);
+                }
             }
         }
 
