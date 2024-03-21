@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Action.State;
 using Action.Util;
 using Action.Manager;
@@ -9,16 +10,19 @@ namespace Action.Units
 {
     public class MonsterUnit : Unit
     {
-        int _attackDamage = 0;
-        float _attackSpeed = 0.0f;
-        float _attackDistance = 0.0f;
-        float _lastAttackTime = 0.0f;
+        NavMeshAgent _navMeshAgent;
+
+        int _attackDamage;
+        float _attackSpeed;
+        float _attackDistance;
+        float _lastAttackTime;
         MonsterIdleState _idleState;
         MonsterMoveState _moveState;
         MonsterAttackState _attackState;
         GameObject _target;
-        GameObject _nearestTarget;
+        GameObject _nearestPlayerBuilding;
         GameObject _playerUnit;
+        Vector3 _targetPos;
 
         public int AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
         public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
@@ -27,36 +31,56 @@ namespace Action.Units
         public MonsterMoveState MoveState => _moveState;
         public MonsterAttackState AttackState => _attackState;
         public GameObject Target { get { return _target; } set { _target = value; } }
-        public GameObject NearestTarget { get { return _nearestTarget; } set { _nearestTarget = value; } }
+        public Vector3 TargetPos { get { return _targetPos; } set { _targetPos = value; } }
 
-        public GameObject FindNearestTarget()
+        public override void Initialize()
         {
-            GameObject nearestObj = null;
+            base.Initialize();
 
-            GameObject[] objs = GameObject.FindGameObjectsWithTag("PlayerObject");
+        }
 
-            if (objs.Length == 0)
-                return null;
+        public void FindNearestPlayerBuilding()
+        {
+            if (1 == GameManager.Instance.PlayerBuildings.Count)
+            {
+                _nearestPlayerBuilding = GameManager.Instance.PlayerBase;
+                return;
+            }
 
             float nearest = Mathf.Infinity;
-            for (int i = 0; i < objs.Length; i++)
+            for (int i = 0 ; i < GameManager.Instance.PlayerBuildings.Count ; i++)
             {
-                if (objs[i] == GameManager.Instance.PlayerUnitObj)
-                    continue;
-
-                Vector3 dist = objs[i].gameObject.transform.position - gameObject.transform.position;
+                Vector3 dist = GameManager.Instance.PlayerBuildings[i].gameObject.transform.position - gameObject.transform.position;
                 if (nearest > dist.sqrMagnitude)
                 {
                     nearest = dist.sqrMagnitude;
-                    nearestObj = objs[i];
+                    _nearestPlayerBuilding = GameManager.Instance.PlayerBuildings[i];
+                }
+            }
+        }
+
+        public void FindNearestTarget(bool isIncludeCmd)  /*Commander 포함 여부*/
+        {
+            float nearest = Mathf.Infinity;
+            for (int i = 0 ; i < GameManager.Instance.PlayerUnits.Count ; i++)
+            {
+                if (!isIncludeCmd && GameManager.Instance.PlayerUnits[i] == GameManager.Instance.PlayerUnit)
+                    continue;
+
+                Vector3 dist = GameManager.Instance.PlayerUnits[i].gameObject.transform.position - gameObject.transform.position;
+                if (nearest > dist.sqrMagnitude)
+                {
+                    nearest = dist.sqrMagnitude;
+                    _target = GameManager.Instance.PlayerUnits[i];
                 }
             }
 
-            //base랑 거리 비교
-            GameObject target = Utility.GetNearerObject(gameObject.transform.position, nearestObj, GameManager.Instance.PlayerBase);
-            nearestObj = target;
-
-            return nearestObj;
+            //nearestBuilding이랑 거리 비교
+            if (null != _nearestPlayerBuilding)
+            {
+                GameObject target = Utility.GetNearerObject(gameObject.transform.position, _target, _nearestPlayerBuilding);
+                _target = target;
+            }
         }
 
         public float GetTargetDistance()
@@ -69,14 +93,36 @@ namespace Action.Units
             return dist;
         }
 
-        public void Move()
+        public void SetTargetPosition()
         {
-            transform.Translate(Vector3.forward * Time.deltaTime * 5.0f, Space.Self);
+            if(null != _target)
+            {
+
+            }
         }
 
         public void Look(GameObject target)
         {
             gameObject.transform.LookAt(target.transform);
+        }
+
+        public void SetDestination(Vector3 vec)
+        {
+            if (null != _navMeshAgent)
+            {
+                _targetPos = vec;
+                _navMeshAgent.SetDestination(_targetPos);
+            }
+        }
+
+        public void SetDestinationToTarget(GameObject target)
+        {
+            if (null != _navMeshAgent)
+            {
+                _target = target;
+                _targetPos = target.transform.position;
+                _navMeshAgent.SetDestination(_targetPos);
+            }
         }
 
         public void Attack(int damage)
@@ -102,7 +148,7 @@ namespace Action.Units
         
         bool _CompareDistance(GameObject obj)
         {
-            GameObject nearestObj = Utility.GetNearerObject(gameObject.transform.position, _nearestTarget, obj);
+            GameObject nearestObj = Utility.GetNearerObject(gameObject.transform.position, _target, obj);
 
             if (_target == nearestObj) 
                 return false;
@@ -114,23 +160,33 @@ namespace Action.Units
             }
         }
 
+        protected override void Awake()
+        {
+            base.Awake();
+            _navMeshAgent = GetComponent<NavMeshAgent>();
+            _attackDamage = 1;
+            _attackSpeed = 1.0f;
+            _attackDistance = 1.0f;
+            _lastAttackTime = 0.0f;
+            _targetPos = Vector3.zero;
+        }
+
         protected override void Start()
         {
             base.Start();
             _target = null;
+            _nearestPlayerBuilding = null;
             _playerUnit = GameManager.Instance.PlayerUnitObj;
             _idleState = new MonsterIdleState(this);
             _moveState = new MonsterMoveState(this);
             _attackState = new MonsterAttackState(this);
             base.StateMachine.Initialize(_idleState);
-            _attackSpeed = 1.0f;
-            _attackDistance = 2.0f;
         }
 
         protected override void Update()
         {
             base.Update();
-            _CompareDistance(_playerUnit);
+            //_CompareDistance(_playerUnit);
         }
     }
 

@@ -20,9 +20,8 @@ namespace Action.State
         {
             if (null != _monsterUnit)
             {
-                _monsterUnit.NearestTarget = _monsterUnit.FindNearestTarget();
-                if (null == _monsterUnit.NearestTarget || null == GameManager.Instance.PlayerBase)
-                    return;
+                _monsterUnit.FindNearestPlayerBuilding();
+                _monsterUnit.FindNearestTarget(true);
             }
         }
 
@@ -33,8 +32,17 @@ namespace Action.State
         public override void UpdateState()
         {
             base.UpdateState();
-            if (null != _monsterUnit.Target)
-                _monsterUnit.StateMachine.ChangeState(_monsterUnit.MoveState);
+
+            if (null != _monsterUnit)
+            {
+                if (null == _monsterUnit.Target || null == GameManager.Instance.PlayerBase)
+                    return;
+
+                if (null != _monsterUnit.Target)
+                    _monsterUnit.StateMachine.ChangeState(_monsterUnit.MoveState);
+
+                _monsterUnit.FindNearestTarget(true);
+            }
         }
     }
 
@@ -47,9 +55,9 @@ namespace Action.State
         }
         public override void EnterState()
         {
-            if (null != _monsterUnit)
+            if (null != _monsterUnit && null != _monsterUnit.Target)
             {
-                _monsterUnit.Look(_monsterUnit.Target);
+                _monsterUnit.SetDestinationToTarget(_monsterUnit.Target);
             }
         }
 
@@ -62,11 +70,13 @@ namespace Action.State
             base.UpdateState();
             if (null != _monsterUnit)
             {
-                _monsterUnit.Look(_monsterUnit.Target);
-                _monsterUnit.Move();
-
-                if (_monsterUnit.AttackDistance > _monsterUnit.GetTargetDistance())
-                    _monsterUnit.StateMachine.ChangeState(_monsterUnit.AttackState);
+                if (Vector3.Distance(_monsterUnit.transform.position, _monsterUnit.TargetPos) < 1.0f)
+                {
+                    if (_monsterUnit.AttackDistance > _monsterUnit.GetTargetDistance())
+                        _monsterUnit.StateMachine.ChangeState(_monsterUnit.AttackState);
+                    else
+                        _monsterUnit.StateMachine.ChangeState(_monsterUnit.IdleState);
+                }
             }
         }
     }

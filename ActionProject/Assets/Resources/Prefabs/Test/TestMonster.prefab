@@ -250,6 +250,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3009855584241424086}
   - component: {fileID: 3925456804575146251}
+  - component: {fileID: -1035773275808894624}
   m_Layer: 0
   m_Name: TestMonster
   m_TagString: EnemyObject
@@ -286,3 +287,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05a16411e103dd84f8cd560197168a75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!195 &-1035773275808894624
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8978049233524420863}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
