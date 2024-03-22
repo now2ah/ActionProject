@@ -36,7 +36,7 @@ namespace Action.Units
         public override void Initialize()
         {
             base.Initialize();
-
+            GameManager.Instance.OnRefresh.AddListener(_RefreshTargetPosition);
         }
 
         public void FindNearestPlayerBuilding()
@@ -145,6 +145,10 @@ namespace Action.Units
                 return false;
         }
 
+        void _RefreshTargetPosition()
+        {
+            SetDestinationToTarget(_target);
+        }
         
         bool _CompareDistance(GameObject obj)
         {

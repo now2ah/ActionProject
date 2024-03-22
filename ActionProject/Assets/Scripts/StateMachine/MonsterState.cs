@@ -49,10 +49,12 @@ namespace Action.State
     public class MonsterMoveState : MoveState
     {
         MonsterUnit _monsterUnit;
+
         public MonsterMoveState(MonsterUnit monsterUnit)
         {
             _monsterUnit = monsterUnit;
         }
+
         public override void EnterState()
         {
             if (null != _monsterUnit && null != _monsterUnit.Target)

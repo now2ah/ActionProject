@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Action.Util;
 using Action.UI;
 using Action.Units;
@@ -27,7 +28,12 @@ namespace Action.Manager
 
         ActionTime _gameTimer;
         ActionTime _phaseTimer;
+        ActionTime _refreshTimer;
+
         public ActionTime PhaseTimer => _phaseTimer;
+        public ActionTime RefreshTimer => _refreshTimer;
+
+        public UnityEvent OnRefresh;
 
         Spawner _spawner;
         GameObject _playerBase;
@@ -69,6 +75,7 @@ namespace Action.Manager
 
             _gameTimer = gameObject.AddComponent<ActionTime>();
             _phaseTimer = gameObject.AddComponent<ActionTime>();
+            _refreshTimer = gameObject.AddComponent<ActionTime>();
             _playerBasePrefab = Resources.Load("Prefabs/Buildings/PlayerBase") as GameObject;
             _playerUnitPrefab = Resources.Load("Prefabs/Units/Player/PlayerUnit") as GameObject;
             _playerBuildingPrefabs = new List<GameObject>();
@@ -92,6 +99,7 @@ namespace Action.Manager
             _PrepareResource();
 
             _StartGameTimer();
+            _StartRefreshTimer();
 
             StartPhase(eGamePhase.TownBuild);
 
@@ -132,6 +140,18 @@ namespace Action.Manager
             }
         }
 
+        void _CheckRefreshTime()
+        {
+            if (null != _refreshTimer)
+            {
+                if (_refreshTimer.IsFinish)
+                {
+                    _refreshTimer.ResetTimer();
+                    _StartRefreshTimer();
+                }
+            }
+        }
+
         void _StartPhaseTimer(eGamePhase phase)
         {
             switch (phase)
@@ -147,6 +167,16 @@ namespace Action.Manager
                     break;
             }
         }
+
+        void _StartRefreshTimer()
+        {
+            if (null != _refreshTimer)
+            {
+                _refreshTimer.TickStart(Constant.GAME_REFRESH_TIME);
+                OnRefresh?.Invoke();
+            }
+        }
+
         void _CreateStartBase()
         {
             if (null == _playerBase)
@@ -218,6 +248,7 @@ namespace Action.Manager
             if(_isPlaying)
             {
                 _CheckPhaseTime();
+                _CheckRefreshTime();
             }
         }
     }

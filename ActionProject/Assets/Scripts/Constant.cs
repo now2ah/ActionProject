@@ -28,6 +28,9 @@ namespace Action
         public static float TOWNBUILD_PHASE_TIME = 10.0f;
         public static float HUNT_PHASE_TIME = 10.0f;
         public static float DEFENSE_PHASE_TIME = 10.0f;
+
+        //Game Refresh ½Ã°£
+        public static float GAME_REFRESH_TIME = 2.0f;
         
         public enum eCharacterState
         {
