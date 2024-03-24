@@ -85,7 +85,7 @@ namespace Action.Manager
             {
                 if (obj.TryGetComponent<Unit>(out Unit comp))
                 {
-                    if (comp.InfoPanel.TryGetComponent<InGameUI>(out InGameUI ui))
+                    if (comp.UnitPanel.TryGetComponent<InGameUI>(out InGameUI ui))
                     {
                         ui.ApplyRect(width, height);
                     }
@@ -96,7 +96,7 @@ namespace Action.Manager
             {
                 if (obj.TryGetComponent<Unit>(out Unit comp))
                 {
-                    if (comp.InfoPanel.TryGetComponent<InGameUI>(out InGameUI ui))
+                    if (comp.UnitPanel.TryGetComponent<InGameUI>(out InGameUI ui))
                     {
                         ui.ApplyRect(width, height);
                     }
@@ -107,7 +107,7 @@ namespace Action.Manager
             {
                 if (obj.TryGetComponent<Unit>(out Unit comp))
                 {
-                    if (comp.InfoPanel.TryGetComponent<InGameUI>(out InGameUI ui))
+                    if (comp.UnitPanel.TryGetComponent<InGameUI>(out InGameUI ui))
                     {
                         ui.ApplyRect(width, height);
                     }

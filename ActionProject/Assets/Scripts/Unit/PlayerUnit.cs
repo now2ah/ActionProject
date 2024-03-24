@@ -65,6 +65,7 @@ namespace Action.Units
             MaxHp = 200;
             HP = MaxHp - 50;
             SetNameUI(name);
+            UnitPanel.Show();
         }
 
         public void Interact()

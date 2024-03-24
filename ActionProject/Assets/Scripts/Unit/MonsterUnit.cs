@@ -37,6 +37,7 @@ namespace Action.Units
         {
             base.Initialize();
             GameManager.Instance.OnRefresh.AddListener(_RefreshTargetPosition);
+            IsOnUnitPanel = false;
         }
 
         public void FindNearestPlayerBuilding()

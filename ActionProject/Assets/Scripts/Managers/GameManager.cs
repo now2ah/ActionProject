@@ -181,7 +181,7 @@ namespace Action.Manager
         {
             if (null == _playerBase)
             {
-                _playerBase = GameObject.Instantiate(_playerBasePrefab, _startPosition, Quaternion.identity);
+                _playerBase = Instantiate(_playerBasePrefab, _startPosition, Quaternion.identity);
                 _playerBuildings.Add(_playerBase);
             }
         }
@@ -198,7 +198,7 @@ namespace Action.Manager
                 }
                 Vector3 startPos = _playerBase.gameObject.transform.position + new Vector3(20.0f, 0.0f, /*-(baseExtentsZ + 1.0f)*/ 0.0f);
 
-                _playerUnitObj = GameObject.Instantiate(_playerUnitPrefab, startPos, Quaternion.identity);
+                _playerUnitObj = Instantiate(_playerUnitPrefab, startPos, Quaternion.identity);
                 _playerUnit = _playerUnitObj.GetComponent<PlayerUnit>();
                 _playerUnits.Add(_playerUnitObj);
             }

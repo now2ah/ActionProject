@@ -9,34 +9,34 @@ namespace Action.Units
 {
     public class Unit : MonoBehaviour
     {
-        GameObject _infoPanelObject;
-        public GameObject InfoPanelObject { get { return _infoPanelObject; } set { _infoPanelObject = value; } }
+        GameObject _unitPanelObject;
         UnitPanel _unitPanel;
-        public UnitPanel InfoPanel { get { return _unitPanel; } set { _unitPanel = value; } }
 
         string _unitName;
-        public string UnitName { get { return _unitName; } set { _unitName = value; } }
         int _hp;
-        public int HP { get { return _hp; } set { _hp = value; } }
         int _maxHp;
-        public int MaxHp { get { return _maxHp; } set { _maxHp = value; } }
         float _speed;
-        public float Speed { get { return _speed; } set { _speed = value; } }
         float _infoActiveDistant;
+
+        bool _isOnUnitPanel;
+        
+        public GameObject UnitPanelObject { get { return _unitPanelObject; } set { _unitPanelObject = value; } }
+        public UnitPanel UnitPanel { get { return _unitPanel; } set { _unitPanel = value; } }
+        public string UnitName { get { return _unitName; } set { _unitName = value; } }
+        public int HP { get { return _hp; } set { _hp = value; } }
+        public int MaxHp { get { return _maxHp; } set { _maxHp = value; } }
+        public float Speed { get { return _speed; } set { _speed = value; } }
         public float InfoActiveDistant { get { return _infoActiveDistant; } set { _infoActiveDistant = value; } }
+        public bool IsOnUnitPanel { get { return _isOnUnitPanel; } set { _isOnUnitPanel = value; } }
 
         StateMachine _stateMachine;
         public StateMachine StateMachine => _stateMachine;
 
         public virtual void Initialize()
         {
-            _unitName = "default_name";
-            _hp = 10;
-            _maxHp = 10;
-            _speed = 1;
             _infoActiveDistant = Constant.INGAMEUI_VISIBLE_DISTANT;
-            _infoPanelObject = UIManager.Instance.CreateUI("UnitPanel", UIManager.Instance.InGameCanvas);
-            _unitPanel = _infoPanelObject.GetComponent<UnitPanel>();
+            _unitPanelObject = UIManager.Instance.CreateUI("UnitPanel", UIManager.Instance.InGameCanvas);
+            _unitPanel = _unitPanelObject.GetComponent<UnitPanel>();
             _unitPanel.Initialize(this.gameObject);
             _unitPanel.Hide();
 
@@ -73,7 +73,7 @@ namespace Action.Units
 
         void _VisualizeUnitPanel()
         {
-            if (this.gameObject == GameManager.Instance.PlayerUnit)
+            if (!_isOnUnitPanel || this.gameObject == GameManager.Instance.PlayerUnitObj)
                 return;
 
             if (_IsNearPlayerUnit())
@@ -84,7 +84,11 @@ namespace Action.Units
 
         protected virtual void Awake()
         {
-
+            _unitName = "default_name";
+            _hp = 10;
+            _maxHp = 10;
+            _speed = 1.0f;
+            _isOnUnitPanel = true;
         }
 
         protected virtual void Start()
