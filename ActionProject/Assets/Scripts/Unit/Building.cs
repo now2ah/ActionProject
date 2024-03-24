@@ -24,12 +24,17 @@ namespace Action.Units
         protected PlayerBuildingCollapseState _collapseState;
 
         protected float _activeDistance;
-        public float ActiveDistance => _activeDistance;
         protected float _constructTime;
+
+        public ControlUI ControlUI => _controlUI;
+        public FoundationUI FoundationUI => _foundationUI;
+        public float ActiveDistance => _activeDistance;
 
         public override void Initialize()
         {
             base.Initialize();
+            IsOnUnitPanel = false;
+
             _building = transform.GetChild(0).gameObject;
             _controlPanel = UIManager.Instance.CreateUI("ControlPanel", UIManager.Instance.InGameCanvas);
             _controlUI = _controlPanel.GetComponent<ControlUI>();
@@ -76,7 +81,10 @@ namespace Action.Units
             if (_IsNearPlayerUnit())
             {
                 _controlUI?.Show();
-                _foundationUI?.Show();
+                if (StateMachine.CurState == _idleState)
+                {
+                    _foundationUI?.Show();
+                }
                 GameManager.Instance.PlayerUnit.InteractingBuilding = this.gameObject;
             }
             else

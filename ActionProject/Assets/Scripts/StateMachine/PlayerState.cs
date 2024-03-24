@@ -106,6 +106,9 @@ namespace Action.State
 
         public override void ExitState()
         {
+            //_building.ControlUI.Hide();
+            _building.FoundationUI.Hide();
+            _building.IsOnUnitPanel = true;
         }
 
         public override void UpdateState()
@@ -131,6 +134,7 @@ namespace Action.State
 
         public override void ExitState()
         {
+            
         }
 
         public override void UpdateState()
