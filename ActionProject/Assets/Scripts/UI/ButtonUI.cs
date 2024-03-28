@@ -1,26 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Action.State;
 
-namespace Action.Units
+
+namespace Action.UI
 {
-    public class PlayerBase : Building
+    public class ButtonUI : InGameUI
     {
         public override void Initialize()
         {
             base.Initialize();
-            StateMachine.ChangeState(_prepareState);
-            StateMachine.ChangeState(_doneState);
+        }
+
+        public virtual void OnClick()
+        {
+
         }
 
         protected override void Awake()
         {
             base.Awake();
-            _constructTime = 0.0f;
-            MaxHp = 1000;
-            HP = MaxHp;
-            UnitName = "Base";
         }
 
         protected override void Start()
@@ -33,5 +32,4 @@ namespace Action.Units
             base.Update();
         }
     }
-
 }

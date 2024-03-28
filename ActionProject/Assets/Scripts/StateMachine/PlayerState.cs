@@ -102,13 +102,12 @@ namespace Action.State
         public override void EnterState()
         {
             _building.StartConstructTimer();
+            _building.ControlUI.Hide();
+            _building.BuildButtonUI.Hide();
         }
 
         public override void ExitState()
         {
-            //_building.ControlUI.Hide();
-            _building.FoundationUI.Hide();
-            _building.IsOnUnitPanel = true;
         }
 
         public override void UpdateState()
@@ -130,6 +129,11 @@ namespace Action.State
         {
             Logger.Log("done");
             _building.SetVisibleBuilding(true);
+
+            //interaction 없을때 if 문 추가
+            _building.ControlUI.Hide();
+
+            _building.IsOnUnitPanel = true;
         }
 
         public override void ExitState()

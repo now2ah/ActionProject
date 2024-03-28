@@ -6,6 +6,9 @@ namespace Action.UI
 {
     public class UI : MonoBehaviour
     {
+        protected bool _isShow = false;
+        public bool isShow => _isShow;
+
         public virtual void Initialize()
         {
 
@@ -13,11 +16,13 @@ namespace Action.UI
 
         public void Show()
         {
+            _isShow = true;
             gameObject.SetActive(true);
         }
 
         public void Hide()
         {
+            _isShow = false;
             gameObject.SetActive(false);
         }
 

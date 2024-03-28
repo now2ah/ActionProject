@@ -15,8 +15,8 @@ namespace Action.Units
 
         protected GameObject _controlPanel;
         ControlUI _controlUI;
-        protected GameObject _foundationPanel;
-        FoundationUI _foundationUI;
+        protected GameObject _buildButton;
+        BuildButtonUI _buildButtonUI;
 
         protected PlayerBuildingIdleState _idleState;
         protected PlayerBuildingPrepareState _prepareState;
@@ -27,25 +27,23 @@ namespace Action.Units
         protected float _constructTime;
 
         public ControlUI ControlUI => _controlUI;
-        public FoundationUI FoundationUI => _foundationUI;
+        public BuildButtonUI BuildButtonUI => _buildButtonUI;
         public float ActiveDistance => _activeDistance;
 
         public override void Initialize()
         {
             base.Initialize();
-            IsOnUnitPanel = false;
 
             _building = transform.GetChild(0).gameObject;
             _controlPanel = UIManager.Instance.CreateUI("ControlPanel", UIManager.Instance.InGameCanvas);
             _controlUI = _controlPanel.GetComponent<ControlUI>();
             _controlUI.Initialize(this.gameObject);
             _controlUI.Hide();
-            _foundationPanel = UIManager.Instance.CreateUI("FoundationPanel", UIManager.Instance.InGameCanvas);
-            _foundationUI = _foundationPanel.GetComponent<FoundationUI>();
-            _foundationUI.Initialize(this.gameObject);
-            _foundationUI.SetParent(_controlPanel.transform);
-            _foundationUI.Hide();
-            _constructTime = 5.0f;  //default
+            _buildButton = UIManager.Instance.CreateUI("BuildButton", UIManager.Instance.InGameCanvas);
+            _buildButtonUI = _buildButton.GetComponent<BuildButtonUI>();
+            _buildButtonUI.Initialize();
+            _buildButtonUI.SetParent(_controlPanel.transform);
+            _buildButtonUI.Hide();
             _idleState = new PlayerBuildingIdleState(this);
             _prepareState = new PlayerBuildingPrepareState(this);
             _doneState = new PlayerBuildingDoneState(this);
@@ -80,17 +78,20 @@ namespace Action.Units
         {
             if (_IsNearPlayerUnit())
             {
-                _controlUI?.Show();
                 if (StateMachine.CurState == _idleState)
                 {
-                    _foundationUI?.Show();
+                    _buildButtonUI?.Show();
                 }
+
+                if (_buildButtonUI.isShow)
+                    _controlUI?.Show();
+
                 GameManager.Instance.PlayerUnit.InteractingBuilding = this.gameObject;
             }
             else
             {
                 _controlUI.Hide();
-                _foundationUI?.Hide();
+                _buildButtonUI?.Hide();
             }
         }
 
@@ -109,6 +110,8 @@ namespace Action.Units
         protected override void Awake()
         {
             base.Awake();
+            IsOnUnitPanel = false;
+            _constructTime = 0.0f;  //default
         }
 
         // Start is called before the first frame update

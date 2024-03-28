@@ -20,23 +20,20 @@ namespace Action.Units
         public override void Initialize()
         {
             base.Initialize();
-            //_housePanel = UIManager.Instance.CreateUI("HouseUI", UIManager.Instance.InGameCanvas);
-            //_houseUI = _housePanel.GetComponent<HouseUI>();
-            //_houseUI.Initialize(this.gameObject);
-            //_houseUI.SetParent(_controlPanel.transform);
-            //_houseUI.Hide();
-            _constructTime = 2.0f;
         }
 
         protected override void Awake()
         {
+            base.Awake();
+            MaxHp = 1000;
+            HP = MaxHp;
+            UnitName = "House";
+            _constructTime = 2.0f;
         }
 
         // Start is called before the first frame update
         protected override void Start()
         {
-            MaxHp = 1000;
-            HP = MaxHp;
             base.Start();
             Initialize();
         }

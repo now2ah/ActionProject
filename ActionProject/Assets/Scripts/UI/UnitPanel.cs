@@ -16,14 +16,14 @@ namespace Action.UI
         
         bool _isVisible = true;
 
-        public override void Initialize(GameObject target, string name = "defalut")
+        public override void Initialize(GameObject target, string name = "default")
         {
             base.Initialize(target, name);
             _unit = target.GetComponent<Unit>();
             _fillimage = transform.GetChild(0).transform.GetComponent<Image>();
             _fillimage.type = Image.Type.Filled;
             _textMesh = transform.GetChild(1).transform.GetComponent<TextMeshProUGUI>();
-            _textMesh.text = name;
+            _textMesh.text = _unit.UnitName;
             
             ApplyHPValue(_unit.HP, _unit.MaxHp); //default hp
         }
