@@ -21,7 +21,7 @@ namespace Action.Scene
 
             GameManager.Instance.GameStart();
 
-            CameraManager.Instance.CreateVirtualCamera();
+            CameraManager.Instance.CreateFixedVirtualCamera();
 
             UIManager.Instance.CreateTownStagePanel();
         }

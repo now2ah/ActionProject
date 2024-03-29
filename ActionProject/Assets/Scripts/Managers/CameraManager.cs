@@ -10,21 +10,21 @@ namespace Action.Manager
     {
         GameObject _mainCameraObj;
         MainCamera _mainCamera;
-        public MainCamera MainCamera => _mainCamera;
         GameObject _fixedVCamObj;
         FixedVirtualCamera _fixedVCam;
+
+        public MainCamera MainCamera => _mainCamera;
 
         public override void Initialize()
         {
             base.Initialize();
-            //base.SetName("CameraManager");
             _CreateMainCamera();
         }
 
-        public void CreateVirtualCamera()
+        public void CreateFixedVirtualCamera()
         {
             _fixedVCamObj = new GameObject("VirtualCamera");
-            _fixedVCam = _fixedVCamObj.AddComponent<Action.CameraSystem.FixedVirtualCamera>();
+            _fixedVCam = _fixedVCamObj.AddComponent<FixedVirtualCamera>();
 
             _fixedVCam.SetFov(Constant.GAMECAMERA_FOV);
 

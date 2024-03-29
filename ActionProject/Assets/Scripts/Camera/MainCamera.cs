@@ -22,7 +22,11 @@ namespace Action.CameraSystem
 
         void _SettingMainCamera()
         {
-            if (null == _camera) { Debug.LogError("Camera Component is null"); return; }
+            if (null == _camera) 
+            {
+                Logger.LogError("Camera Component is null");
+                return; 
+            }
 
             _camera.tag = "MainCamera";
             //set fov, cliping plane near/far
@@ -30,9 +34,11 @@ namespace Action.CameraSystem
 
         void _SettingCinemachineBrain()
         {
-            if (null == _cinemachineBrain) { Debug.LogError("CinemachineBrain Component is null"); return; }
-
-
+            if (null == _cinemachineBrain)
+            {
+                Logger.LogError("CinemachineBrain Component is null");
+                return;
+            }
         }
     }
 }
