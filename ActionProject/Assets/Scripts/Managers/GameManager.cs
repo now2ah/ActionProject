@@ -190,14 +190,17 @@ namespace Action.Manager
         {
             if(null == _playerUnitObj)
             {
-                //임시 베이스 사이즈 계산식(에셋 적용 후 변경)
-                float baseExtentsZ = 0.0f;
-                if (_playerBase.gameObject.TryGetComponent<BoxCollider>(out BoxCollider comp))
+                Vector3 startPos = Vector3.zero;
+                if (null != _playerBase)
                 {
-                    baseExtentsZ = comp.size.z + 5.0f;     //임시
+                    //임시 베이스 사이즈 계산식(에셋 적용 후 변경)
+                    float baseExtentsZ = 0.0f;
+                    if (_playerBase.gameObject.TryGetComponent<BoxCollider>(out BoxCollider comp))
+                    {
+                        baseExtentsZ = comp.size.z + 5.0f;     //임시
+                    }
+                    startPos = _playerBase.gameObject.transform.position + new Vector3(20.0f, 0.0f, /*-(baseExtentsZ + 1.0f)*/ 0.0f);
                 }
-                Vector3 startPos = _playerBase.gameObject.transform.position + new Vector3(20.0f, 0.0f, /*-(baseExtentsZ + 1.0f)*/ 0.0f);
-
                 _playerUnitObj = Instantiate(_playerUnitPrefab, startPos, Quaternion.identity);
                 _playerUnit = _playerUnitObj.GetComponent<PlayerUnit>();
                 _playerUnits.Add(_playerUnitObj);
@@ -251,5 +254,13 @@ namespace Action.Manager
                 _CheckRefreshTime();
             }
         }
+
+        #region TEST
+        public void CreateCharacter()
+        {
+            _CreatePlayerUnit();
+        }
+
+        #endregion
     }
 }
