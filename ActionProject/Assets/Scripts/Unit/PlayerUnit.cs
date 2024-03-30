@@ -81,7 +81,7 @@ namespace Action.Units
             if (base.StateMachine.IsState(_moveState))
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos), 0.15f);
 
-            transform.Translate(movePos * Time.deltaTime * 25.0f, Space.World);
+            transform.Translate(movePos * Time.deltaTime * 10.0f, Space.World);
         }
 
         protected override void Start()

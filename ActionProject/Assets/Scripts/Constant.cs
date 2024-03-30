@@ -12,7 +12,7 @@ namespace Action
         //게임 카메라 거리
         public static float GAMECAMERA_HORIZONTAL_DIST = -30.0f;
         //게임 카메라 fov
-        public static float GAMECAMERA_FOV = 60.0f;
+        public static float GAMECAMERA_FOV = 30.0f;
         //지형 바닥 y 값
         public static float GROUND_Y_POS = 6.0f;
 

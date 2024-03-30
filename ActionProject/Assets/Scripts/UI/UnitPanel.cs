@@ -40,6 +40,10 @@ namespace Action.UI
 
         protected override void Update()
         {
+        }
+
+        private void FixedUpdate()
+        {
             if (_isVisible)
                 _FollowTargetPosition(ePanelPosition.BOTTOM);
         }
