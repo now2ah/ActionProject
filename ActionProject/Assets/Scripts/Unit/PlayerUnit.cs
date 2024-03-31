@@ -11,7 +11,6 @@ namespace Action.Units
     public class PlayerUnit : Unit
     {
         bool _isMoving = false;
-        public bool IsMoving { get { return _isMoving; } set { _isMoving = value; } }
 
         Vector2 inputVector;
 
@@ -19,9 +18,11 @@ namespace Action.Units
         PlayerMoveState _moveState;
 
         Animator _animator;
-        public Animator Animator => _animator;
 
         GameObject _interactingBuilding;
+        
+        public bool IsMoving { get { return _isMoving; } set { _isMoving = value; } }
+        public Animator Animator => _animator;
         public GameObject InteractingBuilding { get { return _interactingBuilding; } set { _interactingBuilding = value; } }
 
         void OnMove(InputAction.CallbackContext context)
