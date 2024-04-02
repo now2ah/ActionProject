@@ -10,12 +10,14 @@ namespace Action.Manager
     {
         public InputAction actionMove;
         public InputAction actionAction;
+        public InputAction actionPhysicalAttack;
 
         public override void Initialize()
         {
             base.Initialize();
             actionMove.Enable();
             actionAction.Enable();
+            actionPhysicalAttack.Enable();
         }
     }
 }

@@ -17,12 +17,12 @@ namespace Action.State
 
         public override void EnterState()
         {
-            //Debug.Log("Enter Idle");
+            base.EnterState();
         }
 
         public override void ExitState()
         {
-            //Debug.Log("Exit Idle");
+            base.ExitState();
         }
 
         // Update is called once per frame
@@ -43,14 +43,14 @@ namespace Action.State
 
         public override void EnterState()
         {
-            //Debug.Log("Enter Idle");
+            base.EnterState();
             playerUnit.IsMoving = true;
             playerUnit.Animator.SetBool("isMoving", playerUnit.IsMoving);
         }
 
         public override void ExitState()
         {
-            //Debug.Log("Exit Idle");
+            base.ExitState();
             playerUnit.IsMoving = false;
             playerUnit.Animator.SetBool("isMoving", playerUnit.IsMoving);
         }
@@ -75,12 +75,12 @@ namespace Action.State
 
         public override void EnterState()
         {
-            //Debug.Log("Enter Idle");
+            base.EnterState();
         }
 
         public override void ExitState()
         {
-            //Debug.Log("Exit Idle");
+            base.ExitState();
         }
 
         // Update is called once per frame
@@ -101,12 +101,18 @@ namespace Action.State
 
         public override void EnterState()
         {
-            //Debug.Log("Enter Idle");
+            base.EnterState();
+
+            commander.IsMoving = true;
+            commander.Animator.SetBool("isMoving", commander.IsMoving);
         }
 
         public override void ExitState()
         {
-            //Debug.Log("Exit Idle");
+            base.ExitState();
+
+            commander.IsMoving = false;
+            commander.Animator.SetBool("isMoving", commander.IsMoving);
         }
 
         // Update is called once per frame
@@ -115,6 +121,40 @@ namespace Action.State
             base.UpdateState();
             if (null != commander)
                 commander.Move();
+        }
+    }
+
+    public class CommanderAttackState : AttackState
+    {
+        Commander commander;
+
+        public CommanderAttackState(Commander commander)
+        {
+            this.commander = commander;
+        }
+
+        public override void EnterState()
+        {
+            base.EnterState();
+            if (null != commander)
+                commander.PhysicalAttack();
+        }
+
+        public override void ExitState()
+        {
+            base.ExitState();
+        }
+
+        // Update is called once per frame
+        public override void UpdateState()
+        {
+            base.UpdateState();
+
+            if (null != commander)
+            {
+                commander.Move();
+                commander.StateMachine.ChangeState(commander.IdleState);
+            }
         }
     }
 

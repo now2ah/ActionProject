@@ -13,8 +13,15 @@ namespace Action.Units
 
         CommanderIdleState _idleState;
         CommanderMoveState _moveState;
+        CommanderAttackState _attackState;
 
         GameObject _interactingBuilding;
+
+        IEnumerator _physicalAttackCoroutine;
+
+        public CommanderIdleState IdleState => _idleState;
+        public CommanderMoveState MoveState => _moveState;
+        public CommanderAttackState AttackState => _attackState;
         public GameObject InteractingBuilding { get { return _interactingBuilding; } set { _interactingBuilding = value; } }
 
         public override void Initialize()
@@ -37,33 +44,42 @@ namespace Action.Units
         {
             Vector3 movePos = new Vector3(inputVector.x, 0, inputVector.y);
 
-            if (base.StateMachine.IsState(_moveState))
+            if (StateMachine.IsState(_moveState))
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos), 0.15f);
 
             transform.Translate(movePos * Time.deltaTime * 10.0f, Space.World);
         }
 
+        public void PhysicalAttack()
+        {
+            StopCoroutine(PhysicalAttackCoroutine());
+            StartCoroutine(PhysicalAttackCoroutine());
+        }
+
         void OnMove(InputAction.CallbackContext context)
         {
-            base.StateMachine.ChangeState(_moveState);
+            StateMachine.ChangeState(_moveState);
             inputVector = context.ReadValue<Vector2>();
         }
 
         void OnMoveCanceled(InputAction.CallbackContext context)
         {
-            base.StateMachine.ChangeState(_idleState);
+            StateMachine.ChangeState(_idleState);
             inputVector = Vector3.zero;
         }
 
         void OnActionPressed(InputAction.CallbackContext context)
         {
             if (context.performed)
-            {
-                bool isPressed = context.ReadValueAsButton();
                 Interact();
-                Logger.Log(isPressed.ToString());
-            }
         }
+
+        void OnPhysicalAttackPressed(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+                StateMachine.ChangeState(_attackState);
+        }
+
         void _CheckUnableInteractBuilding()
         {
             if (null == _interactingBuilding)
@@ -76,11 +92,21 @@ namespace Action.Units
             }
         }
 
+        IEnumerator PhysicalAttackCoroutine()
+        {
+            _isAttacking = true;
+            _animator.SetBool("isAttacking", _isAttacking);
+            yield return new WaitForSeconds(1.0f);
+            _isAttacking = false;
+            _animator.SetBool("isAttacking", _isAttacking);
+        }
+
         protected override void Awake()
         {
             base.Awake();
             _isMoving = false;
             _interactingBuilding = null;
+            _animator = GetComponentInChildren<Animator>();
         }
 
         protected override void Start()
@@ -90,9 +116,11 @@ namespace Action.Units
             InputManager.Instance.actionMove.performed += ctx => { OnMove(ctx); };
             InputManager.Instance.actionMove.canceled += ctx => { OnMoveCanceled(ctx); };
             InputManager.Instance.actionAction.performed += ctx => { OnActionPressed(ctx); };
+            InputManager.Instance.actionPhysicalAttack.performed += ctx => { OnPhysicalAttackPressed(ctx); };
             _idleState = new CommanderIdleState(this);
             _moveState = new CommanderMoveState(this);
-            _animator = GetComponentInChildren<Animator>();
+            _attackState = new CommanderAttackState(this);
+            _physicalAttackCoroutine = PhysicalAttackCoroutine();
             StateMachine.Initialize(_idleState);
         }
 

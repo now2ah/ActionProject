@@ -110,3 +110,20 @@ MonoBehaviour:
       m_Action: Action
       m_Flags: 0
     m_Flags: 0
+  actionPhysicalAttack:
+    m_Name: Action Physical Attack
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 0cd9a04b-1323-418d-ba7b-41023226f81c
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: d7468bf5-7958-4332-9f8e-da2e967c03ce
+      m_Path: <Keyboard>/space
+      m_Interactions: Press
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Physical Attack
+      m_Flags: 0
+    m_Flags: 0
