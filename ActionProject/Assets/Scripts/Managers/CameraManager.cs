@@ -41,7 +41,7 @@ namespace Action.Manager
             _fixedVCam.SetFov(Constant.GAMECAMERA_FOV);
 
             if (null == _fixedVCam.GetTarget())
-                _fixedVCam.SetTarget(GameManager.Instance.PlayerUnitObj.transform);
+                _fixedVCam.SetTarget(GameManager.Instance.CommanderObj.transform);
         }
 
         public void SetVCamOffset(float offsetY, float offsetZ)

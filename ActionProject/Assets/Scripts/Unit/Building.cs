@@ -86,7 +86,7 @@ namespace Action.Units
                 if (_buildButtonUI.isShow)
                     _controlUI?.Show();
 
-                GameManager.Instance.PlayerUnit.InteractingBuilding = this.gameObject;
+                GameManager.Instance.CommanderUnit.InteractingBuilding = this.gameObject;
             }
             else
             {

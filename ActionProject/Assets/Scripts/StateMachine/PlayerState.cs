@@ -59,8 +59,62 @@ namespace Action.State
         public override void UpdateState()
         {
             base.UpdateState();
-            if (null != playerUnit)
-                playerUnit.Move();
+            //if (null != playerUnit)
+            //    playerUnit.Move();
+        }
+    }
+
+    public class CommanderIdleState : IdleState
+    {
+        Commander commander;
+
+        public CommanderIdleState(Commander commander)
+        {
+            this.commander = commander;
+        }
+
+        public override void EnterState()
+        {
+            //Debug.Log("Enter Idle");
+        }
+
+        public override void ExitState()
+        {
+            //Debug.Log("Exit Idle");
+        }
+
+        // Update is called once per frame
+        public override void UpdateState()
+        {
+            base.UpdateState();
+        }
+    }
+
+    public class CommanderMoveState : MoveState
+    {
+        Commander commander;
+
+        public CommanderMoveState(Commander commander)
+        {
+            this.commander = commander;
+        }
+
+        public override void EnterState()
+        {
+            //Debug.Log("Enter Idle");
+        }
+
+        public override void ExitState()
+        {
+            //Debug.Log("Exit Idle");
+        }
+
+        // Update is called once per frame
+        public override void UpdateState()
+        {
+            base.UpdateState();
+            if (null != commander)
+                commander.Move();
         }
     }
 

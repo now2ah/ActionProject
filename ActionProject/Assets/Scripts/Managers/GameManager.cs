@@ -37,13 +37,13 @@ namespace Action.Manager
 
         Spawner _spawner;
         GameObject _playerBase;
-        GameObject _playerUnitObj;
+        GameObject _commanderUnitObj;
 
-        PlayerUnit _playerUnit;
+        Commander _commanderUnit;
 
         //temporary
         GameObject _playerBasePrefab;
-        GameObject _playerUnitPrefab;
+        GameObject _commanderPrefab;
 
         List<GameObject> _playerBuildingPrefabs;
         List<GameObject> _playerBuildings;
@@ -60,8 +60,8 @@ namespace Action.Manager
 
         public Spawner Spawner { get { return _spawner; } set { _spawner = value; } }
         public GameObject PlayerBase { get { return _playerBase; } set { _playerBase = value; } }
-        public GameObject PlayerUnitObj { get { return _playerUnitObj; } set { _playerUnitObj = value; } }
-        public PlayerUnit PlayerUnit { get { return _playerUnit; } }
+        public GameObject CommanderObj { get { return _commanderUnitObj; } set { _commanderUnitObj = value; } }
+        public Commander CommanderUnit { get { return _commanderUnit; } }
         public List<GameObject> PlayerBuildings { get { return _playerBuildings; } }
         public List<GameObject> PlayerUnits { get { return _playerUnits; } }
         public List<GameObject> MonsterUnits { get { return _monsterUnits; } }
@@ -77,7 +77,7 @@ namespace Action.Manager
             _phaseTimer = gameObject.AddComponent<ActionTime>();
             _refreshTimer = gameObject.AddComponent<ActionTime>();
             _playerBasePrefab = Resources.Load("Prefabs/Buildings/PlayerBase") as GameObject;
-            _playerUnitPrefab = Resources.Load("Prefabs/Units/Player/PlayerUnit") as GameObject;
+            _commanderPrefab = Resources.Load("Prefabs/Units/Player/Commander") as GameObject;
             _playerBuildingPrefabs = new List<GameObject>();
             _playerBuildings = new List<GameObject>();
             _playerUnitPrefabs = new List<GameObject>();
@@ -94,7 +94,7 @@ namespace Action.Manager
             _spawner = FindObjectOfType<Spawner>();
 
             _CreateStartBase();
-            _CreatePlayerUnit();
+            _CreateCommanderUnit();
 
             _PrepareResource();
 
@@ -186,9 +186,9 @@ namespace Action.Manager
             }
         }
 
-        void _CreatePlayerUnit()
+        void _CreateCommanderUnit()
         {
-            if(null == _playerUnitObj)
+            if(null == _commanderUnitObj)
             {
                 Vector3 startPos = Vector3.zero;
                 if (null != _playerBase)
@@ -201,9 +201,9 @@ namespace Action.Manager
                     }
                     startPos = _playerBase.gameObject.transform.position + new Vector3(20.0f, 0.0f, /*-(baseExtentsZ + 1.0f)*/ 0.0f);
                 }
-                _playerUnitObj = Instantiate(_playerUnitPrefab, startPos, Quaternion.identity);
-                _playerUnit = _playerUnitObj.GetComponent<PlayerUnit>();
-                _playerUnits.Add(_playerUnitObj);
+                _commanderUnitObj = Instantiate(_commanderPrefab, startPos, Quaternion.identity);
+                _commanderUnit = _commanderUnitObj.GetComponent<Commander>();
+                _playerUnits.Add(_commanderUnitObj);
             }
         }
 
@@ -258,7 +258,7 @@ namespace Action.Manager
         #region TEST
         public void CreateCharacter()
         {
-            _CreatePlayerUnit();
+            _CreateCommanderUnit();
         }
 
         #endregion

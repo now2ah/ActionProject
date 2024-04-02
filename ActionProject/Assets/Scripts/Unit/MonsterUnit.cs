@@ -21,7 +21,7 @@ namespace Action.Units
         MonsterAttackState _attackState;
         GameObject _target;
         GameObject _nearestPlayerBuilding;
-        GameObject _playerUnit;
+        GameObject _commanderUnit;
         Vector3 _targetPos;
 
         public int AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
@@ -65,7 +65,7 @@ namespace Action.Units
             float nearest = Mathf.Infinity;
             for (int i = 0 ; i < GameManager.Instance.PlayerUnits.Count ; i++)
             {
-                if (!isIncludeCmd && GameManager.Instance.PlayerUnits[i] == GameManager.Instance.PlayerUnit)
+                if (!isIncludeCmd && GameManager.Instance.PlayerUnits[i] == GameManager.Instance.CommanderUnit)
                     continue;
 
                 Vector3 dist = GameManager.Instance.PlayerUnits[i].gameObject.transform.position - gameObject.transform.position;
@@ -181,7 +181,7 @@ namespace Action.Units
             base.Start();
             _target = null;
             _nearestPlayerBuilding = null;
-            _playerUnit = GameManager.Instance.PlayerUnitObj;
+            _commanderUnit = GameManager.Instance.CommanderObj;
             _idleState = new MonsterIdleState(this);
             _moveState = new MonsterMoveState(this);
             _attackState = new MonsterAttackState(this);

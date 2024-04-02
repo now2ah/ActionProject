@@ -39,6 +39,6 @@ public class TestScene : MonoBehaviour
         Action.CameraSystem.FixedVirtualCamera fixedVcam = virtualCameraObj.AddComponent<Action.CameraSystem.FixedVirtualCamera>();
         
         if(null == fixedVcam.GetTarget())
-            fixedVcam.SetTarget(GameManager.Instance.PlayerUnitObj.transform);
+            fixedVcam.SetTarget(GameManager.Instance.CommanderObj.transform);
     }
 }

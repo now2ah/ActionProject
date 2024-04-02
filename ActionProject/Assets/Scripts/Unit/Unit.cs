@@ -63,7 +63,7 @@ namespace Action.Units
 
         protected bool _IsNearPlayerUnit()
         {
-            float dist = Vector3.Distance(GameManager.Instance.PlayerUnitObj.transform.position, transform.position);
+            float dist = Vector3.Distance(GameManager.Instance.CommanderObj.transform.position, transform.position);
 
             if (dist < _infoActiveDistant)
                 return true;
@@ -73,7 +73,7 @@ namespace Action.Units
 
         void _VisualizeUnitPanel()
         {
-            if (!_isOnUnitPanel || this.gameObject == GameManager.Instance.PlayerUnitObj)
+            if (!_isOnUnitPanel || this.gameObject == GameManager.Instance.CommanderObj)
                 return;
 
             if (_IsNearPlayerUnit())
