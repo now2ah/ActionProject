@@ -17,12 +17,15 @@ namespace Action.Units
 
         GameObject _interactingBuilding;
 
-        IEnumerator _physicalAttackCoroutine;
+        int _animHashMoving;
+        int _animHashAttacking;
 
         public CommanderIdleState IdleState => _idleState;
         public CommanderMoveState MoveState => _moveState;
         public CommanderAttackState AttackState => _attackState;
         public GameObject InteractingBuilding { get { return _interactingBuilding; } set { _interactingBuilding = value; } }
+        public int AnimHashMoving => _animHashMoving;
+        public int AnimHashAttacking => _animHashAttacking;
 
         public override void Initialize()
         {
@@ -32,6 +35,8 @@ namespace Action.Units
             HP = MaxHp - 50;
             SetNameUI(name);
             UnitPanel.Show();
+            _animHashMoving = Animator.StringToHash("isMoving");
+            _animHashAttacking = Animator.StringToHash("isAttacking");
         }
 
         public void Interact()
@@ -44,7 +49,7 @@ namespace Action.Units
         {
             Vector3 movePos = new Vector3(inputVector.x, 0, inputVector.y);
 
-            if (StateMachine.IsState(_moveState))
+            //if (StateMachine.IsState(_moveState))
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos), 0.15f);
 
             transform.Translate(movePos * Time.deltaTime * 10.0f, Space.World);
@@ -58,14 +63,17 @@ namespace Action.Units
 
         void OnMove(InputAction.CallbackContext context)
         {
-            StateMachine.ChangeState(_moveState);
-            inputVector = context.ReadValue<Vector2>();
+            if (!_isAttacking)
+            {
+                StateMachine.ChangeState(_moveState);
+                inputVector = context.ReadValue<Vector2>();
+            }
         }
 
         void OnMoveCanceled(InputAction.CallbackContext context)
         {
             StateMachine.ChangeState(_idleState);
-            inputVector = Vector3.zero;
+            //inputVector = Vector3.zero;
         }
 
         void OnActionPressed(InputAction.CallbackContext context)
@@ -94,11 +102,8 @@ namespace Action.Units
 
         IEnumerator PhysicalAttackCoroutine()
         {
-            _isAttacking = true;
-            _animator.SetBool("isAttacking", _isAttacking);
-            yield return new WaitForSeconds(1.0f);
-            _isAttacking = false;
-            _animator.SetBool("isAttacking", _isAttacking);
+            yield return new WaitForSeconds(0.1f);
+            StateMachine.ChangeState(_idleState);
         }
 
         protected override void Awake()
@@ -120,7 +125,6 @@ namespace Action.Units
             _idleState = new CommanderIdleState(this);
             _moveState = new CommanderMoveState(this);
             _attackState = new CommanderAttackState(this);
-            _physicalAttackCoroutine = PhysicalAttackCoroutine();
             StateMachine.Initialize(_idleState);
         }
 

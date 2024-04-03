@@ -44,15 +44,12 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
-            playerUnit.IsMoving = true;
-            playerUnit.Animator.SetBool("isMoving", playerUnit.IsMoving);
+            
         }
 
         public override void ExitState()
         {
             base.ExitState();
-            playerUnit.IsMoving = false;
-            playerUnit.Animator.SetBool("isMoving", playerUnit.IsMoving);
         }
 
         // Update is called once per frame
@@ -102,17 +99,21 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
-
-            commander.IsMoving = true;
-            commander.Animator.SetBool("isMoving", commander.IsMoving);
+            if (null != commander)
+            {
+                commander.IsMoving = true;
+                commander.Animator.SetBool(commander.AnimHashMoving, commander.IsMoving);
+            }
         }
 
         public override void ExitState()
         {
             base.ExitState();
-
-            commander.IsMoving = false;
-            commander.Animator.SetBool("isMoving", commander.IsMoving);
+            if (null != commander)
+            {
+                commander.IsMoving = false;
+                commander.Animator.SetBool(commander.AnimHashMoving, commander.IsMoving);
+            }
         }
 
         // Update is called once per frame
@@ -137,12 +138,21 @@ namespace Action.State
         {
             base.EnterState();
             if (null != commander)
+            {
+                commander.IsAttacking = true;
+                commander.Animator.SetBool(commander.AnimHashAttacking, commander.IsAttacking);
                 commander.PhysicalAttack();
+            }
         }
 
         public override void ExitState()
         {
             base.ExitState();
+            if (null != commander)
+            {
+                commander.IsAttacking = false;
+                commander.Animator.SetBool(commander.AnimHashAttacking, commander.IsAttacking);
+            }
         }
 
         // Update is called once per frame
@@ -150,11 +160,6 @@ namespace Action.State
         {
             base.UpdateState();
 
-            if (null != commander)
-            {
-                commander.Move();
-                commander.StateMachine.ChangeState(commander.IdleState);
-            }
         }
     }
 
