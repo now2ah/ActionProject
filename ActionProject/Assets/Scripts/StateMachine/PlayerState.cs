@@ -137,10 +137,8 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
-            if (null != commander)
+            if (null != commander && !commander.IsAttacking)
             {
-                commander.IsAttacking = true;
-                commander.Animator.SetBool(commander.AnimHashAttacking, commander.IsAttacking);
                 commander.PhysicalAttack();
             }
         }
@@ -150,8 +148,6 @@ namespace Action.State
             base.ExitState();
             if (null != commander)
             {
-                commander.IsAttacking = false;
-                commander.Animator.SetBool(commander.AnimHashAttacking, commander.IsAttacking);
             }
         }
 
@@ -159,7 +155,6 @@ namespace Action.State
         public override void UpdateState()
         {
             base.UpdateState();
-
         }
     }
 

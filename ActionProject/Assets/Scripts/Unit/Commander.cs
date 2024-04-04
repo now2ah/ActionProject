@@ -72,7 +72,8 @@ namespace Action.Units
 
         void OnMoveCanceled(InputAction.CallbackContext context)
         {
-            StateMachine.ChangeState(_idleState);
+            if (!_isAttacking)
+                StateMachine.ChangeState(_idleState);
             //inputVector = Vector3.zero;
         }
 
@@ -102,8 +103,12 @@ namespace Action.Units
 
         IEnumerator PhysicalAttackCoroutine()
         {
-            yield return new WaitForSeconds(0.1f);
-            StateMachine.ChangeState(_idleState);
+            _isAttacking = true;
+            _animator.SetBool(_animHashAttacking, _isAttacking);
+            yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
+            _isAttacking = false;
+            _animator.SetBool(_animHashAttacking, _isAttacking);
+            //StateMachine.ChangeState(_idleState);
         }
 
         protected override void Awake()
@@ -131,6 +136,12 @@ namespace Action.Units
         protected override void Update()
         {
             base.Update();
+            if (!_isAttacking && InputManager.Instance.actionMove.IsPressed())
+            {
+                inputVector = InputManager.Instance.actionMove.ReadValue<Vector2>();
+                StateMachine.ChangeState(_moveState);
+            }
+                
             _CheckUnableInteractBuilding();
         }
     }
