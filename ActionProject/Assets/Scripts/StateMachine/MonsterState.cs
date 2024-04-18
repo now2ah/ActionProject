@@ -35,8 +35,9 @@ namespace Action.State
 
             if (null != _monsterUnit)
             {
-                if (null == _monsterUnit.Target || null == GameManager.Instance.PlayerBase)
+                if (null == _monsterUnit.Target)
                     return;
+
 
                 if (null != _monsterUnit.Target)
                     _monsterUnit.StateMachine.ChangeState(_monsterUnit.MoveState);

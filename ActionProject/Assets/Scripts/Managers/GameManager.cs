@@ -35,7 +35,6 @@ namespace Action.Manager
 
         public UnityEvent OnRefresh;
 
-        Spawner _spawner;
         GameObject _playerBase;
         GameObject _commanderUnitObj;
 
@@ -44,6 +43,8 @@ namespace Action.Manager
         //temporary
         GameObject _playerBasePrefab;
         GameObject _commanderPrefab;
+
+        List<Spawner> _enemySpawners;
 
         List<GameObject> _playerBuildingPrefabs;
         List<GameObject> _playerBuildings;
@@ -58,7 +59,6 @@ namespace Action.Manager
         Resource _resource;
         public Resource Resource => _resource;
 
-        public Spawner Spawner { get { return _spawner; } set { _spawner = value; } }
         public GameObject PlayerBase { get { return _playerBase; } set { _playerBase = value; } }
         public GameObject CommanderObj { get { return _commanderUnitObj; } set { _commanderUnitObj = value; } }
         public Commander CommanderUnit { get { return _commanderUnit; } }
@@ -71,13 +71,14 @@ namespace Action.Manager
             base.Initialize();
             if (spawnPoint == Vector3.zero)
                 spawnPoint = new Vector3(0.0f, Constant.GROUND_Y_POS, 90.0f);
-            _waveStartCoroutine = _StartWaveCoroutine(5,1);
+            _waveStartCoroutine = _StartWaveCoroutine(5, 1, 0);
 
             _gameTimer = gameObject.AddComponent<ActionTime>();
             _phaseTimer = gameObject.AddComponent<ActionTime>();
             _refreshTimer = gameObject.AddComponent<ActionTime>();
             _playerBasePrefab = Resources.Load("Prefabs/Buildings/PlayerBase") as GameObject;
             _commanderPrefab = Resources.Load("Prefabs/Units/Player/Commander") as GameObject;
+            _enemySpawners = new List<Spawner>();
             _playerBuildingPrefabs = new List<GameObject>();
             _playerBuildings = new List<GameObject>();
             _playerUnitPrefabs = new List<GameObject>();
@@ -85,13 +86,14 @@ namespace Action.Manager
             _monsterUnitPrefabs = new List<GameObject>();
             _monsterUnitPrefabs.Add(Resources.Load("Prefabs/MonsterUnit") as GameObject);
             _monsterUnits = new List<GameObject>();
+
+            _AddEnemySpawners();
         }
 
         public void GameStart()
         {
             _isPlaying = true;
             _startPosition = Constant.VILLAGE_BASE_START_POS;
-            _spawner = FindObjectOfType<Spawner>();
 
             _CreateStartBase();
             _CreateCommanderUnit();
@@ -103,7 +105,7 @@ namespace Action.Manager
 
             StartPhase(eGamePhase.TownBuild);
 
-            _StartWave(5, 1);
+            StartWave(5, 1, 0);
         }
 
         public void GameOver()
@@ -116,6 +118,25 @@ namespace Action.Manager
             _gamePhase = phase;
             _StartPhaseTimer(phase);
             Logger.Log(phase.ToString());
+        }
+
+        public void StartWave(int unitCountPerWave, float timeRate, int spawnerIndex)
+        {
+            if (null != _waveStartCoroutine)
+            {
+                StopCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate, spawnerIndex));
+                StartCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate, spawnerIndex));
+            }
+        }
+
+        void _AddEnemySpawners()
+        {
+            Spawner[] objs = FindObjectsOfType<Spawner>();
+            if (0 < objs.Length)
+            {
+                for (int i = 0; i < objs.Length; i++)
+                    _enemySpawners.Add(objs[i]);
+            }
         }
 
         void _StartGameTimer()
@@ -207,35 +228,20 @@ namespace Action.Manager
             }
         }
 
-        void _StartWave(int unitCountPerWave, float timeRate)
-        {
-            if (null != _waveStartCoroutine)
-            {
-                StopCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate));
-                StartCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate));
-            }
-        }
-
-        IEnumerator  _StartWaveCoroutine(int unitCountPerWave, float timeRate)
+        IEnumerator  _StartWaveCoroutine(int unitCountPerWave, float timeRate, int spawnerIndex)
         {
             int count = unitCountPerWave;
 
-            if (null != _spawner)
+            if (0 < _enemySpawners.Count)
             {
                 while (count > 0)
                 {
-                    _spawner.CreateObject(_monsterUnitPrefabs[0]);
-                    //_CreateMonsterUnit(_monsterUnitPrefabs[0]);
+                    GameObject obj = _enemySpawners[spawnerIndex].CreateObject(_monsterUnitPrefabs[0]);
+                    _monsterUnits.Add(obj);
                     count--;
                     yield return new WaitForSeconds(timeRate);
                 }
             }
-        }
-
-        void _CreateMonsterUnit(GameObject monsterObj)
-        {
-            GameObject obj = Instantiate(monsterObj, spawnPoint, Quaternion.identity);
-            _monsterUnits.Add(obj);
         }
 
         void _PrepareResource()

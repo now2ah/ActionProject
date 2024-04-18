@@ -45,7 +45,7 @@ namespace Action.Units
                 _interactingBuilding.GetComponent<Building>().Interact();
         }
 
-        public void Move()
+        public override void Move()
         {
             Vector3 movePos = new Vector3(inputVector.x, 0, inputVector.y);
 

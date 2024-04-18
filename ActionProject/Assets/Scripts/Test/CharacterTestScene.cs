@@ -5,6 +5,18 @@ using Action.Manager;
 
 public class CharacterTestScene : MonoBehaviour
 {
+    private void OnGUI()
+    {
+        GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+        buttonStyle.fontSize = 25;
+        GUILayout.BeginVertical();
+        if (GUI.Button(new Rect(50, 50, 300, 50), "Summon Monster", buttonStyle))
+        {
+            GameManager.Instance.StartWave(1, 1, 0);
+        }
+        GUILayout.EndVertical();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
