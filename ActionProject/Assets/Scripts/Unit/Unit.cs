@@ -7,7 +7,7 @@ using Action.Manager;
 
 namespace Action.Units
 {
-    public class Unit : MonoBehaviour
+    public partial class Unit : MonoBehaviour
     {
         GameObject _unitPanelObject;
         UnitPanel _unitPanel;
@@ -16,6 +16,7 @@ namespace Action.Units
         int _hp;
         int _maxHp;
         float _speed;
+        bool _canDamaged;
         float _infoActiveDistant;
 
         bool _isOnUnitPanel;
@@ -43,17 +44,32 @@ namespace Action.Units
             _stateMachine = new StateMachine();
         }
 
-        public void GetDamaged(int damage)
+
+        public void ApplyDamage(DamageMessage msg)
         {
-            _hp -= damage;
-            if (_hp < 0)
+            if (_CheckDead())
+                return;
+
+            _hp -= msg.amount;
+
+            if (_CheckDead())
+            {
                 _Death();
+            }
         }
 
         public void SetNameUI(string name)
         {
             if (null != _unitPanel)
                 _unitPanel.SetNameText(name);
+        }
+
+        bool _CheckDead()
+        {
+            if (0 > _hp)
+                return true;
+            else
+                return false;
         }
 
         void _Death()

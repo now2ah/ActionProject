@@ -132,7 +132,12 @@ namespace Action.Units
             {
                 if(_target.TryGetComponent<Unit>(out Unit unit))
                 {
-                    unit.GetDamaged(damage);
+                    DamageMessage msg = new DamageMessage
+                    {
+                        damager = this,
+                        amount = damage
+                    };
+                    unit.ApplyDamage(msg);
                     _lastAttackTime = Time.realtimeSinceStartup;
                 }
             }

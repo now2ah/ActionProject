@@ -26,7 +26,7 @@ namespace Action.Units
             base.Initialize();
         }
 
-        public void Move()
+        public virtual void Move()
         {
 
         }
