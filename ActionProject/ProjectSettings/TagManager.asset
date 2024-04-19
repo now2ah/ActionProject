@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerObject
   - EnemyObject
+  - StartingBasePoint
   layers:
   - Default
   - TransparentFX

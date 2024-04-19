@@ -93,7 +93,7 @@ namespace Action.Manager
         public void GameStart()
         {
             _isPlaying = true;
-            _startPosition = Constant.VILLAGE_BASE_START_POS;
+            _startPosition = _FindBasePoint();
 
             _CreateStartBase();
             _CreateCommanderUnit();
@@ -105,7 +105,7 @@ namespace Action.Manager
 
             StartPhase(eGamePhase.TownBuild);
 
-            StartWave(5, 1, 0);
+            //StartWave(5, 1, 0);
         }
 
         public void GameOver()
@@ -129,9 +129,18 @@ namespace Action.Manager
             }
         }
 
+        Vector3 _FindBasePoint()
+        {
+            GameObject obj = GameObject.FindWithTag("StartingBasePoint");
+            if (null == obj)
+                return Vector3.zero;
+            else
+                return obj.transform.position;
+        }
+
         void _AddEnemySpawners()
         {
-            Spawner[] objs = FindObjectsOfType<Spawner>();
+            Spawner[] objs = FindObjectsByType<Spawner>(FindObjectsSortMode.None);
             if (0 < objs.Length)
             {
                 for (int i = 0; i < objs.Length; i++)
@@ -167,6 +176,7 @@ namespace Action.Manager
             {
                 if (_refreshTimer.IsFinish)
                 {
+                    Logger.Log("Refresh");
                     _refreshTimer.ResetTimer();
                     _StartRefreshTimer();
                 }

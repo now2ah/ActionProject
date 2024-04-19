@@ -51,7 +51,7 @@ namespace Action.Units
                 return;
 
             _hp -= msg.amount;
-
+            Logger.Log("Apply Damage : " + msg.amount + " (" + _hp + "/" + _maxHp + ")");
             if (_CheckDead())
             {
                 _Death();

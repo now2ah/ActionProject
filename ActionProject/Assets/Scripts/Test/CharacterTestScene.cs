@@ -10,7 +10,11 @@ public class CharacterTestScene : MonoBehaviour
         GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
         buttonStyle.fontSize = 25;
         GUILayout.BeginVertical();
-        if (GUI.Button(new Rect(50, 50, 300, 50), "Summon Monster", buttonStyle))
+        if (GUI.Button(new Rect(50, 50, 300, 50), "Game Start", buttonStyle))
+        {
+            GameManager.Instance.GameStart();
+        }
+        if (GUI.Button(new Rect(50, 150, 300, 50), "Summon Monster", buttonStyle))
         {
             GameManager.Instance.StartWave(1, 1, 0);
         }

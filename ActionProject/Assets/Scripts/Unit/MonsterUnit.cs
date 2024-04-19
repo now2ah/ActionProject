@@ -132,6 +132,7 @@ namespace Action.Units
             {
                 if(_target.TryGetComponent<Unit>(out Unit unit))
                 {
+                    Logger.Log("Attack");
                     DamageMessage msg = new DamageMessage
                     {
                         damager = this,

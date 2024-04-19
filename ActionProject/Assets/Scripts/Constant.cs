@@ -29,8 +29,8 @@ namespace Action
         public static float HUNT_PHASE_TIME = 10.0f;
         public static float DEFENSE_PHASE_TIME = 10.0f;
 
-        //Game Refresh 시간
-        public static float GAME_REFRESH_TIME = 2.0f;
+        //Game Refresh 시간 (몬스터 행동 갱신에 사용중)
+        public static float GAME_REFRESH_TIME = 1.0f;
         
         public enum eCharacterState
         {
