@@ -8,7 +8,7 @@ using Action.Manager;
 
 namespace Action.Units
 {
-    public class MonsterUnit : Unit
+    public class EnemyUnit : Unit
     {
         NavMeshAgent _navMeshAgent;
 
@@ -16,9 +16,9 @@ namespace Action.Units
         float _attackSpeed;
         float _attackDistance;
         float _lastAttackTime;
-        MonsterIdleState _idleState;
-        MonsterMoveState _moveState;
-        MonsterAttackState _attackState;
+        EnemyIdleState _idleState;
+        EnemyMoveState _moveState;
+        EnemyAttackState _attackState;
         GameObject _target;
         GameObject _nearestPlayerBuilding;
         GameObject _commanderUnit;
@@ -27,9 +27,9 @@ namespace Action.Units
         public int AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
         public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
         public float AttackDistance { get { return _attackDistance; } set { _attackDistance = value; } }
-        public MonsterIdleState IdleState => _idleState;
-        public MonsterMoveState MoveState => _moveState;
-        public MonsterAttackState AttackState => _attackState;
+        public EnemyIdleState IdleState => _idleState;
+        public EnemyMoveState MoveState => _moveState;
+        public EnemyAttackState AttackState => _attackState;
         public GameObject Target { get { return _target; } set { _target = value; } }
         public Vector3 TargetPos { get { return _targetPos; } set { _targetPos = value; } }
 
@@ -188,9 +188,9 @@ namespace Action.Units
             _target = null;
             _nearestPlayerBuilding = null;
             _commanderUnit = GameManager.Instance.CommanderObj;
-            _idleState = new MonsterIdleState(this);
-            _moveState = new MonsterMoveState(this);
-            _attackState = new MonsterAttackState(this);
+            _idleState = new EnemyIdleState(this);
+            _moveState = new EnemyMoveState(this);
+            _attackState = new EnemyAttackState(this);
             base.StateMachine.Initialize(_idleState);
         }
 

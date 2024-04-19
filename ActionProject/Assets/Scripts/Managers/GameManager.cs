@@ -176,7 +176,6 @@ namespace Action.Manager
             {
                 if (_refreshTimer.IsFinish)
                 {
-                    Logger.Log("Refresh");
                     _refreshTimer.ResetTimer();
                     _StartRefreshTimer();
                 }
