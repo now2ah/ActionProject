@@ -71,7 +71,7 @@ namespace Action.Manager
             base.Initialize();
             if (spawnPoint == Vector3.zero)
                 spawnPoint = new Vector3(0.0f, Constant.GROUND_Y_POS, 90.0f);
-            _waveStartCoroutine = _StartWaveCoroutine(5, 1, 0);
+            _waveStartCoroutine = _StartWaveCoroutine(5, 1, 0, Constant.eEnemyType.NORMAL);
 
             _gameTimer = gameObject.AddComponent<ActionTime>();
             _phaseTimer = gameObject.AddComponent<ActionTime>();
@@ -84,7 +84,8 @@ namespace Action.Manager
             _playerUnitPrefabs = new List<GameObject>();
             _playerUnits = new List<GameObject>();
             _monsterUnitPrefabs = new List<GameObject>();
-            _monsterUnitPrefabs.Add(Resources.Load("Prefabs/MonsterUnit") as GameObject);
+            _monsterUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/NormalEnemy") as GameObject);
+            _monsterUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/MeleeEnemy") as GameObject);
             _monsterUnits = new List<GameObject>();
 
             _AddEnemySpawners();
@@ -120,12 +121,12 @@ namespace Action.Manager
             Logger.Log(phase.ToString());
         }
 
-        public void StartWave(int unitCountPerWave, float timeRate, int spawnerIndex)
+        public void StartWave(int unitCountPerWave, float timeRate, int spawnerIndex, Constant.eEnemyType type)
         {
             if (null != _waveStartCoroutine)
             {
-                StopCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate, spawnerIndex));
-                StartCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate, spawnerIndex));
+                StopCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate, spawnerIndex, type));
+                StartCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate, spawnerIndex, type));
             }
         }
 
@@ -237,7 +238,7 @@ namespace Action.Manager
             }
         }
 
-        IEnumerator  _StartWaveCoroutine(int unitCountPerWave, float timeRate, int spawnerIndex)
+        IEnumerator  _StartWaveCoroutine(int unitCountPerWave, float timeRate, int spawnerIndex, Constant.eEnemyType type)
         {
             int count = unitCountPerWave;
 
@@ -245,7 +246,7 @@ namespace Action.Manager
             {
                 while (count > 0)
                 {
-                    GameObject obj = _enemySpawners[spawnerIndex].CreateObject(_monsterUnitPrefabs[0]);
+                    GameObject obj = _enemySpawners[spawnerIndex].CreateObject(_monsterUnitPrefabs[(int)type]);
                     _monsterUnits.Add(obj);
                     count--;
                     yield return new WaitForSeconds(timeRate);

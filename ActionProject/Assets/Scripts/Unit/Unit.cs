@@ -12,10 +12,11 @@ namespace Action.Units
         GameObject _unitPanelObject;
         UnitPanel _unitPanel;
 
-        string _unitName;
         int _hp;
         int _maxHp;
         float _speed;
+
+        string _unitName;
         bool _canDamaged;
         float _infoActiveDistant;
 

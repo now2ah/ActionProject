@@ -37,5 +37,12 @@ namespace Action
             IDLE,
             MOVING
         }
+
+        public enum eEnemyType
+        {
+            NORMAL,
+            MELEE,
+            RANGE
+        }
     }
 }

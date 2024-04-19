@@ -13,23 +13,14 @@ namespace Action.Units
         NavMeshAgent _navMeshAgent;
 
         int _attackDamage;
-        float _attackSpeed;
-        float _attackDistance;
-        float _lastAttackTime;
-        EnemyIdleState _idleState;
-        EnemyMoveState _moveState;
-        EnemyAttackState _attackState;
-        GameObject _target;
+        
+        protected GameObject _target;
         GameObject _nearestPlayerBuilding;
         GameObject _commanderUnit;
         Vector3 _targetPos;
 
         public int AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
-        public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
-        public float AttackDistance { get { return _attackDistance; } set { _attackDistance = value; } }
-        public EnemyIdleState IdleState => _idleState;
-        public EnemyMoveState MoveState => _moveState;
-        public EnemyAttackState AttackState => _attackState;
+
         public GameObject Target { get { return _target; } set { _target = value; } }
         public Vector3 TargetPos { get { return _targetPos; } set { _targetPos = value; } }
 
@@ -126,49 +117,9 @@ namespace Action.Units
             }
         }
 
-        public void Attack(int damage)
-        {
-            if (null != _target)
-            {
-                if(_target.TryGetComponent<Unit>(out Unit unit))
-                {
-                    Logger.Log("Attack");
-                    DamageMessage msg = new DamageMessage
-                    {
-                        damager = this,
-                        amount = damage
-                    };
-                    unit.ApplyDamage(msg);
-                    _lastAttackTime = Time.realtimeSinceStartup;
-                }
-            }
-        }
-
-        public bool isAttackCooltime()
-        {
-            if (Time.realtimeSinceStartup < _lastAttackTime + _attackSpeed)
-                return true;
-            else
-                return false;
-        }
-
         void _RefreshTargetPosition()
         {
             SetDestinationToTarget(_target);
-        }
-        
-        bool _CompareDistance(GameObject obj)
-        {
-            GameObject nearestObj = Utility.GetNearerObject(gameObject.transform.position, _target, obj);
-
-            if (_target == nearestObj) 
-                return false;
-            else
-            {
-                _target = nearestObj;
-                base.StateMachine.ChangeState(_idleState);
-                return true;
-            }
         }
 
         protected override void Awake()
@@ -176,9 +127,6 @@ namespace Action.Units
             base.Awake();
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _attackDamage = 1;
-            _attackSpeed = 1.0f;
-            _attackDistance = 1.0f;
-            _lastAttackTime = 0.0f;
             _targetPos = Vector3.zero;
         }
 
@@ -188,16 +136,11 @@ namespace Action.Units
             _target = null;
             _nearestPlayerBuilding = null;
             _commanderUnit = GameManager.Instance.CommanderObj;
-            _idleState = new EnemyIdleState(this);
-            _moveState = new EnemyMoveState(this);
-            _attackState = new EnemyAttackState(this);
-            base.StateMachine.Initialize(_idleState);
         }
 
         protected override void Update()
         {
             base.Update();
-            //_CompareDistance(_playerUnit);
         }
     }
 
