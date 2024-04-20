@@ -19,9 +19,9 @@ namespace Action.Scene
 
         IEnumerator IntroCoroutine()
         {
-            SceneManager.Instance.Fade(SceneManager.eFade.FadeIn);
+            SceneManager.Instance.Fade(UIManager.eFade.FadeIn);
             yield return new WaitForSeconds(1.5f);
-            SceneManager.Instance.Fade(SceneManager.eFade.FadeOut, () => 
+            SceneManager.Instance.Fade(UIManager.eFade.FadeOut, () => 
             {
                 SceneManager.Instance.LoadGameScene(1);
             });

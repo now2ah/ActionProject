@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using Action.Util;
 using Action.UI;
 using Action.Units;
@@ -10,6 +11,12 @@ namespace Action.Manager
 {
     public class UIManager : Singleton<UIManager>
     {
+        public enum eFade
+        {
+            FadeIn,
+            FadeOut,
+        }
+
         GameObject _mainCanvasObject;
         Canvas _mainCanvas;
 
@@ -99,8 +106,11 @@ namespace Action.Manager
 
         public void ShowDamagedEffect()
         {
-            StopCoroutine(_DamagedEffectCoroutine());
-            StartCoroutine(_DamagedEffectCoroutine());
+            _damagedEffectPanel.SetActive(true);
+            Fade(eFade.FadeOut, _damagedEffectPanel, 0.1f, () =>
+            {
+                _damagedEffectPanel.SetActive(false);
+            });
         }
 
         public void CreateTownStagePanel()
@@ -116,6 +126,49 @@ namespace Action.Manager
             {
                 _townStagePanel.RefreshResource();
                 _townStagePanel.RefreshTimer();
+            }
+        }
+
+        public void Fade(eFade fade, GameObject fadeUI, float fadeSpeed, UnityAction action = null)
+        {
+            StopCoroutine("FadeCoroutine");
+            StartCoroutine(FadeCoroutine(fade, fadeUI, fadeSpeed, action));
+        }
+
+        IEnumerator FadeCoroutine(eFade fade, GameObject fadeUI, float fadeSpeed, UnityAction action = null)
+        {
+            if (null != fadeUI)
+            {
+                fadeUI?.SetActive(true);
+                fadeUI.transform.SetSiblingIndex(UIManager.Instance.MainCanvas.transform.childCount - 1);
+                float startValue = (fade == eFade.FadeIn) ? 1f : 0f;
+                float endValue = (fade == eFade.FadeIn) ? 0f : 1f;
+                float alpha = startValue;
+
+                Image fadeImage = fadeUI.GetComponent<Image>();
+
+                if (fade == eFade.FadeIn)
+                {
+                    while (alpha >= endValue)
+                    {
+                        alpha += Time.deltaTime * (1.0f / fadeSpeed) * ((fade == eFade.FadeIn) ? -1 : 1);
+                        fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, alpha);
+                        yield return null;
+                    }
+                }
+                else if (fade == eFade.FadeOut)
+                {
+                    while (alpha <= endValue)
+                    {
+                        alpha += Time.deltaTime * (1.0f / fadeSpeed) * ((fade == eFade.FadeIn) ? -1 : 1);
+                        fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, alpha);
+                        yield return null;
+                    }
+                }
+                action?.Invoke();
+                yield return null;
+                //yield return new WaitForSeconds(0.5f);
+                //fadeUI?.SetActive(false);
             }
         }
 
@@ -175,13 +228,6 @@ namespace Action.Manager
                     comp.Hide();
                 }
             }
-        }
-
-        IEnumerator _DamagedEffectCoroutine()
-        {
-            _damagedEffectPanel.SetActive(true);
-            yield return new WaitForSeconds(0.2f);
-            _damagedEffectPanel.SetActive(false);
         }
 
         private void Update()
