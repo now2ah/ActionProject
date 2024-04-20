@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 using Action.State;
 using Action.Manager;
 
@@ -20,6 +21,8 @@ namespace Action.Units
         int _animHashMoving;
         int _animHashAttacking;
 
+        public UnityAction OnDamaged;
+
         public CommanderIdleState IdleState => _idleState;
         public CommanderMoveState MoveState => _moveState;
         public CommanderAttackState AttackState => _attackState;
@@ -37,6 +40,7 @@ namespace Action.Units
             UnitPanel.Show();
             _animHashMoving = Animator.StringToHash("isMoving");
             _animHashAttacking = Animator.StringToHash("isAttacking");
+            OnDamaged += UIManager.Instance.ShowDamagedEffect;
         }
 
         public void Interact()
@@ -58,6 +62,7 @@ namespace Action.Units
         public override void ApplyDamage(DamageMessage msg)
         {
             base.ApplyDamage(msg);
+            OnDamaged.Invoke();
         }
 
         public void PhysicalAttack()
