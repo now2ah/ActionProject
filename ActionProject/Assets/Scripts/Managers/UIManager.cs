@@ -12,21 +12,27 @@ namespace Action.Manager
     {
         GameObject _mainCanvasObject;
         Canvas _mainCanvas;
-        public Canvas MainCanvas => _mainCanvas;
+
         GameObject _inGameCanvasObject;
         Canvas _inGameCanvas;
-        public Canvas InGameCanvas => _inGameCanvas;
+
         GameObject _eventSystemObject;
 
         GameObject _BaseIndicatorObj;
         BaseIndicator _BaseIndicator;
 
+        GameObject _damagedEffectPanel;
+
         bool _isShowUnitPanel = true;
-        public bool IsShowUnitPanel { get { return _isShowUnitPanel; } set { _isShowUnitPanel = value; } }
 
         GameObject _townStageUI;
-        public GameObject TownStageUI { get { return _townStageUI; } set { _townStageUI = value; } }
         TownStagePanel _townStagePanel;
+
+        public Canvas MainCanvas => _mainCanvas;
+        public Canvas InGameCanvas => _inGameCanvas;
+        public GameObject DamagedEffectPanel => _damagedEffectPanel;
+        public bool IsShowUnitPanel { get { return _isShowUnitPanel; } set { _isShowUnitPanel = value; } }
+        public GameObject TownStageUI { get { return _townStageUI; } set { _townStageUI = value; } }
 
         public override void Initialize()
         {
@@ -37,6 +43,8 @@ namespace Action.Manager
             _BaseIndicatorObj = CreateUI("BaseIndicator", _inGameCanvas);
             _BaseIndicator = _BaseIndicatorObj.GetComponent<BaseIndicator>();
             _BaseIndicator.Hide();
+            _damagedEffectPanel = CreateUI("DamagedEffectPanel", _mainCanvas);
+            _damagedEffectPanel.SetActive(false);
         }
 
         public GameObject CreateUI(string name, Canvas canvas)
@@ -52,32 +60,6 @@ namespace Action.Manager
 
             return obj;
         }
-
-        //public void ShowUnitInfoUI(bool isOn)
-        //{
-        //    if (_isShowUnitPanel == isOn)
-        //        return;
-
-        //    foreach(GameObject obj in GameManager.Instance.PlayerBuildings)
-        //    {
-        //        if (obj.TryGetComponent<Unit>(out Unit comp))
-        //            comp.ShowInfoPanel(isOn);
-        //    }
-
-        //    foreach (GameObject obj in GameManager.Instance.PlayerUnits)
-        //    {
-        //        if (obj.TryGetComponent<Unit>(out Unit comp))
-        //            comp.ShowInfoPanel(isOn);
-        //    }
-
-        //    foreach (GameObject obj in GameManager.Instance.MonsterUnits)
-        //    {
-        //        if (obj.TryGetComponent<Unit>(out Unit comp))
-        //            comp.ShowInfoPanel(isOn);
-        //    }
-
-        //    _isShowUnitPanel = isOn;
-        //}
 
         public void SetUnitInfoRect(float width, float height)
         {
@@ -112,6 +94,28 @@ namespace Action.Manager
                         ui.ApplyRect(width, height);
                     }
                 }
+            }
+        }
+
+        public void ShowDamagedEffect()
+        {
+            StopCoroutine(_DamagedEffectCoroutine());
+            StartCoroutine(_DamagedEffectCoroutine());
+        }
+
+        public void CreateTownStagePanel()
+        {
+            _townStageUI = CreateUI("TownStagePanel", UIManager.Instance.MainCanvas);
+            _townStagePanel = _townStageUI.GetComponent<TownStagePanel>();
+            _townStagePanel.RefreshResource();
+        }
+
+        public void RefreshTownStageUI()
+        {
+            if (null != _townStagePanel)
+            {
+                _townStagePanel.RefreshResource();
+                _townStagePanel.RefreshTimer();
             }
         }
 
@@ -173,20 +177,11 @@ namespace Action.Manager
             }
         }
 
-        public void CreateTownStagePanel()
+        IEnumerator _DamagedEffectCoroutine()
         {
-            _townStageUI = CreateUI("TownStagePanel", UIManager.Instance.MainCanvas);
-            _townStagePanel = _townStageUI.GetComponent<TownStagePanel>();
-            _townStagePanel.RefreshResource();
-        }
-
-        public void RefreshTownStageUI()
-        {
-            if (null != _townStagePanel)
-            {
-                _townStagePanel.RefreshResource();
-                _townStagePanel.RefreshTimer();
-            }   
+            _damagedEffectPanel.SetActive(true);
+            yield return new WaitForSeconds(0.2f);
+            _damagedEffectPanel.SetActive(false);
         }
 
         private void Update()

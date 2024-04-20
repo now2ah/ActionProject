@@ -55,6 +55,11 @@ namespace Action.Units
             transform.Translate(movePos * Time.deltaTime * 10.0f, Space.World);
         }
 
+        public override void ApplyDamage(DamageMessage msg)
+        {
+            base.ApplyDamage(msg);
+        }
+
         public void PhysicalAttack()
         {
             StopCoroutine(PhysicalAttackCoroutine());

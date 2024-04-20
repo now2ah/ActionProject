@@ -11,6 +11,7 @@ namespace Action.Units
     {
         GameObject _unitPanelObject;
         UnitPanel _unitPanel;
+        Collider _unitCollider;
 
         int _hp;
         int _maxHp;
@@ -25,6 +26,7 @@ namespace Action.Units
         public GameObject UnitPanelObject { get { return _unitPanelObject; } set { _unitPanelObject = value; } }
         public UnitPanel UnitPanel { get { return _unitPanel; } set { _unitPanel = value; } }
         public string UnitName { get { return _unitName; } set { _unitName = value; } }
+        public Collider UnitCollider { get { return _unitCollider; } set { _unitCollider = value; } }
         public int HP { get { return _hp; } set { _hp = value; } }
         public int MaxHp { get { return _maxHp; } set { _maxHp = value; } }
         public float Speed { get { return _speed; } set { _speed = value; } }
@@ -41,12 +43,13 @@ namespace Action.Units
             _unitPanel = _unitPanelObject.GetComponent<UnitPanel>();
             _unitPanel.Initialize(this.gameObject);
             _unitPanel.Hide();
+            _unitCollider = GetComponentInChildren<Collider>();
 
             _stateMachine = new StateMachine();
         }
 
 
-        public void ApplyDamage(DamageMessage msg)
+        public virtual void ApplyDamage(DamageMessage msg)
         {
             if (_CheckDead())
                 return;
