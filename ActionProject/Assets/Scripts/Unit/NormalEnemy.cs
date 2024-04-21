@@ -34,6 +34,7 @@ namespace Action.Units
                 colUnit.ApplyDamage(msg);
                 _isAttackCooltime = true;
                 _attackTimer.TickStart(_attackCooltime);
+                Stop(1.0f);
             }
         }
 

@@ -13,6 +13,7 @@ namespace Action.Units
         NavMeshAgent _navMeshAgent;
 
         int _attackDamage;
+        bool _isStopped;
         
         protected GameObject _target;
         GameObject _nearestPlayerBuilding;
@@ -20,6 +21,7 @@ namespace Action.Units
         Vector3 _targetPos;
 
         public int AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
+        public bool IsStopped { get { return _isStopped; } set { _isStopped = value; } }
 
         public GameObject Target { get { return _target; } set { _target = value; } }
         public Vector3 TargetPos { get { return _targetPos; } set { _targetPos = value; } }
@@ -29,6 +31,7 @@ namespace Action.Units
             base.Initialize();
             GameManager.Instance.OnRefresh.AddListener(_RefreshTargetPosition);
             IsOnUnitPanel = false;
+            _isStopped = false;
         }
 
         public void FindNearestPlayerBuilding()
@@ -93,6 +96,12 @@ namespace Action.Units
             }
         }
 
+        public void Stop(float stopTime)
+        {
+            StopCoroutine("StoppedActionCoroutine");
+            StartCoroutine(StoppedActionCoroutine(stopTime));
+        }
+
         public void Look(GameObject target)
         {
             gameObject.transform.LookAt(target.transform);
@@ -120,6 +129,14 @@ namespace Action.Units
         void _RefreshTargetPosition()
         {
             SetDestinationToTarget(_target);
+        }
+
+        IEnumerator StoppedActionCoroutine(float stopTime)
+        { 
+            _isStopped = true;
+            _navMeshAgent.SetDestination(transform.position);
+            yield return new WaitForSeconds(stopTime);
+            _isStopped = false;
         }
 
         protected override void Awake()

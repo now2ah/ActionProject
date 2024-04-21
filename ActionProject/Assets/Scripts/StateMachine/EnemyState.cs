@@ -20,8 +20,11 @@ namespace Action.State
         {
             if (null != _enemyUnit)
             {
-                _enemyUnit.FindNearestPlayerBuilding();
-                _enemyUnit.FindNearestTarget(true);
+                if (!_enemyUnit.IsStopped)
+                {
+                    _enemyUnit.FindNearestPlayerBuilding();
+                    _enemyUnit.FindNearestTarget(true);
+                }
             }
         }
 
@@ -37,7 +40,6 @@ namespace Action.State
             {
                 if (null == _enemyUnit.Target)
                     return;
-
 
                 if (null != _enemyUnit.Target)
                     _enemyUnit.StateMachine.ChangeState(_enemyUnit.MoveState);
@@ -73,9 +75,13 @@ namespace Action.State
             base.UpdateState();
             if (null != _enemyUnit)
             {
-                if (Vector3.Distance(_enemyUnit.transform.position, _enemyUnit.TargetPos) < 1.0f)
+                //if (Vector3.Distance(_enemyUnit.transform.position, _enemyUnit.TargetPos) < 1.0f)
+                //{
+                //    _enemyUnit.StateMachine.ChangeState(_enemyUnit.AttackState);
+                //}
+                if (_enemyUnit.IsStopped)
                 {
-                    _enemyUnit.StateMachine.ChangeState(_enemyUnit.AttackState);
+                    _enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
                 }
             }
         }
