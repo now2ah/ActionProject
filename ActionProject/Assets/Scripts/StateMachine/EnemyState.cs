@@ -20,11 +20,8 @@ namespace Action.State
         {
             if (null != _enemyUnit)
             {
-                if (!_enemyUnit.IsStopped)
-                {
-                    _enemyUnit.FindNearestPlayerBuilding();
-                    _enemyUnit.FindNearestTarget(true);
-                }
+                _enemyUnit.FindNearestPlayerBuilding();
+                _enemyUnit.FindNearestTarget(true);
             }
         }
 
@@ -75,14 +72,8 @@ namespace Action.State
             base.UpdateState();
             if (null != _enemyUnit)
             {
-                //if (Vector3.Distance(_enemyUnit.transform.position, _enemyUnit.TargetPos) < 1.0f)
-                //{
-                //    _enemyUnit.StateMachine.ChangeState(_enemyUnit.AttackState);
-                //}
-                if (_enemyUnit.IsStopped)
-                {
-                    _enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
-                }
+                if (_enemyUnit.IsAttackCooltime)
+                    _enemyUnit.StateMachine.ChangeState(_enemyUnit.AttackState);
             }
         }
     }
@@ -97,7 +88,13 @@ namespace Action.State
         public override void EnterState()
         {
             if (null != _enemyUnit)
+            {
                 _enemyUnit.Look(_enemyUnit.Target);
+                _enemyUnit.Stop(1.5f, () =>
+                {
+                    _enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
+                });
+            } 
         }
 
         public override void ExitState()
@@ -107,7 +104,7 @@ namespace Action.State
         public override void UpdateState()
         {
             base.UpdateState();
-            _enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
+            //_enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
         }
     }
 

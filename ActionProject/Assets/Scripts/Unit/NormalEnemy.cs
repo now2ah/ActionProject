@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Action.State;
 using Action.Util;
 
@@ -17,9 +18,31 @@ namespace Action.Units
         EnemyMoveState _moveState;
         EnemyAttackState _attackState;
 
+        public bool IsAttackCooltime => _isAttackCooltime;
+        public ActionTime AttackTimer => _attackTimer;
         public EnemyIdleState IdleState => _idleState;
         public EnemyMoveState MoveState => _moveState;
         public EnemyAttackState AttackState => _attackState;
+
+        public override void RefreshTargetPosition()
+        {
+            if (_moveState == StateMachine.CurState)
+                SetDestinationToTarget(_target);
+        }
+
+        public void Stop(float stopTime, UnityAction action = null)
+        {
+            StopCoroutine("StopMoveCoroutine");
+            StartCoroutine(StopMoveCoroutine(stopTime, action));
+        }
+
+        IEnumerator StopMoveCoroutine(float stopTime, UnityAction action = null)
+        {
+            _ResetTarget();
+            yield return new WaitForSeconds(stopTime);
+            if (null != action)
+                action.Invoke();
+        }
 
         private void OnCollisionStay(Collision col)
         {
@@ -34,7 +57,6 @@ namespace Action.Units
                 colUnit.ApplyDamage(msg);
                 _isAttackCooltime = true;
                 _attackTimer.TickStart(_attackCooltime);
-                Stop(1.0f);
             }
         }
 
@@ -43,7 +65,10 @@ namespace Action.Units
             if (null != _attackTimer)
             {
                 if (_attackTimer.IsFinish)
+                {
                     _isAttackCooltime = false;
+                    _attackTimer.ResetTimer();
+                }
             }
         }
 
