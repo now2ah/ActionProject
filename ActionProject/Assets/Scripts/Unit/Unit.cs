@@ -13,8 +13,8 @@ namespace Action.Units
         UnitPanel _unitPanel;
         Collider _unitCollider;
 
-        int _hp;
-        int _maxHp;
+        float _hp;
+        float _maxHp;
         float _speed;
 
         string _unitName;
@@ -27,8 +27,8 @@ namespace Action.Units
         public UnitPanel UnitPanel { get { return _unitPanel; } set { _unitPanel = value; } }
         public string UnitName { get { return _unitName; } set { _unitName = value; } }
         public Collider UnitCollider { get { return _unitCollider; } set { _unitCollider = value; } }
-        public int HP { get { return _hp; } set { _hp = value; } }
-        public int MaxHp { get { return _maxHp; } set { _maxHp = value; } }
+        public float HP { get { return _hp; } set { _hp = value; } }
+        public float MaxHp { get { return _maxHp; } set { _maxHp = value; } }
         public float Speed { get { return _speed; } set { _speed = value; } }
         public float InfoActiveDistant { get { return _infoActiveDistant; } set { _infoActiveDistant = value; } }
         public bool IsOnUnitPanel { get { return _isOnUnitPanel; } set { _isOnUnitPanel = value; } }

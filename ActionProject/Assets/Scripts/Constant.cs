@@ -32,10 +32,11 @@ namespace Action
         //Game Refresh 시간 (몬스터 행동 갱신에 사용중)
         public static float GAME_REFRESH_TIME = 1.0f;
         
-        public enum eCharacterState
+        public enum eHitBoxType
         {
-            IDLE,
-            MOVING
+            ONLY_ENEMY,
+            ONLY_PLAYER,
+            BOTH
         }
 
         public enum eEnemyType

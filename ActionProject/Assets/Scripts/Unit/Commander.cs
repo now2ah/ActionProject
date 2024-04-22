@@ -111,10 +111,17 @@ namespace Action.Units
             }
         }
 
+        void _CreateHitBox()
+        {
+            Instantiate(GameManager.Instance.HitBoxPrefab, gameObject.transform.position, Quaternion.identity);
+        }
+
         IEnumerator PhysicalAttackCoroutine()
         {
             _isAttacking = true;
             _animator.SetBool(_animHashAttacking, _isAttacking);
+            yield return new WaitForSeconds(0.1f);
+            _CreateHitBox();
             yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
             _isAttacking = false;
             _animator.SetBool(_animHashAttacking, _isAttacking);

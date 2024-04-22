@@ -9,7 +9,7 @@ namespace Action.Units
         public struct DamageMessage
         {
             public Unit damager;
-            public int amount;
+            public float amount;
         }
     }
 }
