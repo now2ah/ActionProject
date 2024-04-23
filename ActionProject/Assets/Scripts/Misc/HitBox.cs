@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Action.Manager;
 using Action.Units;
 
 namespace Action.Game
@@ -11,6 +12,7 @@ namespace Action.Game
         Unit _damager;
         float _damageAmount;
         Collider _collider;
+        GameObject _hitEffectObj;
 
         public HitBox(Constant.eHitBoxType type, Unit damager, float damageAmount)
         {
@@ -44,6 +46,8 @@ namespace Action.Game
                                 amount = _damageAmount
                         };
                         unit.ApplyDamage(msg);
+                        Vector3 pos = unit.transform.position + unit.transform.up * 2.0f;
+                        Instantiate(_hitEffectObj, pos, Quaternion.identity);
                     }
                     break;
                 case Constant.eHitBoxType.ONLY_PLAYER:
@@ -67,6 +71,7 @@ namespace Action.Game
         // Start is called before the first frame update
         void Start()
         {
+            _hitEffectObj = GameManager.Instance.HitEffectPrefab;
             StartCoroutine(DestroyCoroutine(0.3f));
         }
 
