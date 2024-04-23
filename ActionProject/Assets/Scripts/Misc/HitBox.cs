@@ -29,20 +29,21 @@ namespace Action.Game
 
         private void OnTriggerEnter(Collider other)
         {
-            switch(_type)
+            Unit unit = other.GetComponentInParent<Unit>();
+            if (null == unit)
+                return;
+
+            switch (_type)
             {
                 case Constant.eHitBoxType.ONLY_ENEMY:
-                    if ("EnemyObject" == other.gameObject.tag)
+                    if ("EnemyObject" == unit.gameObject.tag)
                     {
-                        if (other.TryGetComponent<Unit>(out Unit comp))
+                        Unit.DamageMessage msg = new Unit.DamageMessage
                         {
-                            Unit.DamageMessage msg = new Unit.DamageMessage
-                            {
                                 damager = _damager,
                                 amount = _damageAmount
-                            };
-                            comp.ApplyDamage(msg);
-                        }
+                        };
+                        unit.ApplyDamage(msg);
                     }
                     break;
                 case Constant.eHitBoxType.ONLY_PLAYER:

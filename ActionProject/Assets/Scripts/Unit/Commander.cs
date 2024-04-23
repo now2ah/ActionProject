@@ -113,7 +113,9 @@ namespace Action.Units
 
         void _CreateHitBox()
         {
-            Instantiate(GameManager.Instance.HitBoxPrefab, gameObject.transform.position, Quaternion.identity);
+            //나중에 풀링으로 변경
+            Vector3 pos = transform.position + transform.forward * 2.0f + transform.up * 1.5f;
+            Instantiate(GameManager.Instance.HitBoxPrefab, pos, Quaternion.identity);
         }
 
         IEnumerator PhysicalAttackCoroutine()
