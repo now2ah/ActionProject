@@ -57,6 +57,7 @@ namespace Action.Manager
 
         GameObject _hitBoxPrefab;
         GameObject _hitEffectPrefab;
+        Material _hitMaterial;
 
         [SerializeField]
         Resource _resource;
@@ -70,6 +71,7 @@ namespace Action.Manager
         public List<GameObject> MonsterUnits { get { return _monsterUnits; } }
         public GameObject HitBoxPrefab => _hitBoxPrefab;
         public GameObject HitEffectPrefab => _hitEffectPrefab;
+        public Material HitMaterial => _hitMaterial;
 
         public override void Initialize()
         {
@@ -94,6 +96,7 @@ namespace Action.Manager
             _monsterUnits = new List<GameObject>();
             _hitBoxPrefab = Resources.Load("Prefabs/Misc/HitBox") as GameObject;
             _hitEffectPrefab = Resources.Load("Prefabs/Misc/Hiteffect") as GameObject;
+            _hitMaterial = Resources.Load("Materials/HitEffectMat") as Material;
 
             _AddEnemySpawners();
         }

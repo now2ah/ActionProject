@@ -12,6 +12,8 @@ namespace Action.Units
         GameObject _unitPanelObject;
         UnitPanel _unitPanel;
         Collider _unitCollider;
+        MeshRenderer _unitMeshRenderer;
+        Material _unitMaterial;
 
         float _hp;
         float _maxHp;
@@ -27,6 +29,8 @@ namespace Action.Units
         public UnitPanel UnitPanel { get { return _unitPanel; } set { _unitPanel = value; } }
         public string UnitName { get { return _unitName; } set { _unitName = value; } }
         public Collider UnitCollider { get { return _unitCollider; } set { _unitCollider = value; } }
+        public MeshRenderer UnitMeshRenderer { get { return _unitMeshRenderer; } set { _unitMeshRenderer = value; } }
+        public Material UnitMaterial { get { return _unitMaterial; } set { _unitMaterial = value; } }
         public float HP { get { return _hp; } set { _hp = value; } }
         public float MaxHp { get { return _maxHp; } set { _maxHp = value; } }
         public float Speed { get { return _speed; } set { _speed = value; } }
@@ -44,6 +48,8 @@ namespace Action.Units
             _unitPanel.Initialize(this.gameObject);
             _unitPanel.Hide();
             _unitCollider = GetComponentInChildren<Collider>();
+            _unitMeshRenderer = GetComponentInChildren<MeshRenderer>();
+            _unitMaterial = new Material(_unitMeshRenderer.material);
 
             _stateMachine = new StateMachine();
         }
@@ -55,6 +61,7 @@ namespace Action.Units
                 return;
 
             _hp -= msg.amount;
+            _HitMaterialEffect();
             Logger.Log("Apply Damage : " + msg.amount + " (" + _hp + "/" + _maxHp + ")");
             if (_CheckDead())
             {
@@ -79,6 +86,19 @@ namespace Action.Units
         void _Death()
         {
 
+        }
+
+        void _HitMaterialEffect()
+        {
+            StopCoroutine("ChangeMaterialCoroutine");
+            StartCoroutine(ChangeMaterialCoroutine());
+        }
+
+        IEnumerator ChangeMaterialCoroutine()
+        {
+            _unitMeshRenderer.material = GameManager.Instance.HitMaterial;
+            yield return new WaitForSeconds(0.1f);
+            _unitMeshRenderer.material = _unitMaterial;
         }
 
         protected bool _IsNearPlayerUnit()
