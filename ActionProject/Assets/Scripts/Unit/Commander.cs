@@ -122,12 +122,13 @@ namespace Action.Units
         {
             _isAttacking = true;
             _animator.SetBool(_animHashAttacking, _isAttacking);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.2f);
             _CreateHitBox();
-            yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
+            //yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
+            yield return new WaitForSeconds(0.3f);
             _isAttacking = false;
             _animator.SetBool(_animHashAttacking, _isAttacking);
-            //StateMachine.ChangeState(_idleState);
+            StateMachine.ChangeState(_idleState);
         }
 
         protected override void Awake()

@@ -121,7 +121,7 @@ MonoBehaviour:
     - m_Name: 
       m_Id: d7468bf5-7958-4332-9f8e-da2e967c03ce
       m_Path: <Keyboard>/space
-      m_Interactions: Press
+      m_Interactions: Press(pressPoint=0.1)
       m_Processors: 
       m_Groups: 
       m_Action: Action Physical Attack
