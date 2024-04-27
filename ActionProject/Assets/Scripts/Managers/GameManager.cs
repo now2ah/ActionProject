@@ -18,8 +18,6 @@ namespace Action.Manager
 
     public class GameManager : Singleton<GameManager>
     {
-        public Vector3 spawnPoint;      //임시 몬스터 스폰포인트
-
         eGamePhase _gamePhase;
         bool _isPlaying;            
         
@@ -76,8 +74,6 @@ namespace Action.Manager
         public override void Initialize()
         {
             base.Initialize();
-            if (spawnPoint == Vector3.zero)
-                spawnPoint = new Vector3(0.0f, Constant.GROUND_Y_POS, 90.0f);
             _waveStartCoroutine = _StartWaveCoroutine(5, 1, 0, Constant.eEnemyType.NORMAL);
 
             _gameTimer = gameObject.AddComponent<ActionTime>();

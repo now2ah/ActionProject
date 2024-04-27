@@ -28,6 +28,7 @@ namespace Action.Manager
         GameObject _BaseIndicatorObj;
         BaseIndicator _BaseIndicator;
 
+        GameObject _fadeUIPanel;
         GameObject _damagedEffectPanel;
 
         bool _isShowUnitPanel = true;
@@ -37,6 +38,7 @@ namespace Action.Manager
 
         public Canvas MainCanvas => _mainCanvas;
         public Canvas InGameCanvas => _inGameCanvas;
+        public GameObject FadeUIPanel => _fadeUIPanel;
         public GameObject DamagedEffectPanel => _damagedEffectPanel;
         public bool IsShowUnitPanel { get { return _isShowUnitPanel; } set { _isShowUnitPanel = value; } }
         public GameObject TownStageUI { get { return _townStageUI; } set { _townStageUI = value; } }
@@ -50,7 +52,9 @@ namespace Action.Manager
             _BaseIndicatorObj = CreateUI("BaseIndicator", _inGameCanvas);
             _BaseIndicator = _BaseIndicatorObj.GetComponent<BaseIndicator>();
             _BaseIndicator.Hide();
+            _fadeUIPanel = CreateUI("FadeInNOutPanel", _mainCanvas);
             _damagedEffectPanel = CreateUI("DamagedEffectPanel", _mainCanvas);
+            _fadeUIPanel.SetActive(false);
             _damagedEffectPanel.SetActive(false);
         }
 
@@ -166,9 +170,7 @@ namespace Action.Manager
                     }
                 }
                 action?.Invoke();
-                yield return null;
-                //yield return new WaitForSeconds(0.5f);
-                //fadeUI?.SetActive(false);
+                fadeUI?.SetActive(false);
             }
         }
 

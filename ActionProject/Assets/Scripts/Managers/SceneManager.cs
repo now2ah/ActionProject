@@ -33,13 +33,13 @@ namespace Action.Manager
         #region FADE IN AND OUT
         public void Fade(UIManager.eFade fade, UnityAction action = null)
         {
-            UIManager.Instance.Fade(fade, _fadeUI, _fadeSpeed, action);
+            UIManager.Instance.Fade(fade, UIManager.Instance.FadeUIPanel, _fadeSpeed, action);
         }
 
         void _LoadFadeImage()
         {
-            _fadeUI = UIManager.Instance.CreateUI("FadeInNOutPanel", UIManager.Instance.MainCanvas);
-            _fadeUI.SetActive(false);
+            //_fadeUI = UIManager.Instance.CreateUI("FadeInNOutPanel", UIManager.Instance.MainCanvas);
+            //_fadeUI.SetActive(false);
         }
         #endregion
 
