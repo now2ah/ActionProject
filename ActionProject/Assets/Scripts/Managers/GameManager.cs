@@ -50,8 +50,11 @@ namespace Action.Manager
         List<GameObject> _playerUnitPrefabs;
         List<GameObject> _playerUnits;
         
-        List<GameObject> _monsterUnitPrefabs;
-        List<GameObject> _monsterUnits;
+        List<GameObject> _enemyUnitPrefabs;
+        List<GameObject> _enemyUnits;
+
+        List<Dictionary<GameObject, int>> _enemyWave;
+        List<List<Dictionary<GameObject, int>>> _enemyWaves;
 
         GameObject _hitBoxPrefab;
         GameObject _hitEffectPrefab;
@@ -66,7 +69,7 @@ namespace Action.Manager
         public Commander CommanderUnit { get { return _commanderUnit; } }
         public List<GameObject> PlayerBuildings { get { return _playerBuildings; } }
         public List<GameObject> PlayerUnits { get { return _playerUnits; } }
-        public List<GameObject> MonsterUnits { get { return _monsterUnits; } }
+        public List<GameObject> EnemyUnits { get { return _enemyUnits; } }
         public GameObject HitBoxPrefab => _hitBoxPrefab;
         public GameObject HitEffectPrefab => _hitEffectPrefab;
         public Material HitMaterial => _hitMaterial;
@@ -86,10 +89,10 @@ namespace Action.Manager
             _playerBuildings = new List<GameObject>();
             _playerUnitPrefabs = new List<GameObject>();
             _playerUnits = new List<GameObject>();
-            _monsterUnitPrefabs = new List<GameObject>();
-            _monsterUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/NormalEnemy") as GameObject);
-            _monsterUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/MeleeEnemy") as GameObject);
-            _monsterUnits = new List<GameObject>();
+            _enemyUnitPrefabs = new List<GameObject>();
+            _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/NormalEnemy") as GameObject);
+            _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/MeleeEnemy") as GameObject);
+            _enemyUnits = new List<GameObject>();
             _hitBoxPrefab = Resources.Load("Prefabs/Misc/HitBox") as GameObject;
             _hitEffectPrefab = Resources.Load("Prefabs/Misc/Hiteffect") as GameObject;
             _hitMaterial = Resources.Load("Materials/HitEffectMat") as Material;
@@ -252,8 +255,8 @@ namespace Action.Manager
             {
                 while (count > 0)
                 {
-                    GameObject obj = _enemySpawners[spawnerIndex].CreateObject(_monsterUnitPrefabs[(int)type]);
-                    _monsterUnits.Add(obj);
+                    GameObject obj = _enemySpawners[spawnerIndex].CreateObject(_enemyUnitPrefabs[(int)type]);
+                    _enemyUnits.Add(obj);
                     count--;
                     yield return new WaitForSeconds(timeRate);
                 }
@@ -281,6 +284,16 @@ namespace Action.Manager
         public void CreateCharacter()
         {
             _CreateCommanderUnit();
+        }
+
+        void _CreateTestWave()
+        {
+            Dictionary<GameObject, int> enemyGroup = new Dictionary<GameObject, int>();
+            enemyGroup.Add(_enemyUnitPrefabs[0], 5);
+            if (null != _enemyWave)
+            {
+                _enemyWave.Add(enemyGroup);
+            }
         }
 
         #endregion
