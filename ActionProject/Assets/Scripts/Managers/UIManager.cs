@@ -96,7 +96,7 @@ namespace Action.Manager
                 }
             }
 
-            foreach (GameObject obj in GameManager.Instance.MonsterUnits)
+            foreach (GameObject obj in GameManager.Instance.EnemyUnits)
             {
                 if (obj.TryGetComponent<Unit>(out Unit comp))
                 {
