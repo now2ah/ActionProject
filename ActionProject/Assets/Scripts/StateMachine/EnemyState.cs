@@ -108,10 +108,10 @@ namespace Action.State
         }
     }
 
-    public class MeleeEnemyIdleState : IdleState
+    public class RangeEnemyIdleState : IdleState
     {
-        MeleeEnemy _enemyUnit;
-        public MeleeEnemyIdleState(MeleeEnemy enemyUnit)
+        RangeEnemy _enemyUnit;
+        public RangeEnemyIdleState(RangeEnemy enemyUnit)
         {
             _enemyUnit = enemyUnit;
         }
@@ -138,7 +138,6 @@ namespace Action.State
                 if (null == _enemyUnit.Target)
                     return;
 
-
                 if (null != _enemyUnit.Target)
                     _enemyUnit.StateMachine.ChangeState(_enemyUnit.MoveState);
 
@@ -147,11 +146,11 @@ namespace Action.State
         }
     }
 
-    public class MeleeEnemyMoveState : MoveState
+    public class RangeEnemyMoveState : MoveState
     {
-        MeleeEnemy _enemyUnit;
+        RangeEnemy _enemyUnit;
 
-        public MeleeEnemyMoveState(MeleeEnemy enemyUnit)
+        public RangeEnemyMoveState(RangeEnemy enemyUnit)
         {
             _enemyUnit = enemyUnit;
         }
@@ -173,28 +172,28 @@ namespace Action.State
             base.UpdateState();
             if (null != _enemyUnit)
             {
-                if (Vector3.Distance(_enemyUnit.transform.position, _enemyUnit.TargetPos) < 1.0f)
-                {
-                    if (_enemyUnit.AttackDistance > _enemyUnit.GetTargetDistance())
-                        _enemyUnit.StateMachine.ChangeState(_enemyUnit.AttackState);
-                    else
-                        _enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
-                }
+                if (_enemyUnit.AttackDistance > _enemyUnit.GetTargetDistance())
+                    _enemyUnit.StateMachine.ChangeState(_enemyUnit.AttackState);
+                else
+                    _enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
             }
         }
     }
 
-    public class MeleeEnemyAttackState : AttackState
+    public class RangeEnemyAttackState : AttackState
     {
-        MeleeEnemy _enemyUnit;
-        public MeleeEnemyAttackState(MeleeEnemy enemyUnit)
+        RangeEnemy _enemyUnit;
+        public RangeEnemyAttackState(RangeEnemy enemyUnit)
         {
             _enemyUnit = enemyUnit;
         }
         public override void EnterState()
         {
             if (null != _enemyUnit)
+            {
                 _enemyUnit.Look(_enemyUnit.Target);
+                _enemyUnit.SetDestination(_enemyUnit.transform.position);
+            }
         }
 
         public override void ExitState()
@@ -206,8 +205,8 @@ namespace Action.State
             base.UpdateState();
             if (null != _enemyUnit && null != _enemyUnit.Target && !_enemyUnit.isAttackCooltime())
                 _enemyUnit.Attack(_enemyUnit.AttackDamage);
-            else if (null == _enemyUnit.Target || _enemyUnit.AttackDistance < _enemyUnit.GetTargetDistance())
-                _enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
+            //else if (null == _enemyUnit.Target || _enemyUnit.AttackDistance < _enemyUnit.GetTargetDistance())
+            //    _enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
         }
     }
 }

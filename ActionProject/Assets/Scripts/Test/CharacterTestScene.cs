@@ -16,7 +16,7 @@ public class CharacterTestScene : MonoBehaviour
         }
         if (GUI.Button(new Rect(50, 150, 300, 50), "Summon Monster", buttonStyle))
         {
-            GameManager.Instance.StartWave(1, 1, 0, Action.Constant.eEnemyType.NORMAL);
+            GameManager.Instance.StartWave(1, 1, 0, Action.Constant.eEnemyType.RANGE);
         }
         GUILayout.EndVertical();
     }

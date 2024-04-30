@@ -42,7 +42,6 @@ namespace Action
         public enum eEnemyType
         {
             NORMAL,
-            MELEE,
             RANGE
         }
     }
