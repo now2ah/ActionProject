@@ -53,8 +53,7 @@ namespace Action.Manager
         List<GameObject> _enemyUnitPrefabs;
         List<GameObject> _enemyUnits;
 
-        List<Dictionary<GameObject, int>> _enemyWave;
-        List<List<Dictionary<GameObject, int>>> _enemyWaves;
+        List<Dictionary<Constant.eEnemyType, int>> _enemyWave;
 
         GameObject _hitBoxPrefab;
         GameObject _hitEffectPrefab;
@@ -71,6 +70,7 @@ namespace Action.Manager
         public List<GameObject> PlayerBuildings { get { return _playerBuildings; } }
         public List<GameObject> PlayerUnits { get { return _playerUnits; } }
         public List<GameObject> EnemyUnits { get { return _enemyUnits; } }
+        public List<Dictionary<Constant.eEnemyType , int>> EnemyWave { get { return _enemyWave; } }
         public GameObject HitBoxPrefab => _hitBoxPrefab;
         public GameObject HitEffectPrefab => _hitEffectPrefab;
         public Material HitMaterial => _hitMaterial;
@@ -95,6 +95,7 @@ namespace Action.Manager
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/NormalEnemy") as GameObject);
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/RangeEnemy") as GameObject);
             _enemyUnits = new List<GameObject>();
+            _enemyWave = new List<Dictionary<Constant.eEnemyType, int>>();
             _hitBoxPrefab = Resources.Load("Prefabs/Misc/HitBox") as GameObject;
             _hitEffectPrefab = Resources.Load("Prefabs/Misc/Hiteffect") as GameObject;
             _hitMaterial = Resources.Load("Materials/HitEffectMat") as Material;
@@ -139,6 +140,15 @@ namespace Action.Manager
             {
                 StopCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate, spawnerIndex, type));
                 StartCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate, spawnerIndex, type));
+            }
+        }
+
+        public void StartWave(Dictionary<Constant.eEnemyType, int> wave, float timeRate, int spawnerIndex)
+        {
+            foreach (var item in wave)
+            {
+                StopCoroutine(_StartWaveCoroutine(item.Value, timeRate, spawnerIndex, item.Key));
+                StartCoroutine(_StartWaveCoroutine(item.Value, timeRate, spawnerIndex, item.Key));
             }
         }
 
@@ -289,10 +299,11 @@ namespace Action.Manager
             _CreateCommanderUnit();
         }
 
-        void _CreateTestWave()
+        public void CreateTestWave()
         {
-            Dictionary<GameObject, int> enemyGroup = new Dictionary<GameObject, int>();
-            enemyGroup.Add(_enemyUnitPrefabs[0], 5);
+            Dictionary<Constant.eEnemyType, int> enemyGroup = new Dictionary<Constant.eEnemyType, int>();
+            enemyGroup.Add(Constant.eEnemyType.NORMAL, 5);
+            enemyGroup.Add(Constant.eEnemyType.RANGE, 2);
             if (null != _enemyWave)
             {
                 _enemyWave.Add(enemyGroup);
