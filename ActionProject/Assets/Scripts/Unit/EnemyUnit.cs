@@ -98,6 +98,14 @@ namespace Action.Units
             gameObject.transform.LookAt(target.transform);
         }
 
+        public void StopMove()
+        {
+            if (null != _navMeshAgent)
+            {
+                SetDestination(transform.position);
+            }
+        }
+
         public void SetDestination(Vector3 vec)
         {
             if (null != _navMeshAgent)

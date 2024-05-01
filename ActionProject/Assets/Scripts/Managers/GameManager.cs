@@ -130,7 +130,7 @@ namespace Action.Manager
         {
             _gamePhase = phase;
             _StartPhaseTimer(phase);
-            Logger.Log(phase.ToString());
+            //Logger.Log(phase.ToString());
         }
 
         public void StartWave(int unitCountPerWave, float timeRate, int spawnerIndex, Constant.eEnemyType type)

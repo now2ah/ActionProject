@@ -29,7 +29,6 @@ namespace Action.Units
             {
                 _CreateProjectile();
                 _lastAttackTime = Time.realtimeSinceStartup;
-                StateMachine.ChangeState(_idleState);
             }
             //Melee
             //if (null != _target)
@@ -56,13 +55,28 @@ namespace Action.Units
                 return false;
         }
 
+        public bool isTargetInDistance()
+        {
+            float dist = Vector3.Distance(transform.position, _target.transform.position);
+            Logger.Log(dist.ToString());
+            if (dist < _attackDistance)
+                return true;
+            else
+                return false;
+        }
+
+        public override void RefreshTargetPosition()
+        {
+            if (_attackState != StateMachine.CurState)
+                SetDestinationToTarget(_target);
+        }
+
         void _CreateProjectile()
         {
             if (null != _target)
             {
-                Quaternion rotation = Quaternion.LookRotation(transform.forward, transform.up);
-                Vector3 shootPosition = transform.position + transform.forward * 1.5f + transform.up * 1.5f;
-                Instantiate(GameManager.Instance.ProjectilePrefab, shootPosition, rotation);
+                Vector3 shootPosition = transform.position + transform.forward * 2.0f + transform.up * 2.0f;
+                Instantiate(GameManager.Instance.ProjectilePrefab, shootPosition, transform.rotation);
             }
         }
 
@@ -70,12 +84,18 @@ namespace Action.Units
         {
             base.Start();
             _attackSpeed = 1.0f;
-            _attackDistance = 25.0f;
+            _attackDistance = 10.0f;
             _lastAttackTime = 0.0f;
             _idleState = new RangeEnemyIdleState(this);
             _moveState = new RangeEnemyMoveState(this);
             _attackState = new RangeEnemyAttackState(this);
             base.StateMachine.Initialize(_idleState);
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+            Debug.DrawRay(transform.position, transform.forward, Color.red);
         }
     }
 }

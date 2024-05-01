@@ -120,6 +120,7 @@ namespace Action.State
         {
             if (null != _enemyUnit)
             {
+                Logger.Log("Idle Enter");
                 _enemyUnit.FindNearestPlayerBuilding();
                 _enemyUnit.FindNearestTarget(true);
             }
@@ -135,6 +136,7 @@ namespace Action.State
 
             if (null != _enemyUnit)
             {
+                Logger.Log("Idle Update");
                 if (null == _enemyUnit.Target)
                     return;
 
@@ -157,8 +159,10 @@ namespace Action.State
 
         public override void EnterState()
         {
+            base.EnterState();
             if (null != _enemyUnit && null != _enemyUnit.Target)
             {
+                Logger.Log("Move Enter");
                 _enemyUnit.SetDestinationToTarget(_enemyUnit.Target);
             }
         }
@@ -172,10 +176,9 @@ namespace Action.State
             base.UpdateState();
             if (null != _enemyUnit)
             {
-                if (_enemyUnit.AttackDistance > _enemyUnit.GetTargetDistance())
+                Logger.Log("Move Update");
+                if (_enemyUnit.isTargetInDistance())
                     _enemyUnit.StateMachine.ChangeState(_enemyUnit.AttackState);
-                else
-                    _enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
             }
         }
     }
@@ -191,8 +194,9 @@ namespace Action.State
         {
             if (null != _enemyUnit)
             {
+                Logger.Log("Attack Enter");
+                
                 _enemyUnit.Look(_enemyUnit.Target);
-                _enemyUnit.SetDestination(_enemyUnit.transform.position);
             }
         }
 
@@ -203,8 +207,16 @@ namespace Action.State
         public override void UpdateState()
         {
             base.UpdateState();
+            
             if (null != _enemyUnit && null != _enemyUnit.Target && !_enemyUnit.isAttackCooltime())
+            {
+                Logger.Log("Attack Update");
                 _enemyUnit.Attack(_enemyUnit.AttackDamage);
+                _enemyUnit.StopMove();
+
+                if (!_enemyUnit.isTargetInDistance())
+                    _enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
+            }
             //else if (null == _enemyUnit.Target || _enemyUnit.AttackDistance < _enemyUnit.GetTargetDistance())
             //    _enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
         }
