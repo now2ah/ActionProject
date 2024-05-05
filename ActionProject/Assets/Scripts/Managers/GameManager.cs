@@ -19,8 +19,8 @@ namespace Action.Manager
     public class GameManager : Singleton<GameManager>
     {
         eGamePhase _gamePhase;
-        bool _isPlaying;            
-        
+        bool _isPlaying;
+
         Vector3 _startPosition;         //베이스 위치
         IEnumerator _waveStartCoroutine;
 
@@ -49,7 +49,7 @@ namespace Action.Manager
 
         List<GameObject> _playerUnitPrefabs;
         List<GameObject> _playerUnits;
-        
+
         List<GameObject> _enemyUnitPrefabs;
         List<GameObject> _enemyUnits;
 
@@ -70,7 +70,7 @@ namespace Action.Manager
         public List<GameObject> PlayerBuildings { get { return _playerBuildings; } }
         public List<GameObject> PlayerUnits { get { return _playerUnits; } }
         public List<GameObject> EnemyUnits { get { return _enemyUnits; } }
-        public List<Dictionary<Constant.eEnemyType , int>> EnemyWave { get { return _enemyWave; } }
+        public List<Dictionary<Constant.eEnemyType, int>> EnemyWave { get { return _enemyWave; } }
         public GameObject HitBoxPrefab => _hitBoxPrefab;
         public GameObject HitEffectPrefab => _hitEffectPrefab;
         public Material HitMaterial => _hitMaterial;
@@ -79,7 +79,7 @@ namespace Action.Manager
         public override void Initialize()
         {
             base.Initialize();
-            _waveStartCoroutine = _StartWaveCoroutine(5, 1, 0, Constant.eEnemyType.NORMAL);
+            //_waveStartCoroutine = _StartWaveCoroutine(5, 1, 0, Constant.eEnemyType.NORMAL);
 
             _gameTimer = gameObject.AddComponent<ActionTime>();
             _phaseTimer = gameObject.AddComponent<ActionTime>();
@@ -134,22 +134,19 @@ namespace Action.Manager
             //Logger.Log(phase.ToString());
         }
 
-        public void StartWave(int unitCountPerWave, float timeRate, int spawnerIndex, Constant.eEnemyType type)
-        {
-            if (null != _waveStartCoroutine)
-            {
-                StopCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate, spawnerIndex, type));
-                StartCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate, spawnerIndex, type));
-            }
-        }
+        //public void StartWave(int unitCountPerWave, float timeRate, int spawnerIndex, Constant.eEnemyType type)
+        //{
+        //    if (null != _waveStartCoroutine)
+        //    {
+        //        StopCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate, spawnerIndex, type));
+        //        StartCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate, spawnerIndex, type));
+        //    }
+        //}
 
         public void StartWave(Dictionary<Constant.eEnemyType, int> wave, float timeRate, int spawnerIndex)
         {
-            foreach (var item in wave)
-            {
-                StopCoroutine(_StartWaveCoroutine(item.Value, timeRate, spawnerIndex, item.Key));
-                StartCoroutine(_StartWaveCoroutine(item.Value, timeRate, spawnerIndex, item.Key));
-            }
+            StopCoroutine(_StartWaveCoroutine(wave, timeRate, spawnerIndex));
+            StartCoroutine(_StartWaveCoroutine(wave, timeRate, spawnerIndex));
         }
 
         Vector3 _FindBasePoint()
@@ -180,7 +177,7 @@ namespace Action.Manager
         {
             UIManager.Instance.RefreshTownStageUI();
 
-            if(_phaseTimer.IsFinish)
+            if (_phaseTimer.IsFinish)
             {
                 if ((int)_gamePhase + 1 > 2)
                     _gamePhase = 0;
@@ -241,7 +238,7 @@ namespace Action.Manager
 
         void _CreateCommanderUnit()
         {
-            if(null == _commanderUnitObj)
+            if (null == _commanderUnitObj)
             {
                 Vector3 startPos = Vector3.zero;
                 if (null != _playerBase)
@@ -260,18 +257,20 @@ namespace Action.Manager
             }
         }
 
-        IEnumerator  _StartWaveCoroutine(int unitCountPerWave, float timeRate, int spawnerIndex, Constant.eEnemyType type)
+        IEnumerator _StartWaveCoroutine(Dictionary<Constant.eEnemyType, int> wave, float timeRate, int spawnerIndex)
         {
-            int count = unitCountPerWave;
-
             if (0 < _enemySpawners.Count)
             {
-                while (count > 0)
+                foreach (var item in wave)
                 {
-                    GameObject obj = _enemySpawners[spawnerIndex].CreateObject(_enemyUnitPrefabs[(int)type]);
-                    _enemyUnits.Add(obj);
-                    count--;
-                    yield return new WaitForSeconds(timeRate);
+                    int count = item.Value;
+                    while (count > 0)
+                    {
+                        GameObject obj = _enemySpawners[spawnerIndex].CreateObject(_enemyUnitPrefabs[(int)item.Key]);
+                        _enemyUnits.Add(obj);
+                        count--;
+                        yield return new WaitForSeconds(timeRate);
+                    }
                 }
             }
         }
@@ -286,7 +285,7 @@ namespace Action.Manager
 
         private void Update()
         {
-            if(_isPlaying)
+            if (_isPlaying)
             {
                 _CheckPhaseTime();
                 _CheckRefreshTime();
