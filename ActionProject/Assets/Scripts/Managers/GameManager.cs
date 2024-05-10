@@ -28,6 +28,13 @@ namespace Action.Manager
         ActionTime _phaseTimer;
         ActionTime _refreshTimer;
 
+        [SerializeField]
+        float _townBuildPhaseTime;
+        [SerializeField]
+        float _huntPhaseTime;
+        [SerializeField]
+        float _defensePhaseTime;
+
         public ActionTime PhaseTimer => _phaseTimer;
         public ActionTime RefreshTimer => _refreshTimer;
 
@@ -64,6 +71,9 @@ namespace Action.Manager
         Resource _resource;
         public Resource Resource => _resource;
 
+        public float TownBuildPhaseTime { get { return _townBuildPhaseTime; } set { _townBuildPhaseTime = value; } }
+        public float HuntPhaseTime { get { return _huntPhaseTime; } set { _huntPhaseTime = value; } }
+        public float DefensePhaseTime { get { return _defensePhaseTime; } set { _defensePhaseTime = value; } }
         public GameObject PlayerBase { get { return _playerBase; } set { _playerBase = value; } }
         public GameObject CommanderObj { get { return _commanderUnitObj; } set { _commanderUnitObj = value; } }
         public Commander CommanderUnit { get { return _commanderUnit; } }
@@ -81,6 +91,9 @@ namespace Action.Manager
             base.Initialize();
             //_waveStartCoroutine = _StartWaveCoroutine(5, 1, 0, Constant.eEnemyType.NORMAL);
 
+            _townBuildPhaseTime = Constant.TOWNBUILD_PHASE_TIME;
+            _huntPhaseTime = Constant.HUNT_PHASE_TIME;
+            _defensePhaseTime = Constant.DEFENSE_PHASE_TIME;
             _gameTimer = gameObject.AddComponent<ActionTime>();
             _phaseTimer = gameObject.AddComponent<ActionTime>();
             _refreshTimer = gameObject.AddComponent<ActionTime>();
@@ -204,16 +217,17 @@ namespace Action.Manager
 
         void _StartPhaseTimer(eGamePhase phase)
         {
+            Logger.Log(phase.ToString());
             switch (phase)
             {
                 case eGamePhase.TownBuild:
-                    _phaseTimer.TickStart(Constant.TOWNBUILD_PHASE_TIME);
+                    _phaseTimer.TickStart(_townBuildPhaseTime);
                     break;
                 case eGamePhase.Hunt:
-                    _phaseTimer.TickStart(Constant.HUNT_PHASE_TIME);
+                    _phaseTimer.TickStart(_huntPhaseTime);
                     break;
                 case eGamePhase.Defense:
-                    _phaseTimer.TickStart(Constant.DEFENSE_PHASE_TIME);
+                    _phaseTimer.TickStart(_defensePhaseTime);
                     break;
             }
         }
