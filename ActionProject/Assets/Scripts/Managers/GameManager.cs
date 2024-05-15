@@ -60,6 +60,8 @@ namespace Action.Manager
         List<GameObject> _enemyUnitPrefabs;
         List<GameObject> _enemyUnits;
 
+        List<List<Dictionary<Constant.eEnemyType, int>>> _enemyWaves;
+        //Test
         List<Dictionary<Constant.eEnemyType, int>> _enemyWave;
 
         GameObject _hitBoxPrefab;
@@ -80,6 +82,7 @@ namespace Action.Manager
         public List<GameObject> PlayerBuildings { get { return _playerBuildings; } }
         public List<GameObject> PlayerUnits { get { return _playerUnits; } }
         public List<GameObject> EnemyUnits { get { return _enemyUnits; } }
+        public List<List<Dictionary<Constant.eEnemyType, int>>> EnemyWaves { get { return _enemyWaves; } }
         public List<Dictionary<Constant.eEnemyType, int>> EnemyWave { get { return _enemyWave; } }
         public GameObject HitBoxPrefab => _hitBoxPrefab;
         public GameObject HitEffectPrefab => _hitEffectPrefab;
@@ -108,6 +111,7 @@ namespace Action.Manager
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/NormalEnemy") as GameObject);
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/RangeEnemy") as GameObject);
             _enemyUnits = new List<GameObject>();
+            _enemyWaves = new List<List<Dictionary<Constant.eEnemyType, int>>>();
             _enemyWave = new List<Dictionary<Constant.eEnemyType, int>>();
             _hitBoxPrefab = Resources.Load("Prefabs/Misc/HitBox") as GameObject;
             _hitEffectPrefab = Resources.Load("Prefabs/Misc/Hiteffect") as GameObject;
