@@ -6,6 +6,7 @@ using Action.Util;
 using Action.UI;
 using Action.Units;
 using Action.Game;
+using Action.SO;
 
 namespace Action.Manager
 {
@@ -60,7 +61,7 @@ namespace Action.Manager
         List<GameObject> _enemyUnitPrefabs;
         List<GameObject> _enemyUnits;
 
-        List<List<Dictionary<Constant.eEnemyType, int>>> _enemyWaves;
+        EnemyWaves _enemyWaves;
         //Test
         List<Dictionary<Constant.eEnemyType, int>> _enemyWave;
 
@@ -82,7 +83,7 @@ namespace Action.Manager
         public List<GameObject> PlayerBuildings { get { return _playerBuildings; } }
         public List<GameObject> PlayerUnits { get { return _playerUnits; } }
         public List<GameObject> EnemyUnits { get { return _enemyUnits; } }
-        public List<List<Dictionary<Constant.eEnemyType, int>>> EnemyWaves { get { return _enemyWaves; } }
+        public EnemyWaves EnemyWaves { get { return _enemyWaves; } }
         public List<Dictionary<Constant.eEnemyType, int>> EnemyWave { get { return _enemyWave; } }
         public GameObject HitBoxPrefab => _hitBoxPrefab;
         public GameObject HitEffectPrefab => _hitEffectPrefab;
@@ -111,7 +112,7 @@ namespace Action.Manager
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/NormalEnemy") as GameObject);
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/RangeEnemy") as GameObject);
             _enemyUnits = new List<GameObject>();
-            _enemyWaves = new List<List<Dictionary<Constant.eEnemyType, int>>>();
+            _enemyWaves = Resources.Load("ScriptableObject/EnemyWaves") as EnemyWaves;
             _enemyWave = new List<Dictionary<Constant.eEnemyType, int>>();
             _hitBoxPrefab = Resources.Load("Prefabs/Misc/HitBox") as GameObject;
             _hitEffectPrefab = Resources.Load("Prefabs/Misc/Hiteffect") as GameObject;
@@ -119,6 +120,14 @@ namespace Action.Manager
             _projectilePrefab = Resources.Load("Prefabs/Misc/Projectile") as GameObject;
 
             _AddEnemySpawners();
+
+            foreach (var enemyWave in _enemyWaves.enemyWaveList)
+            {
+                foreach(var enemyGroup in enemyWave.enemyGroupList)
+                {
+                    Logger.Log(enemyGroup.type.ToString() + "/" + enemyGroup.enemyAmount);
+                }
+            }
         }
 
         public void GameStart()
