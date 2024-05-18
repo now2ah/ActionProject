@@ -62,8 +62,7 @@ namespace Action.Manager
         List<GameObject> _enemyUnits;
 
         EnemyWaves _enemyWaves;
-        //Test
-        List<Dictionary<Constant.eEnemyType, int>> _enemyWave;
+        int _curWaveOrder;
 
         GameObject _hitBoxPrefab;
         GameObject _hitEffectPrefab;
@@ -84,7 +83,6 @@ namespace Action.Manager
         public List<GameObject> PlayerUnits { get { return _playerUnits; } }
         public List<GameObject> EnemyUnits { get { return _enemyUnits; } }
         public EnemyWaves EnemyWaves { get { return _enemyWaves; } }
-        public List<Dictionary<Constant.eEnemyType, int>> EnemyWave { get { return _enemyWave; } }
         public GameObject HitBoxPrefab => _hitBoxPrefab;
         public GameObject HitEffectPrefab => _hitEffectPrefab;
         public Material HitMaterial => _hitMaterial;
@@ -113,21 +111,13 @@ namespace Action.Manager
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/RangeEnemy") as GameObject);
             _enemyUnits = new List<GameObject>();
             _enemyWaves = Resources.Load("ScriptableObject/EnemyWaves") as EnemyWaves;
-            _enemyWave = new List<Dictionary<Constant.eEnemyType, int>>();
+            _curWaveOrder = -1;
             _hitBoxPrefab = Resources.Load("Prefabs/Misc/HitBox") as GameObject;
             _hitEffectPrefab = Resources.Load("Prefabs/Misc/Hiteffect") as GameObject;
             _hitMaterial = Resources.Load("Materials/HitEffectMat") as Material;
             _projectilePrefab = Resources.Load("Prefabs/Misc/Projectile") as GameObject;
 
             _AddEnemySpawners();
-
-            foreach (var enemyWave in _enemyWaves.enemyWaveList)
-            {
-                foreach(var enemyGroup in enemyWave.enemyGroupList)
-                {
-                    Logger.Log(enemyGroup.type.ToString() + "/" + enemyGroup.enemyAmount);
-                }
-            }
         }
 
         public void GameStart()
@@ -157,7 +147,19 @@ namespace Action.Manager
         {
             _gamePhase = phase;
             _StartPhaseTimer(phase);
-            //Logger.Log(phase.ToString());
+
+            switch (phase)
+            {
+                case eGamePhase.TownBuild:
+                    break;
+
+                case eGamePhase.Hunt:
+                    break;
+
+                case eGamePhase.Defense:
+                    StartWave(_enemyWaves, 1.0f, 0);
+                    break;
+            }
         }
 
         //public void StartWave(int unitCountPerWave, float timeRate, int spawnerIndex, Constant.eEnemyType type)
@@ -169,10 +171,11 @@ namespace Action.Manager
         //    }
         //}
 
-        public void StartWave(Dictionary<Constant.eEnemyType, int> wave, float timeRate, int spawnerIndex)
+        public void StartWave(EnemyWaves waves, float timeRate, int spawnerIndex)
         {
-            StopCoroutine(_StartWaveCoroutine(wave, timeRate, spawnerIndex));
-            StartCoroutine(_StartWaveCoroutine(wave, timeRate, spawnerIndex));
+            _curWaveOrder++;
+            StopCoroutine(_StartWaveCoroutine(waves, _curWaveOrder, timeRate, spawnerIndex));
+            StartCoroutine(_StartWaveCoroutine(waves, _curWaveOrder, timeRate, spawnerIndex));
         }
 
         Vector3 _FindBasePoint()
@@ -284,16 +287,16 @@ namespace Action.Manager
             }
         }
 
-        IEnumerator _StartWaveCoroutine(Dictionary<Constant.eEnemyType, int> wave, float timeRate, int spawnerIndex)
+        IEnumerator _StartWaveCoroutine(EnemyWaves waves, int order, float timeRate, int spawnerIndex)
         {
             if (0 < _enemySpawners.Count)
             {
-                foreach (var item in wave)
+                foreach (var item in waves.enemyWaveList[order].enemyGroupList)
                 {
-                    int count = item.Value;
+                    int count = item.enemyAmount;
                     while (count > 0)
                     {
-                        GameObject obj = _enemySpawners[spawnerIndex].CreateObject(_enemyUnitPrefabs[(int)item.Key]);
+                        GameObject obj = _enemySpawners[spawnerIndex].CreateObject(_enemyUnitPrefabs[(int)item.type]);
                         _enemyUnits.Add(obj);
                         count--;
                         yield return new WaitForSeconds(timeRate);
@@ -327,13 +330,7 @@ namespace Action.Manager
 
         public void CreateTestWave()
         {
-            Dictionary<Constant.eEnemyType, int> enemyGroup = new Dictionary<Constant.eEnemyType, int>();
-            enemyGroup.Add(Constant.eEnemyType.NORMAL, 5);
-            enemyGroup.Add(Constant.eEnemyType.RANGE, 2);
-            if (null != _enemyWave)
-            {
-                _enemyWave.Add(enemyGroup);
-            }
+            StartWave(_enemyWaves, 1.0f, 0);
         }
 
         #endregion
