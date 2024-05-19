@@ -41,7 +41,7 @@ namespace Action.State
                 if (null != _enemyUnit.Target)
                     _enemyUnit.StateMachine.ChangeState(_enemyUnit.MoveState);
 
-                _enemyUnit.FindNearestTarget(true);
+                //_enemyUnit.FindNearestTarget(true);
             }
         }
     }
@@ -120,7 +120,7 @@ namespace Action.State
         {
             if (null != _enemyUnit)
             {
-                Logger.Log("Idle Enter");
+                //Logger.Log("Idle Enter");
                 _enemyUnit.FindNearestPlayerBuilding();
                 _enemyUnit.FindNearestTarget(true);
             }
@@ -136,14 +136,14 @@ namespace Action.State
 
             if (null != _enemyUnit)
             {
-                Logger.Log("Idle Update");
+                //Logger.Log("Idle Update");
                 if (null == _enemyUnit.Target)
                     return;
 
                 if (null != _enemyUnit.Target)
                     _enemyUnit.StateMachine.ChangeState(_enemyUnit.MoveState);
 
-                _enemyUnit.FindNearestTarget(true);
+                //_enemyUnit.FindNearestTarget(true);
             }
         }
     }
@@ -162,7 +162,7 @@ namespace Action.State
             base.EnterState();
             if (null != _enemyUnit && null != _enemyUnit.Target)
             {
-                Logger.Log("Move Enter");
+                //Logger.Log("Move Enter");
                 _enemyUnit.SetDestinationToTarget(_enemyUnit.Target);
             }
         }
@@ -176,7 +176,7 @@ namespace Action.State
             base.UpdateState();
             if (null != _enemyUnit)
             {
-                Logger.Log("Move Update");
+                //Logger.Log("Move Update");
                 if (_enemyUnit.isTargetInDistance())
                     _enemyUnit.StateMachine.ChangeState(_enemyUnit.AttackState);
             }
@@ -194,7 +194,7 @@ namespace Action.State
         {
             if (null != _enemyUnit)
             {
-                Logger.Log("Attack Enter");
+                //Logger.Log("Attack Enter");
                 
                 _enemyUnit.Look(_enemyUnit.Target);
             }
@@ -210,7 +210,7 @@ namespace Action.State
             
             if (null != _enemyUnit && null != _enemyUnit.Target && !_enemyUnit.isAttackCooltime())
             {
-                Logger.Log("Attack Update");
+                //Logger.Log("Attack Update");
                 _enemyUnit.Attack(_enemyUnit.AttackDamage);
                 _enemyUnit.StopMove();
 

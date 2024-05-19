@@ -12,4 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1562bd1ef5744654b87d35c3ecdd73dc, type: 3}
   m_Name: EnemyWaves
   m_EditorClassIdentifier: 
-  enemyWaveList: []
+  enemyWaveList:
+  - enemyGroupList:
+    - type: 0
+      enemyAmount: 2
+    - type: 1
+      enemyAmount: 1
+  - enemyGroupList:
+    - type: 0
+      enemyAmount: 3
+    - type: 1
+      enemyAmount: 2

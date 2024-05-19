@@ -174,8 +174,11 @@ namespace Action.Manager
         public void StartWave(EnemyWaves waves, float timeRate, int spawnerIndex)
         {
             _curWaveOrder++;
-            StopCoroutine(_StartWaveCoroutine(waves, _curWaveOrder, timeRate, spawnerIndex));
-            StartCoroutine(_StartWaveCoroutine(waves, _curWaveOrder, timeRate, spawnerIndex));
+            if (_curWaveOrder < waves.enemyWaveList.Count)
+            {
+                StopCoroutine(_StartWaveCoroutine(waves, _curWaveOrder, timeRate, spawnerIndex));
+                StartCoroutine(_StartWaveCoroutine(waves, _curWaveOrder, timeRate, spawnerIndex));
+            }
         }
 
         Vector3 _FindBasePoint()

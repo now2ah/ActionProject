@@ -58,7 +58,7 @@ namespace Action.Units
         public bool isTargetInDistance()
         {
             float dist = Vector3.Distance(transform.position, _target.transform.position);
-            Logger.Log(dist.ToString());
+            //Logger.Log(dist.ToString());
             if (dist < _attackDistance)
                 return true;
             else
@@ -67,6 +67,7 @@ namespace Action.Units
 
         public override void RefreshTargetPosition()
         {
+            FindNearestTarget(true);
             if (_attackState != StateMachine.CurState)
                 SetDestinationToTarget(_target);
         }

@@ -26,6 +26,7 @@ namespace Action.Units
 
         public override void RefreshTargetPosition()
         {
+            FindNearestTarget(true);
             if (_moveState == StateMachine.CurState)
                 SetDestinationToTarget(_target);
         }
