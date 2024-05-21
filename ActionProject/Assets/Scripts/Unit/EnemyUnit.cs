@@ -8,18 +8,25 @@ using Action.Manager;
 
 namespace Action.Units
 {
-    public class EnemyUnit : Unit
+    public class EnemyUnit : Unit, IMovable
     {
         NavMeshAgent _navMeshAgent;
 
+        float _speed;
         int _attackDamage;
-        
+        float _attackSpeed;
+        float _attackDistance;
+
         protected GameObject _target;
         GameObject _nearestPlayerBuilding;
         GameObject _commanderUnit;
         Vector3 _targetPos;
 
+        public float Speed { get { return _speed; } set { _speed = value; } }
+        public NavMeshAgent NavMeshAgentComp { get { return _navMeshAgent; } set { _navMeshAgent = value; } }
         public int AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
+        public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
+        public float AttackDistance { get { return _attackDistance; } set { _attackDistance = value; } }
 
         public GameObject Target { get { return _target; } set { _target = value; } }
         public Vector3 TargetPos { get { return _targetPos; } set { _targetPos = value; } }
@@ -29,6 +36,12 @@ namespace Action.Units
             base.Initialize();
             GameManager.Instance.OnRefresh.AddListener(RefreshTargetPosition);
             IsOnUnitPanel = false;
+        }
+
+        public void SetSpeed(float speed)
+        {
+            if (null != _navMeshAgent)
+                _navMeshAgent.speed = speed;
         }
 
         public void FindNearestPlayerBuilding()

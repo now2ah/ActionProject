@@ -3,25 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using Action.Manager;
 using Action.State;
+using Action.SO;
 
 namespace Action.Units
 {
     public class RangeEnemy : EnemyUnit
     {
-        float _attackSpeed;
-        float _attackDistance;
+        UnitStatsSO _unitStats;
+
         float _lastAttackTime;
 
         RangeEnemyIdleState _idleState;
         RangeEnemyMoveState _moveState;
         RangeEnemyAttackState _attackState;
 
-        public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
-        public float AttackDistance { get { return _attackDistance; } set { _attackDistance = value; } }
-
         public RangeEnemyIdleState IdleState => _idleState;
         public RangeEnemyMoveState MoveState => _moveState;
         public RangeEnemyAttackState AttackState => _attackState;
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            UnitName = _unitStats.unitName;
+            MaxHp = _unitStats.maxHp;
+            HP = _unitStats.maxHp;
+            AttackDamage = _unitStats.attackDamage;
+            AttackSpeed = _unitStats.attackSpeed;
+            AttackDistance = _unitStats.attackDistance;
+            SetNameUI(UnitName);
+        }
 
         public void Attack(int damage)
         {
@@ -49,7 +59,7 @@ namespace Action.Units
 
         public bool isAttackCooltime()
         {
-            if (Time.realtimeSinceStartup < _lastAttackTime + _attackSpeed)
+            if (Time.realtimeSinceStartup < _lastAttackTime + AttackSpeed)
                 return true;
             else
                 return false;
@@ -59,7 +69,7 @@ namespace Action.Units
         {
             float dist = Vector3.Distance(transform.position, _target.transform.position);
             //Logger.Log(dist.ToString());
-            if (dist < _attackDistance)
+            if (dist < AttackDistance)
                 return true;
             else
                 return false;
@@ -81,15 +91,19 @@ namespace Action.Units
             }
         }
 
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
-            _attackSpeed = 1.0f;
-            _attackDistance = 10.0f;
+            base.Awake();
+            _unitStats = Resources.Load("ScriptableObject/UnitStats/RangeEnemyStats") as UnitStatsSO;
             _lastAttackTime = 0.0f;
             _idleState = new RangeEnemyIdleState(this);
             _moveState = new RangeEnemyMoveState(this);
             _attackState = new RangeEnemyAttackState(this);
+        }
+
+        protected override void Start()
+        {
+            base.Start();
             base.StateMachine.Initialize(_idleState);
         }
 

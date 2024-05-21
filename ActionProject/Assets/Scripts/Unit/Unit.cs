@@ -17,7 +17,6 @@ namespace Action.Units
 
         float _hp;
         float _maxHp;
-        float _speed;
 
         string _unitName;
         bool _canDamaged;
@@ -33,7 +32,6 @@ namespace Action.Units
         public Material UnitMaterial { get { return _unitMaterial; } set { _unitMaterial = value; } }
         public float HP { get { return _hp; } set { _hp = value; } }
         public float MaxHp { get { return _maxHp; } set { _maxHp = value; } }
-        public float Speed { get { return _speed; } set { _speed = value; } }
         public float InfoActiveDistant { get { return _infoActiveDistant; } set { _infoActiveDistant = value; } }
         public bool IsOnUnitPanel { get { return _isOnUnitPanel; } set { _isOnUnitPanel = value; } }
 
@@ -127,7 +125,6 @@ namespace Action.Units
             _unitName = "default_name";
             _hp = 10;
             _maxHp = 10;
-            _speed = 1.0f;
             _isOnUnitPanel = true;
         }
 

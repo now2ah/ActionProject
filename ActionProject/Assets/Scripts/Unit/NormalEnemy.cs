@@ -4,15 +4,15 @@ using UnityEngine;
 using UnityEngine.Events;
 using Action.State;
 using Action.Util;
+using Action.SO;
 
 namespace Action.Units
 {
     public class NormalEnemy : EnemyUnit
     {
+        UnitStatsSO _unitStats;
         bool _isAttackCooltime;
         ActionTime _attackTimer;
-
-        float _attackCooltime = 1.0f;
 
         EnemyIdleState _idleState;
         EnemyMoveState _moveState;
@@ -23,6 +23,17 @@ namespace Action.Units
         public EnemyIdleState IdleState => _idleState;
         public EnemyMoveState MoveState => _moveState;
         public EnemyAttackState AttackState => _attackState;
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            UnitName = _unitStats.unitName;
+            MaxHp = _unitStats.maxHp;
+            HP = _unitStats.maxHp;
+            AttackDamage = _unitStats.attackDamage;
+            AttackSpeed = _unitStats.attackSpeed;
+            SetNameUI(UnitName);
+        }
 
         public override void RefreshTargetPosition()
         {
@@ -57,7 +68,7 @@ namespace Action.Units
                 };
                 colUnit.ApplyDamage(msg);
                 _isAttackCooltime = true;
-                _attackTimer.TickStart(_attackCooltime);
+                _attackTimer.TickStart(AttackSpeed);
             }
         }
 
@@ -73,15 +84,21 @@ namespace Action.Units
             }
         }
 
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
+            _unitStats = Resources.Load("ScriptableObject/UnitStats/NormalEnemyStats") as UnitStatsSO;
             _isAttackCooltime = false;
             _attackTimer = gameObject.AddComponent<ActionTime>();
             _idleState = new EnemyIdleState(this);
             _moveState = new EnemyMoveState(this);
             _attackState = new EnemyAttackState(this);
-            base.StateMachine.Initialize(_idleState);
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+            StateMachine.Initialize(_idleState);
         }
 
         protected override void Update()

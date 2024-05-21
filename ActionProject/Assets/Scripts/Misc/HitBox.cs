@@ -14,7 +14,7 @@ namespace Action.Game
         Collider _collider;
         GameObject _hitEffectObj;
 
-        public HitBox(Constant.eHitBoxType type, Unit damager, float damageAmount)
+        public void Initialize(Constant.eHitBoxType type, Unit damager, float damageAmount)
         {
             _type = type;
             _damager = damager;

@@ -23,7 +23,7 @@ namespace Action.Units
         public void Move(Vector3 position)
         {
             transform.LookAt(position);
-            transform.Translate(position * Speed * Time.deltaTime);
+            //transform.Translate(position * Speed * Time.deltaTime);
         }
 
         // Start is called before the first frame update

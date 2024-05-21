@@ -5,11 +5,13 @@ using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using Action.State;
 using Action.Manager;
+using Action.SO;
 
 namespace Action.Units
 {
     public class Commander : PlayerUnit
     {
+        UnitStatsSO _unitStats;
         Vector2 inputVector;
 
         CommanderIdleState _idleState;
@@ -33,10 +35,11 @@ namespace Action.Units
         public override void Initialize()
         {
             base.Initialize();
-            name = "Commander";
-            MaxHp = 200;
-            HP = MaxHp - 50;
-            SetNameUI(name);
+            UnitName = _unitStats.unitName;
+            MaxHp = _unitStats.maxHp;
+            HP = _unitStats.maxHp;
+            AttackDamage = _unitStats.attackDamage;
+            SetNameUI(UnitName);
             UnitPanel.Show();
             _animHashMoving = Animator.StringToHash("isMoving");
             _animHashAttacking = Animator.StringToHash("isAttacking");
@@ -111,11 +114,15 @@ namespace Action.Units
             }
         }
 
-        void _CreateHitBox()
+        void _CreateHitBox(float attackDamage)
         {
             //나중에 풀링으로 변경
             Vector3 pos = transform.position + transform.forward * 2.0f + transform.up * 1.5f;
-            Instantiate(GameManager.Instance.HitBoxPrefab, pos, Quaternion.identity);
+            GameObject hitboxObj = Instantiate(GameManager.Instance.HitBoxPrefab, pos, Quaternion.identity);
+            if (hitboxObj.TryGetComponent<Game.HitBox>(out Game.HitBox comp))
+            {
+                comp.Initialize(Constant.eHitBoxType.ONLY_ENEMY, this, attackDamage);
+            }
         }
 
         IEnumerator PhysicalAttackCoroutine()
@@ -123,7 +130,7 @@ namespace Action.Units
             _isAttacking = true;
             _animator.SetBool(_animHashAttacking, _isAttacking);
             yield return new WaitForSeconds(0.2f);
-            _CreateHitBox();
+            _CreateHitBox(AttackDamage);
             //yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
             yield return new WaitForSeconds(0.3f);
             _isAttacking = false;
@@ -134,6 +141,7 @@ namespace Action.Units
         protected override void Awake()
         {
             base.Awake();
+            _unitStats = Resources.Load("ScriptableObject/UnitStats/CommanderStats") as UnitStatsSO;
             _isMoving = false;
             _interactingBuilding = null;
             _animator = GetComponentInChildren<Animator>();
