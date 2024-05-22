@@ -4,6 +4,7 @@ using UnityEngine;
 using Action.Manager;
 using Action.State;
 using Action.SO;
+using Action.Game;
 
 namespace Action.Units
 {
@@ -12,6 +13,8 @@ namespace Action.Units
         UnitStatsSO _unitStats;
 
         float _lastAttackTime;
+
+        ObjectPooler<Projectile> _projectilePool;
 
         RangeEnemyIdleState _idleState;
         RangeEnemyMoveState _moveState;
@@ -31,6 +34,8 @@ namespace Action.Units
             AttackSpeed = _unitStats.attackSpeed;
             AttackDistance = _unitStats.attackDistance;
             SetNameUI(UnitName);
+            Projectile projectile = GameManager.Instance.ProjectilePrefab.GetComponent<Projectile>();
+            _projectilePool.Initialize(projectile, 25);
         }
 
         public void Attack(int damage)
@@ -87,7 +92,11 @@ namespace Action.Units
             if (null != _target)
             {
                 Vector3 shootPosition = transform.position + transform.forward * 2.0f + transform.up * 2.0f;
-                Instantiate(GameManager.Instance.ProjectilePrefab, shootPosition, transform.rotation);
+                Game.Projectile projectile = _projectilePool.GetNew();
+                projectile.transform.position = shootPosition;
+                projectile.transform.rotation = transform.rotation;
+
+                //Instantiate(GameManager.Instance.ProjectilePrefab, shootPosition, transform.rotation);
             }
         }
 
@@ -96,6 +105,7 @@ namespace Action.Units
             base.Awake();
             _unitStats = Resources.Load("ScriptableObject/UnitStats/RangeEnemyStats") as UnitStatsSO;
             _lastAttackTime = 0.0f;
+            _projectilePool = new ObjectPooler<Projectile>();
             _idleState = new RangeEnemyIdleState(this);
             _moveState = new RangeEnemyMoveState(this);
             _attackState = new RangeEnemyAttackState(this);
@@ -110,7 +120,6 @@ namespace Action.Units
         protected override void Update()
         {
             base.Update();
-            Debug.DrawRay(transform.position, transform.forward, Color.red);
         }
     }
 }
