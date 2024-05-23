@@ -11,6 +11,7 @@ namespace Action.Units
     public class EnemyUnit : Unit, IMovable
     {
         NavMeshAgent _navMeshAgent;
+        Rigidbody _rigidBody;
 
         float _speed;
         int _attackDamage;
@@ -116,6 +117,7 @@ namespace Action.Units
             if (null != _navMeshAgent)
             {
                 SetDestination(transform.position);
+                _rigidBody.velocity = Vector3.zero;
             }
         }
 
@@ -155,6 +157,7 @@ namespace Action.Units
         {
             base.Awake();
             _navMeshAgent = GetComponent<NavMeshAgent>();
+            _rigidBody = GetComponent<Rigidbody>();
             _attackDamage = 1;
             _targetPos = Vector3.zero;
         }

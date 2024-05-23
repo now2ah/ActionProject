@@ -211,6 +211,7 @@ namespace Action.State
             if (null != _enemyUnit && null != _enemyUnit.Target && !_enemyUnit.isAttackCooltime())
             {
                 //Logger.Log("Attack Update");
+                _enemyUnit.Look(_enemyUnit.Target);
                 _enemyUnit.Attack(_enemyUnit.AttackDamage);
                 _enemyUnit.StopMove();
 
