@@ -34,7 +34,7 @@ namespace Action.Units
             AttackSpeed = _unitStats.attackSpeed;
             AttackDistance = _unitStats.attackDistance;
             SetNameUI(UnitName);
-            Projectile projectile = GameManager.Instance.ProjectilePrefab.GetComponent<Projectile>();
+            Projectile projectile = GameManager.Instance.ProjectilePrefab.AddComponent<NormalProjectile>();
             _projectilePool.Initialize(projectile, 25);
         }
 

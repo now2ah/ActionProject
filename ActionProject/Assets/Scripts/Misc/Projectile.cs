@@ -8,7 +8,7 @@ namespace Action.Game
     {
         public int PoolID { get; set; }
         public ObjectPooler<Projectile> Pool { get; set; }
-        float _speed;
+        protected float _speed;
 
         IEnumerator DestroyCoroutine()
         {
@@ -17,16 +17,57 @@ namespace Action.Game
         }
 
         // Start is called before the first frame update
-        void Start()
+        protected virtual void Start()
         {
             _speed = 0.2f;
             StartCoroutine(DestroyCoroutine());
         }
 
-        // Update is called once per frame
-        void FixedUpdate()
+        protected virtual void FixedUpdate()
+        {
+
+        }
+    }
+
+    public class NormalProjectile : Projectile
+    {
+        void _MoveForward()
         {
             transform.Translate(Vector3.forward * _speed);
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+        }
+
+        protected override void FixedUpdate()
+        {
+            base.FixedUpdate();
+            _MoveForward();
+        }
+    }
+
+    public class GuideProjectile : NormalProjectile
+    {
+        GameObject _target;
+        public GameObject Target { get { return _target; } set { _target = value; } }
+
+        void _FollowTarget()
+        {
+            if (null != _target)
+                transform.LookAt(_target.transform);
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+        }
+
+        protected override void FixedUpdate()
+        {
+            base.FixedUpdate();
+            _FollowTarget();
         }
     }
 }
