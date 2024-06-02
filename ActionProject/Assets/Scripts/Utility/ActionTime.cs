@@ -10,27 +10,22 @@ namespace Action.Util
         float _startTime;
         float _endTime;
         string _timeString;
-        bool _isStart;
-        bool _isFinish;
-        public bool IsFinish => _isFinish;
-
-        public ActionTime(float endTime)
-        {
-            _startTime = Time.time;
-            _endTime = _startTime + endTime;
-        }
+        bool _isStarted;
+        bool _isFinished;
+        public bool IsStarted => _isStarted;
+        public bool IsFinished => _isFinished;
 
         public void TickStart()
         {
-            _isStart = true;
-            _isFinish = false;
+            _isStarted = true;
+            _isFinished = false;
             _startTime = Time.time;
         }
 
         public void TickStart(float endTime)
         {
-            _isStart = true;
-            _isFinish = false;
+            _isStarted = true;
+            _isFinished = false;
             _startTime = Time.time;
             _endTime = endTime;
         }
@@ -50,7 +45,7 @@ namespace Action.Util
         public void ResetTimer()
         {
             _time = Time.time;
-            _isStart = false;
+            _isStarted = false;
         }
 
         public void SetEndTime(float endTime)
@@ -64,8 +59,8 @@ namespace Action.Util
 
             if (_time > _endTime)
             {
-                _isStart = false;
-                _isFinish = true;
+                _isStarted = false;
+                _isFinished = true;
             }
         }
 
@@ -75,13 +70,13 @@ namespace Action.Util
             _startTime = 0;
             _endTime = 0;
             _timeString = "default time string";
-            _isStart = false;
-            _isFinish = false;
+            _isStarted = false;
+            _isFinished = false;
         }
         // Update is called once per frame
-        void Update()
+        void FixedUpdate()
         {
-            if (_isStart)
+            if (_isStarted)
                 _Tick();
         }
     }

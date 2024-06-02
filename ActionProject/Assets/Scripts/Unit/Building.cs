@@ -30,7 +30,7 @@ namespace Action.Units
         public BuildButtonUI BuildButtonUI => _buildButtonUI;
         public float ActiveDistance => _activeDistance;
 
-        public override void Initialize()
+        public new void Initialize()
         {
             base.Initialize();
 
@@ -118,6 +118,7 @@ namespace Action.Units
         protected override void Start()
         {
             base.Start();
+            Initialize();
         }
 
         // Update is called once per frame

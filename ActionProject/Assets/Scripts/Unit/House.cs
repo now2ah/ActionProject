@@ -17,7 +17,7 @@ namespace Action.Units
             //Logger.Log("House Activate");
         }
 
-        public override void Initialize()
+        public new void Initialize()
         {
             base.Initialize();
         }

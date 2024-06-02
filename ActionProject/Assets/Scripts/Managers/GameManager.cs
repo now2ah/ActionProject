@@ -209,7 +209,7 @@ namespace Action.Manager
         {
             UIManager.Instance.RefreshTownStageUI();
 
-            if (_phaseTimer.IsFinish)
+            if (_phaseTimer.IsFinished)
             {
                 if ((int)_gamePhase + 1 > 2)
                     _gamePhase = 0;
@@ -226,7 +226,7 @@ namespace Action.Manager
         {
             if (null != _refreshTimer)
             {
-                if (_refreshTimer.IsFinish)
+                if (_refreshTimer.IsFinished)
                 {
                     _refreshTimer.ResetTimer();
                     _StartRefreshTimer();

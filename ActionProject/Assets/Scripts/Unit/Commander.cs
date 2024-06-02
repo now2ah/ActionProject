@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using Action.State;
 using Action.Manager;
 using Action.SO;
+using Action.Game;
 
 namespace Action.Units
 {
@@ -23,7 +24,10 @@ namespace Action.Units
         int _animHashMoving;
         int _animHashAttacking;
 
+        AutoAttackAbilty[] _autoAttackSlots;
+
         public UnityAction OnDamaged;
+
 
         public CommanderIdleState IdleState => _idleState;
         public CommanderMoveState MoveState => _moveState;
@@ -32,7 +36,7 @@ namespace Action.Units
         public int AnimHashMoving => _animHashMoving;
         public int AnimHashAttacking => _animHashAttacking;
 
-        public override void Initialize()
+        public new void Initialize()
         {
             base.Initialize();
             UnitName = _unitStats.unitName;
@@ -44,6 +48,8 @@ namespace Action.Units
             _animHashMoving = Animator.StringToHash("isMoving");
             _animHashAttacking = Animator.StringToHash("isAttacking");
             OnDamaged += UIManager.Instance.ShowDamagedEffect;
+            _autoAttackSlots = new AutoAttackAbilty[Constant.AUTOATTACK_TYPE_COUNT];
+            _SetAutoAttackAbilities();
         }
 
         public void Interact()
@@ -72,6 +78,14 @@ namespace Action.Units
         {
             StopCoroutine(PhysicalAttackCoroutine());
             StartCoroutine(PhysicalAttackCoroutine());
+        }
+
+        public void ActivateAutoAttack(int index)
+        {
+            if (_autoAttackSlots.Length > 0)
+            {
+                _autoAttackSlots[index].IsActivated = true;
+            }
         }
 
         void OnMove(InputAction.CallbackContext context)
@@ -131,11 +145,19 @@ namespace Action.Units
             _animator.SetBool(_animHashAttacking, _isAttacking);
             yield return new WaitForSeconds(0.2f);
             _CreateHitBox(AttackDamage);
-            //yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
             yield return new WaitForSeconds(0.3f);
             _isAttacking = false;
             _animator.SetBool(_animHashAttacking, _isAttacking);
             StateMachine.ChangeState(_idleState);
+        }
+
+        void _SetAutoAttackAbilities()
+        {
+            //test
+            DirectionalAttack directional = gameObject.AddComponent<DirectionalAttack>();
+            _autoAttackSlots[0] = directional;
+
+            ActivateAutoAttack(0);
         }
 
         protected override void Awake()

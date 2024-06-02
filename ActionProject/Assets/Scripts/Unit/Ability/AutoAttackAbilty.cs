@@ -10,10 +10,12 @@ namespace Action.Game
         bool _isActivated;
         float _attackPeriod;
         float _attackDamage;
+        ActionTime _attackTime;
         
         public bool IsActivated { get { return _isActivated; } set { _isActivated = value; } }
         public float AttackPeriod { get { return _attackPeriod; } set { _attackPeriod = value; } }
         public float AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
+        public ActionTime AttackTime { get { return _attackTime; } set { _attackTime = value; } }
 
         protected virtual void _AutoAttack()
         {
@@ -30,13 +32,19 @@ namespace Action.Game
         // Start is called before the first frame update
         protected virtual void Start()
         {
-
+            AttackTime = gameObject.AddComponent<ActionTime>();
         }
 
         // Update is called once per frame
         protected virtual void Update()
         {
-            _AutoAttack();
+            
+        }
+
+        private void FixedUpdate()
+        {
+            if (_isActivated)
+                _AutoAttack();
         }
     }
 }

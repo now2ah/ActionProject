@@ -24,7 +24,7 @@ namespace Action.Units
         public EnemyMoveState MoveState => _moveState;
         public EnemyAttackState AttackState => _attackState;
 
-        public override void Initialize()
+        public new void Initialize()
         {
             base.Initialize();
             UnitName = _unitStats.unitName;
@@ -76,7 +76,7 @@ namespace Action.Units
         {
             if (null != _attackTimer)
             {
-                if (_attackTimer.IsFinish)
+                if (_attackTimer.IsFinished)
                 {
                     _isAttackCooltime = false;
                     _attackTimer.ResetTimer();
@@ -98,6 +98,7 @@ namespace Action.Units
         protected override void Start()
         {
             base.Start();
+            Initialize();
             StateMachine.Initialize(_idleState);
         }
 

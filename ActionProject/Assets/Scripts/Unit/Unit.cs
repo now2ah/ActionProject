@@ -38,7 +38,7 @@ namespace Action.Units
         StateMachine _stateMachine;
         public StateMachine StateMachine => _stateMachine;
 
-        public virtual void Initialize()
+        public void Initialize()
         {
             _infoActiveDistant = Constant.INGAMEUI_VISIBLE_DISTANT;
             _unitPanelObject = UIManager.Instance.CreateUI("UnitPanel", UIManager.Instance.InGameCanvas);

@@ -36,7 +36,7 @@ namespace Action.UI
             if (null != _actionTime)
             {
                 _text.text = _actionTime.GetTimeString();
-                if (_actionTime.IsFinish)
+                if (_actionTime.IsFinished)
                     Destroy(gameObject);
             }
         }

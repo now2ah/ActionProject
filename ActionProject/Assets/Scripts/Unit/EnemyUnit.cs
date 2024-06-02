@@ -32,7 +32,7 @@ namespace Action.Units
         public GameObject Target { get { return _target; } set { _target = value; } }
         public Vector3 TargetPos { get { return _targetPos; } set { _targetPos = value; } }
 
-        public override void Initialize()
+        public new void Initialize()
         {
             base.Initialize();
             GameManager.Instance.OnRefresh.AddListener(RefreshTargetPosition);
@@ -165,6 +165,7 @@ namespace Action.Units
         protected override void Start()
         {
             base.Start();
+            Initialize();
             _target = null;
             _nearestPlayerBuilding = null;
             _commanderUnit = GameManager.Instance.CommanderObj;

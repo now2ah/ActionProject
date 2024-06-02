@@ -24,7 +24,7 @@ namespace Action.Units
         public RangeEnemyMoveState MoveState => _moveState;
         public RangeEnemyAttackState AttackState => _attackState;
 
-        public override void Initialize()
+        public new void Initialize()
         {
             base.Initialize();
             UnitName = _unitStats.unitName;
@@ -34,7 +34,8 @@ namespace Action.Units
             AttackSpeed = _unitStats.attackSpeed;
             AttackDistance = _unitStats.attackDistance;
             SetNameUI(UnitName);
-            Projectile projectile = GameManager.Instance.ProjectilePrefab.AddComponent<NormalProjectile>();
+            GameObject projectileObj = GameManager.Instance.ProjectilePrefab;
+            Projectile projectile = projectileObj.AddComponent<NormalProjectile>();
             _projectilePool.Initialize(projectile, 25);
         }
 
@@ -114,7 +115,9 @@ namespace Action.Units
         protected override void Start()
         {
             base.Start();
-            base.StateMachine.Initialize(_idleState);
+            Initialize();
+            StateMachine.Initialize(_idleState);
+
         }
 
         protected override void Update()

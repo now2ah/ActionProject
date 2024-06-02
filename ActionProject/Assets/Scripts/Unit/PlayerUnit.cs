@@ -30,7 +30,7 @@ namespace Action.Units
         public float Speed { get { return _speed; } set { _speed = value; } }
         public float AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
         
-        public override void Initialize()
+        public new void Initialize()
         {
             base.Initialize();
         }

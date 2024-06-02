@@ -31,7 +31,9 @@ namespace Action
 
         //Game Refresh 시간 (몬스터 행동 갱신에 사용중)
         public static float GAME_REFRESH_TIME = 1.0f;
-        
+
+        //Commander AutoAttack 개수
+        public static int AUTOATTACK_TYPE_COUNT = 1;
         public enum eHitBoxType
         {
             ONLY_ENEMY,
