@@ -7,8 +7,6 @@ namespace Action.Game
 {
     public class DirectionalAttack : AutoAttackAbilty
     {
-        ObjectPooler<Projectile> _projectilePool;
-
         protected override void _AutoAttack()
         {
             if (null != AttackTime)
@@ -34,7 +32,6 @@ namespace Action.Game
         protected override void Start()
         {
             base.Start();
-            _projectilePool = new ObjectPooler<Projectile>();
         }
 
         // Update is called once per frame

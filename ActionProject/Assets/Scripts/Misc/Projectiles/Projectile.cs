@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Action.Util;
 
 namespace Action.Game
 {
-    public class Projectile : MonoBehaviour, IPoolable<Projectile>
+    public abstract class Projectile : MonoBehaviour, IPoolable<Projectile>
     {
         public int PoolID { get; set; }
         public ObjectPooler<Projectile> Pool { get; set; }
@@ -12,39 +13,24 @@ namespace Action.Game
 
         IEnumerator DestroyCoroutine()
         {
-            yield return new WaitForSeconds(5.0f);
+            yield return new WaitForSeconds(1.0f);
             Pool.Free(this);
+        }
+
+        protected virtual void OnEnable()
+        {
+            StartCoroutine(DestroyCoroutine());
         }
 
         // Start is called before the first frame update
         protected virtual void Start()
         {
             _speed = 0.2f;
-            StartCoroutine(DestroyCoroutine());
         }
 
         protected virtual void FixedUpdate()
         {
 
-        }
-    }
-
-    public class NormalProjectile : Projectile
-    {
-        void _MoveForward()
-        {
-            transform.Translate(Vector3.forward * _speed);
-        }
-
-        protected override void Start()
-        {
-            base.Start();
-        }
-
-        protected override void FixedUpdate()
-        {
-            base.FixedUpdate();
-            _MoveForward();
         }
     }
 
@@ -70,5 +56,7 @@ namespace Action.Game
             _FollowTarget();
         }
     }
+
+    
 }
 

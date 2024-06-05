@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Action.Game
+namespace Action.Util
 {
     public interface IPoolable<T> where T : MonoBehaviour, IPoolable<T>
     {
@@ -15,7 +15,7 @@ namespace Action.Game
         public List<T> instanceList;
         protected Stack<int> index;
 
-        public void Initialize(T obj, int amount)
+        public void Initialize(T obj, int amount, GameObject parent)
         {
             instanceList = new List<T>();
             index = new Stack<int>();
@@ -23,6 +23,7 @@ namespace Action.Game
             for (int i = 0; i < amount; i++)
             {
                 T instance = Object.Instantiate(obj);
+                instance.gameObject.transform.SetParent(parent.transform);
                 instance.gameObject.SetActive(false);
                 instance.PoolID = i;
                 instance.Pool = this;

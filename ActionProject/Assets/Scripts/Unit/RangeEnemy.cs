@@ -14,8 +14,6 @@ namespace Action.Units
 
         float _lastAttackTime;
 
-        ObjectPooler<Projectile> _projectilePool;
-
         RangeEnemyIdleState _idleState;
         RangeEnemyMoveState _moveState;
         RangeEnemyAttackState _attackState;
@@ -34,9 +32,6 @@ namespace Action.Units
             AttackSpeed = _unitStats.attackSpeed;
             AttackDistance = _unitStats.attackDistance;
             SetNameUI(UnitName);
-            GameObject projectileObj = GameManager.Instance.ProjectilePrefab;
-            Projectile projectile = projectileObj.AddComponent<NormalProjectile>();
-            _projectilePool.Initialize(projectile, 25);
         }
 
         public void Attack(int damage)
@@ -93,11 +88,9 @@ namespace Action.Units
             if (null != _target)
             {
                 Vector3 shootPosition = transform.position + transform.forward * 2.0f + transform.up * 2.0f;
-                Game.Projectile projectile = _projectilePool.GetNew();
+                RangeEnemyProjectile projectile = (RangeEnemyProjectile)PoolManager.Instance.RangeEnemyProjectilePool.GetNew();
                 projectile.transform.position = shootPosition;
                 projectile.transform.rotation = transform.rotation;
-
-                //Instantiate(GameManager.Instance.ProjectilePrefab, shootPosition, transform.rotation);
             }
         }
 
@@ -106,7 +99,6 @@ namespace Action.Units
             base.Awake();
             _unitStats = Resources.Load("ScriptableObject/UnitStats/RangeEnemyStats") as UnitStatsSO;
             _lastAttackTime = 0.0f;
-            _projectilePool = new ObjectPooler<Projectile>();
             _idleState = new RangeEnemyIdleState(this);
             _moveState = new RangeEnemyMoveState(this);
             _attackState = new RangeEnemyAttackState(this);

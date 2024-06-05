@@ -125,6 +125,8 @@ namespace Action.Manager
             _isPlaying = true;
             _startPosition = _FindBasePoint();
 
+            PoolManager.Instance.Initialize();
+
             _CreateStartBase();
             _CreateCommanderUnit();
 
