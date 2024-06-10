@@ -157,7 +157,7 @@ namespace Action.Units
             DirectionalAttack directional = gameObject.AddComponent<DirectionalAttack>();
             _autoAttackSlots[0] = directional;
 
-            ActivateAutoAttack(0);
+            //ActivateAutoAttack(0);
         }
 
         protected override void Awake()

@@ -14,13 +14,21 @@ namespace Action.Game
                 if (!AttackTime.IsStarted)
                 {
                     //attack logic
-                    Logger.Log(AttackTime.GetTimeString());
+                    _CreateProjectile();
                     AttackTime.TickStart(3.0f);
                 }
 
                 if (AttackTime.IsFinished)
                     AttackTime.ResetTimer();
             }
+        }
+
+        void _CreateProjectile()
+        {
+            Vector3 shootPosition = transform.position + transform.forward * 2.0f + transform.up * 2.0f;
+            NormalProjectile projectile = (NormalProjectile)PoolManager.Instance.NormalProjectilePool.GetNew();
+            projectile.transform.position = shootPosition;
+            projectile.transform.rotation = transform.rotation;
         }
 
         protected override void Awake()
