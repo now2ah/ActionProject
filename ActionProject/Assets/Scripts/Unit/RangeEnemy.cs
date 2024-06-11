@@ -92,6 +92,7 @@ namespace Action.Units
                 RangeEnemyProjectile projectile = (RangeEnemyProjectile)PoolManager.Instance.RangeEnemyProjectilePool.GetNew();
                 projectile.transform.position = shootPosition;
                 projectile.transform.rotation = transform.rotation;
+                projectile.Owner = this.gameObject;
             }
         }
 

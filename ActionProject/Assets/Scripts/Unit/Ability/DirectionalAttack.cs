@@ -30,6 +30,7 @@ namespace Action.Game
             NormalProjectile projectile = (NormalProjectile)PoolManager.Instance.NormalProjectilePool.GetNew();
             projectile.transform.position = shootPosition;
             projectile.transform.rotation = transform.rotation;
+            projectile.Owner = this.gameObject;
         }
 
         protected override void Awake()

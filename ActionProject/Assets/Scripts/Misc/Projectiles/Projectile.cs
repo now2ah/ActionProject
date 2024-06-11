@@ -9,12 +9,20 @@ namespace Action.Game
     {
         public int PoolID { get; set; }
         public ObjectPooler<Projectile> Pool { get; set; }
+        protected GameObject _owner;
+        public GameObject Owner { get { return _owner; } set { _owner = value; } }
         protected float _speed;
+        
 
         IEnumerator DestroyCoroutine()
         {
-            yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(4.0f);
             Pool.Free(this);
+        }
+
+        protected virtual void OnTriggerEnter(Collider other)
+        {
+            
         }
 
         protected virtual void OnEnable()

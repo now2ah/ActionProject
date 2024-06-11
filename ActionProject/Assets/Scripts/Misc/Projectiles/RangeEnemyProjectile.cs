@@ -12,6 +12,16 @@ namespace Action.Game
             transform.Translate(Vector3.forward * _speed);
         }
 
+        protected override void OnTriggerEnter(Collider other)
+        {
+           if ("PlayerObject" == other.tag)
+            {
+                Logger.Log("Hit");
+                Pool.Free(this);
+            }
+                
+        }
+
         protected override void Start()
         {
             base.Start();
