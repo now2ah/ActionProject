@@ -25,7 +25,8 @@ namespace Action.Game
 
         void _CreateProjectile()
         {
-            Vector3 shootPosition = transform.position + transform.forward * 2.0f + transform.up * 2.0f;
+            Vector3 shootPosition = transform.position + transform.forward * 2.0f;
+            shootPosition.y = Constant.PROJECTILE_Y_POS;
             NormalProjectile projectile = (NormalProjectile)PoolManager.Instance.NormalProjectilePool.GetNew();
             projectile.transform.position = shootPosition;
             projectile.transform.rotation = transform.rotation;

@@ -284,7 +284,7 @@ namespace Action.Manager
                     {
                         baseExtentsZ = comp.size.z + 5.0f;     //юс╫ц
                     }
-                    startPos = _playerBase.gameObject.transform.position + new Vector3(20.0f, 0.0f, /*-(baseExtentsZ + 1.0f)*/ 0.0f);
+                    startPos = _playerBase.gameObject.transform.position + new Vector3(20.0f, Constant.GROUND_Y_POS, /*-(baseExtentsZ + 1.0f)*/ 0.0f);
                 }
                 _commanderUnitObj = Instantiate(_commanderPrefab, startPos, Quaternion.identity);
                 _commanderUnit = _commanderUnitObj.GetComponent<Commander>();

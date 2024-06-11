@@ -15,6 +15,8 @@ namespace Action
         public static float GAMECAMERA_FOV = 30.0f;
         //지형 바닥 y 값
         public static float GROUND_Y_POS = 6.0f;
+        //투사체 y값
+        public static float PROJECTILE_Y_POS = 7.0f;
 
         public static string[] ACTIONS = { "up", "left", "down", "right" };
 
