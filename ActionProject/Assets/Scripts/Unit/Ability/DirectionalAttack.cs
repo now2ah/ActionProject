@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Action.Units;
 using Action.Manager;
 
 namespace Action.Game
@@ -9,33 +10,37 @@ namespace Action.Game
     {
         protected override void _AutoAttack()
         {
-            if (null != AttackTime)
+            if (null != AttackTimer)
             {
-                if (!AttackTime.IsStarted)
+                if (!AttackTimer.IsStarted)
                 {
                     //attack logic
-                    _CreateProjectile();
-                    AttackTime.TickStart(3.0f);
+                    _CreateProjectile(AttackDamage);
+                    AttackTimer.TickStart(AttackPeriod);
                 }
 
-                if (AttackTime.IsFinished)
-                    AttackTime.ResetTimer();
+                if (AttackTimer.IsFinished)
+                    AttackTimer.ResetTimer();
             }
         }
 
-        void _CreateProjectile()
+        void _CreateProjectile(float attackDamage)
         {
             Vector3 shootPosition = transform.position + transform.forward * 2.0f;
-            shootPosition.y = Constant.PROJECTILE_Y_POS;
+            shootPosition.y = GameManager.Instance.Constants.PROJECTILE_Y_POS;
             NormalProjectile projectile = (NormalProjectile)PoolManager.Instance.NormalProjectilePool.GetNew();
             projectile.transform.position = shootPosition;
             projectile.transform.rotation = transform.rotation;
-            projectile.Owner = this.gameObject;
+            if (gameObject.TryGetComponent<Unit>(out Unit comp))
+                projectile.Initialize(comp, attackDamage);
         }
 
-        protected override void Awake()
+        protected new void Awake()
         {
             base.Awake();
+            //default
+            AttackPeriod = 1.0f;
+            AttackDamage = 5.0f;
         }
 
         // Start is called before the first frame update

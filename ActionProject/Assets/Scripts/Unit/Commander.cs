@@ -48,7 +48,7 @@ namespace Action.Units
             _animHashMoving = Animator.StringToHash("isMoving");
             _animHashAttacking = Animator.StringToHash("isAttacking");
             OnDamaged += UIManager.Instance.ShowDamagedEffect;
-            _autoAttackSlots = new AutoAttackAbilty[Constant.AUTOATTACK_TYPE_COUNT];
+            _autoAttackSlots = new AutoAttackAbilty[GameManager.Instance.Constants.AUTOATTACK_TYPE_COUNT];
             _SetAutoAttackAbilities();
         }
 
@@ -135,7 +135,7 @@ namespace Action.Units
             GameObject hitboxObj = Instantiate(GameManager.Instance.HitBoxPrefab, pos, Quaternion.identity);
             if (hitboxObj.TryGetComponent<Game.HitBox>(out Game.HitBox comp))
             {
-                comp.Initialize(Constant.eHitBoxType.ONLY_ENEMY, this, attackDamage);
+                comp.Initialize(Enums.eHitBoxType.ONLY_ENEMY, this, attackDamage);
             }
         }
 

@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Action.Units;
 using Action.Util;
 
 namespace Action.Game
 {
     public abstract class Projectile : MonoBehaviour, IPoolable<Projectile>
     {
+        protected Unit _owner;
+        protected float _speed;
+        protected float _attackDamage;
+
         public int PoolID { get; set; }
         public ObjectPooler<Projectile> Pool { get; set; }
-        protected GameObject _owner;
-        public GameObject Owner { get { return _owner; } set { _owner = value; } }
-        protected float _speed;
-        
+        public Unit Owner { get { return _owner; } set { _owner = value; } }
+        public float AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
+
+        public void Initialize(Unit owner, float attackDamage)
+        {
+            _owner = owner;
+            _attackDamage = attackDamage;
+        }
 
         IEnumerator DestroyCoroutine()
         {

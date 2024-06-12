@@ -49,7 +49,7 @@ namespace Action.Units
             _doneState = new PlayerBuildingDoneState(this);
 
             base.StateMachine.Initialize(_idleState);
-            _activeDistance = Constant.INGAMEUI_VISIBLE_DISTANT;
+            _activeDistance = GameManager.Instance.Constants.INGAMEUI_VISIBLE_DISTANT;
         }
 
         public virtual void Interact()

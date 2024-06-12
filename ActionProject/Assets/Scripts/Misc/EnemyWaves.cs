@@ -13,7 +13,7 @@ namespace Action.SO
     [System.Serializable]
     public class EnemyGroup
     {
-        public Constant.eEnemyType type;
+        public Enums.eEnemyType type;
         public int enemyAmount;
     }
 

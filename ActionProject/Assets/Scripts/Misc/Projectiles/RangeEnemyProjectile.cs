@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Action.Util;
+using Action.Units;
 
 namespace Action.Game
 {
@@ -16,8 +17,15 @@ namespace Action.Game
         {
            if ("PlayerObject" == other.tag)
             {
-                Logger.Log("Hit");
                 Pool.Free(this);
+                Unit.DamageMessage msg = new Unit.DamageMessage
+                {
+                    damager = Owner,
+                    amount = AttackDamage
+                };
+
+                if (other.TryGetComponent<Unit>(out Unit comp))
+                    comp.ApplyDamage(msg);
             }
                 
         }

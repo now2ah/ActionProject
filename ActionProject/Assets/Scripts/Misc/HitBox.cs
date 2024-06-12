@@ -8,13 +8,13 @@ namespace Action.Game
 {
     public class HitBox : MonoBehaviour
     {
-        Constant.eHitBoxType _type;
+        Enums.eHitBoxType _type;
         Unit _damager;
         float _damageAmount;
         Collider _collider;
         GameObject _hitEffectObj;
 
-        public void Initialize(Constant.eHitBoxType type, Unit damager, float damageAmount)
+        public void Initialize(Enums.eHitBoxType type, Unit damager, float damageAmount)
         {
             _type = type;
             _damager = damager;
@@ -37,7 +37,7 @@ namespace Action.Game
 
             switch (_type)
             {
-                case Constant.eHitBoxType.ONLY_ENEMY:
+                case Enums.eHitBoxType.ONLY_ENEMY:
                     if ("EnemyObject" == unit.gameObject.tag)
                     {
                         Unit.DamageMessage msg = new Unit.DamageMessage
@@ -50,9 +50,9 @@ namespace Action.Game
                         Instantiate(_hitEffectObj, pos, Quaternion.identity);
                     }
                     break;
-                case Constant.eHitBoxType.ONLY_PLAYER:
+                case Enums.eHitBoxType.ONLY_PLAYER:
                     break;
-                case Constant.eHitBoxType.BOTH:
+                case Enums.eHitBoxType.BOTH:
                     break;
             }
         }

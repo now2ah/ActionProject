@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4007416436842542254}
   - component: {fileID: -3598781001171843406}
   - component: {fileID: 3579188434157296782}
+  - component: {fileID: 7563797170619235737}
   m_Layer: 0
   m_Name: Commander
   m_TagString: PlayerObject
@@ -73,6 +74,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!136 &7563797170619235737
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6838323347880453880}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.32713547
+  m_Height: 1.8772755
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.99, z: 0}
 --- !u!1001 &4340386816881498997
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -145,7 +169,8 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: f099020b9eda54e4eba4f70e730c88bc, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 136275810615880682, guid: dbf7a0c9d76b77a40af3104feac0641d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

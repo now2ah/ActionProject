@@ -19,6 +19,8 @@ namespace Action.Manager
 
     public class GameManager : Singleton<GameManager>
     {
+        public Constant Constants;
+
         eGamePhase _gamePhase;
         bool _isPlaying;
 
@@ -91,11 +93,11 @@ namespace Action.Manager
         public override void Initialize()
         {
             base.Initialize();
-            //_waveStartCoroutine = _StartWaveCoroutine(5, 1, 0, Constant.eEnemyType.NORMAL);
+            Constants = Resources.Load("ScriptableObject/Constant") as Constant;
 
-            _townBuildPhaseTime = Constant.TOWNBUILD_PHASE_TIME;
-            _huntPhaseTime = Constant.HUNT_PHASE_TIME;
-            _defensePhaseTime = Constant.DEFENSE_PHASE_TIME;
+            _townBuildPhaseTime = Constants.TOWNBUILD_PHASE_TIME;
+            _huntPhaseTime = Constants.HUNT_PHASE_TIME;
+            _defensePhaseTime = Constants.DEFENSE_PHASE_TIME;
             _gameTimer = gameObject.AddComponent<ActionTime>();
             _phaseTimer = gameObject.AddComponent<ActionTime>();
             _refreshTimer = gameObject.AddComponent<ActionTime>();
@@ -257,7 +259,7 @@ namespace Action.Manager
         {
             if (null != _refreshTimer)
             {
-                _refreshTimer.TickStart(Constant.GAME_REFRESH_TIME);
+                _refreshTimer.TickStart(Constants.GAME_REFRESH_TIME);
                 OnRefresh?.Invoke();
             }
         }
@@ -284,7 +286,7 @@ namespace Action.Manager
                     {
                         baseExtentsZ = comp.size.z + 5.0f;     //юс╫ц
                     }
-                    startPos = _playerBase.gameObject.transform.position + new Vector3(20.0f, Constant.GROUND_Y_POS, /*-(baseExtentsZ + 1.0f)*/ 0.0f);
+                    startPos = _playerBase.gameObject.transform.position + new Vector3(20.0f, Constants.GROUND_Y_POS, /*-(baseExtentsZ + 1.0f)*/ 0.0f);
                 }
                 _commanderUnitObj = Instantiate(_commanderPrefab, startPos, Quaternion.identity);
                 _commanderUnit = _commanderUnitObj.GetComponent<Commander>();

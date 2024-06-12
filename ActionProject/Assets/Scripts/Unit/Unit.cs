@@ -40,7 +40,7 @@ namespace Action.Units
 
         public void Initialize()
         {
-            _infoActiveDistant = Constant.INGAMEUI_VISIBLE_DISTANT;
+            _infoActiveDistant = GameManager.Instance.Constants.INGAMEUI_VISIBLE_DISTANT;
             _unitPanelObject = UIManager.Instance.CreateUI("UnitPanel", UIManager.Instance.InGameCanvas);
             _unitPanel = _unitPanelObject.GetComponent<UnitPanel>();
             _unitPanel.Initialize(this.gameObject);

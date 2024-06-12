@@ -27,9 +27,9 @@ namespace Action.Manager
         {
             base.Initialize();
             _CreateMainCamera();
-            _vCamOffsetY = Constant.GAMECAMERA_VERTICAL_DIST;
-            _vCamOffsetZ = Constant.GAMECAMERA_HORIZONTAL_DIST;
-            _vCamFov = Constant.GAMECAMERA_FOV;
+            _vCamOffsetY = GameManager.Instance.Constants.GAMECAMERA_VERTICAL_DIST;
+            _vCamOffsetZ = GameManager.Instance.Constants.GAMECAMERA_HORIZONTAL_DIST;
+            _vCamFov = GameManager.Instance.Constants.GAMECAMERA_FOV;
         }
 
         public void CreateFixedVirtualCamera()
@@ -38,7 +38,7 @@ namespace Action.Manager
             _fixedVCam = _fixedVCamObj.AddComponent<FixedVirtualCamera>();
             _fixedVCam.Initialize();
             _fixedVCam.SetBodyOffset(new Vector3(0.0f, _vCamOffsetY, _vCamOffsetZ));
-            _fixedVCam.SetFov(Constant.GAMECAMERA_FOV);
+            _fixedVCam.SetFov(GameManager.Instance.Constants.GAMECAMERA_FOV);
 
             if (null == _fixedVCam.GetTarget())
                 _fixedVCam.SetTarget(GameManager.Instance.CommanderObj.transform);
