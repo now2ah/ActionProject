@@ -16,6 +16,7 @@ namespace Action.Units
         Material _unitMaterial;
 
         float _hp;
+        [SerializeReference]
         float _maxHp;
 
         string _unitName;

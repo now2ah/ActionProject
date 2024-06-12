@@ -20,7 +20,11 @@ namespace Action.Units
         protected Animator _animator;
 
         NavMeshAgent _navMeshAgent;
+
+        [SerializeReference]
         float _speed;
+
+        [SerializeReference]
         float _attackDamage;
         
         public bool IsMoving { get { return _isMoving; } set { _isMoving = value; } }

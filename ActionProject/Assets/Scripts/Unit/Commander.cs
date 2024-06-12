@@ -42,6 +42,7 @@ namespace Action.Units
             UnitName = _unitStats.unitName;
             MaxHp = _unitStats.maxHp;
             HP = _unitStats.maxHp;
+            Speed = _unitStats.speed;
             AttackDamage = _unitStats.attackDamage;
             SetNameUI(UnitName);
             UnitPanel.Show();
@@ -65,7 +66,7 @@ namespace Action.Units
             //if (StateMachine.IsState(_moveState))
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos), 0.15f);
 
-            transform.Translate(movePos * Time.deltaTime * 10.0f, Space.World);
+            transform.Translate(movePos * Time.deltaTime * Speed, Space.World);
         }
 
         public override void ApplyDamage(DamageMessage msg)
