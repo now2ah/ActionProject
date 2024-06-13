@@ -36,7 +36,12 @@ namespace Action.Units
         {
             base.Initialize();
             GameManager.Instance.OnRefresh.AddListener(RefreshTargetPosition);
-            IsOnUnitPanel = false;
+            //IsOnUnitPanel = false;
+            if (UnitPanel.TryGetComponent<RectTransform>(out RectTransform comp))
+            {
+                comp.localScale = new Vector3(0.5f, 0.5f, 1.0f);
+            }
+            UnitPanel.PanelPosition = UI.ePanelPosition.TOP;
         }
 
         public void SetSpeed(float speed)

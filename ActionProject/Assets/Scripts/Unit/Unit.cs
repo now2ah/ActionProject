@@ -23,6 +23,7 @@ namespace Action.Units
         bool _canDamaged;
         float _infoActiveDistant;
 
+        //UnitPanel 표시하지 않는 유닛은 false
         bool _isOnUnitPanel;
         
         public GameObject UnitPanelObject { get { return _unitPanelObject; } set { _unitPanelObject = value; } }

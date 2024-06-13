@@ -32,13 +32,17 @@ namespace Action.UI
 
         protected override void Update()
         {
-            _FollowTargetPosition(ePanelPosition.CENTER);
             if (null != _actionTime)
             {
                 _text.text = _actionTime.GetTimeString();
                 if (_actionTime.IsFinished)
                     Destroy(gameObject);
             }
+        }
+
+        protected void FixedUpdate()
+        {
+            _FollowTargetPosition(ePanelPosition.CENTER);
         }
     }
 

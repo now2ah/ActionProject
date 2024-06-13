@@ -13,6 +13,9 @@ namespace Action.UI
         Unit _unit;
         Image _fillimage;
         TextMeshProUGUI _textMesh;
+        ePanelPosition _panelPosition;
+
+        public ePanelPosition PanelPosition { get { return _panelPosition; } set { _panelPosition = value; } }
         
         bool _isVisible = true;
 
@@ -24,6 +27,7 @@ namespace Action.UI
             _fillimage.type = Image.Type.Filled;
             _textMesh = transform.GetChild(2).transform.GetComponent<TextMeshProUGUI>();
             _textMesh.text = _unit.UnitName;
+            _panelPosition = ePanelPosition.BOTTOM;
             
             ApplyHPValue(_unit.HP, _unit.MaxHp); //default hp
         }
@@ -45,7 +49,7 @@ namespace Action.UI
         private void FixedUpdate()
         {
             if (_isVisible)
-                _FollowTargetPosition(ePanelPosition.BOTTOM);
+                _FollowTargetPosition(_panelPosition);
         }
     }
 

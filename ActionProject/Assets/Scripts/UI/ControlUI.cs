@@ -36,6 +36,11 @@ namespace Action.UI
         protected override void Update()
         {
             base.Update();
+            
+        }
+
+        protected void FixedUpdate()
+        {
             if (!_isChild)
                 _FollowTargetPosition(ePanelPosition.TOP);
         }

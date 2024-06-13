@@ -53,11 +53,11 @@ namespace Action.UI
             switch (pos)
             {
                 case ePanelPosition.TOP:
-                    panelPos = new Vector3(col.bounds.center.x, col.bounds.max.y, col.bounds.max.z);
+                    panelPos = new Vector3(col.bounds.center.x, col.bounds.max.y, col.bounds.min.z);
                     break;
 
                 case ePanelPosition.CENTER:
-                    panelPos = new Vector3(col.bounds.center.x, col.bounds.center.y, col.bounds.min.z);
+                    panelPos = new Vector3(col.bounds.center.x, col.bounds.center.y, col.bounds.center.z);
                     break;
 
                 case ePanelPosition.BOTTOM:
