@@ -22,7 +22,7 @@ namespace Action.UI
             _unit = target.GetComponent<Unit>();
             _fillimage = transform.GetChild(0).transform.GetComponent<Image>();
             _fillimage.type = Image.Type.Filled;
-            _textMesh = transform.GetChild(1).transform.GetComponent<TextMeshProUGUI>();
+            _textMesh = transform.GetChild(2).transform.GetComponent<TextMeshProUGUI>();
             _textMesh.text = _unit.UnitName;
             
             ApplyHPValue(_unit.HP, _unit.MaxHp); //default hp

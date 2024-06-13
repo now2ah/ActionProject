@@ -61,6 +61,7 @@ namespace Action.Units
 
             _hp -= msg.amount;
             _HitMaterialEffect();
+            UnitPanel.ApplyHPValue(_hp, _maxHp);
             Logger.Log("Apply Damage : " + msg.amount + " (" + _hp + "/" + _maxHp + ")");
             if (_CheckDead())
             {
