@@ -9,6 +9,8 @@ namespace Action.State
     {
         State _CurState;
         public State CurState => _CurState;
+        bool _IsRunning = true;
+        public bool IsRunning { get { return _IsRunning; } set { _IsRunning = value; } }
 
         public virtual void Initialize(State startState)
         {
@@ -36,7 +38,8 @@ namespace Action.State
 
         public void Update()
         {
-            _CurState.UpdateState();
+            if (_IsRunning)
+                _CurState.UpdateState();
         }
     }
 }

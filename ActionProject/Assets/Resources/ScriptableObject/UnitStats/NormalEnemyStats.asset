@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NormalEnemyStats
   m_EditorClassIdentifier: 
   unitName: NormalEnemy
-  maxHp: 100
+  maxHp: 5
   speed: 1.5
   constructTime: 0
   attackDamage: 10

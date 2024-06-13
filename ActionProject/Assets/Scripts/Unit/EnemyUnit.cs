@@ -158,6 +158,26 @@ namespace Action.Units
             _target = null;
         }
 
+        protected override void _Dead()
+        {
+            base._Dead();
+            _DisableMove();
+            _rigidBody.useGravity = true;
+            _rigidBody.drag = 0.0f;
+            _rigidBody.angularDrag = 0.0f;
+            Vector3 explosionPos = transform.position + new Vector3(Random.Range(-5.0f, 5.0f), 0f, Random.Range(-5.0f, 5.0f));
+            _rigidBody.AddExplosionForce(500f, explosionPos, 5.0f, -1.0f);
+        }
+
+        protected void _DisableMove()
+        {
+            GameManager.Instance.OnRefresh.RemoveListener(RefreshTargetPosition);
+            _navMeshAgent.enabled = false;
+            StateMachine.IsRunning = false;
+        }
+
+
+
         protected override void Awake()
         {
             base.Awake();

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: Commander
   maxHp: 150
-  speed: 3
+  speed: 5
   constructTime: 0
   attackDamage: 20
   attackSpeed: 2

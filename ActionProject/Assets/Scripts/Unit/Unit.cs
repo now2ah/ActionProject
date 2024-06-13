@@ -66,7 +66,7 @@ namespace Action.Units
             Logger.Log("Apply Damage : " + msg.amount + " (" + _hp + "/" + _maxHp + ")");
             if (_CheckDead())
             {
-                _Death();
+                _Dead();
             }
         }
 
@@ -78,13 +78,13 @@ namespace Action.Units
 
         bool _CheckDead()
         {
-            if (0 > _hp)
+            if (0 >= _hp)
                 return true;
             else
                 return false;
         }
 
-        void _Death()
+        protected virtual void _Dead()
         {
 
         }
