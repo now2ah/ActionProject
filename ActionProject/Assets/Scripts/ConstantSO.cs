@@ -35,4 +35,10 @@ public class Constant : ScriptableObject
 
     //Commander AutoAttack 개수
     public int AUTOATTACK_TYPE_COUNT;// = 1;
+
+    //최대 오브젝트 수(Pool에 사용)
+    public int NORMALENEMY_MAX_AMOUNT;
+    public int RANGEENEMY_MAX_AMOUNT;
+    public int NORMALPROJECTILE_MAX_AMOUNT;
+    public int RANGEENEMYPROJECTILE_MAX_AMOUNT;
 }

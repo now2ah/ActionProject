@@ -8,8 +8,11 @@ using Action.Manager;
 
 namespace Action.Units
 {
-    public class EnemyUnit : Unit, IMovable
+    public class EnemyUnit : Unit, IMovable, IPoolable<EnemyUnit>
     {
+        public int PoolID { get; set; }
+        public ObjectPooler<EnemyUnit> Pool { get; set; }
+
         NavMeshAgent _navMeshAgent;
         Rigidbody _rigidBody;
 
@@ -162,11 +165,8 @@ namespace Action.Units
         {
             base._Dead();
             _DisableMove();
-            _rigidBody.useGravity = true;
-            _rigidBody.drag = 0.0f;
-            _rigidBody.angularDrag = 0.0f;
-            Vector3 explosionPos = transform.position + new Vector3(Random.Range(-5.0f, 5.0f), 0f, Random.Range(-5.0f, 5.0f));
-            _rigidBody.AddExplosionForce(500f, explosionPos, 5.0f, -1.0f);
+            _ApplyPhysicsEffect();
+            _FreeObjectCoroutine();
         }
 
         protected void _DisableMove()
@@ -176,7 +176,32 @@ namespace Action.Units
             StateMachine.IsRunning = false;
         }
 
+        protected void _ApplyPhysicsEffect()
+        {
+            _rigidBody.useGravity = true;
+            _rigidBody.drag = 0.0f;
+            _rigidBody.angularDrag = 0.0f;
+            Vector3 explosionPos = transform.position + new Vector3(Random.Range(-5.0f, 5.0f), 0f, Random.Range(-5.0f, 5.0f));
+            _rigidBody.AddExplosionForce(500f, explosionPos, 5.0f, -1.0f);
+        }
 
+        protected void _FreeObject()
+        {
+            GameManager.Instance.EnemyUnits.Remove(this.gameObject);
+            Pool.Free(this);
+        }
+
+        protected void _FreeObjectCoroutine()
+        {
+            StopCoroutine(DeathCoroutine());
+            StartCoroutine(DeathCoroutine());
+        }
+
+        IEnumerator DeathCoroutine()
+        {
+            yield return new WaitForSeconds(1.0f);
+            _FreeObject();
+        }
 
         protected override void Awake()
         {

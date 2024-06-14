@@ -166,15 +166,6 @@ namespace Action.Manager
             }
         }
 
-        //public void StartWave(int unitCountPerWave, float timeRate, int spawnerIndex, Constant.eEnemyType type)
-        //{
-        //    if (null != _waveStartCoroutine)
-        //    {
-        //        StopCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate, spawnerIndex, type));
-        //        StartCoroutine(_StartWaveCoroutine(unitCountPerWave, timeRate, spawnerIndex, type));
-        //    }
-        //}
-
         public void StartWave(EnemyWaves waves, float timeRate, int spawnerIndex)
         {
             _curWaveOrder++;
@@ -303,8 +294,11 @@ namespace Action.Manager
                     int count = item.enemyAmount;
                     while (count > 0)
                     {
-                        GameObject obj = _enemySpawners[spawnerIndex].CreateObject(_enemyUnitPrefabs[(int)item.type]);
+                        GameObject obj = PoolManager.Instance.GetEnemyPool(item.type).GetNew().gameObject;
                         _enemyUnits.Add(obj);
+
+                        _enemySpawners[spawnerIndex].SpawnObject(obj);
+                        
                         count--;
                         yield return new WaitForSeconds(timeRate);
                     }

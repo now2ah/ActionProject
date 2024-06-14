@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    GameObject _spawnObject;
-    public GameObject SpawnObject { get { return _spawnObject; } set { _spawnObject = value; } }
+    GameObject _obj;
+    public GameObject Obj { get { return _obj; } set { _obj = value; } }
     Collider col;
 
     private void Awake()
@@ -15,22 +15,23 @@ public class Spawner : MonoBehaviour
 
     public GameObject CreateObject()
     {
-        if (null != _spawnObject)
+        if (null != _obj)
         {
             Vector3 spawnPos = new Vector3(Random.Range(col.bounds.min.x, col.bounds.max.x),
             Random.Range(col.bounds.min.y, col.bounds.max.y),
             Random.Range(col.bounds.min.z, col.bounds.max.z));
-            return Instantiate(_spawnObject, spawnPos, Quaternion.identity);
+            return Instantiate(_obj, spawnPos, Quaternion.identity);
         }
         else
             return null;
     }
 
-    public GameObject CreateObject(GameObject spawnObj)
+    public void SpawnObject(GameObject spawnObj)
     {
         Vector3 spawnPos = new Vector3(Random.Range(col.bounds.min.x, col.bounds.max.x),
             Random.Range(col.bounds.min.y, col.bounds.max.y),
             Random.Range(col.bounds.min.z, col.bounds.max.z));
-        return Instantiate(spawnObj, spawnPos, Quaternion.identity);
+
+        spawnObj.transform.position = spawnPos;
     }
 }
