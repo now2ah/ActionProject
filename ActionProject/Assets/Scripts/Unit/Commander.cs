@@ -44,6 +44,9 @@ namespace Action.Units
             HP = _unitStats.maxHp;
             Speed = _unitStats.speed;
             AttackDamage = _unitStats.attackDamage;
+            Level = 1;
+            Exp = 0;
+            NextExp = 50;
             SetNameUI(UnitName);
             UnitPanel.Show();
             _animHashMoving = Animator.StringToHash("isMoving");

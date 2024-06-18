@@ -32,6 +32,8 @@ namespace Action.Units
             HP = _unitStats.maxHp;
             AttackDamage = _unitStats.attackDamage;
             AttackSpeed = _unitStats.attackSpeed;
+            ExpAmount = _unitStats.expAmount;
+
             SetNameUI(UnitName);
         }
 

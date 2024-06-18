@@ -31,6 +31,7 @@ namespace Action.Units
             AttackDamage = _unitStats.attackDamage;
             AttackSpeed = _unitStats.attackSpeed;
             AttackDistance = _unitStats.attackDistance;
+            ExpAmount = _unitStats.expAmount;
             SetNameUI(UnitName);
         }
 

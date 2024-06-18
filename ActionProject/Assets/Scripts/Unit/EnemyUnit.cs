@@ -20,6 +20,7 @@ namespace Action.Units
         int _attackDamage;
         float _attackSpeed;
         float _attackDistance;
+        int _expAmount;
 
         protected GameObject _target;
         GameObject _nearestPlayerBuilding;
@@ -31,6 +32,7 @@ namespace Action.Units
         public int AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
         public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
         public float AttackDistance { get { return _attackDistance; } set { _attackDistance = value; } }
+        public int ExpAmount { get { return _expAmount; } set { _expAmount = value; } }
 
         public GameObject Target { get { return _target; } set { _target = value; } }
         public Vector3 TargetPos { get { return _targetPos; } set { _targetPos = value; } }
@@ -161,12 +163,13 @@ namespace Action.Units
             _target = null;
         }
 
-        protected override void _Dead()
+        protected override void _Dead(Unit damager)
         {
-            base._Dead();
+            base._Dead(damager);
             _DisableMove();
             _ApplyPhysicsEffect();
             _FreeObjectCoroutine();
+            _GiveExp((PlayerUnit)damager, _expAmount);
         }
 
         protected void _DisableMove()
@@ -201,6 +204,11 @@ namespace Action.Units
         {
             yield return new WaitForSeconds(1.0f);
             _FreeObject();
+        }
+
+        protected void _GiveExp(PlayerUnit damager, int exp)
+        {
+            damager.GainExp(exp);
         }
 
         protected override void Awake()

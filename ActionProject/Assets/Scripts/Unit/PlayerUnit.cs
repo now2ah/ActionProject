@@ -26,14 +26,21 @@ namespace Action.Units
 
         [SerializeReference]
         float _attackDamage;
-        
+
+        int _level;
+        int _exp;
+        int _nextExp;
+
         public bool IsMoving { get { return _isMoving; } set { _isMoving = value; } }
         public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; } }
         public Animator Animator => _animator;
         public NavMeshAgent NavMeshAgentComp { get { return _navMeshAgent; } set { _navMeshAgent = value; } }
         public float Speed { get { return _speed; } set { _speed = value; } }
         public float AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
-        
+        public int Level { get { return _level; } set { _level = value; } }
+        public int Exp { get { return _exp; } set { _exp = value; } }
+        public int NextExp { get { return _nextExp; } set { _nextExp = value; } }
+
         public new void Initialize()
         {
             base.Initialize();
@@ -50,10 +57,37 @@ namespace Action.Units
 
         }
 
+        public virtual void GainExp(int exp)
+        {
+            _exp += exp;
+            Logger.Log("Exp : " + _exp);
+            if (_CanLevelUp())
+            {
+                Logger.Log("Level UP");
+                _level += 1;
+                _exp = 0;
+                float nextExp = _nextExp * 1.5f;
+                _nextExp = (int)nextExp;
+            }
+        }
+
+        protected bool _CanLevelUp()
+        {
+            if (_nextExp <= _exp)
+                return true;
+            else
+                return false;
+        }
+
         protected override void Awake()
         {
             base.Awake();
             _navMeshAgent = gameObject.AddComponent<NavMeshAgent>();
+            _speed = 1.0f;
+            _attackDamage = 1.0f;
+            _level = 1;
+            _exp = 0;
+            _exp = 1;
         }
 
         protected override void Start()
