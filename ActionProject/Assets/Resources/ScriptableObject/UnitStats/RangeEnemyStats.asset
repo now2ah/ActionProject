@@ -19,3 +19,4 @@ MonoBehaviour:
   attackDamage: 10
   attackSpeed: 1
   attackDistance: 15
+  expAmount: 15

@@ -27,7 +27,7 @@ namespace Action.Units
         AutoAttackAbilty[] _autoAttackSlots;
 
         public UnityAction OnDamaged;
-
+        public UnityEvent<int, int> OnGainExp;
 
         public CommanderIdleState IdleState => _idleState;
         public CommanderMoveState MoveState => _moveState;
@@ -52,6 +52,7 @@ namespace Action.Units
             _animHashMoving = Animator.StringToHash("isMoving");
             _animHashAttacking = Animator.StringToHash("isAttacking");
             OnDamaged += UIManager.Instance.ShowDamagedEffect;
+            OnGainExp.AddListener(UIManager.Instance.ExpBarUI.ApplyExpValue);
             _autoAttackSlots = new AutoAttackAbilty[GameManager.Instance.Constants.AUTOATTACK_TYPE_COUNT];
             _SetAutoAttackAbilities();
         }
@@ -90,6 +91,12 @@ namespace Action.Units
             {
                 _autoAttackSlots[index].IsActivated = true;
             }
+        }
+
+        public override void GainExp(int exp)
+        {
+            base.GainExp(exp);
+            OnGainExp.Invoke(Exp, NextExp);
         }
 
         void OnMove(InputAction.CallbackContext context)

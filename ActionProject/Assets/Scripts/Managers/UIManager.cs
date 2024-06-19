@@ -36,12 +36,17 @@ namespace Action.Manager
         GameObject _townStageUI;
         TownStagePanel _townStagePanel;
 
+        GameObject _expPanel;
+        ExpBarUI _expBarUI;
+
         public Canvas MainCanvas => _mainCanvas;
         public Canvas InGameCanvas => _inGameCanvas;
         public GameObject FadeUIPanel => _fadeUIPanel;
         public GameObject DamagedEffectPanel => _damagedEffectPanel;
         public bool IsShowUnitPanel { get { return _isShowUnitPanel; } set { _isShowUnitPanel = value; } }
         public GameObject TownStageUI { get { return _townStageUI; } set { _townStageUI = value; } }
+        public GameObject ExpPanel { get { return _expPanel; } set { _expPanel = value; } }
+        public ExpBarUI ExpBarUI { get { return _expBarUI; } set { _expBarUI = value; } }
 
         public override void Initialize()
         {
@@ -56,6 +61,9 @@ namespace Action.Manager
             _damagedEffectPanel = CreateUI("DamagedEffectPanel", _mainCanvas);
             _fadeUIPanel.SetActive(false);
             _damagedEffectPanel.SetActive(false);
+            _expPanel = CreateUI("ExpPanel", _mainCanvas);
+            _expBarUI = _expPanel.GetComponent<ExpBarUI>();
+            _expPanel.SetActive(false);
         }
 
         public GameObject CreateUI(string name, Canvas canvas)

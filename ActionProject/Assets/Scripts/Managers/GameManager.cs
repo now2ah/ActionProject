@@ -132,6 +132,9 @@ namespace Action.Manager
             _CreateStartBase();
             _CreateCommanderUnit();
 
+            UIManager.Instance.ExpPanel.SetActive(true);
+            UIManager.Instance.ExpBarUI.ApplyExpValue(_commanderUnit.Exp, _commanderUnit.NextExp);
+
             _PrepareResource();
 
             _StartGameTimer();
