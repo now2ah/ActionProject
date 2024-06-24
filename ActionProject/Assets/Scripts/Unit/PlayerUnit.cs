@@ -26,6 +26,7 @@ namespace Action.Units
 
         [SerializeReference]
         float _attackDamage;
+        float _growthAttackDamage;
 
         int _level;
         int _exp;
@@ -37,6 +38,7 @@ namespace Action.Units
         public NavMeshAgent NavMeshAgentComp { get { return _navMeshAgent; } set { _navMeshAgent = value; } }
         public float Speed { get { return _speed; } set { _speed = value; } }
         public float AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
+        public float GrowthAttackDamage { get { return _growthAttackDamage; } set { _growthAttackDamage = value; } }
         public int Level { get { return _level; } set { _level = value; } }
         public int Exp { get { return _exp; } set { _exp = value; } }
         public int NextExp { get { return _nextExp; } set { _nextExp = value; } }
@@ -62,13 +64,16 @@ namespace Action.Units
             _exp += exp;
             Logger.Log("Exp : " + _exp);
             if (_CanLevelUp())
-            {
-                Logger.Log("Level UP");
-                _level += 1;
-                _exp = 0;
-                float nextExp = _nextExp * 1.5f;
-                _nextExp = (int)nextExp;
-            }
+                ModifyLevel(_level + 1);
+        }
+
+        public void ModifyLevel(int level)
+        {
+            _level = level;
+            _exp = 0;
+            float nextExp = _nextExp * 1.5f;
+            _nextExp = (int)nextExp;
+            _ApplyStats();
         }
 
         protected bool _CanLevelUp()
@@ -77,6 +82,13 @@ namespace Action.Units
                 return true;
             else
                 return false;
+        }
+
+        protected void _ApplyStats()
+        {
+            MaxHp = MaxHp + (GrowthHp * _level);
+            HP += GrowthHp;
+            AttackDamage = AttackDamage + (GrowthAttackDamage * _level);
         }
 
         protected override void Awake()

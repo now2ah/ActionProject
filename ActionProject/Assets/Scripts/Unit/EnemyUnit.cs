@@ -17,7 +17,7 @@ namespace Action.Units
         Rigidbody _rigidBody;
 
         float _speed;
-        int _attackDamage;
+        float _attackDamage;
         float _attackSpeed;
         float _attackDistance;
         int _expAmount;
@@ -29,7 +29,7 @@ namespace Action.Units
 
         public float Speed { get { return _speed; } set { _speed = value; } }
         public NavMeshAgent NavMeshAgentComp { get { return _navMeshAgent; } set { _navMeshAgent = value; } }
-        public int AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
+        public float AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
         public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
         public float AttackDistance { get { return _attackDistance; } set { _attackDistance = value; } }
         public int ExpAmount { get { return _expAmount; } set { _expAmount = value; } }

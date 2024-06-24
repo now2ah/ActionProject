@@ -41,9 +41,11 @@ namespace Action.Units
             base.Initialize();
             UnitName = _unitStats.unitName;
             MaxHp = _unitStats.maxHp;
+            GrowthHp = _unitStats.growthMaxHp;
             HP = _unitStats.maxHp;
             Speed = _unitStats.speed;
             AttackDamage = _unitStats.attackDamage;
+            GrowthAttackDamage = _unitStats.growthAttackDamage;
             Level = 1;
             Exp = 0;
             NextExp = 50;

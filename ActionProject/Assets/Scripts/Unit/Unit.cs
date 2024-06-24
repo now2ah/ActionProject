@@ -18,6 +18,7 @@ namespace Action.Units
         float _hp;
         [SerializeReference]
         float _maxHp;
+        float _growthHp;
 
         string _unitName;
         bool _canDamaged;
@@ -34,6 +35,7 @@ namespace Action.Units
         public Material UnitMaterial { get { return _unitMaterial; } set { _unitMaterial = value; } }
         public float HP { get { return _hp; } set { _hp = value; } }
         public float MaxHp { get { return _maxHp; } set { _maxHp = value; } }
+        public float GrowthHp { get { return _growthHp; } set { _growthHp = value; } }
         public float InfoActiveDistant { get { return _infoActiveDistant; } set { _infoActiveDistant = value; } }
         public bool IsOnUnitPanel { get { return _isOnUnitPanel; } set { _isOnUnitPanel = value; } }
 

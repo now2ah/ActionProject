@@ -35,7 +35,7 @@ namespace Action.Units
             SetNameUI(UnitName);
         }
 
-        public void Attack(int damage)
+        public void Attack(float damage)
         {
             if (null != _target)
             {

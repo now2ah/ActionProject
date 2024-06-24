@@ -8,10 +8,12 @@ namespace Action.SO
     public class UnitStatsSO : ScriptableObject
     {
         public string unitName;
-        public int maxHp;
+        public float maxHp;
+        public float growthMaxHp;
         public float speed;
         public float constructTime;
-        public int attackDamage;
+        public float attackDamage;
+        public float growthAttackDamage;
         public float attackSpeed;
         public float attackDistance;
         public int expAmount;
