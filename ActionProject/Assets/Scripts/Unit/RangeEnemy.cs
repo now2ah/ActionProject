@@ -39,7 +39,7 @@ namespace Action.Units
         {
             if (null != _target)
             {
-                _CreateProjectile();
+                _CreateProjectile(damage);
                 _lastAttackTime = Time.realtimeSinceStartup;
             }
             //Melee
@@ -84,7 +84,7 @@ namespace Action.Units
                 SetDestinationToTarget(_target);
         }
 
-        void _CreateProjectile()
+        void _CreateProjectile(float damage)
         {
             if (null != _target)
             {
@@ -93,7 +93,7 @@ namespace Action.Units
                 RangeEnemyProjectile projectile = (RangeEnemyProjectile)PoolManager.Instance.RangeEnemyProjectilePool.GetNew();
                 projectile.transform.position = shootPosition;
                 projectile.transform.rotation = transform.rotation;
-                projectile.Initialize(this, _unitStats.attackDamage);
+                projectile.Initialize(this, damage);
             }
         }
 
