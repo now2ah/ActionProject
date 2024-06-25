@@ -13,7 +13,7 @@ public class CharacterTestScene : MonoBehaviour
         if (GUI.Button(new Rect(50, 50, 300, 50), "Game Start", buttonStyle))
         {
             GameManager.Instance.GameStart();
-            GameManager.Instance.CommanderUnit.ActivateAutoAttack(1);
+            GameManager.Instance.CommanderUnit.ActivateAutoAttack(0);
         }
         if (GUI.Button(new Rect(50, 150, 300, 50), "Summon Monster", buttonStyle))
         {

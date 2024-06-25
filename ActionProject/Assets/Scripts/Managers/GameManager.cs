@@ -61,6 +61,7 @@ namespace Action.Manager
         List<GameObject> _playerUnits;
 
         List<GameObject> _enemyUnitPrefabs;
+        [SerializeReference]
         List<GameObject> _enemyUnits;
 
         EnemyWaves _enemyWaves;
