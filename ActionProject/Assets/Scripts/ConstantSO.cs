@@ -40,5 +40,6 @@ public class Constant : ScriptableObject
     public int NORMALENEMY_MAX_AMOUNT;
     public int RANGEENEMY_MAX_AMOUNT;
     public int NORMALPROJECTILE_MAX_AMOUNT;
+    public int GUIDEDPROJECTILE_MAX_AMOUNT;
     public int RANGEENEMYPROJECTILE_MAX_AMOUNT;
 }

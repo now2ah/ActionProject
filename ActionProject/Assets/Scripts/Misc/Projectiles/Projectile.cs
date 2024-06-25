@@ -17,7 +17,7 @@ namespace Action.Game
         public Unit Owner { get { return _owner; } set { _owner = value; } }
         public float AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
 
-        public void Initialize(Unit owner, float attackDamage)
+        public virtual void Initialize(Unit owner, float attackDamage)
         {
             _owner = owner;
             _attackDamage = attackDamage;

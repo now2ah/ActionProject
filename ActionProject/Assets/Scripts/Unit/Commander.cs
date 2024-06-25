@@ -169,6 +169,8 @@ namespace Action.Units
             //test
             DirectionalAttack directional = gameObject.AddComponent<DirectionalAttack>();
             _autoAttackSlots[0] = directional;
+            GuidanceAttack guidance = gameObject.AddComponent<GuidanceAttack>();
+            _autoAttackSlots[1] = guidance;
 
             //ActivateAutoAttack(0);
         }

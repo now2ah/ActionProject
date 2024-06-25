@@ -12,6 +12,7 @@ namespace Action.Manager
         NORMAL_ENEMY,
         RANGE_ENEMY,
         NORMALPROJECTILE,
+        GUIDEDPROJECTILE,
         RANGEENEMY_PROJECTILE,
     }
 
@@ -21,18 +22,21 @@ namespace Action.Manager
         GameObject _rangeEnemyObj;
 
         GameObject _normalProjectileObj;
+        GameObject _guidedProjectileObj;
         GameObject _rangeEnemyProjectileObj;
 
         ObjectPooler<EnemyUnit> _normalEnemyPool;
         ObjectPooler<EnemyUnit> _rangeEnemyPool;
 
         ObjectPooler<Projectile> _normalProjectilePool;
+        ObjectPooler<Projectile> _guidedProjectilePool;
         ObjectPooler<Projectile> _rangeEnemyProjectilePool;
 
         public ObjectPooler<EnemyUnit> NormalEnemyPool => _normalEnemyPool;
         public ObjectPooler<EnemyUnit> RangeEnemyPool => _rangeEnemyPool;
 
         public ObjectPooler<Projectile> NormalProjectilePool => _normalProjectilePool;
+        public ObjectPooler<Projectile> GuidedProjectilePool => _guidedProjectilePool;
         public ObjectPooler<Projectile> RangeEnemyProjectilePool => _rangeEnemyProjectilePool;
 
         public override void Initialize()
@@ -41,6 +45,7 @@ namespace Action.Manager
             _normalEnemyPool = new ObjectPooler<EnemyUnit>();
             _rangeEnemyPool = new ObjectPooler<EnemyUnit>();
             _normalProjectilePool = new ObjectPooler<Projectile>();
+            _guidedProjectilePool = new ObjectPooler<Projectile>();
             _rangeEnemyProjectilePool = new ObjectPooler<Projectile>();
             _GetObjectPrefabs();
             _SetUpAllObjectPools();
@@ -66,6 +71,7 @@ namespace Action.Manager
             _normalEnemyObj = Resources.Load("Prefabs/Units/Enemy/NormalEnemy") as GameObject;
             _rangeEnemyObj = Resources.Load("Prefabs/Units/Enemy/RangeEnemy") as GameObject;
             _normalProjectileObj = Resources.Load("Prefabs/Misc/Projectiles/NormalProjectile") as GameObject;
+            _guidedProjectileObj = Resources.Load("Prefabs/Misc/Projectiles/GuidedProjectile") as GameObject;
             _rangeEnemyProjectileObj = Resources.Load("Prefabs/Misc/Projectiles/RangeEnemyProjectile") as GameObject;
         }
 
@@ -79,6 +85,9 @@ namespace Action.Manager
 
             if (_normalProjectileObj.TryGetComponent<NormalProjectile>(out NormalProjectile normalProjectile))
                 _normalProjectilePool.Initialize(normalProjectile, GameManager.Instance.Constants.NORMALPROJECTILE_MAX_AMOUNT, this.gameObject);
+
+            if (_guidedProjectileObj.TryGetComponent<GuidedProjectile>(out GuidedProjectile guidedProjectile))
+                _guidedProjectilePool.Initialize(guidedProjectile, GameManager.Instance.Constants.GUIDEDPROJECTILE_MAX_AMOUNT, this.gameObject);
 
             if (_rangeEnemyProjectileObj.TryGetComponent<RangeEnemyProjectile>(out RangeEnemyProjectile rangeEnemyProjectile))
                 _rangeEnemyProjectilePool.Initialize(rangeEnemyProjectile, GameManager.Instance.Constants.RANGEENEMYPROJECTILE_MAX_AMOUNT, this.gameObject);
