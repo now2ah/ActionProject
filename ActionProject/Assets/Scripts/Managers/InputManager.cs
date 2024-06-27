@@ -8,6 +8,7 @@ namespace Action.Manager
 {
     public class InputManager : Singleton<InputManager>
     {
+        public InputAction actionLook;
         public InputAction actionMove;
         public InputAction actionAction;
         public InputAction actionPhysicalAttack;
@@ -15,6 +16,7 @@ namespace Action.Manager
         public override void Initialize()
         {
             base.Initialize();
+            actionLook.Enable();
             actionMove.Enable();
             actionAction.Enable();
             actionPhysicalAttack.Enable();

@@ -44,6 +44,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18f3ddb98ffdfa4d8b461bcd2256e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionLook:
+    m_Name: Action Look
+    m_Type: 0
+    m_ExpectedControlType: Vector2
+    m_Id: d32148cc-2c85-40ef-87c9-2248d424283d
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 9860f915-8778-40de-90c8-dd722270a874
+      m_Path: <Mouse>/position
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Action Look
+      m_Flags: 0
+    m_Flags: 0
   actionMove:
     m_Name: Action Move
     m_Type: 0

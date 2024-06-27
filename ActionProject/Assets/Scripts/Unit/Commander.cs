@@ -13,7 +13,9 @@ namespace Action.Units
     public class Commander : PlayerUnit
     {
         UnitStatsSO _unitStats;
-        Vector2 inputVector;
+        Vector2 _lookInput;
+        Vector2 _moveInput;
+        
 
         CommanderIdleState _idleState;
         CommanderMoveState _moveState;
@@ -67,10 +69,10 @@ namespace Action.Units
 
         public override void Move()
         {
-            Vector3 movePos = new Vector3(inputVector.x, 0, inputVector.y);
+            Vector3 movePos = new Vector3(_moveInput.x, 0, _moveInput.y);
 
             //if (StateMachine.IsState(_moveState))
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos), 0.15f);
+            //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos), 0.15f);
 
             transform.Translate(movePos * Time.deltaTime * Speed, Space.World);
         }
@@ -101,12 +103,21 @@ namespace Action.Units
             OnGainExp.Invoke(Exp, NextExp);
         }
 
+        void OnLook(InputAction.CallbackContext context)
+        {
+            Vector3 camPos = CameraManager.Instance.MainCamera.Camera.WorldToScreenPoint(transform.position);
+            _lookInput = context.ReadValue<Vector2>();
+            Vector3 lookPos = CameraManager.Instance.MainCamera.Camera.ScreenToWorldPoint(new Vector3(_lookInput.x, _lookInput.y, camPos.z));
+            Logger.Log(lookPos.ToString());
+            transform.LookAt(lookPos);
+        }
+
         void OnMove(InputAction.CallbackContext context)
         {
             if (!_isAttacking)
             {
                 StateMachine.ChangeState(_moveState);
-                inputVector = context.ReadValue<Vector2>();
+                _moveInput = context.ReadValue<Vector2>();
             }
         }
 
@@ -188,6 +199,7 @@ namespace Action.Units
         {
             base.Start();
             Initialize();
+            InputManager.Instance.actionLook.performed += ctx => { OnLook(ctx); };
             InputManager.Instance.actionMove.performed += ctx => { OnMove(ctx); };
             InputManager.Instance.actionMove.canceled += ctx => { OnMoveCanceled(ctx); };
             InputManager.Instance.actionAction.performed += ctx => { OnActionPressed(ctx); };
@@ -201,12 +213,6 @@ namespace Action.Units
         protected override void Update()
         {
             base.Update();
-            if (!_isAttacking && InputManager.Instance.actionMove.IsPressed())
-            {
-                inputVector = InputManager.Instance.actionMove.ReadValue<Vector2>();
-                StateMachine.ChangeState(_moveState);
-            }
-                
             _CheckUnableInteractBuilding();
         }
     }
