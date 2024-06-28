@@ -44,103 +44,120 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18f3ddb98ffdfa4d8b461bcd2256e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionLook:
-    m_Name: Action Look
+  MousePosition:
+    m_Name: Mouse Position
     m_Type: 0
     m_ExpectedControlType: Vector2
-    m_Id: d32148cc-2c85-40ef-87c9-2248d424283d
+    m_Id: 79b0e9d6-a35d-48c3-828e-5de4d0e12a41
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 9860f915-8778-40de-90c8-dd722270a874
+      m_Id: 932e253e-9371-4a6a-8524-49731d608e20
       m_Path: <Mouse>/position
       m_Interactions: 
       m_Processors: 
       m_Groups: 
-      m_Action: Action Look
+      m_Action: Mouse Position
       m_Flags: 0
     m_Flags: 0
-  actionMove:
-    m_Name: Action Move
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 4cf2a556-099d-4e13-b4e4-a49267bdc198
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 2D Vector
-      m_Id: 88f490c0-c414-4207-9ed0-6ae01526ad30
-      m_Path: 2DVector
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action Move
-      m_Flags: 4
-    - m_Name: up
-      m_Id: a2085ebb-b6f8-4b33-8522-638d98a7b418
-      m_Path: <Keyboard>/w
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action Move
-      m_Flags: 8
-    - m_Name: down
-      m_Id: da2161b8-83b0-4e45-ad57-e6f63b3762c9
-      m_Path: <Keyboard>/s
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action Move
-      m_Flags: 8
-    - m_Name: left
-      m_Id: fdfade8e-a77d-4e79-bc45-1d169d47273d
-      m_Path: <Keyboard>/a
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action Move
-      m_Flags: 8
-    - m_Name: right
-      m_Id: 994f436c-1d8a-44bc-ac0f-940d83923ac5
-      m_Path: <Keyboard>/d
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action Move
-      m_Flags: 8
-    m_Flags: 0
-  actionAction:
-    m_Name: Action
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: a98d5d1b-5ec8-430b-af12-15dcf611df46
+  Click:
+    m_Name: Click
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: ae3b2155-0556-4711-9701-ca2a86b75fdc
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: eb876a99-caae-4fae-b68a-0068e53fef9e
+      m_Id: 7fcc8c06-eeb3-4bb2-aa86-eafe8e08bacf
+      m_Path: <Mouse>/leftButton
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Click
+      m_Flags: 0
+    m_Flags: 0
+  Move:
+    m_Name: Move
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 26f343f0-017d-4f7b-b233-3ea941571b59
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: 0a6d4506-ff31-48e1-87c8-1f2578f04f84
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 4
+    - m_Name: up
+      m_Id: fbe0fac4-d4e8-4986-b112-1db39503d01d
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    - m_Name: down
+      m_Id: ca5d914f-c570-452f-860d-52ad93e09928
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    - m_Name: left
+      m_Id: e8150f2a-9c17-4488-8ee5-068279603a03
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    - m_Name: right
+      m_Id: f25b6bf2-4e3e-42b4-b79d-8e55526c796f
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    m_Flags: 0
+  Action:
+    m_Name: Action
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 0a94d082-a394-4634-8d11-8014db706287
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: d5ed3323-37db-47a8-b1a2-1bd0ec2b8db2
       m_Path: <Keyboard>/r
-      m_Interactions: Press
+      m_Interactions: 
       m_Processors: 
       m_Groups: 
       m_Action: Action
       m_Flags: 0
     m_Flags: 0
-  actionPhysicalAttack:
-    m_Name: Action Physical Attack
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 0cd9a04b-1323-418d-ba7b-41023226f81c
+  PhysicalAttack:
+    m_Name: Physical Attack
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 80adb23e-0cde-423d-8157-68f4ddd7cd4a
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: d7468bf5-7958-4332-9f8e-da2e967c03ce
+      m_Id: 3a619338-8013-4264-b26e-da4fdcc07b94
       m_Path: <Keyboard>/space
-      m_Interactions: Press(pressPoint=0.1)
+      m_Interactions: 
       m_Processors: 
       m_Groups: 
-      m_Action: Action Physical Attack
+      m_Action: Physical Attack
       m_Flags: 0
     m_Flags: 0

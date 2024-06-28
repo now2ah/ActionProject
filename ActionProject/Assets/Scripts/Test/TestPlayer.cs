@@ -36,8 +36,8 @@ public class TestPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Action.Manager.InputManager.Instance.actionMove.performed += ctx => { OnTestAction(ctx); };
-        Action.Manager.InputManager.Instance.actionMove.canceled += ctx => { OnTestActionCanceled(ctx); };
+        //Action.Manager.InputManager.Instance.actionMove.performed += ctx => { OnTestAction(ctx); };
+        //Action.Manager.InputManager.Instance.actionMove.canceled += ctx => { OnTestActionCanceled(ctx); };
         _idleState = new IdleState();
         _movingState = new MoveState();
         _stateMachine = new StateMachine();

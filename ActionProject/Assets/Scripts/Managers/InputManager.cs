@@ -8,18 +8,20 @@ namespace Action.Manager
 {
     public class InputManager : Singleton<InputManager>
     {
-        public InputAction actionLook;
-        public InputAction actionMove;
-        public InputAction actionAction;
-        public InputAction actionPhysicalAttack;
+        public InputAction MousePosition;
+        public InputAction Click;
+        public InputAction Move;
+        public InputAction Action;
+        public InputAction PhysicalAttack;
 
         public override void Initialize()
         {
             base.Initialize();
-            actionLook.Enable();
-            actionMove.Enable();
-            actionAction.Enable();
-            actionPhysicalAttack.Enable();
+            MousePosition.Enable();
+            Click.Enable();
+            Move.Enable();
+            Action.Enable();
+            PhysicalAttack.Enable();
         }
     }
 }

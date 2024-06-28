@@ -15,7 +15,7 @@ namespace Action.Units
         UnitStatsSO _unitStats;
         Vector2 _lookInput;
         Vector2 _moveInput;
-        
+        Vector3 _lookPos;
 
         CommanderIdleState _idleState;
         CommanderMoveState _moveState;
@@ -71,8 +71,8 @@ namespace Action.Units
         {
             Vector3 movePos = new Vector3(_moveInput.x, 0, _moveInput.y);
 
-            //if (StateMachine.IsState(_moveState))
-            //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos), 0.15f);
+            if (!InputManager.Instance.Click.IsPressed())
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos), 0.15f);
 
             transform.Translate(movePos * Time.deltaTime * Speed, Space.World);
         }
@@ -103,13 +103,17 @@ namespace Action.Units
             OnGainExp.Invoke(Exp, NextExp);
         }
 
-        void OnLook(InputAction.CallbackContext context)
+        void OnMousePosition(InputAction.CallbackContext context)
         {
             Vector3 camPos = CameraManager.Instance.MainCamera.Camera.WorldToScreenPoint(transform.position);
             _lookInput = context.ReadValue<Vector2>();
-            Vector3 lookPos = CameraManager.Instance.MainCamera.Camera.ScreenToWorldPoint(new Vector3(_lookInput.x, _lookInput.y, camPos.z));
-            Logger.Log(lookPos.ToString());
-            transform.LookAt(lookPos);
+            _lookPos = CameraManager.Instance.MainCamera.Camera.ScreenToWorldPoint(new Vector3(_lookInput.x, _lookInput.y, camPos.z));
+        }
+
+        void OnClick(InputAction.CallbackContext context)
+        {
+            Vector3 dir = _lookPos - transform.position;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir.normalized), 0.15f);
         }
 
         void OnMove(InputAction.CallbackContext context)
@@ -138,6 +142,15 @@ namespace Action.Units
         {
             if (context.performed)
                 StateMachine.ChangeState(_attackState);
+        }
+
+        void _CheckClick()
+        {
+            if (InputManager.Instance.Click.IsPressed())
+            {
+                Vector3 dir = _lookPos - transform.position;
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir.normalized), 0.15f);
+            }
         }
 
         void _CheckUnableInteractBuilding()
@@ -199,11 +212,12 @@ namespace Action.Units
         {
             base.Start();
             Initialize();
-            InputManager.Instance.actionLook.performed += ctx => { OnLook(ctx); };
-            InputManager.Instance.actionMove.performed += ctx => { OnMove(ctx); };
-            InputManager.Instance.actionMove.canceled += ctx => { OnMoveCanceled(ctx); };
-            InputManager.Instance.actionAction.performed += ctx => { OnActionPressed(ctx); };
-            InputManager.Instance.actionPhysicalAttack.performed += ctx => { OnPhysicalAttackPressed(ctx); };
+            InputManager.Instance.MousePosition.performed += ctx => { OnMousePosition(ctx); };
+            InputManager.Instance.Click.performed += ctx => { OnClick(ctx); };
+            InputManager.Instance.Move.performed += ctx => { OnMove(ctx); };
+            InputManager.Instance.Move.canceled += ctx => { OnMoveCanceled(ctx); };
+            InputManager.Instance.Action.performed += ctx => { OnActionPressed(ctx); };
+            InputManager.Instance.PhysicalAttack.performed += ctx => { OnPhysicalAttackPressed(ctx); };
             _idleState = new CommanderIdleState(this);
             _moveState = new CommanderMoveState(this);
             _attackState = new CommanderAttackState(this);
@@ -214,6 +228,7 @@ namespace Action.Units
         {
             base.Update();
             _CheckUnableInteractBuilding();
+            _CheckClick();
         }
     }
 }
