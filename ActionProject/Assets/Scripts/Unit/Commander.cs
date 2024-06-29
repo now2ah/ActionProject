@@ -7,6 +7,7 @@ using Action.State;
 using Action.Manager;
 using Action.SO;
 using Action.Game;
+using Action.Util;
 
 namespace Action.Units
 {
@@ -16,6 +17,9 @@ namespace Action.Units
         [SerializeReference]
         float _dashDistant;
 
+        [SerializeReference]
+        float _dashCooltime;
+
         Vector2 _lookInput;
         Vector2 _moveInput;
         Vector3 _lookPos;
@@ -23,6 +27,8 @@ namespace Action.Units
         CommanderIdleState _idleState;
         CommanderMoveState _moveState;
         CommanderAttackState _attackState;
+
+        ActionTime _dashTimer;
 
         GameObject _interactingBuilding;
 
@@ -149,8 +155,12 @@ namespace Action.Units
 
         void OnTeleport(InputAction.CallbackContext context)
         {
-            Vector3 newPos = transform.position + transform.forward * _dashDistant;
-            transform.position = newPos;
+            if (!_dashTimer.IsStarted)
+            {
+                _Dash();
+                _dashTimer.TickStart(_dashCooltime);
+            }
+                
         }
 
         void _CheckClick()
@@ -208,11 +218,18 @@ namespace Action.Units
             //ActivateAutoAttack(0);
         }
 
+        void _Dash()
+        {
+            Vector3 newPos = transform.position + transform.forward * _dashDistant;
+            transform.position = newPos;
+        }
+
         protected override void Awake()
         {
             base.Awake();
             _unitStats = Resources.Load("ScriptableObject/UnitStats/CommanderStats") as UnitStatsSO;
             _dashDistant = 2.5f;
+            _dashCooltime = 5.0f;
             _isMoving = false;
             _interactingBuilding = null;
             _animator = GetComponentInChildren<Animator>();
@@ -233,6 +250,7 @@ namespace Action.Units
             _moveState = new CommanderMoveState(this);
             _attackState = new CommanderAttackState(this);
             StateMachine.Initialize(_idleState);
+            _dashTimer = gameObject.AddComponent<ActionTime>();
         }
 
         protected override void Update()
