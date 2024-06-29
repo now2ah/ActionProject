@@ -161,3 +161,20 @@ MonoBehaviour:
       m_Action: Physical Attack
       m_Flags: 0
     m_Flags: 0
+  Teleport:
+    m_Name: Teleport
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 81c102b6-ceae-4ec2-b742-31058d901b5b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: be910925-862b-448d-be82-3b9a62224f6d
+      m_Path: <Keyboard>/leftShift
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Teleport
+      m_Flags: 0
+    m_Flags: 0

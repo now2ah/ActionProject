@@ -13,6 +13,9 @@ namespace Action.Units
     public class Commander : PlayerUnit
     {
         UnitStatsSO _unitStats;
+        [SerializeReference]
+        float _dashDistant;
+
         Vector2 _lookInput;
         Vector2 _moveInput;
         Vector3 _lookPos;
@@ -144,6 +147,12 @@ namespace Action.Units
                 StateMachine.ChangeState(_attackState);
         }
 
+        void OnTeleport(InputAction.CallbackContext context)
+        {
+            Vector3 newPos = transform.position + transform.forward * _dashDistant;
+            transform.position = newPos;
+        }
+
         void _CheckClick()
         {
             if (InputManager.Instance.Click.IsPressed())
@@ -203,6 +212,7 @@ namespace Action.Units
         {
             base.Awake();
             _unitStats = Resources.Load("ScriptableObject/UnitStats/CommanderStats") as UnitStatsSO;
+            _dashDistant = 2.5f;
             _isMoving = false;
             _interactingBuilding = null;
             _animator = GetComponentInChildren<Animator>();
@@ -218,6 +228,7 @@ namespace Action.Units
             InputManager.Instance.Move.canceled += ctx => { OnMoveCanceled(ctx); };
             InputManager.Instance.Action.performed += ctx => { OnActionPressed(ctx); };
             InputManager.Instance.PhysicalAttack.performed += ctx => { OnPhysicalAttackPressed(ctx); };
+            InputManager.Instance.Teleport.performed += ctx => { OnTeleport(ctx); };
             _idleState = new CommanderIdleState(this);
             _moveState = new CommanderMoveState(this);
             _attackState = new CommanderAttackState(this);

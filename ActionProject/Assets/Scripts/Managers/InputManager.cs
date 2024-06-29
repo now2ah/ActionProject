@@ -13,6 +13,7 @@ namespace Action.Manager
         public InputAction Move;
         public InputAction Action;
         public InputAction PhysicalAttack;
+        public InputAction Teleport;
 
         public override void Initialize()
         {
@@ -22,6 +23,7 @@ namespace Action.Manager
             Move.Enable();
             Action.Enable();
             PhysicalAttack.Enable();
+            Teleport.Enable();
         }
     }
 }
