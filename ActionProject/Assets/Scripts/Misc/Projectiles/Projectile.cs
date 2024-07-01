@@ -50,30 +50,5 @@ namespace Action.Game
 
         }
     }
-
-    public class GuideProjectile : NormalProjectile
-    {
-        GameObject _target;
-        public GameObject Target { get { return _target; } set { _target = value; } }
-
-        void _FollowTarget()
-        {
-            if (null != _target)
-                transform.LookAt(_target.transform);
-        }
-
-        protected override void Start()
-        {
-            base.Start();
-        }
-
-        protected override void FixedUpdate()
-        {
-            base.FixedUpdate();
-            _FollowTarget();
-        }
-    }
-
-    
 }
 

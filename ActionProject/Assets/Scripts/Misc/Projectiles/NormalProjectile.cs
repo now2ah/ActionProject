@@ -8,7 +8,7 @@ namespace Action.Game
 {
     public class NormalProjectile : Projectile
     {
-        void _MoveForward()
+        protected void _MoveForward()
         {
             transform.Translate(Vector3.forward * _speed);
         }
@@ -28,12 +28,12 @@ namespace Action.Game
                     comp.ApplyDamage(msg);
             }
         }
-        protected override void Start()
+        protected new void Start()
         {
             base.Start();
         }
 
-        protected override void FixedUpdate()
+        protected new void FixedUpdate()
         {
             base.FixedUpdate();
             _MoveForward();

@@ -3,24 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Action.Manager;
+using DG.Tweening;
 
 namespace Action.Game
 {
     public class GuidedProjectile : NormalProjectile
     {
         GameObject _target;
+        Sequence _moveSequence;
+        bool _isReady;
+
         public GameObject Target { get { return _target; } set { _target = value; } }
 
         public override void Initialize(Unit owner, float attackDamage)
         {
             base.Initialize(owner, attackDamage);
             _target = _GetNearestTarget();
-        }
-
-        void _FollowTarget()
-        {
-            if (null != _target)
-                transform.LookAt(_target.transform);
+            _moveSequence.Play();
         }
 
         GameObject _GetNearestTarget()
@@ -39,15 +38,39 @@ namespace Action.Game
             return nearestTarget;
         }
 
-        protected override void Start()
+        void _FollowTargetMove()
         {
-            base.Start();
+            if (null != _target)
+                transform.LookAt(_target.transform.position);
+            else
+                transform.LookAt(transform.forward);
         }
 
-        protected override void FixedUpdate()
+        void _SetReady(bool isReady)
         {
-            base.FixedUpdate();
-            _FollowTarget();
+            _isReady = isReady;
+        }
+
+        private void Awake()
+        {
+            _isReady = false;
+        }
+
+        protected new void Start()
+        {
+            base.Start();
+            _moveSequence = DOTween.Sequence();
+            _moveSequence.Append(transform.DOMove(_target.transform.position, 1.0f).SetSpeedBased());
+            _moveSequence.onComplete += ( () => { _isReady = true; });
+        }
+
+        protected new void FixedUpdate()
+        {
+            if(_isReady)
+            {
+                _FollowTargetMove();
+                _MoveForward();
+            }
         }
     }
 }
