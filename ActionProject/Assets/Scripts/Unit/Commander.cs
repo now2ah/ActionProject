@@ -160,7 +160,6 @@ namespace Action.Units
                 _Dash();
                 _dashTimer.TickStart(_dashCooltime);
             }
-                
         }
 
         void _CheckClick()

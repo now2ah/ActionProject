@@ -8,7 +8,13 @@ namespace Action.Game
 {
     public class NormalProjectile : Projectile
     {
-        protected void _MoveForward()
+        public override void Initialize(Unit owner, float attackDamage)
+        {
+            base.Initialize(owner, attackDamage);
+
+        }
+
+        protected virtual void _MoveForward()
         {
             transform.Translate(Vector3.forward * _speed);
         }

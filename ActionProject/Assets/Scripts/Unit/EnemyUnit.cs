@@ -21,6 +21,7 @@ namespace Action.Units
         float _attackSpeed;
         float _attackDistance;
         int _expAmount;
+        bool _isDead;
 
         protected GameObject _target;
         GameObject _nearestPlayerBuilding;
@@ -33,6 +34,7 @@ namespace Action.Units
         public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
         public float AttackDistance { get { return _attackDistance; } set { _attackDistance = value; } }
         public int ExpAmount { get { return _expAmount; } set { _expAmount = value; } }
+        public bool IsDead { get { return _isDead; } set { _isDead = value; } }
 
         public GameObject Target { get { return _target; } set { _target = value; } }
         public Vector3 TargetPos { get { return _targetPos; } set { _targetPos = value; } }
@@ -189,6 +191,7 @@ namespace Action.Units
 
         protected void _FreeObject()
         {
+            _isDead = true;
             GameManager.Instance.EnemyUnits.Remove(this.gameObject);
             UnitPanel.Hide();
             Pool.Free(this);
@@ -218,6 +221,7 @@ namespace Action.Units
             _rigidBody = GetComponent<Rigidbody>();
             _attackDamage = 1;
             _targetPos = Vector3.zero;
+            _isDead = false;
         }
 
         protected override void Start()

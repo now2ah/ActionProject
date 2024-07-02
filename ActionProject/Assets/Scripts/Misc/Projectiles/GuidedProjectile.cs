@@ -10,8 +10,8 @@ namespace Action.Game
     public class GuidedProjectile : NormalProjectile
     {
         GameObject _target;
-        Sequence _moveSequence;
-        bool _isReady;
+        float _startSpeed;
+        float _activeDistance;
 
         public GameObject Target { get { return _target; } set { _target = value; } }
 
@@ -19,7 +19,6 @@ namespace Action.Game
         {
             base.Initialize(owner, attackDamage);
             _target = _GetNearestTarget();
-            _moveSequence.Play();
         }
 
         GameObject _GetNearestTarget()
@@ -35,6 +34,20 @@ namespace Action.Game
                     nearestTarget = GameManager.Instance.EnemyUnits[i];
                 }
             }
+
+            if (null != nearestTarget && nearestTarget.TryGetComponent<EnemyUnit>(out EnemyUnit comp))
+            {
+                if (comp.IsDead)
+                    return null;
+            }
+
+            if (null != nearestTarget)
+            {
+                float distance = Vector3.Distance(nearestTarget.transform.position, gameObject.transform.position);
+                if (distance > _activeDistance)
+                    return null;
+            }
+
             return nearestTarget;
         }
 
@@ -42,35 +55,31 @@ namespace Action.Game
         {
             if (null != _target)
                 transform.LookAt(_target.transform.position);
-            else
-                transform.LookAt(transform.forward);
         }
 
-        void _SetReady(bool isReady)
+        protected override void _MoveForward()
         {
-            _isReady = isReady;
+            if (_startSpeed <= _speed)
+                _startSpeed += 0.1f;
+
+            transform.Translate(Vector3.forward * _startSpeed);
         }
 
         private void Awake()
         {
-            _isReady = false;
+            _startSpeed = 0.0f;
+            _activeDistance = 20.0f;
         }
 
         protected new void Start()
         {
             base.Start();
-            _moveSequence = DOTween.Sequence();
-            _moveSequence.Append(transform.DOMove(_target.transform.position, 1.0f).SetSpeedBased());
-            _moveSequence.onComplete += ( () => { _isReady = true; });
         }
 
         protected new void FixedUpdate()
         {
-            if(_isReady)
-            {
-                _FollowTargetMove();
-                _MoveForward();
-            }
+            _FollowTargetMove();
+            _MoveForward();
         }
     }
 }
