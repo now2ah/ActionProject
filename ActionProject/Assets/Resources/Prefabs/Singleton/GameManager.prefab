@@ -44,3 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afc0c41b045760a4a9630191032752bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Constants: {fileID: 11400000, guid: efdc6f5aa5c80ce45b0806ba75e2420f, type: 2}
+  _townBuildPhaseTime: 0
+  _huntPhaseTime: 0
+  _defensePhaseTime: 0
+  OnRefresh:
+    m_PersistentCalls:
+      m_Calls: []
+  _enemyUnits: []
