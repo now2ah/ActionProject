@@ -23,6 +23,9 @@ namespace Action.Units
         int _expAmount;
         bool _isDead;
 
+        protected bool _isMoving;
+        protected bool _isAttacking;
+
         protected GameObject _target;
         GameObject _nearestPlayerBuilding;
         GameObject _commanderUnit;
@@ -35,6 +38,8 @@ namespace Action.Units
         public float AttackDistance { get { return _attackDistance; } set { _attackDistance = value; } }
         public int ExpAmount { get { return _expAmount; } set { _expAmount = value; } }
         public bool IsDead { get { return _isDead; } set { _isDead = value; } }
+        public bool IsMoving { get { return _isMoving; } set { _isMoving = value; } }
+        public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; } }
 
         public GameObject Target { get { return _target; } set { _target = value; } }
         public Vector3 TargetPos { get { return _targetPos; } set { _targetPos = value; } }

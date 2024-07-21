@@ -68,7 +68,7 @@ namespace Action.Manager
 
         void _GetObjectPrefabs()
         {
-            _normalEnemyObj = Resources.Load("Prefabs/Units/Enemy/NormalEnemy") as GameObject;
+            _normalEnemyObj = Resources.Load("Prefabs/Units/Enemy/NormalSlime") as GameObject;
             _rangeEnemyObj = Resources.Load("Prefabs/Units/Enemy/RangeEnemy") as GameObject;
             _normalProjectileObj = Resources.Load("Prefabs/Misc/Projectiles/NormalProjectile") as GameObject;
             _guidedProjectileObj = Resources.Load("Prefabs/Misc/Projectiles/GuidedProjectile") as GameObject;

@@ -22,6 +22,7 @@ namespace Action.State
             {
                 _enemyUnit.FindNearestPlayerBuilding();
                 _enemyUnit.FindNearestTarget(true);
+                _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, false);
             }
         }
 
@@ -60,6 +61,7 @@ namespace Action.State
             if (null != _enemyUnit && null != _enemyUnit.Target)
             {
                 _enemyUnit.SetDestinationToTarget(_enemyUnit.Target);
+                _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, true);
             }
         }
 

@@ -13,6 +13,7 @@ namespace Action.Units
         UnitPanel _unitPanel;
         Collider _unitCollider;
         MeshRenderer _unitMeshRenderer;
+        SkinnedMeshRenderer _unitSkinnedMeshRenderer;
         Material _unitMaterial;
 
         float _hp;
@@ -32,6 +33,7 @@ namespace Action.Units
         public string UnitName { get { return _unitName; } set { _unitName = value; } }
         public Collider UnitCollider { get { return _unitCollider; } set { _unitCollider = value; } }
         public MeshRenderer UnitMeshRenderer { get { return _unitMeshRenderer; } set { _unitMeshRenderer = value; } }
+        public SkinnedMeshRenderer UnitSkinnedMeshRenderer { get { return _unitSkinnedMeshRenderer; } set { _unitSkinnedMeshRenderer = value; } }
         public Material UnitMaterial { get { return _unitMaterial; } set { _unitMaterial = value; } }
         public float HP { get { return _hp; } set { _hp = value; } }
         public float MaxHp { get { return _maxHp; } set { _maxHp = value; } }
@@ -51,7 +53,11 @@ namespace Action.Units
             _unitPanel.Hide();
             _unitCollider = GetComponentInChildren<Collider>();
             _unitMeshRenderer = GetComponentInChildren<MeshRenderer>();
-            _unitMaterial = new Material(_unitMeshRenderer.material);
+            _unitSkinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+            if (null != _unitMeshRenderer)
+                _unitMaterial = new Material(_unitMeshRenderer.material);
+            else if (null != _unitSkinnedMeshRenderer)
+                _unitMaterial = new Material(_unitSkinnedMeshRenderer.material);
 
             _stateMachine = new StateMachine();
         }
@@ -99,9 +105,17 @@ namespace Action.Units
 
         IEnumerator ChangeMaterialCoroutine()
         {
-            _unitMeshRenderer.material = GameManager.Instance.HitMaterial;
+            if (null != _unitMeshRenderer)
+                _unitMeshRenderer.material = GameManager.Instance.HitMaterial;
+            else if (null != _unitSkinnedMeshRenderer)
+                _unitSkinnedMeshRenderer.material = GameManager.Instance.HitMaterial;
+
             yield return new WaitForSeconds(0.1f);
-            _unitMeshRenderer.material = _unitMaterial;
+
+            if (null != _unitMeshRenderer)
+                _unitMeshRenderer.material = _unitMaterial;
+            else if (null != _unitSkinnedMeshRenderer)
+                _unitSkinnedMeshRenderer.material = _unitMaterial;
         }
 
         protected bool _IsNearPlayerUnit()

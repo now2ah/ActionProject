@@ -10,6 +10,8 @@ namespace Action.Units
 {
     public class NormalEnemy : EnemyUnit
     {
+        Animator _animator;
+
         UnitStatsSO _unitStats;
         bool _isAttackCooltime;
         ActionTime _attackTimer;
@@ -18,11 +20,17 @@ namespace Action.Units
         EnemyMoveState _moveState;
         EnemyAttackState _attackState;
 
+        int _animHashMoving;
+        int _animHashAttacking;
+
+        public Animator Animator => _animator;
         public bool IsAttackCooltime => _isAttackCooltime;
         public ActionTime AttackTimer => _attackTimer;
         public EnemyIdleState IdleState => _idleState;
         public EnemyMoveState MoveState => _moveState;
         public EnemyAttackState AttackState => _attackState;
+        public int AnimHashMoving => _animHashMoving;
+        public int AnimHashAttacking => _animHashAttacking;
 
         public new void Initialize()
         {
@@ -33,6 +41,8 @@ namespace Action.Units
             AttackDamage = _unitStats.attackDamage;
             AttackSpeed = _unitStats.attackSpeed;
             ExpAmount = _unitStats.expAmount;
+            _animHashMoving = Animator.StringToHash("IsMoving");
+            _animHashAttacking = Animator.StringToHash("IsAttacking");
 
             SetNameUI(UnitName);
         }
@@ -89,6 +99,7 @@ namespace Action.Units
         protected override void Awake()
         {
             base.Awake();
+            _animator = GetComponentInChildren<Animator>();
             _unitStats = Resources.Load("ScriptableObject/UnitStats/NormalEnemyStats") as UnitStatsSO;
             _isAttackCooltime = false;
             _attackTimer = gameObject.AddComponent<ActionTime>();
