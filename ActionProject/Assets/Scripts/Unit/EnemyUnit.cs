@@ -172,6 +172,7 @@ namespace Action.Units
         protected override void _Dead(Unit damager)
         {
             base._Dead(damager);
+            UnitPanel.Hide();
             _DisableMove();
             _ApplyPhysicsEffect();
             _FreeObjectCoroutine();
@@ -196,9 +197,7 @@ namespace Action.Units
 
         protected void _FreeObject()
         {
-            _isDead = true;
             GameManager.Instance.EnemyUnits.Remove(this.gameObject);
-            UnitPanel.Hide();
             Pool.Free(this);
         }
 
@@ -210,8 +209,11 @@ namespace Action.Units
 
         IEnumerator DeathCoroutine()
         {
+            Logger.Log("CoroutineStart");
+            _isDead = true;
             yield return new WaitForSeconds(1.0f);
             _FreeObject();
+            Logger.Log("CoroutineEnd");
         }
 
         protected void _GiveExp(PlayerUnit damager, int exp)

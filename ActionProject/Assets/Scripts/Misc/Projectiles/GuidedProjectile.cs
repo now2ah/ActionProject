@@ -65,6 +65,10 @@ namespace Action.Game
             transform.Translate(Vector3.forward * _startSpeed);
         }
 
+        protected void _CheckTargetAlive()
+        {
+        }
+
         private void Awake()
         {
             _startSpeed = 0.0f;
@@ -80,6 +84,7 @@ namespace Action.Game
         {
             _FollowTargetMove();
             _MoveForward();
+            //_CheckTargetAlive();
         }
     }
 }
