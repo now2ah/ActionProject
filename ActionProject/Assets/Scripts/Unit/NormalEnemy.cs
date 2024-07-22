@@ -32,7 +32,7 @@ namespace Action.Units
         public int AnimHashMoving => _animHashMoving;
         public int AnimHashAttacking => _animHashAttacking;
 
-        public new void Initialize()
+        public override void Initialize()
         {
             base.Initialize();
             UnitName = _unitStats.unitName;
@@ -45,6 +45,7 @@ namespace Action.Units
             _animHashAttacking = Animator.StringToHash("IsAttacking");
 
             SetNameUI(UnitName);
+            StateMachine.Initialize(_idleState);
         }
 
         public override void RefreshTargetPosition()
@@ -112,7 +113,7 @@ namespace Action.Units
         {
             base.Start();
             Initialize();
-            StateMachine.Initialize(_idleState);
+            
         }
 
         protected override void Update()

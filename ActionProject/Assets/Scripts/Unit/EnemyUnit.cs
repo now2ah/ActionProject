@@ -44,7 +44,7 @@ namespace Action.Units
         public GameObject Target { get { return _target; } set { _target = value; } }
         public Vector3 TargetPos { get { return _targetPos; } set { _targetPos = value; } }
 
-        public new void Initialize()
+        public override void Initialize()
         {
             base.Initialize();
             GameManager.Instance.OnRefresh.AddListener(RefreshTargetPosition);
@@ -53,6 +53,7 @@ namespace Action.Units
                 comp.localScale = new Vector3(0.5f, 0.5f, 1.0f);
             }
             UnitPanel.PanelPosition = UI.ePanelPosition.TOP;
+            _isDead = false;
         }
 
         public void SetSpeed(float speed)
@@ -172,7 +173,6 @@ namespace Action.Units
         protected override void _Dead(Unit damager)
         {
             base._Dead(damager);
-            UnitPanel.Hide();
             _DisableMove();
             _ApplyPhysicsEffect();
             _FreeObjectCoroutine();
@@ -189,7 +189,7 @@ namespace Action.Units
         protected void _ApplyPhysicsEffect()
         {
             _rigidBody.useGravity = true;
-            _rigidBody.drag = 0.0f;
+            //_rigidBody.drag = 0.0f;
             _rigidBody.angularDrag = 0.0f;
             Vector3 explosionPos = transform.position + new Vector3(Random.Range(-5.0f, 5.0f), 0f, Random.Range(-5.0f, 5.0f));
             _rigidBody.AddExplosionForce(500f, explosionPos, 5.0f, -1.0f);
@@ -197,23 +197,26 @@ namespace Action.Units
 
         protected void _FreeObject()
         {
+            UnitPanel.Hide();
+            _rigidBody.useGravity = false;
+            //_rigidBody.drag = 0.0f;
+            _rigidBody.angularDrag = 0.5f;
+            _navMeshAgent.enabled = true;
             GameManager.Instance.EnemyUnits.Remove(this.gameObject);
             Pool.Free(this);
         }
 
         protected void _FreeObjectCoroutine()
         {
-            StopCoroutine(DeathCoroutine());
+            //StopCoroutine(DeathCoroutine());
             StartCoroutine(DeathCoroutine());
         }
 
         IEnumerator DeathCoroutine()
         {
-            Logger.Log("CoroutineStart");
             _isDead = true;
             yield return new WaitForSeconds(1.0f);
             _FreeObject();
-            Logger.Log("CoroutineEnd");
         }
 
         protected void _GiveExp(PlayerUnit damager, int exp)
@@ -228,7 +231,6 @@ namespace Action.Units
             _rigidBody = GetComponent<Rigidbody>();
             _attackDamage = 1;
             _targetPos = Vector3.zero;
-            _isDead = false;
         }
 
         protected override void Start()

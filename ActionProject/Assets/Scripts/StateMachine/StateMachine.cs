@@ -14,8 +14,10 @@ namespace Action.State
 
         public virtual void Initialize(State startState)
         {
-            _CurState = new State();
+            if (null == _CurState)
+                _CurState = new State();
             ChangeState(startState);
+            _IsRunning = true;
         }
 
         public virtual void ChangeState(State nextState)

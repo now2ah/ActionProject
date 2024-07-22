@@ -44,10 +44,11 @@ namespace Action.Units
         StateMachine _stateMachine;
         public StateMachine StateMachine => _stateMachine;
 
-        public void Initialize()
+        public virtual void Initialize()
         {
             _infoActiveDistant = GameManager.Instance.Constants.INGAMEUI_VISIBLE_DISTANT;
-            _unitPanelObject = UIManager.Instance.CreateUI("UnitPanel", UIManager.Instance.InGameCanvas);
+            if (null == _unitPanelObject)
+                _unitPanelObject = UIManager.Instance.CreateUI("UnitPanel", UIManager.Instance.InGameCanvas);
             _unitPanel = _unitPanelObject.GetComponent<UnitPanel>();
             _unitPanel.Initialize(this.gameObject);
             _unitPanel.Hide();
@@ -59,7 +60,8 @@ namespace Action.Units
             else if (null != _unitSkinnedMeshRenderer)
                 _unitMaterial = new Material(_unitSkinnedMeshRenderer.material);
 
-            _stateMachine = new StateMachine();
+            if (null == _stateMachine)
+                _stateMachine = new StateMachine();
         }
 
 

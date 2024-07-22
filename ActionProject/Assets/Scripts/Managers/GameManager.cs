@@ -235,7 +235,7 @@ namespace Action.Manager
 
         void _StartPhaseTimer(eGamePhase phase)
         {
-            Logger.Log(phase.ToString());
+            //Logger.Log(phase.ToString());
             switch (phase)
             {
                 case eGamePhase.TownBuild:
@@ -299,6 +299,13 @@ namespace Action.Manager
                     while (count > 0)
                     {
                         GameObject obj = PoolManager.Instance.GetEnemyPool(item.type).GetNew().gameObject;
+                        if (obj.TryGetComponent<Unit>(out Unit comp))
+                        {
+                            comp.Initialize();
+                            comp.UnitPanel.ApplyHPValue(comp.HP, comp.MaxHp);
+                        }
+                            
+
                         _enemyUnits.Add(obj);
 
                         _enemySpawners[spawnerIndex].SpawnObject(obj);

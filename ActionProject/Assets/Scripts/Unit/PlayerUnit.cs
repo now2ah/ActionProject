@@ -62,7 +62,7 @@ namespace Action.Units
         public virtual void GainExp(int exp)
         {
             _exp += exp;
-            Logger.Log("Exp : " + _exp);
+            //Logger.Log("Exp : " + _exp);
             if (_CanLevelUp())
                 ModifyLevel(_level + 1);
         }

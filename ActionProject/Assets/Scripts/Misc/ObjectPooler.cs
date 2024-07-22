@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Action.Units;
 
 namespace Action.Util
 {
     public interface IPoolable<T> where T : MonoBehaviour, IPoolable<T>
     {
+        [SerializeField]
         int PoolID { get; set; }
         ObjectPooler<T> Pool { get; set; }
     }
