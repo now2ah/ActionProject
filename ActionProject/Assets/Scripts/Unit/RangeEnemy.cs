@@ -22,7 +22,7 @@ namespace Action.Units
         public RangeEnemyMoveState MoveState => _moveState;
         public RangeEnemyAttackState AttackState => _attackState;
 
-        public new void Initialize()
+        public override void Initialize()
         {
             base.Initialize();
             UnitName = _unitStats.unitName;
@@ -33,6 +33,7 @@ namespace Action.Units
             AttackDistance = _unitStats.attackDistance;
             ExpAmount = _unitStats.expAmount;
             SetNameUI(UnitName);
+            StateMachine.Initialize(_idleState);
         }
 
         public void Attack(float damage)
