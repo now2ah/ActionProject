@@ -47,7 +47,7 @@ namespace Action.Units
         public int AnimHashMoving => _animHashMoving;
         public int AnimHashAttacking => _animHashAttacking;
 
-        public new void Initialize()
+        public override void Initialize()
         {
             base.Initialize();
             UnitName = _unitStats.unitName;
@@ -237,7 +237,7 @@ namespace Action.Units
         protected override void Start()
         {
             base.Start();
-            Initialize();
+            //Initialize();
             InputManager.Instance.MousePosition.performed += ctx => { OnMousePosition(ctx); };
             InputManager.Instance.Click.performed += ctx => { OnClick(ctx); };
             InputManager.Instance.Move.performed += ctx => { OnMove(ctx); };

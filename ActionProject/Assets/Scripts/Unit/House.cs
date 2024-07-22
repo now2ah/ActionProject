@@ -35,7 +35,7 @@ namespace Action.Units
         protected override void Start()
         {
             base.Start();
-            Initialize();
+            //Initialize();
         }
 
         // Update is called once per frame

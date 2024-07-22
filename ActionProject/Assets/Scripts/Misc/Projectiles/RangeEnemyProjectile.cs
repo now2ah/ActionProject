@@ -27,7 +27,6 @@ namespace Action.Game
                 if (other.TryGetComponent<Unit>(out Unit comp))
                     comp.ApplyDamage(msg);
             }
-                
         }
 
         protected override void Start()

@@ -26,7 +26,7 @@ namespace Action.Game
 
         void _CreateProjectile(float attackDamage)
         {
-            Vector3 shootPosition = transform.position + transform.forward * 2.0f;
+            Vector3 shootPosition = transform.position + transform.forward * 2.5f;
             shootPosition.y = GameManager.Instance.Constants.PROJECTILE_Y_POS;
             GuidedProjectile projectile = (GuidedProjectile)PoolManager.Instance.GuidedProjectilePool.GetNew();
             projectile.transform.position = shootPosition;

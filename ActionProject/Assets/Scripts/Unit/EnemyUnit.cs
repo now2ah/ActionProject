@@ -133,7 +133,8 @@ namespace Action.Units
         {
             if (null != _navMeshAgent)
             {
-                SetDestination(transform.position);
+                _navMeshAgent.ResetPath();
+                _navMeshAgent.velocity = Vector3.zero;
                 _rigidBody.velocity = Vector3.zero;
             }
         }
@@ -165,7 +166,7 @@ namespace Action.Units
         protected void _ResetTarget()
         {
             if (!_navMeshAgent.isStopped)
-                SetDestination(transform.position);
+                StopMove();
 
             _target = null;
         }
@@ -236,7 +237,7 @@ namespace Action.Units
         protected override void Start()
         {
             base.Start();
-            Initialize();
+            //Initialize();
             _target = null;
             _nearestPlayerBuilding = null;
             _commanderUnit = GameManager.Instance.CommanderObj;

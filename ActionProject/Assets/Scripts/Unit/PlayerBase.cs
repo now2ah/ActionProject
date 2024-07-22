@@ -7,7 +7,7 @@ namespace Action.Units
 {
     public class PlayerBase : Building
     {
-        public new void Initialize()
+        public override void Initialize()
         {
             base.Initialize();
             StateMachine.ChangeState(_prepareState);
@@ -26,7 +26,7 @@ namespace Action.Units
         protected override void Start()
         {
             base.Start();
-            Initialize();
+            //Initialize();
         }
 
         protected override void Update()

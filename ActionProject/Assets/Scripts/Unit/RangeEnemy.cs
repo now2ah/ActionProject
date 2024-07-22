@@ -10,6 +10,8 @@ namespace Action.Units
 {
     public class RangeEnemy : EnemyUnit
     {
+        Animator _animator;
+
         UnitStatsSO _unitStats;
 
         float _lastAttackTime;
@@ -18,9 +20,15 @@ namespace Action.Units
         RangeEnemyMoveState _moveState;
         RangeEnemyAttackState _attackState;
 
+        int _animHashMoving;
+        int _animHashAttacking;
+
+        public Animator Animator => _animator;
         public RangeEnemyIdleState IdleState => _idleState;
         public RangeEnemyMoveState MoveState => _moveState;
         public RangeEnemyAttackState AttackState => _attackState;
+        public int AnimHashMoving => _animHashMoving;
+        public int AnimHashAttacking => _animHashAttacking;
 
         public override void Initialize()
         {
@@ -32,6 +40,9 @@ namespace Action.Units
             AttackSpeed = _unitStats.attackSpeed;
             AttackDistance = _unitStats.attackDistance;
             ExpAmount = _unitStats.expAmount;
+            _animHashMoving = Animator.StringToHash("IsMoving");
+            _animHashAttacking = Animator.StringToHash("IsAttacking");
+
             SetNameUI(UnitName);
             StateMachine.Initialize(_idleState);
         }
@@ -81,8 +92,8 @@ namespace Action.Units
         public override void RefreshTargetPosition()
         {
             FindNearestTarget(true);
-            if (_attackState != StateMachine.CurState)
-                SetDestinationToTarget(_target);
+            //if (_attackState != StateMachine.CurState)
+            //    SetDestinationToTarget(_target);
         }
 
         void _CreateProjectile(float damage)
@@ -101,6 +112,7 @@ namespace Action.Units
         protected override void Awake()
         {
             base.Awake();
+            _animator = GetComponentInChildren<Animator>();
             _unitStats = Resources.Load("ScriptableObject/UnitStats/RangeEnemyStats") as UnitStatsSO;
             _lastAttackTime = 0.0f;
             _idleState = new RangeEnemyIdleState(this);
@@ -111,9 +123,7 @@ namespace Action.Units
         protected override void Start()
         {
             base.Start();
-            Initialize();
-            StateMachine.Initialize(_idleState);
-
+            //Initialize();
         }
 
         protected override void Update()

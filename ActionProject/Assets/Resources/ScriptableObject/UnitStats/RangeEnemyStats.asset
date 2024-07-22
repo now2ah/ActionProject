@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: RangeEnemyStats
   m_EditorClassIdentifier: 
   unitName: RangeEnemy
-  maxHp: 50
+  maxHp: 10
+  growthMaxHp: 0
   speed: 1
   constructTime: 0
   attackDamage: 10
+  growthAttackDamage: 0
   attackSpeed: 1
   attackDistance: 15
   expAmount: 15

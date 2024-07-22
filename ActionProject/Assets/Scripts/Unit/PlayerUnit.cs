@@ -43,7 +43,7 @@ namespace Action.Units
         public int Exp { get { return _exp; } set { _exp = value; } }
         public int NextExp { get { return _nextExp; } set { _nextExp = value; } }
 
-        public new void Initialize()
+        public override void Initialize()
         {
             base.Initialize();
         }
@@ -105,7 +105,7 @@ namespace Action.Units
         protected override void Start()
         {
             base.Start();
-            Initialize();
+            //Initialize();
             _isMoving = false;
             _idleState = new PlayerIdleState(this);
             _moveState = new PlayerMoveState(this);
