@@ -134,8 +134,6 @@ namespace Action.Units
             if (null != _navMeshAgent)
             {
                 _navMeshAgent.ResetPath();
-                _navMeshAgent.velocity = Vector3.zero;
-                _rigidBody.velocity = Vector3.zero;
             }
         }
 

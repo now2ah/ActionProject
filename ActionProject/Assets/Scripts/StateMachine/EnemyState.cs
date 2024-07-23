@@ -173,6 +173,7 @@ namespace Action.State
 
         public override void ExitState()
         {
+            _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, false);
         }
 
         public override void UpdateState()
@@ -219,13 +220,14 @@ namespace Action.State
             if (null != _enemyUnit && null != _enemyUnit.Target)
             {
                 //Logger.Log("Attack Update");
+
+                _enemyUnit.StopMove();
+
                 _enemyUnit.Look(_enemyUnit.Target);
 
                 if (!_enemyUnit.isAttackCooltime())
                     _enemyUnit.Attack(_enemyUnit.AttackDamage);
                 
-                _enemyUnit.StopMove();
-
                 if (!_enemyUnit.isTargetInDistance())
                 {
                     _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashAttacking, false);
