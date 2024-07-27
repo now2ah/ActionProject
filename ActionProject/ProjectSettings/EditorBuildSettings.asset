@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/2.InGame.unity
     guid: 629a3f530f4690942a0257a4501790fb
   - enabled: 1
+    path: Assets/Scenes/3.HuntStage.unity
+    guid: 170706c89bb02d04ab1c1b510c5fcac1
+  - enabled: 1
     path: Assets/Scenes/99.Loading.unity
     guid: 96f173c38af82e74597170d317476b6c
   m_configObjects:

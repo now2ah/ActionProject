@@ -162,6 +162,7 @@ namespace Action.Manager
                     break;
 
                 case eGamePhase.Hunt:
+                    SceneManager.Instance.LoadGameScene(3);
                     break;
 
                 case eGamePhase.Defense:

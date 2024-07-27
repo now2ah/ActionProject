@@ -68,6 +68,7 @@ namespace Action.Units
             OnGainExp.AddListener(UIManager.Instance.ExpBarUI.ApplyExpValue);
             _autoAttackSlots = new AutoAttackAbilty[GameManager.Instance.Constants.AUTOATTACK_TYPE_COUNT];
             _SetAutoAttackAbilities();
+            DontDestroyOnLoad(this);
         }
 
         public void Interact()
