@@ -13,8 +13,9 @@ namespace Action.Scene
 
         public void Initialize()
         {
-            _stageSystem._floor = _floor;
+            //_stageSystem.Ground = Resources.Load("Prefabs/Misc/HuntStageGround") as GameObject;
             _stageSystem.Initialize(Manager.GameManager.Instance.CommanderUnit);
+            Manager.CameraManager.Instance.CreateFixedVirtualCamera();
         }
 
         private void Awake()

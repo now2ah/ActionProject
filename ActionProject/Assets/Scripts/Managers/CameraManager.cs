@@ -56,6 +56,11 @@ namespace Action.Manager
                 _fixedVCam.SetFov(fov);
         }
 
+        public void SetVCamTarget(Transform target)
+        {
+            _fixedVCam.SetTarget(target);
+        }
+
         void _CreateMainCamera()
         {
             _mainCameraObj = new GameObject("MainCameraObj");

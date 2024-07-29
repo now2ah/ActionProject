@@ -72,10 +72,13 @@ namespace Action.Manager
         Material _hitMaterial;
         GameObject _projectilePrefab;
 
+        //StageSystem _stageSystem;
+
         [SerializeField]
         Resource _resource;
         public Resource Resource => _resource;
 
+        public eGamePhase Phase => _gamePhase;
         public float TownBuildPhaseTime { get { return _townBuildPhaseTime; } set { _townBuildPhaseTime = value; } }
         public float HuntPhaseTime { get { return _huntPhaseTime; } set { _huntPhaseTime = value; } }
         public float DefensePhaseTime { get { return _defensePhaseTime; } set { _defensePhaseTime = value; } }
@@ -119,6 +122,8 @@ namespace Action.Manager
             _hitEffectPrefab = Resources.Load("Prefabs/Misc/Hiteffect") as GameObject;
             _hitMaterial = Resources.Load("Materials/HitEffectMat") as Material;
             _projectilePrefab = Resources.Load("Prefabs/Misc/Projectile") as GameObject;
+            //_stageSystem = gameObject.AddComponent<StageSystem>();
+            //_stageSystem.Ground = Resources.Load("Prefabs/Misc/HuntStageGround") as GameObject;
 
             _AddEnemySpawners();
         }
@@ -163,6 +168,7 @@ namespace Action.Manager
 
                 case eGamePhase.Hunt:
                     SceneManager.Instance.LoadGameScene(3);
+                    //_stageSystem.Initialize(_commanderUnit);
                     break;
 
                 case eGamePhase.Defense:
