@@ -16,6 +16,11 @@ namespace Action.Scene
             //_stageSystem.Ground = Resources.Load("Prefabs/Misc/HuntStageGround") as GameObject;
             _stageSystem.Initialize(Manager.GameManager.Instance.CommanderUnit);
             Manager.CameraManager.Instance.CreateFixedVirtualCamera();
+            Manager.GameManager.Instance.AddAllEnemySpawners();
+            Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 1.0f, 1, true);
+            Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 1.0f, 2, true);
+            Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 1.0f, 3, true);
+            Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 1.0f, 4, true);
         }
 
         private void Awake()

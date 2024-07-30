@@ -66,6 +66,8 @@ namespace Action.Manager
 
         EnemyWaves _enemyWaves;
         int _curWaveOrder;
+        EnemyWaves _huntEnemyWaves;
+        int _curHuntWaveOrder;
 
         GameObject _hitBoxPrefab;
         GameObject _hitEffectPrefab;
@@ -89,6 +91,7 @@ namespace Action.Manager
         public List<GameObject> PlayerUnits { get { return _playerUnits; } }
         public List<GameObject> EnemyUnits { get { return _enemyUnits; } }
         public EnemyWaves EnemyWaves { get { return _enemyWaves; } }
+        public EnemyWaves HuntEnemyWaves { get { return _huntEnemyWaves; } }
         public GameObject HitBoxPrefab => _hitBoxPrefab;
         public GameObject HitEffectPrefab => _hitEffectPrefab;
         public Material HitMaterial => _hitMaterial;
@@ -117,7 +120,9 @@ namespace Action.Manager
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/RangeEnemy") as GameObject);
             _enemyUnits = new List<GameObject>();
             _enemyWaves = Resources.Load("ScriptableObject/EnemyWaves") as EnemyWaves;
+            _huntEnemyWaves = Resources.Load("ScriptableObject/HuntEnemyWaves") as EnemyWaves;
             _curWaveOrder = -1;
+            _curHuntWaveOrder = -1;
             _hitBoxPrefab = Resources.Load("Prefabs/Misc/HitBox") as GameObject;
             _hitEffectPrefab = Resources.Load("Prefabs/Misc/Hiteffect") as GameObject;
             _hitMaterial = Resources.Load("Materials/HitEffectMat") as Material;
@@ -125,7 +130,7 @@ namespace Action.Manager
             //_stageSystem = gameObject.AddComponent<StageSystem>();
             //_stageSystem.Ground = Resources.Load("Prefabs/Misc/HuntStageGround") as GameObject;
 
-            _AddEnemySpawners();
+            AddAllEnemySpawners();
         }
 
         public void GameStart()
@@ -177,13 +182,34 @@ namespace Action.Manager
             }
         }
 
-        public void StartWave(EnemyWaves waves, float timeRate, int spawnerIndex)
+        public void StartWave(EnemyWaves waves, float timeRate, int spawnerIndex, bool isHunt = false)
         {
-            _curWaveOrder++;
-            if (_curWaveOrder < waves.enemyWaveList.Count)
+            if (isHunt)
             {
-                StopCoroutine(_StartWaveCoroutine(waves, _curWaveOrder, timeRate, spawnerIndex));
-                StartCoroutine(_StartWaveCoroutine(waves, _curWaveOrder, timeRate, spawnerIndex));
+                _curHuntWaveOrder++;
+                if (_curHuntWaveOrder < waves.enemyWaveList.Count)
+                {
+                    StartCoroutine(_StartWaveCoroutine(waves, _curWaveOrder, timeRate, spawnerIndex));
+                }
+            }
+            else
+            {
+                _curWaveOrder++;
+                if (_curWaveOrder < waves.enemyWaveList.Count)
+                {
+                    StopCoroutine(_StartWaveCoroutine(waves, _curWaveOrder, timeRate, spawnerIndex));
+                    StartCoroutine(_StartWaveCoroutine(waves, _curWaveOrder, timeRate, spawnerIndex));
+                }
+            }
+        }
+
+        public void AddAllEnemySpawners()
+        {
+            Spawner[] objs = FindObjectsByType<Spawner>(FindObjectsSortMode.None);
+            if (0 < objs.Length)
+            {
+                for (int i = 0; i < objs.Length; i++)
+                    _enemySpawners.Add(objs[i]);
             }
         }
 
@@ -194,16 +220,6 @@ namespace Action.Manager
                 return Vector3.zero;
             else
                 return obj.transform.position;
-        }
-
-        void _AddEnemySpawners()
-        {
-            Spawner[] objs = FindObjectsByType<Spawner>(FindObjectsSortMode.None);
-            if (0 < objs.Length)
-            {
-                for (int i = 0; i < objs.Length; i++)
-                    _enemySpawners.Add(objs[i]);
-            }
         }
 
         void _StartGameTimer()
@@ -349,7 +365,7 @@ namespace Action.Manager
 
         public void CreateTestWave()
         {
-            StartWave(_enemyWaves, 1.0f, 0);
+            //StartWave(_enemyWaves, 1.0f, 0);
         }
 
         #endregion
