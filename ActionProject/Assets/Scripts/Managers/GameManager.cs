@@ -189,7 +189,7 @@ namespace Action.Manager
                 _curHuntWaveOrder++;
                 if (_curHuntWaveOrder < waves.enemyWaveList.Count)
                 {
-                    StartCoroutine(_StartWaveCoroutine(waves, _curWaveOrder, timeRate, spawnerIndex));
+                    StartCoroutine(_StartWaveCoroutine(waves, _curHuntWaveOrder, timeRate, spawnerIndex));
                 }
             }
             else

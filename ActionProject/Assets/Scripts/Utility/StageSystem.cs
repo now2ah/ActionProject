@@ -32,7 +32,7 @@ namespace Action.Util
 
         public void Initialize(Units.Commander commander)
         {
-            _surfaceObj = new GameObject("HuntStageSurface");
+            _surfaceObj = new GameObject("Stage");
 
             if (null != _groundObj)
             {
