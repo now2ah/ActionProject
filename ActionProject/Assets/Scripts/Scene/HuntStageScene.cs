@@ -11,7 +11,10 @@ namespace Action.Scene
         StageSystem _stageSystem;
         public GameObject _floor;
         ActionTime _startTimer;
+        
         bool _isStart;
+
+        public GameObject SpawnerObj;
 
         public void Initialize()
         {
@@ -19,14 +22,14 @@ namespace Action.Scene
             _stageSystem.Initialize(Manager.GameManager.Instance.CommanderUnit);
             Manager.CameraManager.Instance.CreateFixedVirtualCamera();
             Manager.GameManager.Instance.AddAllEnemySpawners();
+            if (null != SpawnerObj)
+                SpawnerObj.transform.SetParent(Manager.GameManager.Instance.CommanderObj.transform, false);
         }
 
         public void WaveStart()
         {
-            Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 1.0f, 2, true);
-            Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 1.0f, 3, true);
-            Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 1.0f, 4, true);
-            Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 1.0f, 5, true);
+            for(int i = 0; i<Manager.GameManager.Instance.EnemySpawners.Count; i++)
+                Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 1.0f, i, true);
         }
 
         private void Awake()

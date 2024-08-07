@@ -87,6 +87,7 @@ namespace Action.Manager
         public GameObject PlayerBase { get { return _playerBase; } set { _playerBase = value; } }
         public GameObject CommanderObj { get { return _commanderUnitObj; } set { _commanderUnitObj = value; } }
         public Commander CommanderUnit { get { return _commanderUnit; } }
+        public List<Spawner> EnemySpawners { get { return _enemySpawners; } }
         public List<GameObject> PlayerBuildings { get { return _playerBuildings; } }
         public List<GameObject> PlayerUnits { get { return _playerUnits; } }
         public List<GameObject> EnemyUnits { get { return _enemyUnits; } }
@@ -205,6 +206,7 @@ namespace Action.Manager
 
         public void AddAllEnemySpawners()
         {
+            _enemySpawners.Clear();
             Spawner[] objs = FindObjectsByType<Spawner>(FindObjectsSortMode.None);
             if (0 < objs.Length)
             {
