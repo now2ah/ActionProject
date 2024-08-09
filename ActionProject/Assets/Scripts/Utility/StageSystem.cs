@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
-using UnityEngine.AI;
+//using UnityEngine.AI;
 using Action.Game;
 
 namespace Action.Util
@@ -23,7 +23,7 @@ namespace Action.Util
 
         ObjectPooler<HuntStageGround> _groundPool;
 
-        GameObject _surfaceObj;
+        //GameObject _surfaceObj;
         NavMeshSurface _surface;
 
         Units.Commander _commander;
@@ -32,7 +32,7 @@ namespace Action.Util
 
         public void Initialize(Units.Commander commander)
         {
-            _surfaceObj = new GameObject("Stage");
+            //_surfaceObj = new GameObject("Stage");
 
             if (null != _groundObj)
             {
@@ -74,7 +74,9 @@ namespace Action.Util
                     }
                     _groundGrid.Add(tempList);
                 }
-                _surface = _surfaceObj.AddComponent<NavMeshSurface>();
+                _surface = gameObject.AddComponent<NavMeshSurface>();
+                _surface.useGeometry = UnityEngine.AI.NavMeshCollectGeometry.PhysicsColliders;
+                _surface.collectObjects = CollectObjects.Children;
                 _surface.BuildNavMesh();
             }
         }
@@ -182,7 +184,7 @@ namespace Action.Util
             }
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (Manager.GameManager.Instance.Phase == Manager.eGamePhase.Hunt)
                 _CheckCommanderPosition();
