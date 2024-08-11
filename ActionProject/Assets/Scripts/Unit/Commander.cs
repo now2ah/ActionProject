@@ -35,7 +35,7 @@ namespace Action.Units
         int _animHashMoving;
         int _animHashAttacking;
 
-        AutoAttackAbilty[] _autoAttackSlots;
+        AutoAttackAbility[] _autoAttackSlots;
 
         public UnityAction OnDamaged;
         public UnityEvent<int, int> OnGainExp;
@@ -66,7 +66,7 @@ namespace Action.Units
             _animHashAttacking = Animator.StringToHash("isAttacking");
             OnDamaged += UIManager.Instance.ShowDamagedEffect;
             OnGainExp.AddListener(UIManager.Instance.ExpBarUI.ApplyExpValue);
-            _autoAttackSlots = new AutoAttackAbilty[GameManager.Instance.Constants.AUTOATTACK_TYPE_COUNT];
+            _autoAttackSlots = new AutoAttackAbility[GameManager.Instance.Constants.AUTOATTACK_TYPE_COUNT];
             _SetAutoAttackAbilities();
             DontDestroyOnLoad(this);
         }

@@ -6,7 +6,7 @@ using Action.Manager;
 
 namespace Action.Game
 {
-    public class DirectionalAttack : AutoAttackAbilty
+    public class DirectionalAttack : AutoAttackAbility
     {
         protected override void _AutoAttack()
         {

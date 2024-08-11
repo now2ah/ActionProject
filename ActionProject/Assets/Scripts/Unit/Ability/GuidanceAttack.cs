@@ -6,7 +6,7 @@ using Action.Units;
 
 namespace Action.Game
 {
-    public class GuidanceAttack : AutoAttackAbilty
+    public class GuidanceAttack : AutoAttackAbility
     {
         protected override void _AutoAttack()
         {

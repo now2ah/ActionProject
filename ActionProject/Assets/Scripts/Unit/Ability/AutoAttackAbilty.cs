@@ -5,14 +5,12 @@ using Action.Util;
 
 namespace Action.Game
 {
-    public class AutoAttackAbilty : MonoBehaviour
+    public class AutoAttackAbility : Ability
     {
-        bool _isActivated;
         float _attackPeriod;
         float _attackDamage;
         ActionTime _attackTime;
         
-        public bool IsActivated { get { return _isActivated; } set { _isActivated = value; } }
         public float AttackPeriod { get { return _attackPeriod; } set { _attackPeriod = value; } }
         public float AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
         public ActionTime AttackTimer { get { return _attackTime; } set { _attackTime = value; } }
@@ -22,28 +20,29 @@ namespace Action.Game
 
         }
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
-            _isActivated = false;
+            base.Awake();
             _attackPeriod = 0.0f;
             _attackDamage = 0.0f;
         }
 
         // Start is called before the first frame update
-        protected virtual void Start()
+        protected override void Start()
         {
+            base.Start();
             AttackTimer = gameObject.AddComponent<ActionTime>();
         }
 
         // Update is called once per frame
-        protected virtual void Update()
+        protected override void Update()
         {
-            
+            base.Update();
         }
 
         private void FixedUpdate()
         {
-            if (_isActivated)
+            if (IsActivated)
                 _AutoAttack();
         }
     }
