@@ -35,6 +35,7 @@ namespace Action.Units
         int _animHashMoving;
         int _animHashAttacking;
 
+        Ability[] _abilitySlots;
         AutoAttackAbility[] _autoAttackSlots;
 
         public UnityAction OnDamaged;
@@ -66,7 +67,9 @@ namespace Action.Units
             _animHashAttacking = Animator.StringToHash("isAttacking");
             OnDamaged += UIManager.Instance.ShowDamagedEffect;
             OnGainExp.AddListener(UIManager.Instance.ExpBarUI.ApplyExpValue);
+            _abilitySlots = new Ability[GameManager.Instance.Constants.ABILITY_COUNT];
             _autoAttackSlots = new AutoAttackAbility[GameManager.Instance.Constants.AUTOATTACK_TYPE_COUNT];
+            _SetAbilities();
             _SetAutoAttackAbilities();
             DontDestroyOnLoad(this);
         }
@@ -99,12 +102,16 @@ namespace Action.Units
             StartCoroutine(PhysicalAttackCoroutine());
         }
 
+        public void ActivateAbility(Enums.eAbility ability)
+        {
+            if (0 < _abilitySlots.Length)
+                _abilitySlots[(int)ability].IsActivated = true;
+        }
+
         public void ActivateAutoAttack(int index)
         {
             if (_autoAttackSlots.Length > 0)
-            {
                 _autoAttackSlots[index].IsActivated = true;
-            }
         }
 
         public override void GainExp(int exp)
@@ -150,7 +157,8 @@ namespace Action.Units
 
         void OnPhysicalAttackPressed(InputAction.CallbackContext context)
         {
-            if (context.performed)
+            if (_abilitySlots[(int)Enums.eAbility.PHYSICAL].IsActivated && 
+                context.performed)
                 StateMachine.ChangeState(_attackState);
         }
 
@@ -205,6 +213,22 @@ namespace Action.Units
             _isAttacking = false;
             _animator.SetBool(_animHashAttacking, _isAttacking);
             StateMachine.ChangeState(_idleState);
+        }
+
+        void _SetAbilities()
+        {
+            PhysicalAttack physical = gameObject.AddComponent<PhysicalAttack>();
+            _abilitySlots[0] = physical;
+            DirectionalAttack directional = gameObject.AddComponent<DirectionalAttack>();
+            _abilitySlots[1] = directional;
+            GuidanceAttack guidance = gameObject.AddComponent<GuidanceAttack>();
+            _abilitySlots[2] = guidance;
+            DamageUpAbility damageUp = gameObject.AddComponent<DamageUpAbility>();
+            _abilitySlots[3] = damageUp;
+            HPUpAbility hpUp = gameObject.AddComponent<HPUpAbility>();
+            _abilitySlots[4] = hpUp;
+            SpeedUpAbility speedUpAbility = gameObject.AddComponent<SpeedUpAbility>();
+            _abilitySlots[5] = speedUpAbility;
         }
 
         void _SetAutoAttackAbilities()

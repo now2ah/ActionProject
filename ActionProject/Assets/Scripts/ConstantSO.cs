@@ -33,8 +33,13 @@ public class Constant : ScriptableObject
     //Game Refresh 시간
     public float GAME_REFRESH_TIME;// = 2.0f;
 
+    //Commander Ability 갯수
+    public int ABILITY_COUNT;//
+    
     //Commander AutoAttack 개수
     public int AUTOATTACK_TYPE_COUNT;// = 1;
+
+
 
     //최대 오브젝트 수(Pool에 사용)
     public int NORMALENEMY_MAX_AMOUNT;

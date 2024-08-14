@@ -19,6 +19,22 @@ namespace Action
             NORMAL,
             RANGE
         }
+
+        public enum eAbility
+        {
+            PHYSICAL,
+            DIRECTIONAL,
+            GUIDANCE,
+            DAMAGEUP,
+            HPUP,
+            SPEEDUP,
+        }
+
+        public enum eAutoAttack
+        {
+            DIRECTIONAL,
+            GUIDANCE
+        }
     }
 }
 
