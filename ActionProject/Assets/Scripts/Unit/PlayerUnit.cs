@@ -67,7 +67,7 @@ namespace Action.Units
                 ModifyLevel(_level + 1);
         }
 
-        public void ModifyLevel(int level)
+        public virtual void ModifyLevel(int level)
         {
             _level = level;
             _exp = 0;

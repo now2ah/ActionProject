@@ -38,6 +38,8 @@ namespace Action.Manager
 
         GameObject _expPanel;
         ExpBarUI _expBarUI;
+        GameObject _abilityUpgradePanel;
+        AbilityUpgradeUI _abilityUpgradeUI;
 
         public Canvas MainCanvas => _mainCanvas;
         public Canvas InGameCanvas => _inGameCanvas;
@@ -47,6 +49,8 @@ namespace Action.Manager
         public GameObject TownStageUI { get { return _townStageUI; } set { _townStageUI = value; } }
         public GameObject ExpPanel { get { return _expPanel; } set { _expPanel = value; } }
         public ExpBarUI ExpBarUI { get { return _expBarUI; } set { _expBarUI = value; } }
+        public GameObject AbilityUpgradePanel { get { return _abilityUpgradePanel; } set { _abilityUpgradePanel = value; } }
+        public AbilityUpgradeUI AbilityUpgradeUI { get { return _abilityUpgradeUI; } set { _abilityUpgradeUI = value; } }
 
         public override void Initialize()
         {
@@ -63,7 +67,10 @@ namespace Action.Manager
             _damagedEffectPanel.SetActive(false);
             _expPanel = CreateUI("ExpPanel", _mainCanvas);
             _expBarUI = _expPanel.GetComponent<ExpBarUI>();
-            _expPanel.SetActive(false);
+            _expBarUI.Hide();
+            _abilityUpgradePanel = CreateUI("AbilityUpgradePanel", _mainCanvas);
+            _abilityUpgradeUI = _abilityUpgradePanel.GetComponent<AbilityUpgradeUI>();
+            _abilityUpgradeUI.Hide();
         }
 
         public GameObject CreateUI(string name, Canvas canvas)

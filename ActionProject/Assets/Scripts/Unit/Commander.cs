@@ -40,6 +40,7 @@ namespace Action.Units
 
         public UnityAction OnDamaged;
         public UnityEvent<int, int> OnGainExp;
+        public UnityEvent OnLevelUp;
 
         public CommanderIdleState IdleState => _idleState;
         public CommanderMoveState MoveState => _moveState;
@@ -67,6 +68,7 @@ namespace Action.Units
             _animHashAttacking = Animator.StringToHash("isAttacking");
             OnDamaged += UIManager.Instance.ShowDamagedEffect;
             OnGainExp.AddListener(UIManager.Instance.ExpBarUI.ApplyExpValue);
+            OnLevelUp.AddListener(UIManager.Instance.AbilityUpgradeUI.Show);
             _abilitySlots = new Ability[GameManager.Instance.Constants.ABILITY_COUNT];
             _autoAttackSlots = new AutoAttackAbility[GameManager.Instance.Constants.AUTOATTACK_TYPE_COUNT];
             _SetAbilities();
@@ -118,6 +120,12 @@ namespace Action.Units
         {
             base.GainExp(exp);
             OnGainExp.Invoke(Exp, NextExp);
+        }
+
+        public override void ModifyLevel(int level)
+        {
+            base.ModifyLevel(level);
+            OnLevelUp.Invoke();
         }
 
         void OnMousePosition(InputAction.CallbackContext context)
