@@ -40,7 +40,7 @@ namespace Action.Units
 
         public UnityAction OnDamaged;
         public UnityEvent<int, int> OnGainExp;
-        public UnityEvent OnLevelUp;
+        public UnityEvent<List<Ability>> OnLevelUp;
 
         public CommanderIdleState IdleState => _idleState;
         public CommanderMoveState MoveState => _moveState;
@@ -68,7 +68,7 @@ namespace Action.Units
             _animHashAttacking = Animator.StringToHash("isAttacking");
             OnDamaged += UIManager.Instance.ShowDamagedEffect;
             OnGainExp.AddListener(UIManager.Instance.ExpBarUI.ApplyExpValue);
-            OnLevelUp.AddListener(UIManager.Instance.AbilityUpgradeUI.Show);
+            OnLevelUp.AddListener(UIManager.Instance.AbilityUpgradeUI.SetUpAbilities);
             _abilitySlots = new Ability[GameManager.Instance.Constants.ABILITY_COUNT];
             _autoAttackSlots = new AutoAttackAbility[GameManager.Instance.Constants.AUTOATTACK_TYPE_COUNT];
             _SetAbilities();
@@ -126,6 +126,8 @@ namespace Action.Units
         {
             base.ModifyLevel(level);
             OnLevelUp.Invoke();
+
+            _SetUpAbilityUpgrade();
         }
 
         void OnMousePosition(InputAction.CallbackContext context)
@@ -250,11 +252,23 @@ namespace Action.Units
             //ActivateAutoAttack(0);
         }
 
+        List<Ability> _SetUpAbilityUpgrade()
+        {
+            List<Ability> abilityList = new List<Ability>();
+            for (int i = 0; i < 3; i++)
+            {
+                int num = Random.Range(0, _abilitySlots.Length);
+                abilityList.Add(_abilitySlots[num]);
+            }
+            return abilityList;
+        }
+
         void _Dash()
         {
             Vector3 newPos = transform.position + transform.forward * _dashDistant;
             transform.position = newPos;
         }
+
 
         protected override void Awake()
         {

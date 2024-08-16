@@ -12,9 +12,14 @@ namespace Action.Game
         [SerializeField]
         int _levelLimit;
 
+        string _name;
+        string _description;
+
         public bool IsActivated { get { return _isActivated; } set { _isActivated = value; } }
         public int Level { get { return _level; } set { _level = value; } }
         public int LevelLimit { get { return _levelLimit; } set { _levelLimit = value; } }
+        public string Name { get { return _name; } set { _name = value; } }
+        public string Description { get { return _description; } set { _description = value; } }
 
         public virtual void LevelUp(int level)
         {
