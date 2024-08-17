@@ -186,6 +186,9 @@ namespace Action.Util
 
         private void FixedUpdate()
         {
+            if (!Manager.GameManager.Instance.IsLive)
+                return;
+
             if (Manager.GameManager.Instance.Phase == Manager.eGamePhase.Hunt)
                 _CheckCommanderPosition();
         }

@@ -31,6 +31,8 @@ namespace Action.Game
         protected override void Awake()
         {
             base.Awake();
+            AbilityName = "MeleeAttack";
+            Description = "Swing Commander's staff";
         }
         // Start is called before the first frame update
         protected override void Start()

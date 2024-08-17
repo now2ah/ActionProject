@@ -76,6 +76,9 @@ namespace Action.Util
         // Update is called once per frame
         void FixedUpdate()
         {
+            if (!Manager.GameManager.Instance.IsLive)
+                return;
+
             if (_isStarted)
                 _Tick();
         }

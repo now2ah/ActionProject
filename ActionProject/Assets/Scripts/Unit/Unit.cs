@@ -156,6 +156,9 @@ namespace Action.Units
 
         protected virtual void Update()
         {
+            if (!Manager.GameManager.Instance.IsLive)
+                return;
+
             _VisualizeUnitPanel();
             if (null != _stateMachine)
                 _stateMachine.Update();

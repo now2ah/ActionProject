@@ -15,7 +15,8 @@ public class Constant : ScriptableObject
     //지형 바닥 y 값
     public float GROUND_Y_POS;// = 6.0f;
     //투사체 y값
-    public float PROJECTILE_Y_POS;// = 7.0f;
+    public float DEFENSE_PROJECTILE_Y_POS;// = 7.0f;
+    public float HUNT_PROJECTILE_Y_POS;//0.5f;
 
     public string[] ACTIONS;// = { "up", "left", "down", "right" };
 

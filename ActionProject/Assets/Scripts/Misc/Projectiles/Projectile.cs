@@ -47,7 +47,8 @@ namespace Action.Game
 
         protected virtual void FixedUpdate()
         {
-
+            if (!Manager.GameManager.Instance.IsLive)
+                return;
         }
     }
 }

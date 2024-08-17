@@ -12,13 +12,13 @@ namespace Action.Game
         [SerializeField]
         int _levelLimit;
 
-        string _name;
+        string _abilityName;
         string _description;
 
         public bool IsActivated { get { return _isActivated; } set { _isActivated = value; } }
         public int Level { get { return _level; } set { _level = value; } }
         public int LevelLimit { get { return _levelLimit; } set { _levelLimit = value; } }
-        public string Name { get { return _name; } set { _name = value; } }
+        public string AbilityName { get { return _abilityName; } set { _abilityName = value; } }
         public string Description { get { return _description; } set { _description = value; } }
 
         public virtual void LevelUp(int level)
@@ -41,7 +41,8 @@ namespace Action.Game
         // Update is called once per frame
         protected virtual void Update()
         {
-
+            if (!Manager.GameManager.Instance.IsLive)
+                return;
         }
     }
 

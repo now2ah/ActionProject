@@ -360,6 +360,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bf179245e4a5524989b9041eef3145d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  items:
+  - {fileID: 5085669710176658836}
+  - {fileID: 6150869557962860336}
+  - {fileID: 5129538334767168230}
 --- !u!1 &1393208046607576927
 GameObject:
   m_ObjectHideFlags: 0

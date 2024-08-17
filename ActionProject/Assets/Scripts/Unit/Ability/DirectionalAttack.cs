@@ -48,7 +48,7 @@ namespace Action.Game
         void _CreateProjectile(float attackDamage)
         {
             Vector3 shootPosition = transform.position + transform.forward * 2.0f;
-            shootPosition.y = GameManager.Instance.Constants.PROJECTILE_Y_POS;
+            shootPosition.y = GameManager.Instance.Constants.HUNT_PROJECTILE_Y_POS;
             NormalProjectile projectile = (NormalProjectile)PoolManager.Instance.NormalProjectilePool.GetNew();
             projectile.transform.position = shootPosition;
             projectile.transform.rotation = transform.rotation;
@@ -59,6 +59,8 @@ namespace Action.Game
         protected new void Awake()
         {
             base.Awake();
+            AbilityName = "Bullet";
+            Description = "Shooting projectile to forward direction.";
             //default
             AttackPeriod = 1.0f;
             AttackDamage = 5.0f;

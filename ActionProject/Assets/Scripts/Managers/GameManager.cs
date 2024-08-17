@@ -21,6 +21,7 @@ namespace Action.Manager
     {
         public Constant Constants;
 
+        bool _isLive;
         eGamePhase _gamePhase;
         bool _isPlaying;
 
@@ -80,6 +81,7 @@ namespace Action.Manager
         Resource _resource;
         public Resource Resource => _resource;
 
+        public bool IsLive { get { return _isLive; } set { _isLive = value; } }
         public eGamePhase Phase => _gamePhase;
         public float TownBuildPhaseTime { get { return _townBuildPhaseTime; } set { _townBuildPhaseTime = value; } }
         public float HuntPhaseTime { get { return _huntPhaseTime; } set { _huntPhaseTime = value; } }
@@ -133,6 +135,18 @@ namespace Action.Manager
 
             AddAllEnemySpawners();
         }
+
+        public void Stop()
+        {
+            _isLive = false;
+            Time.timeScale = 0;
+        }
+
+        public void Resume()
+        {
+            _isLive = true;
+            Time.timeScale = 1;
+        }    
 
         public void GameStart()
         {
@@ -350,8 +364,16 @@ namespace Action.Manager
             }
         }
 
+        private void Awake()
+        {
+            _isLive = true;
+        }
+
         private void Update()
         {
+            if (!_isLive)
+                return;
+
             if (_isPlaying)
             {
                 _CheckPhaseTime();

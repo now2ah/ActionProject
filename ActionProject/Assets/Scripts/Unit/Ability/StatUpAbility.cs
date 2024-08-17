@@ -27,6 +27,12 @@ namespace Action.Game
             }
         }
 
+        protected override void Awake()
+        {
+            base.Awake();
+            AbilityName = "DamageUp";
+            Description = "Increase Commander's damage";
+        }
     }
 
     public class HPUpAbility : Ability
@@ -51,6 +57,13 @@ namespace Action.Game
                 }
             }
         }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            AbilityName = "HPUp";
+            Description = "Increase Commander's HP";
+        }
     }
 
     public class SpeedUpAbility : Ability
@@ -74,6 +87,13 @@ namespace Action.Game
                         break;
                 }
             }
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            AbilityName = "SpeedUp";
+            Description = "Increase Commander's speed";
         }
     }
 }

@@ -68,7 +68,7 @@ namespace Action.Units
             _animHashAttacking = Animator.StringToHash("isAttacking");
             OnDamaged += UIManager.Instance.ShowDamagedEffect;
             OnGainExp.AddListener(UIManager.Instance.ExpBarUI.ApplyExpValue);
-            OnLevelUp.AddListener(UIManager.Instance.AbilityUpgradeUI.SetUpAbilities);
+            OnLevelUp.AddListener(UIManager.Instance.AbilityUpgradeUI.Initialize);
             _abilitySlots = new Ability[GameManager.Instance.Constants.ABILITY_COUNT];
             _autoAttackSlots = new AutoAttackAbility[GameManager.Instance.Constants.AUTOATTACK_TYPE_COUNT];
             _SetAbilities();
@@ -125,9 +125,8 @@ namespace Action.Units
         public override void ModifyLevel(int level)
         {
             base.ModifyLevel(level);
-            OnLevelUp.Invoke();
-
-            _SetUpAbilityUpgrade();
+            List<Ability> abilities = _SetUpAbilityUpgrade();
+            OnLevelUp.Invoke(abilities);
         }
 
         void OnMousePosition(InputAction.CallbackContext context)
@@ -248,8 +247,6 @@ namespace Action.Units
             _autoAttackSlots[0] = directional;
             GuidanceAttack guidance = gameObject.AddComponent<GuidanceAttack>();
             _autoAttackSlots[1] = guidance;
-
-            //ActivateAutoAttack(0);
         }
 
         List<Ability> _SetUpAbilityUpgrade()

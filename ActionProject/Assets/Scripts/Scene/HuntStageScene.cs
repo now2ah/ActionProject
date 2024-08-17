@@ -44,11 +44,16 @@ namespace Action.Scene
         {
             Initialize();
             _startTimer.TickStart(3.0f);
+            //temp
+            Manager.GameManager.Instance.CommanderUnit.ActivateAutoAttack(0);
         }
 
         // Update is called once per frame
         void Update()
         {
+            if (!Manager.GameManager.Instance.IsLive)
+                return;
+
             if (_startTimer.IsFinished && !_isStart)
             {
                 _isStart = true;
