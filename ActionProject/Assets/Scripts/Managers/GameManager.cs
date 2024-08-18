@@ -139,7 +139,7 @@ namespace Action.Manager
         public void Stop()
         {
             _isLive = false;
-            Time.timeScale = 0;
+            Time.timeScale = 0.05f;
         }
 
         public void Resume()

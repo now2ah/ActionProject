@@ -27,21 +27,20 @@ namespace Action.UI
                 descText.text = _abilityList[i].Description;
 
                 _chooseButton[i] = items[i].transform.GetChild(2).GetComponent<Button>();
-                _chooseButton[i].onClick.AddListener(() => _ChooseItem(i));
-                _chooseButton[i].onClick.AddListener(Test);
             }
+            _chooseButton[0].onClick.AddListener(() => _ChooseItem(0));
+            _chooseButton[1].onClick.AddListener(() => _ChooseItem(1));
+            _chooseButton[2].onClick.AddListener(() => _ChooseItem(2));
             Show();
-            //GameManager.Instance.Stop();
+            GameManager.Instance.Stop();
         }
-        void Test()
-        {
-            Logger.Log("clicked");
-        }
+
         void _ChooseItem(int i)
         {
+            Logger.Log(i.ToString());
             _abilityList[i].LevelUp(_abilityList[i].Level + 1);
             Hide();
-            //GameManager.Instance.Resume();
+            GameManager.Instance.Resume();
         }
 
         protected override void Awake()

@@ -99,7 +99,7 @@ namespace Action.Units
             _attackDamage = 1.0f;
             _level = 1;
             _exp = 0;
-            _exp = 1;
+            _nextExp = 1;
         }
 
         protected override void Start()

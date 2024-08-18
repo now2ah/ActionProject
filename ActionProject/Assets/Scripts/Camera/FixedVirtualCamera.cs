@@ -9,6 +9,7 @@ namespace Action.CameraSystem
     {
         CinemachineVirtualCamera _virtualCamera;
         CinemachineTransposer _camBody;
+        //CinemachineHardLockToTarget _camBody;
         CinemachineComposer _camAim;
         Transform _target;
 
@@ -17,6 +18,8 @@ namespace Action.CameraSystem
             //Setting vCam's Body/Aim
             _camBody = _virtualCamera.AddCinemachineComponent<CinemachineTransposer>(); //받아오지 못함 null 리턴
             _camBody.m_BindingMode = CinemachineTransposer.BindingMode.LockToTargetOnAssign;
+            _camBody.m_BindingMode = CinemachineTransposer.BindingMode.WorldSpace;
+            //_camBody = _virtualCamera.AddCinemachineComponent<CinemachineHardLockToTarget>();
             _camAim = _virtualCamera.AddCinemachineComponent<CinemachineComposer>();
         }
 
