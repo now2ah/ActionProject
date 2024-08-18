@@ -107,13 +107,13 @@ namespace Action.Units
         public void ActivateAbility(Enums.eAbility ability)
         {
             if (0 < _abilitySlots.Length)
-                _abilitySlots[(int)ability].IsActivated = true;
+                _abilitySlots[(int)ability].Activate();
         }
 
         public void ActivateAutoAttack(int index)
         {
             if (_autoAttackSlots.Length > 0)
-                _autoAttackSlots[index].IsActivated = true;
+                _autoAttackSlots[index].Activate();
         }
 
         public override void GainExp(int exp)
@@ -255,7 +255,10 @@ namespace Action.Units
             for (int i = 0; i < 3; i++)
             {
                 int num = Random.Range(0, _abilitySlots.Length);
-                abilityList.Add(_abilitySlots[num]);
+                if (-1 < abilityList.IndexOf(_abilitySlots[num]))
+                    i--;
+                else
+                    abilityList.Add(_abilitySlots[num]);
             }
             return abilityList;
         }

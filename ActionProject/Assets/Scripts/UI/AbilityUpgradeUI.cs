@@ -37,7 +37,6 @@ namespace Action.UI
 
         void _ChooseItem(int i)
         {
-            Logger.Log(i.ToString());
             _abilityList[i].LevelUp(_abilityList[i].Level + 1);
             Hide();
             GameManager.Instance.Resume();

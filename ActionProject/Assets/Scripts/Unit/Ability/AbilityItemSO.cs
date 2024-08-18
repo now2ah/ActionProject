@@ -9,5 +9,6 @@ namespace Action.SO
     {
         public string abilityName;
         public string abilityDescription;
+        public int[] upgradeInteger;
     }
 }
