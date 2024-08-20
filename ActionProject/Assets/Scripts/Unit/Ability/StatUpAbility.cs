@@ -55,20 +55,35 @@ namespace Action.Game
 
     public class HPUpAbility : Ability
     {
+        AbilityItemSO _abilityItem;
+
+        public override void Activate()
+        {
+            base.Activate();
+            Commander = GameManager.Instance.CommanderUnit;
+        }
+
         public override void LevelUp(int level)
         {
             base.LevelUp(level);
-            if (1 < level)
+            if (0 < level)
             {
                 switch (level)
                 {
+                    case 1:
+                        Commander.MaxHp += _abilityItem.upgradeInteger[1];
+                        break;
                     case 2:
+                        Commander.MaxHp += _abilityItem.upgradeInteger[2];
                         break;
                     case 3:
+                        Commander.MaxHp += _abilityItem.upgradeInteger[3];
                         break;
                     case 4:
+                        Commander.MaxHp += _abilityItem.upgradeInteger[4];
                         break;
                     case 5:
+                        Commander.MaxHp += _abilityItem.upgradeInteger[5];
                         break;
                     default:
                         break;
@@ -79,8 +94,9 @@ namespace Action.Game
         protected override void Awake()
         {
             base.Awake();
-            AbilityName = "HPUp";
-            Description = "Increase Commander's HP";
+            _abilityItem = Resources.Load("ScriptableObject/Abilities/HPUpAbility") as AbilityItemSO;
+            AbilityName = _abilityItem.abilityName;
+            Description = _abilityItem.abilityDescription;
         }
     }
 

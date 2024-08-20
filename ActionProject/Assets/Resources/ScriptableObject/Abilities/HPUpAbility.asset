@@ -10,7 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fd0780b49434b74391de2ebe3b5663b, type: 3}
-  m_Name: GainMaxHPAbility
+  m_Name: HPUpAbility
   m_EditorClassIdentifier: 
   abilityName: Gain MaxHP
   abilityDescription: Gain Commander's MaxHP
+  upgradeInteger: 000000000100000002000000030000000400000005000000
