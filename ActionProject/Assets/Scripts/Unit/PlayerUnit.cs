@@ -63,14 +63,14 @@ namespace Action.Units
         {
             _exp += exp;
             //Logger.Log("Exp : " + _exp);
-            if (_CanLevelUp())
+            while (_CanLevelUp())
                 ModifyLevel(_level + 1);
         }
 
         public virtual void ModifyLevel(int level)
         {
             _level = level;
-            _exp = 0;
+            _exp = _exp - _nextExp;
             float nextExp = _nextExp * 1.5f;
             _nextExp = (int)nextExp;
             _ApplyStats();

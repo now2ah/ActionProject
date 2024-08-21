@@ -254,8 +254,9 @@ namespace Action.Units
             List<Ability> abilityList = new List<Ability>();
             for (int i = 0; i < 3; i++)
             {
-                int num = Random.Range(0, _abilitySlots.Length);
-                if (-1 < abilityList.IndexOf(_abilitySlots[num]))
+                int num = Random.Range(0, _abilitySlots.Length -1);
+                if (-1 < abilityList.IndexOf(_abilitySlots[num]) || 
+                    _abilitySlots[num].LevelLimit == _abilitySlots[num].Level)
                     i--;
                 else
                     abilityList.Add(_abilitySlots[num]);

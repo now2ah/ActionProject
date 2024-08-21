@@ -37,7 +37,7 @@ namespace Action.Game
         protected virtual void Awake()
         {
             _isActivated = false;
-            _level = 1;
+            _level = 0;
             _levelLimit = 5;
         }
 

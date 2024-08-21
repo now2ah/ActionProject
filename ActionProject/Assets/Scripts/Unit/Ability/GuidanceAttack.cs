@@ -3,25 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using Action.Manager;
 using Action.Units;
+using Action.SO;
 
 namespace Action.Game
 {
     public class GuidanceAttack : AutoAttackAbility
     {
+        AbilityItemSO _abilityItem;
+
+        public override void Activate()
+        {
+            base.Activate();
+            Commander = GameManager.Instance.CommanderUnit;
+        }
+
         public override void LevelUp(int level)
         {
             base.LevelUp(level);
-            if (1 < level)
+            if (0 < level)
             {
                 switch (level)
                 {
+                    case 1:
+                        AttackDamage += _abilityItem.upgradeInteger[1];
+                        break;
                     case 2:
+                        AttackDamage += _abilityItem.upgradeInteger[2];
                         break;
                     case 3:
+                        AttackDamage += _abilityItem.upgradeInteger[3];
                         break;
                     case 4:
+                        AttackDamage += _abilityItem.upgradeInteger[4];
                         break;
                     case 5:
+                        AttackDamage += _abilityItem.upgradeInteger[5];
                         break;
                     default:
                         break;
@@ -59,8 +75,9 @@ namespace Action.Game
         protected new void Awake()
         {
             base.Awake();
-            AbilityName = "Guided Bullet";
-            Description = "Shooting projectile that follows nearest enemy";
+            _abilityItem = Resources.Load("ScriptableObject/Abilities/GuidanceAttackAbility") as AbilityItemSO;
+            AbilityName = _abilityItem.abilityName;
+            Description = _abilityItem.abilityDescription;
             //default
             AttackPeriod = 1.0f;
             AttackDamage = 5.0f;
