@@ -166,9 +166,16 @@ namespace Action.Units
 
         void OnPhysicalAttackPressed(InputAction.CallbackContext context)
         {
-            if (_abilitySlots[(int)Enums.eAbility.PHYSICAL].IsActivated && 
+            if (_abilitySlots[(int)Enums.eAbility.PHYSICAL].IsActivated &&
                 context.performed)
-                StateMachine.ChangeState(_attackState);
+            {
+                PhysicalAttack ability = _abilitySlots[(int)Enums.eAbility.PHYSICAL] as PhysicalAttack;
+                if (!ability.Timer.IsStarted)
+                {
+                    PhysicalAttack();
+                    ability.Timer.TickStart(ability.CoolTime);
+                }
+            }
         }
 
         void OnTeleport(InputAction.CallbackContext context)
@@ -218,10 +225,8 @@ namespace Action.Units
             _animator.SetBool(_animHashAttacking, _isAttacking);
             yield return new WaitForSeconds(0.2f);
             _CreateHitBox(AttackDamage);
-            yield return new WaitForSeconds(0.3f);
             _isAttacking = false;
             _animator.SetBool(_animHashAttacking, _isAttacking);
-            StateMachine.ChangeState(_idleState);
         }
 
         void _SetAbilities()

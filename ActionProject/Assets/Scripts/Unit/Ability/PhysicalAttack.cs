@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Action.Manager;
 using Action.SO;
+using Action.Util;
 
 namespace Action.Game
 {
     public class PhysicalAttack : Ability
     {
         AbilityItemSO _abilityItem;
+        ActionTime _timer;
+        float _coolTime;
+
+        public ActionTime Timer => _timer;
+        public float CoolTime => _coolTime;
 
         public override void Activate()
         {
@@ -48,6 +54,8 @@ namespace Action.Game
         {
             base.Awake();
             _abilityItem = Resources.Load("ScriptableObject/Abilities/PhysicalAttackAbility") as AbilityItemSO;
+            _timer = gameObject.AddComponent<ActionTime>();
+            _coolTime = 1.5f;
             AbilityName = _abilityItem.abilityName;
             Description = _abilityItem.abilityDescription;
         }
