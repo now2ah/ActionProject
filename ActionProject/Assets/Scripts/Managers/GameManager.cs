@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Events;
 using Action.Util;
 using Action.UI;
@@ -139,7 +140,7 @@ namespace Action.Manager
         public void Stop()
         {
             _isLive = false;
-            Time.timeScale = 0.05f;
+            Time.timeScale = 0f;
         }
 
         public void Resume()
@@ -389,7 +390,7 @@ namespace Action.Manager
 
         public void CreateTestWave()
         {
-            //StartWave(_enemyWaves, 1.0f, 0);
+            StartWave(_enemyWaves, 1.0f, 0);
         }
 
         #endregion
