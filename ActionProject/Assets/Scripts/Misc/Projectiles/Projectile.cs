@@ -39,6 +39,11 @@ namespace Action.Game
             StartCoroutine(DestroyCoroutine());
         }
 
+        protected virtual void Awake()
+        {
+
+        }
+
         // Start is called before the first frame update
         protected virtual void Start()
         {

@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Action.Manager;
 using Action.Util;
+using DG.Tweening;
 
 namespace Action.Units
 {
     public class Tower : Building
     {
         GameObject _target;
+        float _attackDamage;
         float _attackDistance;
         float _attackSpeed;
         ActionTime _attackTime;
+        Vector3 _shootPosition;
 
         public override void Initialize()
         {
@@ -44,18 +47,32 @@ namespace Action.Units
                 return false;
         }
 
+        void _ShootArrow()
+        {
+            Game.Projectile arrowProj = PoolManager.Instance.ArrowProjectilePool.GetNew();
+            arrowProj.Initialize(this, _attackDamage);
+            Game.Arrow arrow = arrowProj as Game.Arrow;
+            arrow.Target = _target;
+            arrow.transform.position = _shootPosition;
+            arrow.transform.DOMoveX(_target.transform.position.x, 1.0f).SetEase(Ease.OutQuad);
+            arrow.transform.DOMoveY(_target.transform.position.y, 1.0f).SetEase(Ease.InQuad);
+            arrow.transform.DOMoveZ(_target.transform.position.z, 1.0f).SetEase(Ease.OutQuad);
+        }
+
         void _Attack()
         {
-            Logger.Log("Attack");
+            _ShootArrow();
             _attackTime.TickStart(_attackSpeed);
         }
 
         protected override void Awake()
         {
             base.Awake();
-            _attackDistance = 15.0f;
+            _attackDamage = 10.0f;
+            _attackDistance = 150.0f;
             _attackSpeed = 1.0f;
             _attackTime = gameObject.AddComponent<ActionTime>();
+            _shootPosition = transform.position + new Vector3(0.0f, 5.0f, 0.0f);
         }
 
         // Start is called before the first frame update
