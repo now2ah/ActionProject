@@ -17,6 +17,9 @@ namespace Action.Units
         ControlUI _controlUI;
         protected GameObject _buildButton;
         BuildButtonUI _buildButtonUI;
+        protected GameObject _requirePanel;
+        RequireTextUI _requireTextUI;
+
 
         protected PlayerBuildingIdleState _idleState;
         protected PlayerBuildingPrepareState _prepareState;
@@ -25,9 +28,11 @@ namespace Action.Units
 
         protected float _activeDistance;
         protected float _constructTime;
+        protected int _requireGold;
 
         public ControlUI ControlUI => _controlUI;
         public BuildButtonUI BuildButtonUI => _buildButtonUI;
+        public RequireTextUI RequireTextUI => _requireTextUI;
         public float ActiveDistance => _activeDistance;
 
         public override void Initialize()
@@ -44,6 +49,11 @@ namespace Action.Units
             _buildButtonUI.Initialize();
             _buildButtonUI.SetParent(_controlPanel.transform);
             _buildButtonUI.Hide();
+            _requirePanel = UIManager.Instance.CreateUI("RequireText", UIManager.Instance.InGameCanvas);
+            _requireTextUI = _requirePanel.GetComponent<RequireTextUI>();
+            _requireTextUI.SetParent(_controlPanel.transform);
+            _requireTextUI.Initialize();
+            _requireTextUI.Hide();
             _idleState = new PlayerBuildingIdleState(this);
             _prepareState = new PlayerBuildingPrepareState(this);
             _doneState = new PlayerBuildingDoneState(this);
@@ -81,6 +91,7 @@ namespace Action.Units
                 if (StateMachine.CurState == _idleState)
                 {
                     _buildButtonUI?.Show();
+                    _requireTextUI?.Show();
                 }
 
                 if (_buildButtonUI.isShow)
@@ -112,6 +123,7 @@ namespace Action.Units
             base.Awake();
             IsOnUnitPanel = false;
             _constructTime = 0.0f;  //default
+            _requireGold = 1;   //default
         }
 
         // Start is called before the first frame update

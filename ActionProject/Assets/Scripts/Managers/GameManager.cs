@@ -131,8 +131,6 @@ namespace Action.Manager
             _hitEffectPrefab = Resources.Load("Prefabs/Misc/Hiteffect") as GameObject;
             _hitMaterial = Resources.Load("Materials/HitEffectMat") as Material;
             _projectilePrefab = Resources.Load("Prefabs/Misc/Projectile") as GameObject;
-            //_stageSystem = gameObject.AddComponent<StageSystem>();
-            //_stageSystem.Ground = Resources.Load("Prefabs/Misc/HuntStageGround") as GameObject;
 
             AddAllEnemySpawners();
         }
@@ -362,6 +360,7 @@ namespace Action.Manager
             if (null == _resource)
             {
                 _resource = new Resource();
+                _resource.Initialize();
             }
         }
 

@@ -40,7 +40,8 @@ public class Constant : ScriptableObject
     //Commander AutoAttack 개수
     public int AUTOATTACK_TYPE_COUNT;// = 1;
 
-
+    //시작 Resource
+    public int START_GOLD_AMOUNT;
 
     //최대 오브젝트 수(Pool에 사용)
     public int NORMALENEMY_MAX_AMOUNT;

@@ -20,6 +20,7 @@ namespace Action.Units
         {
             base.Initialize();
             GameManager.Instance.OnRefresh.AddListener(_FindTarget);
+            RequireTextUI.Text.text = _requireGold.ToString();
         }
 
         void _FindTarget()
@@ -69,6 +70,7 @@ namespace Action.Units
         protected override void Awake()
         {
             base.Awake();
+            _requireGold = 5;
             _attackDamage = 1.0f;
             _attackDistance = 150.0f;
             _attackSpeed = 1.0f;
