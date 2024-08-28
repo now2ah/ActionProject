@@ -29,6 +29,11 @@ namespace Action.Game
             Pool.Free(this);
         }
 
+        protected virtual void OnCollisionEnter(Collision col)
+        {
+
+        }
+
         protected virtual void OnTriggerEnter(Collider other)
         {
             

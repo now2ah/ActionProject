@@ -50,9 +50,10 @@ namespace Action.Units
         void _ShootArrow()
         {
             Game.Projectile arrowProj = PoolManager.Instance.ArrowProjectilePool.GetNew();
-            arrowProj.Initialize(this, _attackDamage);
             Game.Arrow arrow = arrowProj as Game.Arrow;
+            arrow.Initialize(this, _attackDamage);
             arrow.Target = _target;
+            arrow.transform.LookAt(_target.transform);
             arrow.transform.position = _shootPosition;
             arrow.transform.DOMoveX(_target.transform.position.x, 1.0f).SetEase(Ease.OutQuad);
             arrow.transform.DOMoveY(_target.transform.position.y, 1.0f).SetEase(Ease.InQuad);

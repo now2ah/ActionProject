@@ -13,9 +13,10 @@ namespace Action.Game
             transform.Translate(Vector3.forward * _speed);
         }
 
-        protected override void OnTriggerEnter(Collider other)
+        protected override void OnCollisionEnter(Collision col)
         {
-           if ("PlayerObject" == other.tag)
+            base.OnCollisionEnter(col);
+            if ("PlayerObject" == col.transform.tag)
             {
                 Pool.Free(this);
                 Unit.DamageMessage msg = new Unit.DamageMessage
@@ -24,9 +25,14 @@ namespace Action.Game
                     amount = AttackDamage
                 };
 
-                if (other.TryGetComponent<Unit>(out Unit comp))
+                if (col.transform.TryGetComponent<Unit>(out Unit comp))
                     comp.ApplyDamage(msg);
             }
+        }
+
+        protected override void OnTriggerEnter(Collider other)
+        {
+           base.OnTriggerEnter(other);
         }
 
         protected override void Start()

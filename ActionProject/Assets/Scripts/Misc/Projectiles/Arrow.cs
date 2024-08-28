@@ -13,7 +13,33 @@ namespace Action.Game
         public override void Initialize(Unit owner, float attackDamage)
         {
             base.Initialize(owner, attackDamage);
+        }
 
+        protected override void OnCollisionEnter(Collision col)
+        {
+            base.OnCollisionEnter(col);
+            if ("EnemyObject" == col.gameObject.tag)
+            {
+                Pool.Free(this);
+                Unit.DamageMessage msg = new Unit.DamageMessage
+                {
+                    damager = Owner,
+                    amount = AttackDamage
+                };
+
+                if (col.transform.TryGetComponent<Unit>(out Unit comp))
+                    comp.ApplyDamage(msg);
+            }
+        }
+
+        protected override void OnTriggerEnter(Collider other)
+        {
+            base.OnTriggerEnter(other);
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
         }
 
         protected override void Awake()
@@ -26,8 +52,7 @@ namespace Action.Game
         protected override void FixedUpdate()
         {
             base.FixedUpdate();
-            if (null != _target)
-                transform.LookAt(_target.transform);
+            
         }
     }
 }
