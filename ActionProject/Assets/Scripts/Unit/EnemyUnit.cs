@@ -175,7 +175,8 @@ namespace Action.Units
             _DisableMove();
             _ApplyPhysicsEffect();
             _FreeObjectCoroutine();
-            _GiveExp((PlayerUnit)damager, _expAmount);
+            if (damager.TryGetComponent<PlayerUnit>(out PlayerUnit playerUnit))
+                _GiveExp((PlayerUnit)damager, _expAmount);
         }
 
         protected void _DisableMove()

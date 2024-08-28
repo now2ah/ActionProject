@@ -55,9 +55,9 @@ namespace Action.Units
             arrow.Target = _target;
             arrow.transform.LookAt(_target.transform);
             arrow.transform.position = _shootPosition;
-            arrow.transform.DOMoveX(_target.transform.position.x, 1.0f).SetEase(Ease.OutQuad);
-            arrow.transform.DOMoveY(_target.transform.position.y, 1.0f).SetEase(Ease.InQuad);
-            arrow.transform.DOMoveZ(_target.transform.position.z, 1.0f).SetEase(Ease.OutQuad);
+            arrow.transform.DOMoveX(_target.transform.position.x, 0.5f).SetEase(Ease.OutQuad);
+            arrow.transform.DOMoveY(_target.transform.position.y, 0.5f).SetEase(Ease.InQuad);
+            arrow.transform.DOMoveZ(_target.transform.position.z, 0.5f).SetEase(Ease.OutQuad);
         }
 
         void _Attack()
@@ -69,7 +69,7 @@ namespace Action.Units
         protected override void Awake()
         {
             base.Awake();
-            _attackDamage = 10.0f;
+            _attackDamage = 1.0f;
             _attackDistance = 150.0f;
             _attackSpeed = 1.0f;
             _attackTime = gameObject.AddComponent<ActionTime>();
@@ -79,12 +79,14 @@ namespace Action.Units
         // Start is called before the first frame update
         protected override void Start()
         {
+            base.Start();
             Initialize();
         }
 
         // Update is called once per frame
         protected override void Update()
         {
+            base.Update();
             if (_IsInDistance() && !_attackTime.IsStarted)
                 _Attack();
         }

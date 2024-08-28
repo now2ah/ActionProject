@@ -52,7 +52,8 @@ namespace Action.Game
         protected override void FixedUpdate()
         {
             base.FixedUpdate();
-            
+            if (null != _target)
+                transform.LookAt(_target.transform);
         }
     }
 }
