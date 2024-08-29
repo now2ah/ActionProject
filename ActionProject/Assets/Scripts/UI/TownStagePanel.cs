@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Action.Manager;
+using Action.Game;
 using TMPro;
 
 namespace Action.UI
@@ -35,10 +36,10 @@ namespace Action.UI
 
         public void RefreshResource()
         {
-            _goldText.text = GameManager.Instance.Resource.Gold.ToString();
-            _foodText.text = GameManager.Instance.Resource.Food.ToString();
-            _woodText.text = GameManager.Instance.Resource.Wood.ToString();
-            _ironText.text = GameManager.Instance.Resource.Iron.ToString();
+            _goldText.text = GameManager.Instance.Resource.Resources[(int)eResource.GOLD].ToString();
+            _foodText.text = GameManager.Instance.Resource.Resources[(int)eResource.FOOD].ToString();
+            _woodText.text = GameManager.Instance.Resource.Resources[(int)eResource.WOOD].ToString();
+            _ironText.text = GameManager.Instance.Resource.Resources[(int)eResource.IRON].ToString();
         }
 
         public void RefreshTimer()

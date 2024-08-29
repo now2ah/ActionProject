@@ -15,6 +15,9 @@ namespace Action.Game
 
     public class Resource
     {
+        int[] _resources;
+        public int[] Resources => _resources;
+
         int _gold = 0;
         public int Gold { get { return _gold; } set { _gold = value; } }
         int _food = 0;
@@ -26,7 +29,21 @@ namespace Action.Game
 
         public void Initialize()
         {
-            _gold = GameManager.Instance.Constants.START_GOLD_AMOUNT;
+            _resources = new int[4];
+            _resources[(int)eResource.GOLD] = GameManager.Instance.Constants.START_GOLD_AMOUNT;
+        }
+
+        public bool IsValidSpend(int requireResource, eResource type)
+        {
+            if (_resources[(int)type] >= requireResource)
+                return true;
+            else
+                return false;
+        }
+
+        public void Spend(int requireResource, eResource type)
+        {
+            _resources[(int)type] -= requireResource;
         }
     }
 }

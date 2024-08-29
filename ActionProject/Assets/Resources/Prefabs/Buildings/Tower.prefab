@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3530279628542726885}
   - component: {fileID: 5836679318990143485}
+  - component: {fileID: 6545950368066473995}
   m_Layer: 0
   m_Name: Tower
   m_TagString: PlayerObject
@@ -47,6 +48,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHp: 100
+--- !u!65 &6545950368066473995
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7492834429506102510}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7.267208, y: 10.869911, z: 8.15135}
+  m_Center: {x: 0.12751532, y: 4.9349556, z: 0.14423084}
 --- !u!1001 &459981382794106616
 PrefabInstance:
   m_ObjectHideFlags: 0

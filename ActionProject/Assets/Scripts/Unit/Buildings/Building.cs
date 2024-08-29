@@ -30,10 +30,14 @@ namespace Action.Units
         protected float _constructTime;
         protected int _requireGold;
 
+        Vector3 _indicatorPos;
+
         public ControlUI ControlUI => _controlUI;
         public BuildButtonUI BuildButtonUI => _buildButtonUI;
         public RequireTextUI RequireTextUI => _requireTextUI;
         public float ActiveDistance => _activeDistance;
+        public float ConstructTime => _constructTime;
+        public int RequireGold => _requireGold;
 
         public override void Initialize()
         {
@@ -60,6 +64,7 @@ namespace Action.Units
 
             base.StateMachine.Initialize(_idleState);
             _activeDistance = GameManager.Instance.Constants.INGAMEUI_VISIBLE_DISTANT;
+            _indicatorPos = transform.position + new Vector3(0, GetComponent<Collider>().bounds.size.y, 0);
         }
 
         public virtual void Interact()
@@ -98,11 +103,17 @@ namespace Action.Units
                     _controlUI?.Show();
 
                 GameManager.Instance.CommanderUnit.InteractingBuilding = this.gameObject;
+                GameObject indicator = GameManager.Instance.CommanderUnit.Indicator;
+                indicator.transform.SetParent(transform);
+                indicator.transform.position = _indicatorPos;
+                indicator.SetActive(true);
             }
             else
             {
                 _controlUI.Hide();
                 _buildButtonUI?.Hide();
+                GameObject indicator = GameManager.Instance.CommanderUnit.Indicator;
+                //indicator?.SetActive(false);
             }
         }
 
@@ -116,6 +127,7 @@ namespace Action.Units
         {
             yield return new WaitForSeconds(_constructTime);
             StateMachine.ChangeState(_doneState);
+            _indicatorPos = transform.position + new Vector3(0, GetComponent<Collider>().bounds.size.y, 0);
         }
 
         protected override void Awake()

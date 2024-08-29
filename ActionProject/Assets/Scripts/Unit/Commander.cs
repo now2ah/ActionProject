@@ -31,6 +31,7 @@ namespace Action.Units
         ActionTime _dashTimer;
 
         GameObject _interactingBuilding;
+        GameObject _indicator;
 
         int _animHashMoving;
         int _animHashAttacking;
@@ -46,6 +47,7 @@ namespace Action.Units
         public CommanderMoveState MoveState => _moveState;
         public CommanderAttackState AttackState => _attackState;
         public GameObject InteractingBuilding { get { return _interactingBuilding; } set { _interactingBuilding = value; } }
+        public GameObject Indicator { get { return _indicator; } set { _indicator = value; } }
         public int AnimHashMoving => _animHashMoving;
         public int AnimHashAttacking => _animHashAttacking;
 
@@ -64,6 +66,8 @@ namespace Action.Units
             NextExp = 50;
             SetNameUI(UnitName);
             UnitPanel.Show();
+            _indicator = Instantiate(GameManager.Instance.BuildingIndicatorPrefab);
+            _indicator.SetActive(false);
             _animHashMoving = Animator.StringToHash("isMoving");
             _animHashAttacking = Animator.StringToHash("isAttacking");
             OnDamaged += UIManager.Instance.ShowDamagedEffect;
@@ -79,7 +83,16 @@ namespace Action.Units
         public void Interact()
         {
             if (null != _interactingBuilding)
-                _interactingBuilding.GetComponent<Building>().Interact();
+            {
+                if (_interactingBuilding.TryGetComponent<Building>(out Building comp))
+                {
+                    if (GameManager.Instance.Resource.IsValidSpend(comp.RequireGold, eResource.GOLD))
+                    {
+                        GameManager.Instance.Resource.Spend(comp.RequireGold, eResource.GOLD);
+                        comp.Interact();
+                    }
+                }
+            }
         }
 
         public override void Move()
@@ -204,7 +217,10 @@ namespace Action.Units
             {
                 float dist = Vector3.Distance(transform.position, _interactingBuilding.transform.position);
                 if (_interactingBuilding.GetComponent<Building>().ActiveDistance < dist)
+                {
                     _interactingBuilding = null;
+                    _indicator.SetActive(false);
+                }
             }
         }
 

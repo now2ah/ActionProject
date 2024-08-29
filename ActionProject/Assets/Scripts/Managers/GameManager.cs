@@ -47,7 +47,6 @@ namespace Action.Manager
 
         GameObject _playerBase;
         GameObject _commanderUnitObj;
-
         Commander _commanderUnit;
 
         //temporary
@@ -75,6 +74,7 @@ namespace Action.Manager
         GameObject _hitEffectPrefab;
         Material _hitMaterial;
         GameObject _projectilePrefab;
+        GameObject _buildingIndicatorPrefab;
 
         //StageSystem _stageSystem;
 
@@ -100,6 +100,7 @@ namespace Action.Manager
         public GameObject HitEffectPrefab => _hitEffectPrefab;
         public Material HitMaterial => _hitMaterial;
         public GameObject ProjectilePrefab => _projectilePrefab;
+        public GameObject BuildingIndicatorPrefab => _buildingIndicatorPrefab;
 
         public override void Initialize()
         {
@@ -131,6 +132,7 @@ namespace Action.Manager
             _hitEffectPrefab = Resources.Load("Prefabs/Misc/Hiteffect") as GameObject;
             _hitMaterial = Resources.Load("Materials/HitEffectMat") as Material;
             _projectilePrefab = Resources.Load("Prefabs/Misc/Projectile") as GameObject;
+            _buildingIndicatorPrefab = Resources.Load("Prefabs/Misc/ArrowIcon") as GameObject;
 
             AddAllEnemySpawners();
         }
@@ -319,7 +321,7 @@ namespace Action.Manager
                     {
                         baseExtentsZ = comp.size.z + 5.0f;     //юс╫ц
                     }
-                    startPos = _playerBase.gameObject.transform.position + new Vector3(20.0f, Constants.GROUND_Y_POS, /*-(baseExtentsZ + 1.0f)*/ 0.0f);
+                    startPos = _playerBase.gameObject.transform.position + new Vector3(0.0f, Constants.GROUND_Y_POS, /*-(baseExtentsZ + 1.0f)*/ -20.0f);
                 }
                 _commanderUnitObj = Instantiate(_commanderPrefab, startPos, Quaternion.identity);
                 _commanderUnit = _commanderUnitObj.GetComponent<Commander>();

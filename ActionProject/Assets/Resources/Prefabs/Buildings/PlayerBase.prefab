@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7082507043439086458}
   - component: {fileID: 2485617940671572854}
+  - component: {fileID: 2023567748397862679}
   m_Layer: 0
   m_Name: PlayerBase
   m_TagString: PlayerObject
@@ -45,6 +46,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c27fbad6925a18b4da4e79b6ad2bd4d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxHp: 0
+--- !u!65 &2023567748397862679
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6932153058101253012}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 20, y: 10.710471, z: 12.189709}
+  m_Center: {x: 0, y: 5.3341756, z: 0.19829178}
 --- !u!1001 &8445347933045907712
 PrefabInstance:
   m_ObjectHideFlags: 0
