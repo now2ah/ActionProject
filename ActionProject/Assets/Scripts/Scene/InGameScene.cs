@@ -7,23 +7,17 @@ namespace Action.Scene
 {
     public class InGameScene : MonoBehaviour
     {
-        void _InitializeSingletons()
-        {
-            CameraManager.Instance.Initialize();
-            InputManager.Instance.Initialize();
-            GameManager.Instance.Initialize();
-        }
+        
 
         // Start is called before the first frame update
         void Start()
         {
-            _InitializeSingletons();
-
-            GameManager.Instance.GameStart();
-
-            CameraManager.Instance.CreateFixedVirtualCamera();
-
-            UIManager.Instance.CreateTownStagePanel();
+            if (!GameManager.Instance.IsPlaying)
+            {
+                GameManager.Instance.GameStart();
+                CameraManager.Instance.CreateFixedVirtualCamera();
+                UIManager.Instance.CreateTownStagePanel();
+            }
         }
     }
 }

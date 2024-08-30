@@ -8,6 +8,7 @@ using Action.UI;
 using Action.Units;
 using Action.Game;
 using Action.SO;
+using Action.State;
 
 namespace Action.Manager
 {
@@ -28,6 +29,11 @@ namespace Action.Manager
 
         Vector3 _startPosition;         //베이스 위치
         IEnumerator _waveStartCoroutine;
+
+        StateMachine _phaseStateMachine;
+        TownBuildState _townBuildState;
+        HuntState _huntState;
+        DefenseState _defenseState;
 
         ActionTime _gameTimer;
         ActionTime _phaseTimer;
@@ -75,6 +81,8 @@ namespace Action.Manager
         Material _hitMaterial;
         GameObject _projectilePrefab;
         GameObject _buildingIndicatorPrefab;
+        GameObject _huntStageSpawnerPrefab;
+        GameObject _huntSpawner;
 
         //StageSystem _stageSystem;
 
@@ -82,7 +90,9 @@ namespace Action.Manager
         Resource _resource;
         public Resource Resource => _resource;
 
+
         public bool IsLive { get { return _isLive; } set { _isLive = value; } }
+        public bool IsPlaying { get { return _isPlaying; } }
         public eGamePhase Phase => _gamePhase;
         public float TownBuildPhaseTime { get { return _townBuildPhaseTime; } set { _townBuildPhaseTime = value; } }
         public float HuntPhaseTime { get { return _huntPhaseTime; } set { _huntPhaseTime = value; } }
@@ -105,36 +115,31 @@ namespace Action.Manager
         public override void Initialize()
         {
             base.Initialize();
-            Constants = Resources.Load("ScriptableObject/Constant") as Constant;
 
+            _LoadAssets();
+            _phaseStateMachine = new StateMachine();
+            _townBuildState = new TownBuildState();
+            _huntState = new HuntState();
+            _defenseState = new DefenseState();
             _townBuildPhaseTime = Constants.TOWNBUILD_PHASE_TIME;
             _huntPhaseTime = Constants.HUNT_PHASE_TIME;
             _defensePhaseTime = Constants.DEFENSE_PHASE_TIME;
             _gameTimer = gameObject.AddComponent<ActionTime>();
             _phaseTimer = gameObject.AddComponent<ActionTime>();
             _refreshTimer = gameObject.AddComponent<ActionTime>();
-            _playerBasePrefab = Resources.Load("Prefabs/Buildings/PlayerBase") as GameObject;
-            _commanderPrefab = Resources.Load("Prefabs/Units/Player/Commander") as GameObject;
             _enemySpawners = new List<Spawner>();
             _playerBuildingPrefabs = new List<GameObject>();
             _playerBuildings = new List<GameObject>();
             _playerUnitPrefabs = new List<GameObject>();
             _playerUnits = new List<GameObject>();
             _enemyUnitPrefabs = new List<GameObject>();
+            _enemyUnits = new List<GameObject>();
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/NormalEnemy") as GameObject);
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/RangeEnemy") as GameObject);
-            _enemyUnits = new List<GameObject>();
-            _enemyWaves = Resources.Load("ScriptableObject/EnemyWaves") as EnemyWaves;
-            _huntEnemyWaves = Resources.Load("ScriptableObject/HuntEnemyWaves") as EnemyWaves;
             _curWaveOrder = -1;
             _curHuntWaveOrder = -1;
-            _hitBoxPrefab = Resources.Load("Prefabs/Misc/HitBox") as GameObject;
-            _hitEffectPrefab = Resources.Load("Prefabs/Misc/Hiteffect") as GameObject;
-            _hitMaterial = Resources.Load("Materials/HitEffectMat") as Material;
-            _projectilePrefab = Resources.Load("Prefabs/Misc/Projectile") as GameObject;
-            _buildingIndicatorPrefab = Resources.Load("Prefabs/Misc/ArrowIcon") as GameObject;
 
-            AddAllEnemySpawners();
+            _SetUpHuntSpawner();
         }
 
         public void Stop()
@@ -147,7 +152,7 @@ namespace Action.Manager
         {
             _isLive = true;
             Time.timeScale = 1;
-        }    
+        }
 
         public void GameStart()
         {
@@ -167,14 +172,31 @@ namespace Action.Manager
             _StartGameTimer();
             _StartRefreshTimer();
 
-            StartPhase(eGamePhase.TownBuild);
-
+            _phaseStateMachine.Initialize(_townBuildState);
             //StartWave(5, 1, 0);
         }
 
         public void GameOver()
         {
 
+        }
+
+        public void ChangePhase(eGamePhase phase)
+        {
+            switch (phase)
+            {
+                case eGamePhase.TownBuild:
+                    _phaseStateMachine.ChangeState(_townBuildState);
+                    break;
+
+                case eGamePhase.Hunt:
+                    _phaseStateMachine.ChangeState(_huntState);
+                    break;
+
+                case eGamePhase.Defense:
+                    _phaseStateMachine.ChangeState(_defenseState);
+                    break;
+            }
         }
 
         public void StartPhase(eGamePhase phase)
@@ -185,38 +207,32 @@ namespace Action.Manager
             switch (phase)
             {
                 case eGamePhase.TownBuild:
+
                     break;
 
                 case eGamePhase.Hunt:
                     SceneManager.Instance.LoadGameScene(3);
-                    //_stageSystem.Initialize(_commanderUnit);
                     break;
 
                 case eGamePhase.Defense:
-                    StartWave(_enemyWaves, 1.0f, 0);
+                    SceneManager.Instance.LoadGameScene(2);
                     break;
             }
         }
 
-        public void StartWave(EnemyWaves waves, float timeRate, int spawnerIndex, bool isHunt = false)
+        public void StartWave(EnemyWaves waves, float timeRate, int spawnerIndex)
         {
-            if (isHunt)
+            _curHuntWaveOrder++;
+            if (_curHuntWaveOrder < waves.enemyWaveList.Count)
             {
-                _curHuntWaveOrder++;
-                if (_curHuntWaveOrder < waves.enemyWaveList.Count)
-                {
-                    StartCoroutine(_StartWaveCoroutine(waves, _curHuntWaveOrder, timeRate, spawnerIndex));
-                }
+                StartCoroutine(_StartWaveCoroutine(waves, _curHuntWaveOrder, timeRate, spawnerIndex));
             }
-            else
-            {
-                _curWaveOrder++;
-                if (_curWaveOrder < waves.enemyWaveList.Count)
-                {
-                    StopCoroutine(_StartWaveCoroutine(waves, _curWaveOrder, timeRate, spawnerIndex));
-                    StartCoroutine(_StartWaveCoroutine(waves, _curWaveOrder, timeRate, spawnerIndex));
-                }
-            }
+        }
+
+        public void StartWave(List<GameObject> waves, float timeRate, int spawnerIndex)
+        {
+            StopCoroutine(_StartWaveCoroutine(waves, timeRate, spawnerIndex));
+            StartCoroutine(_StartWaveCoroutine(waves, timeRate, spawnerIndex));
         }
 
         public void AddAllEnemySpawners()
@@ -230,6 +246,12 @@ namespace Action.Manager
             }
         }
 
+        public void SetActiveHuntSpawner(bool isOn)
+        {
+            if (null != _commanderUnit)
+                _huntSpawner.SetActive(isOn);
+        }
+
         Vector3 _FindBasePoint()
         {
             GameObject obj = GameObject.FindWithTag("StartingBasePoint");
@@ -237,6 +259,27 @@ namespace Action.Manager
                 return Vector3.zero;
             else
                 return obj.transform.position;
+        }
+
+        void _LoadAssets()
+        {
+            Constants = Resources.Load("ScriptableObject/Constant") as Constant;
+            _playerBasePrefab = Resources.Load("Prefabs/Buildings/PlayerBase") as GameObject;
+            _commanderPrefab = Resources.Load("Prefabs/Units/Player/Commander") as GameObject;
+            _enemyWaves = Resources.Load("ScriptableObject/EnemyWaves") as EnemyWaves;
+            _huntEnemyWaves = Resources.Load("ScriptableObject/HuntEnemyWaves") as EnemyWaves;
+            _hitBoxPrefab = Resources.Load("Prefabs/Misc/HitBox") as GameObject;
+            _hitEffectPrefab = Resources.Load("Prefabs/Misc/Hiteffect") as GameObject;
+            _hitMaterial = Resources.Load("Materials/HitEffectMat") as Material;
+            _projectilePrefab = Resources.Load("Prefabs/Misc/Projectile") as GameObject;
+            _buildingIndicatorPrefab = Resources.Load("Prefabs/Misc/ArrowIcon") as GameObject;
+            _huntStageSpawnerPrefab = Resources.Load("Prefabs/Misc/HuntSpawner") as GameObject;
+        }
+
+        void _SetUpHuntSpawner()
+        {
+            _huntSpawner = Instantiate<GameObject>(_huntStageSpawnerPrefab, transform);
+            _huntSpawner.SetActive(false);
         }
 
         void _StartGameTimer()
@@ -257,7 +300,8 @@ namespace Action.Manager
 
 
                 _phaseTimer.ResetTimer();
-                StartPhase(_gamePhase);
+                ChangePhase(_gamePhase);
+                //StartPhase(_gamePhase);
             }
         }
 
@@ -344,15 +388,34 @@ namespace Action.Manager
                             comp.Initialize();
                             comp.UnitPanel.ApplyHPValue(comp.HP, comp.MaxHp);
                         }
-                            
 
                         _enemyUnits.Add(obj);
 
                         _enemySpawners[spawnerIndex].SpawnObject(obj);
-                        
+
                         count--;
                         yield return new WaitForSeconds(timeRate);
                     }
+                }
+            }
+        }
+
+        IEnumerator _StartWaveCoroutine(List<GameObject> waves, float timeRate, int spawnerIndex)
+        {
+            if (0 < _enemySpawners.Count)
+            {
+                foreach (var item in waves)
+                {
+                    GameObject obj = item;
+                    if (obj.TryGetComponent<Unit>(out Unit comp))
+                    {
+                        comp.Initialize();
+                        comp.UnitPanel.ApplyHPValue(comp.HP, comp.MaxHp);
+                    }
+
+                    _enemySpawners[spawnerIndex].SpawnObject(obj);
+
+                    yield return new WaitForSeconds(timeRate);
                 }
             }
         }
@@ -380,6 +443,8 @@ namespace Action.Manager
             {
                 _CheckPhaseTime();
                 _CheckRefreshTime();
+                if (null != _phaseStateMachine)
+                    _phaseStateMachine.Update();
             }
         }
 

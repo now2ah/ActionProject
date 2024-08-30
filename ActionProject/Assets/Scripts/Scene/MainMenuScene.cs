@@ -13,7 +13,16 @@ namespace Action.Scene
 
         void _LoadNextScene()
         {
+            _InitializeSingletons();
+            
             SceneManager.Instance.LoadGameScene(2);
+        }
+
+        void _InitializeSingletons()
+        {
+            CameraManager.Instance.Initialize();
+            InputManager.Instance.Initialize();
+            GameManager.Instance.Initialize();
         }
 
         void Start()

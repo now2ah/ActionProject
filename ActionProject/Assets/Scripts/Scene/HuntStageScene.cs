@@ -14,22 +14,18 @@ namespace Action.Scene
         
         bool _isStart;
 
-        public GameObject SpawnerObj;
-
         public void Initialize()
         {
             //_stageSystem.Ground = Resources.Load("Prefabs/Misc/HuntStageGround") as GameObject;
             _stageSystem.Initialize(Manager.GameManager.Instance.CommanderUnit);
             Manager.CameraManager.Instance.CreateFixedVirtualCamera();
             Manager.GameManager.Instance.AddAllEnemySpawners();
-            if (null != SpawnerObj)
-                SpawnerObj.transform.SetParent(Manager.GameManager.Instance.CommanderObj.transform, false);
         }
 
         public void WaveStart()
         {
             for(int i = 0; i<Manager.GameManager.Instance.EnemySpawners.Count; i++)
-                Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 3.0f, i, true);
+                Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 3.0f, i);
         }
 
         private void Awake()
