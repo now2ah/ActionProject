@@ -11,7 +11,6 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
-            GameManager.Instance.StartPhase(eGamePhase.TownBuild);
             GameManager.Instance.AddAllEnemySpawners();
         }
 
@@ -31,7 +30,6 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
-            GameManager.Instance.StartPhase(eGamePhase.Hunt);
             GameManager.Instance.SetActiveHuntSpawner(true);
             GameManager.Instance.AddAllEnemySpawners();
         }
@@ -43,7 +41,12 @@ namespace Action.State
 
         public override void ExitState()
         {
-            GameManager.Instance.SetActiveHuntSpawner(false);   
+            GameManager.Instance.SetActiveHuntSpawner(false);
+            foreach (GameObject unit in GameManager.Instance.EnemyUnits)
+            {
+                if(unit.TryGetComponent<Units.EnemyUnit>(out Units.EnemyUnit comp))
+                    comp.Pool.Free(comp);
+            }
             base.ExitState();
         }
     }
@@ -53,7 +56,8 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
-            GameManager.Instance.StartPhase(eGamePhase.Defense);
+            GameManager.Instance.AddAllEnemySpawners();
+            GameManager.Instance.CommanderUnit.NavMeshAgentComp.Warp(GameManager.Instance.StartPos);
             for (int i = 0; i < GameManager.Instance.EnemySpawners.Count; i++)
                 GameManager.Instance.StartWave(GameManager.Instance.EnemyUnits, 1.0f, i);
         }

@@ -72,7 +72,7 @@ namespace Action.Units
             base.Awake();
             _requireGold = 5;
             _attackDamage = 1.0f;
-            _attackDistance = 150.0f;
+            _attackDistance = 50.0f;
             _attackSpeed = 1.0f;
             _attackTime = gameObject.AddComponent<ActionTime>();
             _shootPosition = transform.position + new Vector3(0.0f, 5.0f, 0.0f);
@@ -89,7 +89,8 @@ namespace Action.Units
         protected override void Update()
         {
             base.Update();
-            if (_IsInDistance() && !_attackTime.IsStarted)
+            if (StateMachine.CurState == _doneState &&
+                _IsInDistance() && !_attackTime.IsStarted)
                 _Attack();
         }
     }

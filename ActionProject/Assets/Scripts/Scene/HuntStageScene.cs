@@ -25,7 +25,7 @@ namespace Action.Scene
         public void WaveStart()
         {
             for(int i = 0; i<Manager.GameManager.Instance.EnemySpawners.Count; i++)
-                Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 3.0f, i);
+                Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 1.0f, i);
         }
 
         private void Awake()

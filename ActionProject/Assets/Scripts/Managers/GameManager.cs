@@ -51,6 +51,7 @@ namespace Action.Manager
 
         public UnityEvent OnRefresh;
 
+        Vector3 _startPos;
         GameObject _playerBase;
         GameObject _commanderUnitObj;
         Commander _commanderUnit;
@@ -97,6 +98,7 @@ namespace Action.Manager
         public float TownBuildPhaseTime { get { return _townBuildPhaseTime; } set { _townBuildPhaseTime = value; } }
         public float HuntPhaseTime { get { return _huntPhaseTime; } set { _huntPhaseTime = value; } }
         public float DefensePhaseTime { get { return _defensePhaseTime; } set { _defensePhaseTime = value; } }
+        public Vector3 StartPos { get { return _startPos; } }
         public GameObject PlayerBase { get { return _playerBase; } set { _playerBase = value; } }
         public GameObject CommanderObj { get { return _commanderUnitObj; } set { _commanderUnitObj = value; } }
         public Commander CommanderUnit { get { return _commanderUnit; } }
@@ -127,6 +129,7 @@ namespace Action.Manager
             _gameTimer = gameObject.AddComponent<ActionTime>();
             _phaseTimer = gameObject.AddComponent<ActionTime>();
             _refreshTimer = gameObject.AddComponent<ActionTime>();
+            _startPos = new Vector3(-150.0f, 6.0f, -15.0f);
             _enemySpawners = new List<Spawner>();
             _playerBuildingPrefabs = new List<GameObject>();
             _playerBuildings = new List<GameObject>();
@@ -173,6 +176,7 @@ namespace Action.Manager
             _StartRefreshTimer();
 
             _phaseStateMachine.Initialize(_townBuildState);
+            StartPhase(eGamePhase.TownBuild);
             //StartWave(5, 1, 0);
         }
 
@@ -186,14 +190,17 @@ namespace Action.Manager
             switch (phase)
             {
                 case eGamePhase.TownBuild:
+                    StartPhase(eGamePhase.TownBuild);
                     _phaseStateMachine.ChangeState(_townBuildState);
                     break;
 
                 case eGamePhase.Hunt:
+                    StartPhase(eGamePhase.Hunt);
                     _phaseStateMachine.ChangeState(_huntState);
                     break;
 
                 case eGamePhase.Defense:
+                    StartPhase(eGamePhase.Defense);
                     _phaseStateMachine.ChangeState(_defenseState);
                     break;
             }
@@ -225,14 +232,14 @@ namespace Action.Manager
             _curHuntWaveOrder++;
             if (_curHuntWaveOrder < waves.enemyWaveList.Count)
             {
-                StartCoroutine(_StartWaveCoroutine(waves, _curHuntWaveOrder, timeRate, spawnerIndex));
+                StartCoroutine(_StartHuntWaveCoroutine(waves, _curHuntWaveOrder, timeRate, spawnerIndex));
             }
         }
 
         public void StartWave(List<GameObject> waves, float timeRate, int spawnerIndex)
         {
-            StopCoroutine(_StartWaveCoroutine(waves, timeRate, spawnerIndex));
-            StartCoroutine(_StartWaveCoroutine(waves, timeRate, spawnerIndex));
+            StopCoroutine(_StartDefenseWaveCoroutine(waves, timeRate, spawnerIndex));
+            StartCoroutine(_StartDefenseWaveCoroutine(waves, timeRate, spawnerIndex));
         }
 
         public void AddAllEnemySpawners()
@@ -373,7 +380,7 @@ namespace Action.Manager
             }
         }
 
-        IEnumerator _StartWaveCoroutine(EnemyWaves waves, int order, float timeRate, int spawnerIndex)
+        IEnumerator _StartHuntWaveCoroutine(EnemyWaves waves, int order, float timeRate, int spawnerIndex)
         {
             if (0 < _enemySpawners.Count)
             {
@@ -400,13 +407,14 @@ namespace Action.Manager
             }
         }
 
-        IEnumerator _StartWaveCoroutine(List<GameObject> waves, float timeRate, int spawnerIndex)
+        IEnumerator _StartDefenseWaveCoroutine(List<GameObject> waves, float timeRate, int spawnerIndex)
         {
             if (0 < _enemySpawners.Count)
             {
                 foreach (var item in waves)
                 {
                     GameObject obj = item;
+                    obj.SetActive(true);
                     if (obj.TryGetComponent<Unit>(out Unit comp))
                     {
                         comp.Initialize();
