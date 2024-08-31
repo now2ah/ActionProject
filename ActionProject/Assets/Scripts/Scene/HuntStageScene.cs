@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Action.Util;
+using Action.Manager;
 
 
 namespace Action.Scene
@@ -16,16 +17,14 @@ namespace Action.Scene
 
         public void Initialize()
         {
-            //_stageSystem.Ground = Resources.Load("Prefabs/Misc/HuntStageGround") as GameObject;
+            //GameManager.Instance.ChangePhase(eGamePhase.Hunt);
             _stageSystem.Initialize(Manager.GameManager.Instance.CommanderUnit);
             Manager.CameraManager.Instance.CreateFixedVirtualCamera();
-            Manager.GameManager.Instance.AddAllEnemySpawners();
         }
 
         public void WaveStart()
         {
-            for(int i = 0; i<Manager.GameManager.Instance.EnemySpawners.Count; i++)
-                Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 1.0f, i);
+            Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 1.5f);
         }
 
         private void Awake()

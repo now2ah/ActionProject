@@ -22,12 +22,18 @@ namespace Action.Manager
             _sceneNumToLoad = 0;
             _LoadFadeImage();
             _fadeSpeed = 0.5f;
+            //UnityEngine.SceneManagement.SceneManager.sceneLoaded += _OnSceneLoaded;
         }
 
         public void LoadGameScene(int sceneNumber, LoadSceneMode mode = LoadSceneMode.Single)
         {
             _sceneNumToLoad = sceneNumber;
             UnityEngine.SceneManagement.SceneManager.LoadScene("99.Loading", mode);
+        }
+
+        void _OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+        {
+            
         }
 
         #region FADE IN AND OUT

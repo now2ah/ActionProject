@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Spawner : MonoBehaviour
 {
@@ -32,6 +33,9 @@ public class Spawner : MonoBehaviour
             Random.Range(col.bounds.min.y, col.bounds.max.y),
             Random.Range(col.bounds.min.z, col.bounds.max.z));
 
-        spawnObj.transform.position = spawnPos;
+        if (spawnObj.TryGetComponent<NavMeshAgent>(out NavMeshAgent comp))
+        {
+            comp.Warp(spawnPos);
+        }
     }
 }

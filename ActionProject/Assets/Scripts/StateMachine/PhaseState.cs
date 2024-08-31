@@ -11,7 +11,6 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
-            GameManager.Instance.AddAllEnemySpawners();
         }
 
         public override void UpdateState()
@@ -30,8 +29,9 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
+            GameManager.Instance.AddHuntSpawner();
             GameManager.Instance.SetActiveHuntSpawner(true);
-            GameManager.Instance.AddAllEnemySpawners();
+            
         }
 
         public override void UpdateState()
@@ -42,10 +42,11 @@ namespace Action.State
         public override void ExitState()
         {
             GameManager.Instance.SetActiveHuntSpawner(false);
+            GameManager.Instance.EnemySpawners.Clear();
             foreach (GameObject unit in GameManager.Instance.EnemyUnits)
             {
-                if(unit.TryGetComponent<Units.EnemyUnit>(out Units.EnemyUnit comp))
-                    comp.Pool.Free(comp);
+                unit.SetActive(false);
+                //if(unit.TryGetComponent<Units.EnemyUnit>(out Units.EnemyUnit comp))
             }
             base.ExitState();
         }
@@ -56,10 +57,11 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
-            GameManager.Instance.AddAllEnemySpawners();
+            GameManager.Instance.AddDefenseSpawner();
+            GameManager.Instance.SetActiveDefenseSpawner(true);
+            GameManager.Instance.SetDefenseSpawner();
             GameManager.Instance.CommanderUnit.NavMeshAgentComp.Warp(GameManager.Instance.StartPos);
-            for (int i = 0; i < GameManager.Instance.EnemySpawners.Count; i++)
-                GameManager.Instance.StartWave(GameManager.Instance.EnemyUnits, 1.0f, i);
+            
         }
 
         public override void UpdateState()
@@ -69,6 +71,8 @@ namespace Action.State
 
         public override void ExitState()
         {
+            GameManager.Instance.EnemySpawners.Clear();
+            GameManager.Instance.SetActiveDefenseSpawner(false);
             base.ExitState();
         }
     }

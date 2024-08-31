@@ -7,6 +7,7 @@ TagManager:
   - PlayerObject
   - EnemyObject
   - StartingBasePoint
+  - DefenseSpawnerPoint
   layers:
   - Default
   - TransparentFX
