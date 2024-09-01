@@ -158,7 +158,10 @@ namespace Action.Units
 
         public virtual void RefreshTargetPosition()
         {
-            SetDestinationToTarget(_target);
+            if (!gameObject.activeSelf)
+                return;
+
+            //SetDestinationToTarget(_target);
         }
 
         protected void _ResetTarget()

@@ -50,6 +50,11 @@ namespace Action.Units
 
         public override void RefreshTargetPosition()
         {
+            base.RefreshTargetPosition();
+
+            if (!gameObject.activeSelf)
+                return;
+
             FindNearestTarget(true);
             if (_moveState == StateMachine.CurState)
                 SetDestinationToTarget(_target);

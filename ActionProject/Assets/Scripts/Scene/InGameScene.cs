@@ -27,7 +27,10 @@ namespace Action.Scene
                 UIManager.Instance.CreateTownStagePanel();
             }
             else
+            {
+                CameraManager.Instance.CreateFixedVirtualCamera();
                 _startTimer.TickStart(3.0f);
+            }
             //GameManager.Instance.ChangePhase(eGamePhase.Defense);
         }
 
