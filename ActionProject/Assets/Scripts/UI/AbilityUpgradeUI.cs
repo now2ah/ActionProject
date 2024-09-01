@@ -18,6 +18,7 @@ namespace Action.UI
 
         public void Initialize(List<Ability> abilityList)
         {
+            transform.SetAsFirstSibling();
             _abilityList = abilityList;
             for (int i = 0; i < _abilityList.Count; i++)
             {
