@@ -14,6 +14,7 @@ namespace Action.Manager
         public InputAction Action;
         public InputAction PhysicalAttack;
         public InputAction Teleport;
+        public InputAction PauseMenu;
 
         public override void Initialize()
         {
@@ -24,6 +25,7 @@ namespace Action.Manager
             Action.Enable();
             PhysicalAttack.Enable();
             Teleport.Enable();
+            PauseMenu.Enable();
         }
     }
 }

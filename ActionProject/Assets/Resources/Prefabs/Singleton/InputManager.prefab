@@ -178,3 +178,20 @@ MonoBehaviour:
       m_Action: Teleport
       m_Flags: 0
     m_Flags: 0
+  PauseMenu:
+    m_Name: Pause Menu
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b5e7fb45-a187-4bfd-86d4-34840b87b2d5
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: c974b945-c6c5-42f7-bfc6-37fa99e33d52
+      m_Path: <Keyboard>/escape
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Pause Menu
+      m_Flags: 0
+    m_Flags: 0

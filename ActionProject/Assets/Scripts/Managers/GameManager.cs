@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using Action.Util;
 using Action.UI;
 using Action.Units;
@@ -125,6 +126,7 @@ namespace Action.Manager
             base.Initialize();
 
             _LoadAssets();
+            InputManager.Instance.PauseMenu.performed += ctx => { OnPause(ctx); };
             _phaseStateMachine = new StateMachine();
             _townBuildState = new TownBuildState();
             _huntState = new HuntState();
@@ -162,6 +164,18 @@ namespace Action.Manager
         {
             _isLive = true;
             Time.timeScale = 1;
+        }
+
+        public void OnPause(InputAction.CallbackContext context)
+        {
+            if (_isPlaying)
+            {
+                Stop();
+                if (null == UIManager.Instance.PausePanel)
+                    UIManager.Instance.PausePanel = UIManager.Instance.CreateUI("PausePanel", UIManager.Instance.MainCanvas);
+
+                UIManager.Instance.PausePanel.SetActive(true);
+            }
         }
 
         public void GameStart()

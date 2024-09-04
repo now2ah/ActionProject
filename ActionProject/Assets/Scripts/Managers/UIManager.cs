@@ -40,6 +40,7 @@ namespace Action.Manager
         ExpBarUI _expBarUI;
         GameObject _abilityUpgradePanel;
         AbilityUpgradeUI _abilityUpgradeUI;
+        GameObject _pausePanel;
 
         public Canvas MainCanvas => _mainCanvas;
         public Canvas InGameCanvas => _inGameCanvas;
@@ -51,6 +52,7 @@ namespace Action.Manager
         public ExpBarUI ExpBarUI { get { return _expBarUI; } set { _expBarUI = value; } }
         public GameObject AbilityUpgradePanel { get { return _abilityUpgradePanel; } set { _abilityUpgradePanel = value; } }
         public AbilityUpgradeUI AbilityUpgradeUI { get { return _abilityUpgradeUI; } set { _abilityUpgradeUI = value; } }
+        public GameObject PausePanel { get { return _pausePanel; } set { _pausePanel = value; } }
 
         public override void Initialize()
         {
