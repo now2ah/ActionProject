@@ -64,6 +64,9 @@ namespace Action.Units
 
         public void FindNearestPlayerBuilding()
         {
+            if (0 == GameManager.Instance.PlayerBuildings.Count)
+                return;
+
             if (1 == GameManager.Instance.PlayerBuildings.Count)
             {
                 _nearestPlayerBuilding = GameManager.Instance.PlayerBase;

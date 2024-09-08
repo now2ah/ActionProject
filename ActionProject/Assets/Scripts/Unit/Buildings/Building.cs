@@ -70,7 +70,10 @@ namespace Action.Units
         public virtual void Interact()
         {
             if (StateMachine.CurState == _idleState)
+            {
                 _StartConstruct();
+                _AddToBuildingList();
+            }
         }
 
         public void SetVisibleBuilding(bool isOn)
@@ -128,6 +131,11 @@ namespace Action.Units
             yield return new WaitForSeconds(_constructTime);
             StateMachine.ChangeState(_doneState);
             _indicatorPos = transform.position + new Vector3(0, GetComponent<Collider>().bounds.size.y, 0);
+        }
+
+        void _AddToBuildingList()
+        {
+            GameManager.Instance.PlayerBuildings.Add(gameObject);
         }
 
         protected override void Awake()

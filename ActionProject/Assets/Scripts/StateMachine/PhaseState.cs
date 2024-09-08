@@ -20,6 +20,8 @@ namespace Action.State
 
         public override void ExitState()
         {
+            foreach (var buildings in GameManager.Instance.PlayerBuildings)
+                buildings.SetActive(false);
             base.ExitState();
         }
     }
@@ -57,11 +59,12 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
+            foreach (var buildings in GameManager.Instance.PlayerBuildings)
+                buildings.SetActive(true);
             GameManager.Instance.AddDefenseSpawner();
             GameManager.Instance.SetActiveDefenseSpawner(true);
             GameManager.Instance.SetDefenseSpawner();
             GameManager.Instance.CommanderUnit.NavMeshAgentComp.Warp(GameManager.Instance.StartPos);
-            
         }
 
         public override void UpdateState()

@@ -187,6 +187,7 @@ namespace Action.Manager
 
             _CreateStartBase();
             _CreateCommanderUnit();
+            _AddBuildings();
 
             UIManager.Instance.ExpPanel.SetActive(true);
             UIManager.Instance.ExpBarUI.ApplyExpValue(_commanderUnit.Exp, _commanderUnit.NextExp);
@@ -414,6 +415,15 @@ namespace Action.Manager
                 _playerBase = Instantiate(_playerBasePrefab, _startPosition, Quaternion.identity);
                 _playerBuildings.Add(_playerBase);
             }
+        }
+
+        void _AddBuildings()
+        {
+            GameObject obj = new GameObject("Buildings");
+            obj.transform.SetParent(gameObject.transform);
+            Building[] buildings = FindObjectsByType<Building>(FindObjectsSortMode.None);
+            foreach (var building in buildings)
+                building.transform.SetParent(obj.transform);
         }
 
         void _CreateCommanderUnit()
