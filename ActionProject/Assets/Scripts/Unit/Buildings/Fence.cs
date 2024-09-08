@@ -8,7 +8,11 @@ namespace Action.Units
     {
         public override void Initialize()
         {
+            if (_isActive)
+                return;
+
             base.Initialize();
+
             RequireTextUI.Text.text = _requireGold.ToString();
         }
 
@@ -22,7 +26,7 @@ namespace Action.Units
         protected override void Start()
         {
             base.Start();
-            Initialize();
+            //Initialize();
         }
 
         // Update is called once per frame

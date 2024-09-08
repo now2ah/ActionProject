@@ -122,7 +122,7 @@ namespace Action.State
         {
             if (null != _enemyUnit)
             {
-                Logger.Log("Idle Enter");
+                //Logger.Log("Idle Enter");
                 _enemyUnit.FindNearestPlayerBuilding();
                 _enemyUnit.FindNearestTarget(true);
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, false);
@@ -165,7 +165,7 @@ namespace Action.State
             base.EnterState();
             if (null != _enemyUnit && null != _enemyUnit.Target)
             {
-                Logger.Log("Move Enter");
+                //Logger.Log("Move Enter");
                 _enemyUnit.SetDestinationToTarget(_enemyUnit.Target);
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, true);
             }
@@ -202,7 +202,7 @@ namespace Action.State
         {
             if (null != _enemyUnit)
             {
-                Logger.Log("Attack Enter");
+                //Logger.Log("Attack Enter");
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashAttacking, true);
                 _enemyUnit.StopMove();
                 _enemyUnit.Look(_enemyUnit.Target);

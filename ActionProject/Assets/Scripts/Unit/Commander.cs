@@ -86,7 +86,8 @@ namespace Action.Units
             {
                 if (_interactingBuilding.TryGetComponent<Building>(out Building comp))
                 {
-                    if (GameManager.Instance.Resource.IsValidSpend(comp.RequireGold, eResource.GOLD))
+                    if (comp.StateMachine.CurState == comp.IdleState &&
+                        GameManager.Instance.Resource.IsValidSpend(comp.RequireGold, eResource.GOLD))
                     {
                         GameManager.Instance.Resource.Spend(comp.RequireGold, eResource.GOLD);
                         comp.Interact();

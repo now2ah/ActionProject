@@ -38,6 +38,10 @@ namespace Action.Units
         public float ActiveDistance => _activeDistance;
         public float ConstructTime => _constructTime;
         public int RequireGold => _requireGold;
+        public PlayerBuildingIdleState IdleState => _idleState;
+        public PlayerBuildingPrepareState PrepareState => _prepareState;
+        public PlayerBuildingDoneState DoneState => _doneState;
+        public PlayerBuildingCollapseState CollapseState => _collapseState;
 
         public override void Initialize()
         {
@@ -62,7 +66,7 @@ namespace Action.Units
             _prepareState = new PlayerBuildingPrepareState(this);
             _doneState = new PlayerBuildingDoneState(this);
 
-            base.StateMachine.Initialize(_idleState);
+            StateMachine.Initialize(_idleState);
             _activeDistance = GameManager.Instance.Constants.INGAMEUI_VISIBLE_DISTANT;
             _indicatorPos = transform.position + new Vector3(0, GetComponent<Collider>().bounds.size.y, 0);
         }
@@ -72,7 +76,6 @@ namespace Action.Units
             if (StateMachine.CurState == _idleState)
             {
                 _StartConstruct();
-                _AddToBuildingList();
             }
         }
 
@@ -133,11 +136,6 @@ namespace Action.Units
             _indicatorPos = transform.position + new Vector3(0, GetComponent<Collider>().bounds.size.y, 0);
         }
 
-        void _AddToBuildingList()
-        {
-            GameManager.Instance.PlayerBuildings.Add(gameObject);
-        }
-
         protected override void Awake()
         {
             base.Awake();
@@ -150,7 +148,7 @@ namespace Action.Units
         protected override void Start()
         {
             base.Start();
-            Initialize();
+            //Initialize();
         }
 
         // Update is called once per frame

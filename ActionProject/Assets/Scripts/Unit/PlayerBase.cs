@@ -9,7 +9,11 @@ namespace Action.Units
     {
         public override void Initialize()
         {
+            if (_isActive)
+                return;
+
             base.Initialize();
+
             StateMachine.ChangeState(_prepareState);
             StateMachine.ChangeState(_doneState);
         }

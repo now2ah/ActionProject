@@ -423,7 +423,10 @@ namespace Action.Manager
             obj.transform.SetParent(gameObject.transform);
             Building[] buildings = FindObjectsByType<Building>(FindObjectsSortMode.None);
             foreach (var building in buildings)
+            {
+                _playerBuildings.Add(building.gameObject);
                 building.transform.SetParent(obj.transform);
+            }
         }
 
         void _CreateCommanderUnit()

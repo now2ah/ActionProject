@@ -27,6 +27,8 @@ namespace Action.Units
 
         //UnitPanel 표시하지 않는 유닛은 false
         bool _isOnUnitPanel;
+
+        protected bool _isActive;
         
         public GameObject UnitPanelObject { get { return _unitPanelObject; } set { _unitPanelObject = value; } }
         public UnitPanel UnitPanel { get { return _unitPanel; } set { _unitPanel = value; } }
@@ -46,11 +48,14 @@ namespace Action.Units
 
         public virtual void Initialize()
         {
+            if (!_isActive)
+                _isActive = true;
+
             _infoActiveDistant = GameManager.Instance.Constants.INGAMEUI_VISIBLE_DISTANT;
             if (null == _unitPanelObject)
                 _unitPanelObject = UIManager.Instance.CreateUI("UnitPanel", UIManager.Instance.InGameCanvas);
             _unitPanel = _unitPanelObject.GetComponent<UnitPanel>();
-            _unitPanel.Initialize(this.gameObject);
+            _unitPanel.Initialize(gameObject);
             _unitPanel.Hide();
             _unitCollider = GetComponentInChildren<Collider>();
             _unitMeshRenderer = GetComponentInChildren<MeshRenderer>();
@@ -147,6 +152,7 @@ namespace Action.Units
             _hp = 10;
             _maxHp = 10;
             _isOnUnitPanel = true;
+            _isActive = false;
         }
 
         protected virtual void Start()
