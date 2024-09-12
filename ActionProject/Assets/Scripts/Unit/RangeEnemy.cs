@@ -33,13 +33,7 @@ namespace Action.Units
         public override void Initialize()
         {
             base.Initialize();
-            UnitName = _unitStats.unitName;
-            MaxHp = _unitStats.maxHp;
-            HP = _unitStats.maxHp;
-            AttackDamage = _unitStats.attackDamage;
-            AttackSpeed = _unitStats.attackSpeed;
-            AttackDistance = _unitStats.attackDistance;
-            ExpAmount = _unitStats.expAmount;
+            _SetUnitData();
             _animHashMoving = Animator.StringToHash("IsMoving");
             _animHashAttacking = Animator.StringToHash("IsAttacking");
 
@@ -73,7 +67,7 @@ namespace Action.Units
 
         public bool isAttackCooltime()
         {
-            if (Time.realtimeSinceStartup < _lastAttackTime + AttackSpeed)
+            if (Time.realtimeSinceStartup < _lastAttackTime + EnemyUnitData.attackSpeed)
                 return true;
             else
                 return false;
@@ -83,7 +77,7 @@ namespace Action.Units
         {
             float dist = Vector3.Distance(transform.position, _target.transform.position);
             //Logger.Log(dist.ToString());
-            if (dist < AttackDistance)
+            if (dist < EnemyUnitData.attackDistance)
                 return true;
             else
                 return false;
@@ -114,6 +108,19 @@ namespace Action.Units
             }
         }
 
+
+        void _SetUnitData()
+        {
+            UnitData.name = _unitStats.unitName;
+            UnitData.hp = _unitStats.maxHp;
+            UnitData.maxHp = _unitStats.maxHp;
+            UnitData.growthHp = _unitStats.growthMaxHp;
+            EnemyUnitData.speed = _unitStats.speed;
+            EnemyUnitData.attackDamage = _unitStats.attackDamage;
+            EnemyUnitData.attackSpeed = _unitStats.attackSpeed;
+            EnemyUnitData.attackDistance = _unitStats.attackDistance;
+            EnemyUnitData.expAmount = _unitStats.expAmount;
+        }
         protected override void Awake()
         {
             base.Awake();

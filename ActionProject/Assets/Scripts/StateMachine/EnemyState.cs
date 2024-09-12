@@ -226,7 +226,7 @@ namespace Action.State
                 _enemyUnit.Look(_enemyUnit.Target);
 
                 if (!_enemyUnit.isAttackCooltime())
-                    _enemyUnit.Attack(_enemyUnit.AttackDamage);
+                    _enemyUnit.Attack(_enemyUnit.EnemyUnitData.attackDamage);
                 
                 if (!_enemyUnit.isTargetInDistance())
                 {

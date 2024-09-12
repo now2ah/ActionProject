@@ -54,16 +54,7 @@ namespace Action.Units
         public override void Initialize()
         {
             base.Initialize();
-            UnitName = _unitStats.unitName;
-            MaxHp = _unitStats.maxHp;
-            GrowthHp = _unitStats.growthMaxHp;
-            HP = _unitStats.maxHp;
-            Speed = _unitStats.speed;
-            AttackDamage = _unitStats.attackDamage;
-            GrowthAttackDamage = _unitStats.growthAttackDamage;
-            Level = 1;
-            Exp = 0;
-            NextExp = 50;
+            _SetUnitData();
             SetNameUI(UnitName);
             UnitPanel.Show();
             _indicator = Instantiate(GameManager.Instance.BuildingIndicatorPrefab);
@@ -103,7 +94,7 @@ namespace Action.Units
             if (!InputManager.Instance.Click.IsPressed())
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos), 0.15f);
 
-            transform.Translate(movePos * Time.deltaTime * Speed, Space.World);
+            transform.Translate(movePos * Time.deltaTime * PlayerUnitData.speed, Space.World);
         }
 
         public override void ApplyDamage(DamageMessage msg)
@@ -133,7 +124,7 @@ namespace Action.Units
         public override void GainExp(int exp)
         {
             base.GainExp(exp);
-            OnGainExp.Invoke(Exp, NextExp);
+            OnGainExp.Invoke(PlayerUnitData.exp, PlayerUnitData.nextExp);
         }
 
         public override void ModifyLevel(int level)
@@ -241,7 +232,7 @@ namespace Action.Units
             _isAttacking = true;
             _animator.SetBool(_animHashAttacking, _isAttacking);
             yield return new WaitForSeconds(0.2f);
-            _CreateHitBox(AttackDamage);
+            _CreateHitBox(PlayerUnitData.attackDamage);
             _isAttacking = false;
             _animator.SetBool(_animHashAttacking, _isAttacking);
         }
@@ -292,6 +283,19 @@ namespace Action.Units
             transform.position = newPos;
         }
 
+        void _SetUnitData()
+        {
+            UnitData.name = _unitStats.unitName;
+            UnitData.hp = _unitStats.maxHp;
+            UnitData.maxHp = _unitStats.maxHp;
+            UnitData.growthHp = _unitStats.growthMaxHp;
+            PlayerUnitData.speed = _unitStats.speed;
+            PlayerUnitData.attackDamage = _unitStats.attackDamage;
+            PlayerUnitData.growthAttackDamage = _unitStats.growthAttackDamage;
+            PlayerUnitData.level = 1;
+            PlayerUnitData.exp = 0;
+            PlayerUnitData.nextExp = 50;
+        }
 
         protected override void Awake()
         {

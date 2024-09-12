@@ -16,12 +16,13 @@ namespace Action.Units
         SkinnedMeshRenderer _unitSkinnedMeshRenderer;
         Material _unitMaterial;
 
-        float _hp;
+        UnitData _unitData;
+
         [SerializeReference]
         float _maxHp;
         float _growthHp;
-
         string _unitName;
+
         bool _canDamaged;
         float _infoActiveDistant;
 
@@ -29,7 +30,7 @@ namespace Action.Units
         bool _isOnUnitPanel;
 
         protected bool _isActive;
-        
+
         public GameObject UnitPanelObject { get { return _unitPanelObject; } set { _unitPanelObject = value; } }
         public UnitPanel UnitPanel { get { return _unitPanel; } set { _unitPanel = value; } }
         public string UnitName { get { return _unitName; } set { _unitName = value; } }
@@ -37,9 +38,7 @@ namespace Action.Units
         public MeshRenderer UnitMeshRenderer { get { return _unitMeshRenderer; } set { _unitMeshRenderer = value; } }
         public SkinnedMeshRenderer UnitSkinnedMeshRenderer { get { return _unitSkinnedMeshRenderer; } set { _unitSkinnedMeshRenderer = value; } }
         public Material UnitMaterial { get { return _unitMaterial; } set { _unitMaterial = value; } }
-        public float HP { get { return _hp; } set { _hp = value; } }
-        public float MaxHp { get { return _maxHp; } set { _maxHp = value; } }
-        public float GrowthHp { get { return _growthHp; } set { _growthHp = value; } }
+        public UnitData UnitData { get { return _unitData; } set { _unitData = value; } }
         public float InfoActiveDistant { get { return _infoActiveDistant; } set { _infoActiveDistant = value; } }
         public bool IsOnUnitPanel { get { return _isOnUnitPanel; } set { _isOnUnitPanel = value; } }
 
@@ -65,6 +64,8 @@ namespace Action.Units
             else if (null != _unitSkinnedMeshRenderer)
                 _unitMaterial = new Material(_unitSkinnedMeshRenderer.material);
 
+            _unitData = new UnitData();
+
             if (null == _stateMachine)
                 _stateMachine = new StateMachine();
         }
@@ -75,14 +76,12 @@ namespace Action.Units
             if (_CheckDead())
                 return;
 
-            _hp -= msg.amount;
+            _unitData.hp -= msg.amount;
             _HitMaterialEffect();
-            UnitPanel.ApplyHPValue(_hp, _maxHp);
-            //Logger.Log("Apply Damage : " + msg.amount + " (" + _hp + "/" + _maxHp + ")");
+            UnitPanel.ApplyHPValue(_unitData.hp, _unitData.maxHp);
+
             if (_CheckDead())
-            {
                 _Dead(msg.damager);
-            }
         }
 
         public void SetNameUI(string name)
@@ -93,7 +92,7 @@ namespace Action.Units
 
         bool _CheckDead()
         {
-            if (0 >= _hp)
+            if (0 >= _unitData.hp)
                 return true;
             else
                 return false;
@@ -146,11 +145,16 @@ namespace Action.Units
                 _unitPanel.Hide();
         }
 
+        void _SetDefaultValue()
+        {
+            _unitData.name = "default_name";
+            _unitData.hp = 10;
+            _unitData.maxHp = 10;
+        }
+
         protected virtual void Awake()
         {
-            _unitName = "default_name";
-            _hp = 10;
-            _maxHp = 10;
+            _SetDefaultValue();
             _isOnUnitPanel = true;
             _isActive = false;
         }

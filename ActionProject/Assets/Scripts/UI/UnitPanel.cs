@@ -29,7 +29,7 @@ namespace Action.UI
             _textMesh.text = _unit.UnitName;
             _panelPosition = ePanelPosition.BOTTOM;
             
-            ApplyHPValue(_unit.HP, _unit.MaxHp); //default hp
+            ApplyHPValue(_unit.UnitData.hp, _unit.UnitData.maxHp); //default hp
         }
 
         public void SetNameText(string name)

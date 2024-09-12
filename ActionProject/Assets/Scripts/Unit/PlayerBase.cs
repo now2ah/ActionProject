@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Action.State;
+using Action.SO;
 
 namespace Action.Units
 {
     public class PlayerBase : Building
     {
+        UnitStatsSO _unitStats;
+
         public override void Initialize()
         {
             if (_isActive)
@@ -18,13 +21,19 @@ namespace Action.Units
             StateMachine.ChangeState(_doneState);
         }
 
+        void SetUnitData()
+        {
+            
+        }
+
         protected override void Awake()
         {
             base.Awake();
+            _unitStats = Resources.Load("ScriptableObject/UnitStats/PlayerBaseStats") as UnitStatsSO;
             _constructTime = 0.0f;
-            MaxHp = 1000;
-            HP = MaxHp;
-            UnitName = "Base";
+            UnitData.maxHp = _unitStats.maxHp;
+            UnitData.hp = _unitStats.maxHp;
+            UnitData.name = _unitStats.name;
         }
 
         protected override void Start()

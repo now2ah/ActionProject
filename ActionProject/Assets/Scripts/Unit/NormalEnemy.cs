@@ -35,12 +35,7 @@ namespace Action.Units
         public override void Initialize()
         {
             base.Initialize();
-            UnitName = _unitStats.unitName;
-            MaxHp = _unitStats.maxHp;
-            HP = _unitStats.maxHp;
-            AttackDamage = _unitStats.attackDamage;
-            AttackSpeed = _unitStats.attackSpeed;
-            ExpAmount = _unitStats.expAmount;
+            _SetUnitData();
             _animHashMoving = Animator.StringToHash("IsMoving");
             _animHashAttacking = Animator.StringToHash("IsAttacking");
 
@@ -82,11 +77,11 @@ namespace Action.Units
                 DamageMessage msg = new DamageMessage
                 {
                     damager = this,
-                    amount = AttackDamage
+                    amount = EnemyUnitData.attackDamage
                 };
                 colUnit.ApplyDamage(msg);
                 _isAttackCooltime = true;
-                _attackTimer.TickStart(AttackSpeed);
+                _attackTimer.TickStart(EnemyUnitData.attackSpeed);
             }
         }
 
@@ -100,6 +95,19 @@ namespace Action.Units
                     _attackTimer.ResetTimer();
                 }
             }
+        }
+
+        void _SetUnitData()
+        {
+            UnitData.name = _unitStats.unitName;
+            UnitData.hp = _unitStats.maxHp;
+            UnitData.maxHp = _unitStats.maxHp;
+            UnitData.growthHp = _unitStats.growthMaxHp;
+            EnemyUnitData.speed = _unitStats.speed;
+            EnemyUnitData.attackDamage = _unitStats.attackDamage;
+            EnemyUnitData.attackSpeed = _unitStats.attackSpeed;
+            EnemyUnitData.attackDistance = _unitStats.attackDistance;
+            EnemyUnitData.expAmount = _unitStats.expAmount;
         }
 
         protected override void Awake()

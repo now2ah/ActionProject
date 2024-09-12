@@ -16,13 +16,9 @@ namespace Action.Units
         NavMeshAgent _navMeshAgent;
         Rigidbody _rigidBody;
 
-        float _speed;
-        float _attackDamage;
-        float _attackSpeed;
-        float _attackDistance;
-        int _expAmount;
-        bool _isDead;
+        EnemyUnitData _enemyUnitData;
 
+        bool _isDead;
         protected bool _isMoving;
         protected bool _isAttacking;
 
@@ -31,12 +27,8 @@ namespace Action.Units
         GameObject _commanderUnit;
         Vector3 _targetPos;
 
-        public float Speed { get { return _speed; } set { _speed = value; } }
         public NavMeshAgent NavMeshAgentComp { get { return _navMeshAgent; } set { _navMeshAgent = value; } }
-        public float AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
-        public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
-        public float AttackDistance { get { return _attackDistance; } set { _attackDistance = value; } }
-        public int ExpAmount { get { return _expAmount; } set { _expAmount = value; } }
+        public EnemyUnitData EnemyUnitData { get { return _enemyUnitData; } set { _enemyUnitData = value; } }
         public bool IsDead { get { return _isDead; } set { _isDead = value; } }
         public bool IsMoving { get { return _isMoving; } set { _isMoving = value; } }
         public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; } }
@@ -182,7 +174,7 @@ namespace Action.Units
             _ApplyPhysicsEffect();
             _FreeObjectCoroutine();
             if (damager.TryGetComponent<PlayerUnit>(out PlayerUnit playerUnit))
-                _GiveExp((PlayerUnit)damager, _expAmount);
+                _GiveExp((PlayerUnit)damager, EnemyUnitData.expAmount);
         }
 
         protected void _DisableMove()
@@ -230,13 +222,23 @@ namespace Action.Units
             damager.GainExp(exp);
         }
 
+        void _SetDefaultValue()
+        {
+            _enemyUnitData.speed = 1.0f;
+            _enemyUnitData.attackDamage = 1;
+            _enemyUnitData.attackSpeed = 1.0f;
+            _enemyUnitData.attackDistance = 1.0f;
+            _enemyUnitData.expAmount = 1;
+        }
+
         protected override void Awake()
         {
             base.Awake();
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _rigidBody = GetComponent<Rigidbody>();
-            _attackDamage = 1;
+            _enemyUnitData = new EnemyUnitData();
             _targetPos = Vector3.zero;
+            _SetDefaultValue();
         }
 
         protected override void Start()

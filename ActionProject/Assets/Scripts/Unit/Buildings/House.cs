@@ -25,10 +25,10 @@ namespace Action.Units
         protected override void Awake()
         {
             base.Awake();
-            MaxHp = 1000;
-            HP = MaxHp;
-            UnitName = "House";
-            _constructTime = 2.0f;
+            //MaxHp = 1000;
+            //HP = MaxHp;
+            //UnitName = "House";
+            //_constructTime = 2.0f;
         }
 
         // Start is called before the first frame update

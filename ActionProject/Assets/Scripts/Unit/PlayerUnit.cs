@@ -21,6 +21,8 @@ namespace Action.Units
 
         NavMeshAgent _navMeshAgent;
 
+        PlayerUnitData _playerUnitData;
+
         [SerializeReference]
         float _speed;
 
@@ -36,12 +38,7 @@ namespace Action.Units
         public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; } }
         public Animator Animator => _animator;
         public NavMeshAgent NavMeshAgentComp { get { return _navMeshAgent; } set { _navMeshAgent = value; } }
-        public float Speed { get { return _speed; } set { _speed = value; } }
-        public float AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
-        public float GrowthAttackDamage { get { return _growthAttackDamage; } set { _growthAttackDamage = value; } }
-        public int Level { get { return _level; } set { _level = value; } }
-        public int Exp { get { return _exp; } set { _exp = value; } }
-        public int NextExp { get { return _nextExp; } set { _nextExp = value; } }
+        public PlayerUnitData PlayerUnitData { get { return _playerUnitData; } set { _playerUnitData = value; } }
 
         public override void Initialize()
         {
@@ -61,24 +58,24 @@ namespace Action.Units
 
         public virtual void GainExp(int exp)
         {
-            _exp += exp;
+            PlayerUnitData.exp += exp;
             //Logger.Log("Exp : " + _exp);
             while (_CanLevelUp())
-                ModifyLevel(_level + 1);
+                ModifyLevel(PlayerUnitData.level + 1);
         }
 
         public virtual void ModifyLevel(int level)
         {
-            _level = level;
-            _exp = _exp - _nextExp;
-            float nextExp = _nextExp * 1.5f;
-            _nextExp = (int)nextExp;
+            PlayerUnitData.level = level;
+            PlayerUnitData.exp = PlayerUnitData.exp - PlayerUnitData.nextExp;
+            float nextExp = PlayerUnitData.nextExp * 1.5f;
+            PlayerUnitData.nextExp = (int)nextExp;
             _ApplyStats();
         }
 
         protected bool _CanLevelUp()
         {
-            if (_nextExp <= _exp)
+            if (PlayerUnitData.nextExp <= PlayerUnitData.exp)
                 return true;
             else
                 return false;
@@ -86,20 +83,26 @@ namespace Action.Units
 
         protected void _ApplyStats()
         {
-            MaxHp = MaxHp + (GrowthHp * _level);
-            HP += GrowthHp;
-            AttackDamage = AttackDamage + (GrowthAttackDamage * _level);
+            UnitData.maxHp = UnitData.maxHp + (UnitData.growthHp * PlayerUnitData.level);
+            UnitData.hp += UnitData.growthHp;
+            PlayerUnitData.attackDamage = PlayerUnitData.attackDamage + (PlayerUnitData.growthAttackDamage * PlayerUnitData.level);
+        }
+
+        void _SetDefaultValue()
+        {
+            _playerUnitData.speed = 1.0f;
+            _playerUnitData.attackDamage = 1.0f;
+            _playerUnitData.level = 1;
+            _playerUnitData.exp = 0;
+            _playerUnitData.nextExp = 1;
         }
 
         protected override void Awake()
         {
             base.Awake();
             _navMeshAgent = gameObject.AddComponent<NavMeshAgent>();
-            _speed = 1.0f;
-            _attackDamage = 1.0f;
-            _level = 1;
-            _exp = 0;
-            _nextExp = 1;
+            _playerUnitData = new PlayerUnitData();
+            _SetDefaultValue();
         }
 
         protected override void Start()

@@ -190,7 +190,7 @@ namespace Action.Manager
             _AddBuildings();
 
             UIManager.Instance.ExpPanel.SetActive(true);
-            UIManager.Instance.ExpBarUI.ApplyExpValue(_commanderUnit.Exp, _commanderUnit.NextExp);
+            UIManager.Instance.ExpBarUI.ApplyExpValue(_commanderUnit.PlayerUnitData.exp, _commanderUnit.PlayerUnitData.nextExp);
 
             _PrepareResource();
 
@@ -463,7 +463,7 @@ namespace Action.Manager
                         if (obj.TryGetComponent<Unit>(out Unit comp))
                         {
                             comp.Initialize();
-                            comp.UnitPanel.ApplyHPValue(comp.HP, comp.MaxHp);
+                            comp.UnitPanel.ApplyHPValue(comp.UnitData.hp, comp.UnitData.maxHp);
                         }
 
                         _enemyUnits.Add(obj);
@@ -488,7 +488,7 @@ namespace Action.Manager
                     if (obj.TryGetComponent<Unit>(out Unit comp))
                     {
                         comp.Initialize();
-                        comp.UnitPanel.ApplyHPValue(comp.HP, comp.MaxHp);
+                        comp.UnitPanel.ApplyHPValue(comp.UnitData.hp, comp.UnitData.maxHp);
                     }
 
                     spawner.SpawnObject(obj);

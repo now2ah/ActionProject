@@ -30,19 +30,19 @@ namespace Action.Game
                 switch (level)
                 {
                     case 1:
-                        Commander.AttackDamage += _abilityItem.upgradeInteger[1];
+                        Commander.PlayerUnitData.attackDamage += _abilityItem.upgradeInteger[1];
                         break;
                     case 2:
-                        Commander.AttackDamage += _abilityItem.upgradeInteger[2];
+                        Commander.PlayerUnitData.attackDamage += _abilityItem.upgradeInteger[2];
                         break;
                     case 3:
-                        Commander.AttackDamage += _abilityItem.upgradeInteger[3];
+                        Commander.PlayerUnitData.attackDamage += _abilityItem.upgradeInteger[3];
                         break;
                     case 4:
-                        Commander.AttackDamage += _abilityItem.upgradeInteger[4];
+                        Commander.PlayerUnitData.attackDamage += _abilityItem.upgradeInteger[4];
                         break;
                     case 5:
-                        Commander.AttackDamage += _abilityItem.upgradeInteger[5];
+                        Commander.PlayerUnitData.attackDamage += _abilityItem.upgradeInteger[5];
                         break;
                     default:
                         break;
