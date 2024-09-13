@@ -19,6 +19,7 @@ namespace Action.Units
 
             StateMachine.ChangeState(_prepareState);
             StateMachine.ChangeState(_doneState);
+            BuildingData.isBuilt = true;
         }
 
         void SetUnitData()

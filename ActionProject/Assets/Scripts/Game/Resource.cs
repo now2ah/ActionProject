@@ -13,6 +13,7 @@ namespace Action.Game
         IRON
     }
 
+    [System.Serializable]
     public class Resource
     {
         int[] _resources;

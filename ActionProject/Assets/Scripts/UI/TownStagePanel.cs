@@ -36,10 +36,10 @@ namespace Action.UI
 
         public void RefreshResource()
         {
-            _goldText.text = GameManager.Instance.Resource.Resources[(int)eResource.GOLD].ToString();
-            _foodText.text = GameManager.Instance.Resource.Resources[(int)eResource.FOOD].ToString();
-            _woodText.text = GameManager.Instance.Resource.Resources[(int)eResource.WOOD].ToString();
-            _ironText.text = GameManager.Instance.Resource.Resources[(int)eResource.IRON].ToString();
+            _goldText.text = GameManager.Instance.GameData.resource.Resources[(int)eResource.GOLD].ToString();
+            _foodText.text = GameManager.Instance.GameData.resource.Resources[(int)eResource.FOOD].ToString();
+            _woodText.text = GameManager.Instance.GameData.resource.Resources[(int)eResource.WOOD].ToString();
+            _ironText.text = GameManager.Instance.GameData.resource.Resources[(int)eResource.IRON].ToString();
         }
 
         public void RefreshTimer()

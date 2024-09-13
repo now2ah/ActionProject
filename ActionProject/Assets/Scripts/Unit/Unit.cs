@@ -64,8 +64,6 @@ namespace Action.Units
             else if (null != _unitSkinnedMeshRenderer)
                 _unitMaterial = new Material(_unitSkinnedMeshRenderer.material);
 
-            _unitData = new UnitData();
-
             if (null == _stateMachine)
                 _stateMachine = new StateMachine();
         }
@@ -154,6 +152,7 @@ namespace Action.Units
 
         protected virtual void Awake()
         {
+            _unitData = new UnitData();
             _SetDefaultValue();
             _isOnUnitPanel = true;
             _isActive = false;

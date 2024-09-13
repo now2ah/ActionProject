@@ -20,11 +20,12 @@ namespace Action.Units
         protected GameObject _requirePanel;
         RequireTextUI _requireTextUI;
 
-
         protected PlayerBuildingIdleState _idleState;
         protected PlayerBuildingPrepareState _prepareState;
         protected PlayerBuildingDoneState _doneState;
         protected PlayerBuildingCollapseState _collapseState;
+
+        BuildingData _buildingData;
 
         protected float _activeDistance;
         protected float _constructTime;
@@ -42,6 +43,7 @@ namespace Action.Units
         public PlayerBuildingPrepareState PrepareState => _prepareState;
         public PlayerBuildingDoneState DoneState => _doneState;
         public PlayerBuildingCollapseState CollapseState => _collapseState;
+        public BuildingData BuildingData => _buildingData;
 
         public override void Initialize()
         {
@@ -65,6 +67,8 @@ namespace Action.Units
             _idleState = new PlayerBuildingIdleState(this);
             _prepareState = new PlayerBuildingPrepareState(this);
             _doneState = new PlayerBuildingDoneState(this);
+            _buildingData = new BuildingData();
+            _buildingData.isBuilt = false;
 
             StateMachine.Initialize(_idleState);
             _activeDistance = GameManager.Instance.Constants.INGAMEUI_VISIBLE_DISTANT;
@@ -75,6 +79,7 @@ namespace Action.Units
         {
             if (StateMachine.CurState == _idleState)
             {
+                _buildingData.isBuilt = true;
                 _StartConstruct();
             }
         }

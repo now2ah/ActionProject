@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -46,7 +47,6 @@ namespace Action.Manager
         float _huntPhaseTime;
         [SerializeField]
         float _defensePhaseTime;
-
         public ActionTime PhaseTimer => _phaseTimer;
         public ActionTime RefreshTimer => _refreshTimer;
 
@@ -89,12 +89,8 @@ namespace Action.Manager
         GameObject _defenseStageSpawnerPrefab;
         GameObject _defenseSpawner;
 
-        //StageSystem _stageSystem;
-
-        [SerializeField]
-        Resource _resource;
-        public Resource Resource => _resource;
-
+        [SerializeReference]
+        GameData _gameData;
 
         public bool IsLive { get { return _isLive; } set { _isLive = value; } }
         public bool IsPlaying { get { return _isPlaying; } }
@@ -120,6 +116,7 @@ namespace Action.Manager
         public Material HitMaterial => _hitMaterial;
         public GameObject ProjectilePrefab => _projectilePrefab;
         public GameObject BuildingIndicatorPrefab => _buildingIndicatorPrefab;
+        public GameData GameData => _gameData;
 
         public override void Initialize()
         {
@@ -149,7 +146,7 @@ namespace Action.Manager
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/NormalEnemy") as GameObject);
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/RangeEnemy") as GameObject);
             _curWaveOrder = -1;
-            _curHuntWaveOrder = -1;
+            
 
             _SetUpSpawners();
         }
@@ -188,6 +185,7 @@ namespace Action.Manager
             _CreateStartBase();
             _CreateCommanderUnit();
             _AddBuildings();
+            _SetBuildingData();
 
             UIManager.Instance.ExpPanel.SetActive(true);
             UIManager.Instance.ExpBarUI.ApplyExpValue(_commanderUnit.PlayerUnitData.exp, _commanderUnit.PlayerUnitData.nextExp);
@@ -214,10 +212,12 @@ namespace Action.Manager
                 case eGamePhase.TownBuild:
                     StartPhase(eGamePhase.TownBuild);
                     _phaseStateMachine.ChangeState(_townBuildState);
+                    _LoadData();
                     break;
 
                 case eGamePhase.Hunt:
                     StartPhase(eGamePhase.Hunt);
+                    _SaveData();
                     _phaseStateMachine.ChangeState(_huntState);
                     break;
 
@@ -236,7 +236,7 @@ namespace Action.Manager
             switch (phase)
             {
                 case eGamePhase.TownBuild:
-
+                    
                     break;
 
                 case eGamePhase.Hunt:
@@ -251,11 +251,11 @@ namespace Action.Manager
 
         public void StartWave(EnemyWaves waves, float timeRate)
         {
-            _curHuntWaveOrder++;
-            if (_curHuntWaveOrder < waves.enemyWaveList.Count)
+            _gameData.curHuntWaveOrder++;
+            if (_gameData.curHuntWaveOrder < waves.enemyWaveList.Count)
             {
                 for (int i = 0; i < _enemySpawners.Count; i++)
-                    StartCoroutine(_StartHuntWaveCoroutine(waves, _curHuntWaveOrder, timeRate, i));
+                    StartCoroutine(_StartHuntWaveCoroutine(waves, _gameData.curHuntWaveOrder, timeRate, i));
             }
         }
 
@@ -500,16 +500,60 @@ namespace Action.Manager
 
         void _PrepareResource()
         {
-            if (null == _resource)
+            if (null == _gameData.resource)
             {
-                _resource = new Resource();
-                _resource.Initialize();
+                _gameData.resource = new Resource();
+                _gameData.resource.Initialize();
             }
+        }
+
+        void _SetBuildingData()
+        {
+            Building[] buildings = FindObjectsByType<Building>(FindObjectsSortMode.None);
+            for (int i = 0; i < buildings.Length; i++)
+            {
+                string buildingName = buildings[i].name;
+
+                switch(buildingName)
+                {
+                    case "Tower_Base_North":
+                        _gameData.towerBaseN = buildings[i].BuildingData;
+                        break;
+                    case "Tower_Base_South":
+                        _gameData.towerBaseS = buildings[i].BuildingData;
+                        break;
+                    case "Fence":
+                        _gameData.fence = buildings[i].BuildingData;
+                        break;
+                }
+            }
+        }
+
+        void _SaveData()
+        {
+            string data = JsonParser.ObjectToJson(_gameData);
+            string path = Path.Combine(Application.dataPath, "autoSave");
+
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            JsonParser.CreateJsonFile(path, "autoSave", data);
+        }
+
+        void _LoadData()
+        {
+            string path = Path.Combine(Application.dataPath, "autoSave");
+
+            if (!Directory.Exists(path))
+                Logger.Log("file is not exist.");
+            _gameData = JsonParser.LoadJsonFile<GameData>(path, "autoSave");
         }
 
         private void Awake()
         {
             _isLive = true;
+            _gameData = new GameData();
+            _gameData.curHuntWaveOrder = -1;
         }
 
         private void Update()

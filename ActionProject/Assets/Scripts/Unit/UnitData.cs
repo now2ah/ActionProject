@@ -25,6 +25,12 @@ namespace Action.Units
     }
 
     [System.Serializable]
+    public class BuildingData : UnitData
+    {
+        public bool isBuilt;
+    }
+
+    [System.Serializable]
     public class EnemyUnitData : UnitData
     {
         public float speed;
