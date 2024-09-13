@@ -135,7 +135,7 @@ namespace Action.Manager
             _phaseTimer = gameObject.AddComponent<ActionTime>();
             _refreshTimer = gameObject.AddComponent<ActionTime>();
             _startPos = new Vector3(-150.0f, 6.0f, -15.0f);
-            _defenseSpawnPos = new Vector3(180.0f, 7.5f, 0.0f);
+            _defenseSpawnPos = new Vector3(100.0f, 7.5f, 0.0f);
             _enemySpawners = new List<Spawner>();
             _playerBuildingPrefabs = new List<GameObject>();
             _playerBuildings = new List<GameObject>();
@@ -207,6 +207,7 @@ namespace Action.Manager
 
         public void ChangePhase(eGamePhase phase)
         {
+            _gamePhase = phase;
             switch (phase)
             {
                 case eGamePhase.TownBuild:
@@ -230,16 +231,14 @@ namespace Action.Manager
 
         public void StartPhase(eGamePhase phase)
         {
-            _gamePhase = phase;
-            _StartPhaseTimer(phase);
-
             switch (phase)
             {
                 case eGamePhase.TownBuild:
-                    
+                    _StartPhaseTimer(phase);
                     break;
 
                 case eGamePhase.Hunt:
+                    _StartPhaseTimer(phase);
                     SceneManager.Instance.LoadGameScene(3);
                     break;
 
@@ -356,17 +355,30 @@ namespace Action.Manager
         {
             UIManager.Instance.RefreshTownStageUI();
 
-            if (_phaseTimer.IsFinished)
+            if (_phaseTimer.IsFinished && 
+                _phaseStateMachine.CurState != _defenseState)
             {
                 if ((int)_gamePhase + 1 > 2)
                     _gamePhase = 0;
                 else
                     _gamePhase++;
 
-
                 _phaseTimer.ResetTimer();
                 ChangePhase(_gamePhase);
                 //StartPhase(_gamePhase);
+            }
+            else if(_phaseStateMachine.CurState == _defenseState)
+            {
+                if (_IsClearDefenseEnemies())
+                {
+                    if ((int)_gamePhase + 1 > 2)
+                        _gamePhase = 0;
+                    else
+                        _gamePhase++;
+
+                    _phaseTimer.ResetTimer();
+                    ChangePhase(_gamePhase);
+                }
             }
         }
 
@@ -549,6 +561,14 @@ namespace Action.Manager
             _gameData = JsonParser.LoadJsonFile<GameData>(path, "autoSave");
         }
 
+        bool _IsClearDefenseEnemies()
+        {
+            if (0 == _enemyUnits.Count)
+                return true;
+            else
+                return false;
+        }
+
         private void Awake()
         {
             _isLive = true;
@@ -565,6 +585,7 @@ namespace Action.Manager
             {
                 _CheckPhaseTime();
                 _CheckRefreshTime();
+
                 if (null != _phaseStateMachine)
                     _phaseStateMachine.Update();
             }
