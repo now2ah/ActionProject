@@ -18,7 +18,7 @@ public class CharacterTestScene : MonoBehaviour
         if (GUI.Button(new Rect(50, 150, 300, 50), "Summon Monster", buttonStyle))
         {
             //GameManager.Instance.AddAllEnemySpawners();
-            //GameManager.Instance.CreateTestWave();
+            GameManager.Instance.CreateTestWave();
         }
         GUILayout.EndVertical();
     }
@@ -27,11 +27,12 @@ public class CharacterTestScene : MonoBehaviour
     void Start()
     {
         GameManager.Instance.Initialize();
+        GameManager.Instance.SetCharacterTestScene();
         //GameManager.Instance.CreateCharacter();
         InputManager.Instance.Initialize();
         CameraManager.Instance.Initialize();
-        CameraManager.Instance.CreateFixedVirtualCamera();
         UIManager.Instance.Initialize();
+        CameraManager.Instance.CreateFixedVirtualCamera();
     }
 
     // Update is called once per frame

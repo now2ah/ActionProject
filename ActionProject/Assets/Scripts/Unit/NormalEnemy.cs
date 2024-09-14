@@ -22,6 +22,7 @@ namespace Action.Units
 
         int _animHashMoving;
         int _animHashAttacking;
+        int _animHashSpeed;
 
         public Animator Animator => _animator;
         public bool IsAttackCooltime => _isAttackCooltime;
@@ -31,6 +32,7 @@ namespace Action.Units
         public EnemyAttackState AttackState => _attackState;
         public int AnimHashMoving => _animHashMoving;
         public int AnimHashAttacking => _animHashAttacking;
+        public int AnimHashSpeed => _animHashSpeed;
 
         public override void Initialize()
         {
@@ -38,6 +40,7 @@ namespace Action.Units
             _SetUnitData();
             _animHashMoving = Animator.StringToHash("IsMoving");
             _animHashAttacking = Animator.StringToHash("IsAttacking");
+            _animHashSpeed = Animator.StringToHash("Speed");
 
             SetNameUI(UnitName);
             StateMachine.Initialize(_idleState);
@@ -110,6 +113,14 @@ namespace Action.Units
             EnemyUnitData.expAmount = _unitStats.expAmount;
         }
 
+        void OnAnimatorMove()
+        {
+            Vector3 position = _animator.rootPosition;
+            position.y = NavMeshAgentComp.nextPosition.y;
+            transform.position = position;
+            NavMeshAgentComp.nextPosition = transform.position;
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -133,6 +144,11 @@ namespace Action.Units
         {
             base.Update();
             _CheckAttackCoolTime();
+        }
+
+        protected void FixedUpdate()
+        {
+            _animator.SetFloat(_animHashSpeed, NavMeshAgentComp.speed);
         }
     }
 }

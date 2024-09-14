@@ -59,6 +59,8 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
+            CameraManager.Instance.CreateFixedVirtualCamera();
+            UIManager.Instance.CreateTownStagePanel();
             foreach (var buildings in GameManager.Instance.PlayerBuildings)
                 buildings.SetActive(true);
             GameManager.Instance.FindSpawnerPoint();
@@ -66,6 +68,7 @@ namespace Action.State
             GameManager.Instance.SetActiveDefenseSpawner(true);
             GameManager.Instance.SetDefenseSpawner();
             GameManager.Instance.CommanderUnit.NavMeshAgentComp.Warp(GameManager.Instance.StartPos);
+            GameManager.Instance.StartWave(GameManager.Instance.EnemyUnits, 1.0f, GameManager.Instance.DefenseSpawner.GetComponent<Spawner>());
         }
 
         public override void UpdateState()

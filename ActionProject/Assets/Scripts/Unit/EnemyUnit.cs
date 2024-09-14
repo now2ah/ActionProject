@@ -124,6 +124,15 @@ namespace Action.Units
             gameObject.transform.LookAt(target.transform);
         }
 
+        public void StopAgent()
+        {
+            if (null != _navMeshAgent)
+            {
+                _navMeshAgent.isStopped = true;
+                _navMeshAgent.updateRotation = false;
+            }
+        }
+
         public void StopMove()
         {
             if (null != _navMeshAgent)
@@ -136,6 +145,8 @@ namespace Action.Units
         {
             if (null != _navMeshAgent)
             {
+                _navMeshAgent.isStopped = false;
+                _navMeshAgent.updateRotation = true;
                 _targetPos = vec;
                 _navMeshAgent.SetDestination(_targetPos);
             }

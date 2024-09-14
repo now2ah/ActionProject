@@ -222,7 +222,6 @@ namespace Action.Manager
 
                 case eGamePhase.Defense:
                     StartPhase(eGamePhase.Defense);
-                    
                     break;
             }
         }
@@ -364,7 +363,8 @@ namespace Action.Manager
                 ChangePhase(_gamePhase);
                 //StartPhase(_gamePhase);
             }
-            else if(_phaseStateMachine.CurState == _defenseState)
+            else if(_phaseTimer.IsFinished &&
+                _phaseStateMachine.CurState == _defenseState)
             {
                 if (_IsClearDefenseEnemies())
                 {
@@ -568,7 +568,13 @@ namespace Action.Manager
 
         void _OnStartInGamePhase()
         {
-            if (_gamePhase == eGamePhase.TownBuild)
+            if (!_isPlaying)
+            {
+                GameStart();
+                CameraManager.Instance.CreateFixedVirtualCamera();
+                UIManager.Instance.CreateTownStagePanel();
+            }
+            else if (_gamePhase == eGamePhase.TownBuild)
             {
                 _phaseStateMachine.ChangeState(_townBuildState);
                 _LoadData();
@@ -604,5 +610,30 @@ namespace Action.Manager
                     _phaseStateMachine.Update();
             }
         }
+
+        #region TEST
+        public void SetCharacterTestScene()
+        {
+            _isPlaying = true;
+            PoolManager.Instance.Initialize();
+            _CreateCommanderUnit();
+            //UIManager.Instance.ExpPanel.SetActive(true);
+            //UIManager.Instance.ExpBarUI.ApplyExpValue(_commanderUnit.PlayerUnitData.exp, _commanderUnit.PlayerUnitData.nextExp);
+            //_PrepareResource();
+            //_StartGameTimer();
+            //_StartRefreshTimer();
+
+            _phaseStateMachine.Initialize(_townBuildState);
+            //StartPhase(eGamePhase.TownBuild);
+        }
+
+        public void CreateTestWave()
+        {
+            _SetUpSpawners();
+            AddDefenseSpawner();
+            FindSpawnerPoint();
+            StartWave(_enemyWaves, 10.0f);
+        }
+        #endregion
     }
 }

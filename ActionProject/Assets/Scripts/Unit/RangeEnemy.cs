@@ -121,6 +121,14 @@ namespace Action.Units
             EnemyUnitData.attackDistance = _unitStats.attackDistance;
             EnemyUnitData.expAmount = _unitStats.expAmount;
         }
+        void OnAnimatorMove()
+        {
+            Vector3 position = _animator.rootPosition;
+            position.y = NavMeshAgentComp.nextPosition.y;
+            transform.position = position;
+            NavMeshAgentComp.nextPosition = transform.position;
+        }
+
         protected override void Awake()
         {
             base.Awake();

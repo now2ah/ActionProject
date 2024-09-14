@@ -20,6 +20,7 @@ namespace Action.State
         {
             if (null != _enemyUnit)
             {
+                _enemyUnit.StopAgent();
                 _enemyUnit.FindNearestPlayerBuilding();
                 _enemyUnit.FindNearestTarget(true);
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, false);
@@ -91,6 +92,7 @@ namespace Action.State
         {
             if (null != _enemyUnit)
             {
+                _enemyUnit.StopAgent();
                 _enemyUnit.Look(_enemyUnit.Target);
                 _enemyUnit.Stop(1.5f, () =>
                 {
@@ -123,6 +125,7 @@ namespace Action.State
             if (null != _enemyUnit)
             {
                 //Logger.Log("Idle Enter");
+                _enemyUnit.StopAgent();
                 _enemyUnit.FindNearestPlayerBuilding();
                 _enemyUnit.FindNearestTarget(true);
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, false);
@@ -203,6 +206,7 @@ namespace Action.State
             if (null != _enemyUnit)
             {
                 //Logger.Log("Attack Enter");
+                _enemyUnit.StopAgent();
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashAttacking, true);
                 _enemyUnit.StopMove();
                 _enemyUnit.Look(_enemyUnit.Target);
@@ -220,7 +224,7 @@ namespace Action.State
             if (null != _enemyUnit && null != _enemyUnit.Target)
             {
                 //Logger.Log("Attack Update");
-
+                _enemyUnit.StopAgent();
                 _enemyUnit.StopMove();
 
                 _enemyUnit.Look(_enemyUnit.Target);
