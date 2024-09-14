@@ -35,6 +35,7 @@ public class Spawner : MonoBehaviour
 
         if (spawnObj.TryGetComponent<NavMeshAgent>(out NavMeshAgent comp))
         {
+            comp.transform.rotation = Quaternion.identity;
             comp.Warp(spawnPos);
         }
     }

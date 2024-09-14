@@ -68,6 +68,12 @@ namespace Action.Units
             float nearest = Mathf.Infinity;
             for (int i = 0 ; i < GameManager.Instance.PlayerBuildings.Count ; i++)
             {
+                if (GameManager.Instance.PlayerBuildings[i].TryGetComponent<Building>(out Building comp))
+                {
+                    if (!comp.BuildingData.isBuilt)
+                        continue;
+                }
+
                 Vector3 dist = GameManager.Instance.PlayerBuildings[i].gameObject.transform.position - gameObject.transform.position;
                 if (nearest > dist.sqrMagnitude)
                 {

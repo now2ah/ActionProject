@@ -62,6 +62,7 @@ namespace Action.State
             if (null != _enemyUnit && null != _enemyUnit.Target)
             {
                 _enemyUnit.SetDestinationToTarget(_enemyUnit.Target);
+                _enemyUnit.Look(_enemyUnit.Target);
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, true);
             }
         }
@@ -75,8 +76,12 @@ namespace Action.State
             base.UpdateState();
             if (null != _enemyUnit)
             {
-                if (_enemyUnit.IsAttackCooltime)
+                _enemyUnit.Look(_enemyUnit.Target);
+                if (_enemyUnit.isTargetInDistance())
+                {
                     _enemyUnit.StateMachine.ChangeState(_enemyUnit.AttackState);
+                    _enemyUnit.StopMove();
+                }
             }
         }
     }
@@ -93,11 +98,9 @@ namespace Action.State
             if (null != _enemyUnit)
             {
                 _enemyUnit.StopAgent();
+                _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashAttacking, true);
+                _enemyUnit.StopMove();
                 _enemyUnit.Look(_enemyUnit.Target);
-                _enemyUnit.Stop(1.5f, () =>
-                {
-                    _enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
-                });
             } 
         }
 
@@ -108,6 +111,23 @@ namespace Action.State
         public override void UpdateState()
         {
             base.UpdateState();
+            if (null != _enemyUnit && null != _enemyUnit.Target)
+            {
+                //Logger.Log("Attack Update");
+                _enemyUnit.StopAgent();
+                _enemyUnit.StopMove();
+
+                _enemyUnit.Look(_enemyUnit.Target);
+
+                if (!_enemyUnit.isAttackCooltime())
+                    _enemyUnit.Attack();
+
+                if (!_enemyUnit.isTargetInDistance())
+                {
+                    _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashAttacking, false);
+                    _enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
+                }
+            }
             //_enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
         }
     }
@@ -170,6 +190,7 @@ namespace Action.State
             {
                 //Logger.Log("Move Enter");
                 _enemyUnit.SetDestinationToTarget(_enemyUnit.Target);
+                _enemyUnit.Look(_enemyUnit.Target);
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, true);
             }
         }
@@ -184,6 +205,7 @@ namespace Action.State
             base.UpdateState();
             if (null != _enemyUnit)
             {
+                _enemyUnit.Look(_enemyUnit.Target);
                 //Logger.Log("Move Update");
                 if (_enemyUnit.isTargetInDistance())
                 {

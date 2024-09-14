@@ -16,6 +16,8 @@ namespace Action.Units
         bool _isAttackCooltime;
         ActionTime _attackTimer;
 
+        float _lastAttackTime;
+
         EnemyIdleState _idleState;
         EnemyMoveState _moveState;
         EnemyAttackState _attackState;
@@ -58,10 +60,53 @@ namespace Action.Units
                 SetDestinationToTarget(_target);
         }
 
+        public void Attack()
+        {
+            if (null != _target)
+            {
+                _lastAttackTime = Time.realtimeSinceStartup;
+                ApplyDamage();
+            }
+        }
+
+        public void ApplyDamage()
+        {
+            DamageMessage msg = new DamageMessage
+            {
+                damager = this,
+                amount = EnemyUnitData.attackDamage
+            };
+
+            if (_target.TryGetComponent<Unit>(out Unit comp))
+            {
+                comp.ApplyDamage(msg);
+                _isAttackCooltime = true;
+                _attackTimer.TickStart(EnemyUnitData.attackSpeed);
+            }
+        }
+
         public void Stop(float stopTime, UnityAction action = null)
         {
             StopCoroutine("StopMoveCoroutine");
             StartCoroutine(StopMoveCoroutine(stopTime, action));
+        }
+
+        public bool isAttackCooltime()
+        {
+            if (Time.realtimeSinceStartup < _lastAttackTime + EnemyUnitData.attackSpeed)
+                return true;
+            else
+                return false;
+        }
+
+        public bool isTargetInDistance()
+        {
+            float dist = Vector3.Distance(transform.position, _target.transform.position);
+            //Logger.Log(dist.ToString());
+            if (dist < EnemyUnitData.attackDistance)
+                return true;
+            else
+                return false;
         }
 
         IEnumerator StopMoveCoroutine(float stopTime, UnityAction action = null)
@@ -72,21 +117,21 @@ namespace Action.Units
                 action.Invoke();
         }
 
-        private void OnCollisionStay(Collision col)
-        {
-            if (!_isAttackCooltime && "PlayerObject" == col.gameObject.tag)
-            {
-                Unit colUnit = col.gameObject.GetComponent<Unit>();
-                DamageMessage msg = new DamageMessage
-                {
-                    damager = this,
-                    amount = EnemyUnitData.attackDamage
-                };
-                colUnit.ApplyDamage(msg);
-                _isAttackCooltime = true;
-                _attackTimer.TickStart(EnemyUnitData.attackSpeed);
-            }
-        }
+        //private void OnCollisionStay(Collision col)
+        //{
+        //    if (!_isAttackCooltime && "PlayerObject" == col.gameObject.tag)
+        //    {
+        //        Unit colUnit = col.gameObject.GetComponent<Unit>();
+        //        DamageMessage msg = new DamageMessage
+        //        {
+        //            damager = this,
+        //            amount = EnemyUnitData.attackDamage
+        //        };
+        //        colUnit.ApplyDamage(msg);
+        //        _isAttackCooltime = true;
+        //        _attackTimer.TickStart(EnemyUnitData.attackSpeed);
+        //    }
+        //}
 
         void _CheckAttackCoolTime()
         {

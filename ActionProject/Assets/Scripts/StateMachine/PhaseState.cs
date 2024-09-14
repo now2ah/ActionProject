@@ -60,7 +60,7 @@ namespace Action.State
         {
             base.EnterState();
             CameraManager.Instance.CreateFixedVirtualCamera();
-            UIManager.Instance.CreateTownStagePanel();
+            //UIManager.Instance.CreateTownStagePanel();
             foreach (var buildings in GameManager.Instance.PlayerBuildings)
                 buildings.SetActive(true);
             GameManager.Instance.FindSpawnerPoint();

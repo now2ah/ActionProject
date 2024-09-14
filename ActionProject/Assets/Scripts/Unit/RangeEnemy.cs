@@ -22,6 +22,7 @@ namespace Action.Units
 
         int _animHashMoving;
         int _animHashAttacking;
+        int _animHashSpeed;
 
         public Animator Animator => _animator;
         public RangeEnemyIdleState IdleState => _idleState;
@@ -29,6 +30,7 @@ namespace Action.Units
         public RangeEnemyAttackState AttackState => _attackState;
         public int AnimHashMoving => _animHashMoving;
         public int AnimHashAttacking => _animHashAttacking;
+        public int AnimHashSpeed => _animHashSpeed;
 
         public override void Initialize()
         {
@@ -36,6 +38,7 @@ namespace Action.Units
             _SetUnitData();
             _animHashMoving = Animator.StringToHash("IsMoving");
             _animHashAttacking = Animator.StringToHash("IsAttacking");
+            _animHashSpeed = Animator.StringToHash("Speed");
 
             SetNameUI(UnitName);
             StateMachine.Initialize(_idleState);
@@ -149,6 +152,11 @@ namespace Action.Units
         protected override void Update()
         {
             base.Update();
+        }
+
+        protected void FixedUpdate()
+        {
+            _animator.SetFloat(_animHashSpeed, NavMeshAgentComp.speed);
         }
     }
 }

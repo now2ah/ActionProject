@@ -135,7 +135,7 @@ namespace Action.Manager
             _phaseTimer = gameObject.AddComponent<ActionTime>();
             _refreshTimer = gameObject.AddComponent<ActionTime>();
             _startPos = new Vector3(-150.0f, 6.0f, -15.0f);
-            _defenseSpawnPos = new Vector3(60.0f, 7.5f, 0.0f);
+            _defenseSpawnPos = new Vector3(180.0f, 7.5f, 0.0f);
             _enemySpawners = new List<Spawner>();
             _playerBuildingPrefabs = new List<GameObject>();
             _playerBuildings = new List<GameObject>();
@@ -492,6 +492,8 @@ namespace Action.Manager
             {
                 foreach (var item in waves)
                 {
+                    yield return new WaitForSeconds(timeRate);
+
                     GameObject obj = item;
                     obj.SetActive(true);
                     if (obj.TryGetComponent<Unit>(out Unit comp))
@@ -501,8 +503,6 @@ namespace Action.Manager
                     }
 
                     spawner.SpawnObject(obj);
-
-                    yield return new WaitForSeconds(timeRate);
                 }
             }
         }
@@ -625,6 +625,7 @@ namespace Action.Manager
 
             _phaseStateMachine.Initialize(_townBuildState);
             //StartPhase(eGamePhase.TownBuild);
+            _StartRefreshTimer();
         }
 
         public void CreateTestWave()
