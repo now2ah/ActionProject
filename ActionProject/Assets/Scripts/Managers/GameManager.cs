@@ -135,7 +135,7 @@ namespace Action.Manager
             _phaseTimer = gameObject.AddComponent<ActionTime>();
             _refreshTimer = gameObject.AddComponent<ActionTime>();
             _startPos = new Vector3(-150.0f, 6.0f, -15.0f);
-            _defenseSpawnPos = new Vector3(100.0f, 7.5f, 0.0f);
+            _defenseSpawnPos = new Vector3(60.0f, 7.5f, 0.0f);
             _enemySpawners = new List<Spawner>();
             _playerBuildingPrefabs = new List<GameObject>();
             _playerBuildings = new List<GameObject>();
@@ -146,7 +146,9 @@ namespace Action.Manager
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/NormalEnemy") as GameObject);
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/RangeEnemy") as GameObject);
             _curWaveOrder = -1;
-            
+
+            SceneManager.Instance.OnInGameSceneLoaded.AddListener(_OnStartInGamePhase);
+            SceneManager.Instance.OnHuntStageSceneLoaded.AddListener(_OnStartHuntPhase);
 
             _SetUpSpawners();
         }
@@ -212,33 +214,28 @@ namespace Action.Manager
             {
                 case eGamePhase.TownBuild:
                     StartPhase(eGamePhase.TownBuild);
-                    _phaseStateMachine.ChangeState(_townBuildState);
-                    _LoadData();
                     break;
 
                 case eGamePhase.Hunt:
                     StartPhase(eGamePhase.Hunt);
-                    _SaveData();
-                    _phaseStateMachine.ChangeState(_huntState);
                     break;
 
                 case eGamePhase.Defense:
                     StartPhase(eGamePhase.Defense);
-                    _phaseStateMachine.ChangeState(_defenseState);
+                    
                     break;
             }
         }
 
         public void StartPhase(eGamePhase phase)
         {
+            _StartPhaseTimer(phase);
             switch (phase)
             {
                 case eGamePhase.TownBuild:
-                    _StartPhaseTimer(phase);
                     break;
 
                 case eGamePhase.Hunt:
-                    _StartPhaseTimer(phase);
                     SceneManager.Instance.LoadGameScene(3);
                     break;
 
@@ -567,6 +564,23 @@ namespace Action.Manager
                 return true;
             else
                 return false;
+        }
+
+        void _OnStartInGamePhase()
+        {
+            if (_gamePhase == eGamePhase.TownBuild)
+            {
+                _phaseStateMachine.ChangeState(_townBuildState);
+                _LoadData();
+            }
+            else if (_gamePhase == eGamePhase.Defense)
+                _phaseStateMachine.ChangeState(_defenseState);
+        }
+
+        void _OnStartHuntPhase()
+        {
+            _SaveData();
+            _phaseStateMachine.ChangeState(_huntState);
         }
 
         private void Awake()

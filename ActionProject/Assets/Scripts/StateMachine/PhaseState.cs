@@ -61,6 +61,7 @@ namespace Action.State
             base.EnterState();
             foreach (var buildings in GameManager.Instance.PlayerBuildings)
                 buildings.SetActive(true);
+            GameManager.Instance.FindSpawnerPoint();
             GameManager.Instance.AddDefenseSpawner();
             GameManager.Instance.SetActiveDefenseSpawner(true);
             GameManager.Instance.SetDefenseSpawner();

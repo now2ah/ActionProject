@@ -12,6 +12,8 @@ namespace Action.Manager
     {
         int _sceneNumToLoad;
         public int SceneNumToLoad => _sceneNumToLoad;
+        public UnityEvent OnInGameSceneLoaded;
+        public UnityEvent OnHuntStageSceneLoaded;
 
         GameObject _fadeUI;
         float _fadeSpeed;
@@ -22,7 +24,7 @@ namespace Action.Manager
             _sceneNumToLoad = 0;
             _LoadFadeImage();
             _fadeSpeed = 0.5f;
-            //UnityEngine.SceneManagement.SceneManager.sceneLoaded += _OnSceneLoaded;
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded += _OnSceneLoaded;
         }
 
         public void LoadGameScene(int sceneNumber, LoadSceneMode mode = LoadSceneMode.Single)
@@ -33,7 +35,10 @@ namespace Action.Manager
 
         void _OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
         {
-            
+            if ("2.InGame" == scene.name)
+                OnInGameSceneLoaded.Invoke();
+            else if ("3.HuntStage" == scene.name)
+                OnHuntStageSceneLoaded.Invoke();
         }
 
         #region FADE IN AND OUT
