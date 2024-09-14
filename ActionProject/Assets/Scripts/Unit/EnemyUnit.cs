@@ -191,7 +191,11 @@ namespace Action.Units
             _ApplyPhysicsEffect();
             _FreeObjectCoroutine();
             if (damager.TryGetComponent<PlayerUnit>(out PlayerUnit playerUnit))
+            {
+                _CreateFloatingUI(EnemyUnitData.goldAmount);
+                _GiveGold(EnemyUnitData.goldAmount);
                 _GiveExp((PlayerUnit)damager, EnemyUnitData.expAmount);
+            }
         }
 
         protected void _DisableMove()
@@ -230,13 +234,18 @@ namespace Action.Units
         IEnumerator DeathCoroutine()
         {
             _isDead = true;
-            yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(0.5f);
             _FreeObject();
         }
 
         protected void _GiveExp(PlayerUnit damager, int exp)
         {
             damager.GainExp(exp);
+        }
+
+        protected void _GiveGold(int gold)
+        {
+            GameManager.Instance.GameData.resource.Resources[(int)Game.eResource.GOLD] += gold;
         }
 
         void _SetDefaultValue()
@@ -246,6 +255,19 @@ namespace Action.Units
             _enemyUnitData.attackSpeed = 1.0f;
             _enemyUnitData.attackDistance = 1.0f;
             _enemyUnitData.expAmount = 1;
+            _enemyUnitData.goldAmount = 1;
+        }
+
+        void _CreateFloatingUI(int gold)
+        {
+            GameObject floatingUI = UIManager.Instance.CreateUI("FloatingPanel", UIManager.Instance.InGameCanvas);
+            floatingUI.transform.position = CameraManager.Instance.MainCamera.Camera.WorldToScreenPoint(transform.position);
+            if (floatingUI.TryGetComponent<UI.FloatingPanelUI>(out UI.FloatingPanelUI comp))
+            {
+                comp.Initialize(gameObject);
+                comp.Text.text = "+" + gold.ToString();
+                comp.Text.color = Color.yellow;
+            }
         }
 
         protected override void Awake()

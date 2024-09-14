@@ -65,11 +65,11 @@ namespace Action.Units
             if (null != _target)
             {
                 _lastAttackTime = Time.realtimeSinceStartup;
-                ApplyDamage();
+                _DeliverDamage();
             }
         }
 
-        public void ApplyDamage()
+        void _DeliverDamage()
         {
             DamageMessage msg = new DamageMessage
             {
@@ -156,6 +156,7 @@ namespace Action.Units
             EnemyUnitData.attackSpeed = _unitStats.attackSpeed;
             EnemyUnitData.attackDistance = _unitStats.attackDistance;
             EnemyUnitData.expAmount = _unitStats.expAmount;
+            EnemyUnitData.goldAmount = _unitStats.goldAmount;
         }
 
         void OnAnimatorMove()

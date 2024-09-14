@@ -123,6 +123,7 @@ namespace Action.Units
             EnemyUnitData.attackSpeed = _unitStats.attackSpeed;
             EnemyUnitData.attackDistance = _unitStats.attackDistance;
             EnemyUnitData.expAmount = _unitStats.expAmount;
+            EnemyUnitData.goldAmount = _unitStats.goldAmount;
         }
         void OnAnimatorMove()
         {

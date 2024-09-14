@@ -17,6 +17,7 @@ namespace Action.SO
         public float attackSpeed;
         public float attackDistance;
         public int expAmount;
+        public int goldAmount;
     }
 
 }

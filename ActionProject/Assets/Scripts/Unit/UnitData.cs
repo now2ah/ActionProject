@@ -38,6 +38,7 @@ namespace Action.Units
         public float attackSpeed;
         public float attackDistance;
         public int expAmount;
+        public int goldAmount;
     }
 }
 
