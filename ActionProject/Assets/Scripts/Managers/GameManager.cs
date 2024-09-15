@@ -309,6 +309,15 @@ namespace Action.Manager
             _defenseSpawner.transform.position = obj.transform.position;
         }
 
+        public void InactiveDefaultBuildings()
+        {
+            Building[] buildings = FindObjectsByType<Building>(FindObjectsSortMode.None);
+            foreach (var building in buildings)
+            {
+                building.gameObject.SetActive(false);
+            }
+        }
+
         Vector3 _FindBasePoint()
         {
             GameObject obj = GameObject.FindWithTag("StartingBasePoint");

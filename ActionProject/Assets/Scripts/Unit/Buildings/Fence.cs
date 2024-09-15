@@ -33,7 +33,6 @@ namespace Action.Units
         protected override void Update()
         {
             base.Update();
-            Logger.Log(StateMachine.CurState.ToString());
         }
     }
 }

@@ -61,6 +61,7 @@ namespace Action.State
             base.EnterState();
             CameraManager.Instance.CreateFixedVirtualCamera();
             //UIManager.Instance.CreateTownStagePanel();
+            GameManager.Instance.InactiveDefaultBuildings();
             foreach (var buildings in GameManager.Instance.PlayerBuildings)
                 buildings.SetActive(true);
             GameManager.Instance.FindSpawnerPoint();
