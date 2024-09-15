@@ -21,4 +21,5 @@ MonoBehaviour:
   growthAttackDamage: 0
   attackSpeed: 1
   attackDistance: 1.5
-  expAmount: 30
+  expAmount: 5
+  goldAmount: 1

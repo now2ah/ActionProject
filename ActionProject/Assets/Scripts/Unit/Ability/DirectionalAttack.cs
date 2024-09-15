@@ -63,8 +63,8 @@ namespace Action.Game
 
         void _CreateProjectile(float attackDamage)
         {
-            Vector3 shootPosition = transform.position + transform.forward * 2.0f;
-            shootPosition.y = GameManager.Instance.Constants.HUNT_PROJECTILE_Y_POS;
+            Vector3 shootPosition = transform.position + transform.forward * 2.0f + transform.up * 1.0f;
+            //shootPosition.y = GameManager.Instance.Constants.HUNT_PROJECTILE_Y_POS;
             NormalProjectile projectile = (NormalProjectile)PoolManager.Instance.NormalProjectilePool.GetNew();
             projectile.transform.position = shootPosition;
             projectile.transform.rotation = transform.rotation;

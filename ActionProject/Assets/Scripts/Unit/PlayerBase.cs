@@ -12,8 +12,8 @@ namespace Action.Units
 
         public override void Initialize()
         {
-            if (_isActive)
-                return;
+            //if (_isActive)
+            //    return;
 
             base.Initialize();
 

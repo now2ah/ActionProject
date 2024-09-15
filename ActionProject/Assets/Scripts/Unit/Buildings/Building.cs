@@ -145,7 +145,7 @@ namespace Action.Units
         {
             base.Awake();
             IsOnUnitPanel = false;
-            _constructTime = 0.0f;  //default
+            _constructTime = 1.0f;  //default
             _requireGold = 1;   //default
         }
 

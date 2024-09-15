@@ -29,7 +29,7 @@ namespace Action.Units
         //UnitPanel 표시하지 않는 유닛은 false
         bool _isOnUnitPanel;
 
-        protected bool _isActive;
+        //protected bool _isActive;
 
         public GameObject UnitPanelObject { get { return _unitPanelObject; } set { _unitPanelObject = value; } }
         public UnitPanel UnitPanel { get { return _unitPanel; } set { _unitPanel = value; } }
@@ -47,8 +47,8 @@ namespace Action.Units
 
         public virtual void Initialize()
         {
-            if (!_isActive)
-                _isActive = true;
+            //if (!_isActive)
+            //    _isActive = true;
 
             _infoActiveDistant = GameManager.Instance.Constants.INGAMEUI_VISIBLE_DISTANT;
             if (null == _unitPanelObject)
@@ -155,7 +155,7 @@ namespace Action.Units
             _unitData = new UnitData();
             _SetDefaultValue();
             _isOnUnitPanel = true;
-            _isActive = false;
+            //_isActive = false;
         }
 
         protected virtual void Start()

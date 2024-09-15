@@ -58,6 +58,7 @@ namespace Action.Units
             SetNameUI(UnitName);
             UnitPanel.Show();
             _indicator = Instantiate(GameManager.Instance.BuildingIndicatorPrefab);
+            _indicator.transform.SetParent(transform);
             _indicator.SetActive(false);
             _animHashMoving = Animator.StringToHash("isMoving");
             _animHashAttacking = Animator.StringToHash("isAttacking");

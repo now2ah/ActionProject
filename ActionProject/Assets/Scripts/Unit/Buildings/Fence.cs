@@ -8,8 +8,8 @@ namespace Action.Units
     {
         public override void Initialize()
         {
-            if (_isActive)
-                return;
+            //if (_isActive)
+            //    return;
 
             base.Initialize();
 
@@ -33,6 +33,7 @@ namespace Action.Units
         protected override void Update()
         {
             base.Update();
+            Logger.Log(StateMachine.CurState.ToString());
         }
     }
 }
