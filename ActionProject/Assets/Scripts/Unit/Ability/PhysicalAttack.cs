@@ -16,9 +16,9 @@ namespace Action.Game
         public ActionTime Timer => _timer;
         public float CoolTime => _coolTime;
 
-        public override void Activate()
+        public override void Activate(bool isOn)
         {
-            base.Activate();
+            base.Activate(isOn);
             Commander = GameManager.Instance.CommanderUnit;
         }
 

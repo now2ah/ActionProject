@@ -33,7 +33,7 @@ namespace Action.State
             base.EnterState();
             GameManager.Instance.AddHuntSpawner();
             GameManager.Instance.SetActiveHuntSpawner(true);
-            
+            GameManager.Instance.CommanderUnit.SetEnableAutoAttacks(true);
         }
 
         public override void UpdateState()
@@ -70,6 +70,7 @@ namespace Action.State
             GameManager.Instance.SetDefenseSpawner();
             GameManager.Instance.CommanderUnit.NavMeshAgentComp.Warp(GameManager.Instance.StartPos);
             GameManager.Instance.StartWave(GameManager.Instance.EnemyUnits, 1.0f, GameManager.Instance.DefenseSpawner.GetComponent<Spawner>());
+            GameManager.Instance.CommanderUnit.SetEnableAutoAttacks(false);
         }
 
         public override void UpdateState()

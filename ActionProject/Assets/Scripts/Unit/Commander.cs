@@ -113,13 +113,13 @@ namespace Action.Units
         public void ActivateAbility(Enums.eAbility ability)
         {
             if (0 < _abilitySlots.Length)
-                _abilitySlots[(int)ability].Activate();
+                _abilitySlots[(int)ability].Activate(true);
         }
 
         public void ActivateAutoAttack(int index)
         {
             if (_autoAttackSlots.Length > 0)
-                _autoAttackSlots[index].Activate();
+                _autoAttackSlots[index].Activate(true);
         }
 
         public override void GainExp(int exp)
@@ -133,6 +133,24 @@ namespace Action.Units
             base.ModifyLevel(level);
             List<Ability> abilities = _SetUpAbilityUpgrade();
             OnLevelUp.Invoke(abilities);
+        }
+
+        public void SetEnableAutoAttacks(bool isOn)
+        {
+            if (false == isOn)
+            {
+                foreach (var autoattack in _autoAttackSlots)
+                    autoattack.Activate(isOn);
+            }
+            else if (true == isOn)
+            {
+                foreach (var autoattack in _autoAttackSlots)
+                {
+                    if (0 < autoattack.Level)
+                        autoattack.Activate(isOn);
+                }
+            }
+            
         }
 
         void OnMousePosition(InputAction.CallbackContext context)

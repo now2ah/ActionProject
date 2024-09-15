@@ -29,9 +29,9 @@ namespace Action.Game
         {
         }
 
-        public virtual void Activate()
+        public virtual void Activate(bool isOn)
         {
-            _isActivated = true;
+            _isActivated = isOn;
         }
 
         protected virtual void Awake()

@@ -11,9 +11,9 @@ namespace Action.Game
     {
         AbilityItemSO _abilityItem;
 
-        public override void Activate()
+        public override void Activate(bool isOn)
         {
-            base.Activate();
+            base.Activate(isOn);
             Commander = GameManager.Instance.CommanderUnit;
         }
 
