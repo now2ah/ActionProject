@@ -102,7 +102,7 @@ namespace Action.Units
         {
             if (null != _target)
             {
-                Vector3 shootPosition = transform.position + transform.forward * 2.0f;
+                Vector3 shootPosition = transform.position + transform.forward * 2.0f + transform.up * 1.0f;
                 shootPosition.y = GameManager.Instance.Constants.HUNT_PROJECTILE_Y_POS;
                 RangeEnemyProjectile projectile = (RangeEnemyProjectile)PoolManager.Instance.RangeEnemyProjectilePool.GetNew();
                 projectile.transform.position = shootPosition;
