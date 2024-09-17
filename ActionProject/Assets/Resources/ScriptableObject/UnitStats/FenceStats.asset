@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce0b109515b8a74ea3f3d16f6dda0cc, type: 3}
   m_Name: FenceStats
   m_EditorClassIdentifier: 
-  unitName: 
-  maxHp: 0
+  unitName: Fence
+  maxHp: 100
   growthMaxHp: 0
   speed: 0
-  requireGold: 0
-  constructTime: 0
+  requireGold: 5
+  constructTime: 3
   attackDamage: 0
   growthAttackDamage: 0
   attackSpeed: 0

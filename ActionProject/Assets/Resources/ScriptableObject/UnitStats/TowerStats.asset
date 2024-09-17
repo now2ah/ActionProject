@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce0b109515b8a74ea3f3d16f6dda0cc, type: 3}
   m_Name: TowerStats
   m_EditorClassIdentifier: 
-  unitName: 
-  maxHp: 0
+  unitName: Tower
+  maxHp: 100
   growthMaxHp: 0
   speed: 0
-  constructTime: 0
-  attackDamage: 0
+  requireGold: 5
+  constructTime: 1.5
+  attackDamage: 5
   growthAttackDamage: 0
-  attackSpeed: 0
-  attackDistance: 0
+  attackSpeed: 3
+  attackDistance: 5
   expAmount: 0
   goldAmount: 0
