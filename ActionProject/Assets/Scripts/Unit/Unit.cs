@@ -23,7 +23,7 @@ namespace Action.Units
         float _growthHp;
         string _unitName;
 
-        bool _canDamaged;
+        bool _isHit;
         float _infoActiveDistant;
 
         //UnitPanel 표시하지 않는 유닛은 false
@@ -73,6 +73,9 @@ namespace Action.Units
         {
             if (_CheckDead())
                 return;
+
+            StopCoroutine("_ShowPanelForSeconds");
+            StartCoroutine(_ShowPanelForSeconds(1.5f));
 
             _unitData.hp -= msg.amount;
             _HitMaterialEffect();
@@ -139,7 +142,7 @@ namespace Action.Units
 
             if (_IsNearPlayerUnit())
                 _unitPanel.Show();
-            else
+            else if (_IsNearPlayerUnit() && !_isHit)
                 _unitPanel.Hide();
         }
 
@@ -150,11 +153,21 @@ namespace Action.Units
             _unitData.maxHp = 10;
         }
 
+        IEnumerator _ShowPanelForSeconds(float seconds)
+        {
+            _isHit = true;
+            _unitPanel.Show();
+            yield return new WaitForSeconds(seconds);
+            _unitPanel.Hide();
+            _isHit = false;
+        }
+
         protected virtual void Awake()
         {
             _unitData = new UnitData();
             _SetDefaultValue();
             _isOnUnitPanel = true;
+            _isHit = false;
             //_isActive = false;
         }
 
