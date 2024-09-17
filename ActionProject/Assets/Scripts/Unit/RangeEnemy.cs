@@ -93,6 +93,7 @@ namespace Action.Units
             if (!gameObject.activeSelf)
                 return;
 
+            FindNearestPlayerBuilding();
             FindNearestTarget(true);
             //if (_attackState != StateMachine.CurState)
             //    SetDestinationToTarget(_target);
@@ -102,8 +103,8 @@ namespace Action.Units
         {
             if (null != _target)
             {
-                Vector3 shootPosition = transform.position + transform.forward * 2.0f + transform.up * 1.0f;
-                shootPosition.y = GameManager.Instance.Constants.HUNT_PROJECTILE_Y_POS;
+                Vector3 shootPosition = transform.position + transform.forward * 2.0f + transform.up * 1.2f;
+                //shootPosition.y = GameManager.Instance.Constants.HUNT_PROJECTILE_Y_POS;
                 RangeEnemyProjectile projectile = (RangeEnemyProjectile)PoolManager.Instance.RangeEnemyProjectilePool.GetNew();
                 projectile.transform.position = shootPosition;
                 projectile.transform.rotation = transform.rotation;

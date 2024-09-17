@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Action.Manager;
 using Action.Util;
+using Action.SO;
 using DG.Tweening;
 
 namespace Action.Units
 {
     public class Tower : Building
     {
+        UnitStatsSO _unitStats;
+
         GameObject _target;
-        float _attackDamage;
-        float _attackDistance;
-        float _attackSpeed;
         ActionTime _attackTime;
         Vector3 _shootPosition;
 
@@ -22,9 +22,21 @@ namespace Action.Units
             //    return;
 
             base.Initialize();
-
+            _SetUnitData();
             GameManager.Instance.OnRefresh.AddListener(_FindTarget);
-            RequireTextUI.Text.text = _requireGold.ToString();
+            RequireTextUI.Text.text = BuildingData.requireGold.ToString();
+        }
+
+        void _SetUnitData()
+        {
+            UnitData.name = _unitStats.unitName;
+            UnitData.hp = _unitStats.maxHp;
+            UnitData.maxHp = _unitStats.maxHp;
+            BuildingData.requireGold = _unitStats.requireGold;
+            BuildingData.constructTime = _unitStats.constructTime;
+            BuildingData.attackDamage = _unitStats.attackDamage;
+            BuildingData.attackSpeed = _unitStats.attackSpeed;
+            BuildingData.attackDistance = _unitStats.attackDistance;
         }
 
         void _FindTarget()
@@ -46,7 +58,7 @@ namespace Action.Units
             if (null == _target)
                 return false;
 
-            if (_attackDistance > Vector3.Distance(transform.position, _target.transform.position))
+            if (BuildingData.attackDistance > Vector3.Distance(transform.position, _target.transform.position))
                 return true;
             else
                 return false;
@@ -56,7 +68,7 @@ namespace Action.Units
         {
             Game.Projectile arrowProj = PoolManager.Instance.ArrowProjectilePool.GetNew();
             Game.Arrow arrow = arrowProj as Game.Arrow;
-            arrow.Initialize(this, _attackDamage);
+            arrow.Initialize(this, BuildingData.attackDamage);
             arrow.Target = _target;
             arrow.transform.LookAt(_target.transform);
             arrow.transform.position = _shootPosition;
@@ -68,16 +80,13 @@ namespace Action.Units
         void _Attack()
         {
             _ShootArrow();
-            _attackTime.TickStart(_attackSpeed);
+            _attackTime.TickStart(BuildingData.attackSpeed);
         }
 
         protected override void Awake()
         {
             base.Awake();
-            _requireGold = 5;
-            _attackDamage = 1.0f;
-            _attackDistance = 50.0f;
-            _attackSpeed = 1.0f;
+            _unitStats = Resources.Load("ScriptableObject/UnitStats/TowerStats") as UnitStatsSO;
             _attackTime = gameObject.AddComponent<ActionTime>();
             _shootPosition = transform.position + new Vector3(0.0f, 5.0f, 0.0f);
         }
@@ -93,9 +102,9 @@ namespace Action.Units
         protected override void Update()
         {
             base.Update();
-            if (StateMachine.CurState == _doneState &&
-                _IsInDistance() && !_attackTime.IsStarted)
-                _Attack();
+            //if (StateMachine.CurState == _doneState &&
+            //    _IsInDistance() && !_attackTime.IsStarted)
+            //    _Attack();
         }
     }
 }

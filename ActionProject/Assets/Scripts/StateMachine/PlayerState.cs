@@ -223,7 +223,7 @@ namespace Action.State
         {
             Logger.Log("done");
             _building.SetVisibleBuilding(true);
-
+            _building.SetMaterial();
             //interaction 없을때 if 문 추가
             _building.ControlUI.Hide();
 

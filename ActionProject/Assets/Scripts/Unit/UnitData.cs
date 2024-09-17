@@ -28,6 +28,11 @@ namespace Action.Units
     public class BuildingData : UnitData
     {
         public bool isBuilt;
+        public int requireGold;
+        public float attackDamage;
+        public float attackSpeed;
+        public float attackDistance;
+        public float constructTime;
     }
 
     [System.Serializable]

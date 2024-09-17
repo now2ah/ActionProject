@@ -35,6 +35,18 @@ namespace Action.Game
         protected override void OnTriggerEnter(Collider other)
         {
             base.OnTriggerEnter(other);
+            if ("EnemyObject" == other.gameObject.tag)
+            {
+                Pool.Free(this);
+                Unit.DamageMessage msg = new Unit.DamageMessage
+                {
+                    damager = Owner,
+                    amount = AttackDamage
+                };
+
+                if (other.transform.TryGetComponent<Unit>(out Unit comp))
+                    comp.ApplyDamage(msg);
+            }
         }
 
         protected override void OnEnable()

@@ -143,6 +143,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3530279628542726885}
     m_Modifications:
+    - target: {fileID: 1126404795175036, guid: 9895332d2189d074892860f64e7d113a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1261079485194526, guid: 9895332d2189d074892860f64e7d113a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1453463699399952, guid: 9895332d2189d074892860f64e7d113a, type: 3}
       propertyPath: m_Name
       value: EA03_Village_Tover_01a_PRE
@@ -150,6 +158,14 @@ PrefabInstance:
     - target: {fileID: 1453463699399952, guid: 9895332d2189d074892860f64e7d113a, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1723070346615474, guid: 9895332d2189d074892860f64e7d113a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1752869540041254, guid: 9895332d2189d074892860f64e7d113a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4048056032317444, guid: 9895332d2189d074892860f64e7d113a, type: 3}
       propertyPath: m_RootOrder

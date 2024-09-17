@@ -28,8 +28,6 @@ namespace Action.Units
         BuildingData _buildingData;
 
         protected float _activeDistance;
-        protected float _constructTime;
-        protected int _requireGold;
 
         Vector3 _indicatorPos;
 
@@ -37,8 +35,6 @@ namespace Action.Units
         public BuildButtonUI BuildButtonUI => _buildButtonUI;
         public RequireTextUI RequireTextUI => _requireTextUI;
         public float ActiveDistance => _activeDistance;
-        public float ConstructTime => _constructTime;
-        public int RequireGold => _requireGold;
         public PlayerBuildingIdleState IdleState => _idleState;
         public PlayerBuildingPrepareState PrepareState => _prepareState;
         public PlayerBuildingDoneState DoneState => _doneState;
@@ -97,7 +93,17 @@ namespace Action.Units
             TimerUI timerUI = timerObj.GetComponent<TimerUI>();
             timerUI.Initialize(gameObject);
             timerUI.ActionTime = _buildingTimer;
-            _buildingTimer.TickStart(_constructTime);
+            _buildingTimer.TickStart(_buildingData.constructTime);
+        }
+
+        public void SetMaterial()
+        {
+            UnitMeshRenderer = GetComponentInChildren<MeshRenderer>();
+            UnitSkinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+            if (null != UnitMeshRenderer)
+                UnitMaterial = new Material(UnitMeshRenderer.material);
+            else if (null != UnitSkinnedMeshRenderer)
+                UnitMaterial = new Material(UnitSkinnedMeshRenderer.material);
         }
 
         void _CheckCommander()
@@ -136,7 +142,7 @@ namespace Action.Units
 
         IEnumerator StartConstructCoroutine()
         {
-            yield return new WaitForSeconds(_constructTime);
+            yield return new WaitForSeconds(_buildingData.constructTime);
             StateMachine.ChangeState(_doneState);
             _indicatorPos = transform.position + new Vector3(0, GetComponent<Collider>().bounds.size.y, 0);
         }
@@ -145,8 +151,6 @@ namespace Action.Units
         {
             base.Awake();
             IsOnUnitPanel = false;
-            _constructTime = 1.0f;  //default
-            _requireGold = 1;   //default
         }
 
         // Start is called before the first frame update

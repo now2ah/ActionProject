@@ -184,7 +184,7 @@ namespace Action.Util
             }
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             if (!Manager.GameManager.Instance.IsLive)
                 return;

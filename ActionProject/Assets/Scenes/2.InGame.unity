@@ -1867,6 +1867,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3126764438008815235, guid: fa40656dcc3130f4696b61193d00ef39, type: 3}
+      propertyPath: m_Size.y
+      value: 1.4006405
+      objectReference: {fileID: 0}
+    - target: {fileID: 3126764438008815235, guid: fa40656dcc3130f4696b61193d00ef39, type: 3}
+      propertyPath: m_Center.y
+      value: 4.2193727
+      objectReference: {fileID: 0}
     - target: {fileID: 5551004958530745918, guid: fa40656dcc3130f4696b61193d00ef39, type: 3}
       propertyPath: m_Name
       value: Fence

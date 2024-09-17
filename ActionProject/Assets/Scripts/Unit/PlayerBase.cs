@@ -31,7 +31,7 @@ namespace Action.Units
         {
             base.Awake();
             _unitStats = Resources.Load("ScriptableObject/UnitStats/PlayerBaseStats") as UnitStatsSO;
-            _constructTime = 0.0f;
+            
             UnitData.maxHp = _unitStats.maxHp;
             UnitData.hp = _unitStats.maxHp;
             UnitData.name = _unitStats.name;

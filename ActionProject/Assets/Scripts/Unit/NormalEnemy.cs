@@ -55,6 +55,7 @@ namespace Action.Units
             if (!gameObject.activeSelf)
                 return;
 
+            FindNearestPlayerBuilding();
             FindNearestTarget(true);
             if (_moveState == StateMachine.CurState)
                 SetDestinationToTarget(_target);
