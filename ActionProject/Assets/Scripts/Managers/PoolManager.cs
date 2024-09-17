@@ -14,7 +14,8 @@ namespace Action.Manager
         NORMALPROJECTILE,
         GUIDEDPROJECTILE,
         RANGEENEMY_PROJECTILE,
-        ARROW_PROJECTILE
+        ARROW_PROJECTILE,
+        EXP_ORB
     }
 
     public class PoolManager : Singleton<PoolManager>
@@ -27,6 +28,8 @@ namespace Action.Manager
         GameObject _rangeEnemyProjectileObj;
         GameObject _arrowProjectileObj;
 
+        GameObject _expOrbObj;
+
         ObjectPooler<EnemyUnit> _normalEnemyPool;
         ObjectPooler<EnemyUnit> _rangeEnemyPool;
 
@@ -35,6 +38,8 @@ namespace Action.Manager
         ObjectPooler<Projectile> _rangeEnemyProjectilePool;
         ObjectPooler<Projectile> _arrowProjectilePool;
 
+        ObjectPooler<ExpOrb> _expOrbPool;
+
         public ObjectPooler<EnemyUnit> NormalEnemyPool => _normalEnemyPool;
         public ObjectPooler<EnemyUnit> RangeEnemyPool => _rangeEnemyPool;
 
@@ -42,6 +47,8 @@ namespace Action.Manager
         public ObjectPooler<Projectile> GuidedProjectilePool => _guidedProjectilePool;
         public ObjectPooler<Projectile> RangeEnemyProjectilePool => _rangeEnemyProjectilePool;
         public ObjectPooler<Projectile> ArrowProjectilePool => _arrowProjectilePool;
+
+        public ObjectPooler<ExpOrb> ExpOrbPool => _expOrbPool;
 
         public override void Initialize()
         {
@@ -52,6 +59,7 @@ namespace Action.Manager
             _guidedProjectilePool = new ObjectPooler<Projectile>();
             _rangeEnemyProjectilePool = new ObjectPooler<Projectile>();
             _arrowProjectilePool = new ObjectPooler<Projectile>();
+            _expOrbPool = new ObjectPooler<ExpOrb>();
             _GetObjectPrefabs();
             _SetUpAllObjectPools();
         }
@@ -79,6 +87,7 @@ namespace Action.Manager
             _guidedProjectileObj = Resources.Load("Prefabs/Misc/Projectiles/GuidedProjectile") as GameObject;
             _rangeEnemyProjectileObj = Resources.Load("Prefabs/Misc/Projectiles/RangeEnemyProjectile") as GameObject;
             _arrowProjectileObj = Resources.Load("Prefabs/Misc/Projectiles/ArrowSample") as GameObject;
+            _expOrbObj = Resources.Load("Prefabs/Misc/ExpOrb") as GameObject;
         }
 
         void _SetUpAllObjectPools()
@@ -100,6 +109,9 @@ namespace Action.Manager
 
             if (_arrowProjectileObj.TryGetComponent<Arrow>(out Arrow arrowProjectile))
                 _arrowProjectilePool.Initialize(arrowProjectile, GameManager.Instance.Constants.ARROWPROJECTILE_MAX_AMOUNT, this.gameObject);
+
+            if (_expOrbObj.TryGetComponent<ExpOrb>(out ExpOrb expOrb))
+                _expOrbPool.Initialize(expOrb, GameManager.Instance.Constants.EXPORB_MAX_AMOUNT, this.gameObject);
         }
     }
 }

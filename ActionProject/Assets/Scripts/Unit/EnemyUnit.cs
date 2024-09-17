@@ -190,6 +190,7 @@ namespace Action.Units
             _DisableMove();
             _ApplyPhysicsEffect();
             _FreeObjectCoroutine();
+            _GenerateExpOrb();
             if (damager.TryGetComponent<PlayerUnit>(out PlayerUnit playerUnit))
             {
                 _CreateFloatingUI(EnemyUnitData.goldAmount);
@@ -246,6 +247,17 @@ namespace Action.Units
         protected void _GiveGold(int gold)
         {
             GameManager.Instance.GameData.resource.Resources[(int)Game.eResource.GOLD] += gold;
+        }
+
+        protected void _GenerateExpOrb()
+        {
+            Game.ExpOrb expOrb = PoolManager.Instance.ExpOrbPool.GetNew();
+            float angle = Random.Range(0.0f, 360.0f);
+            Vector3 rotation = transform.rotation.eulerAngles + new Vector3(0.0f, angle, 0.0f);
+            Vector3 position = transform.position + Vector3.forward * 1.0f;
+
+            expOrb.transform.rotation = Quaternion.Euler(rotation);
+            expOrb.transform.position = position;
         }
 
         void _SetDefaultValue()
