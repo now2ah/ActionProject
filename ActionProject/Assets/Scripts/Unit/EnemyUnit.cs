@@ -195,7 +195,7 @@ namespace Action.Units
             {
                 _CreateFloatingUI(EnemyUnitData.goldAmount);
                 _GiveGold(EnemyUnitData.goldAmount);
-                _GiveExp((PlayerUnit)damager, EnemyUnitData.expAmount);
+                //_GiveExp((PlayerUnit)damager, EnemyUnitData.expAmount);
             }
         }
 
@@ -252,9 +252,10 @@ namespace Action.Units
         protected void _GenerateExpOrb()
         {
             Game.ExpOrb expOrb = PoolManager.Instance.ExpOrbPool.GetNew();
+            expOrb.Initialize(EnemyUnitData.expAmount);
             float angle = Random.Range(0.0f, 360.0f);
             Vector3 rotation = transform.rotation.eulerAngles + new Vector3(0.0f, angle, 0.0f);
-            Vector3 position = transform.position + Vector3.forward * 1.0f;
+            Vector3 position = new Vector3(transform.position.x, (GameManager.Instance.Constants.HUNT_PROJECTILE_Y_POS) * 1.0f, transform.position.z) + Vector3.forward * 1.0f;
 
             expOrb.transform.rotation = Quaternion.Euler(rotation);
             expOrb.transform.position = position;
