@@ -12,6 +12,7 @@ namespace Action.SO
         public float growthMaxHp;
         public float speed;
         public int requireGold;
+        public int generateGold;
         public float constructTime;
         public float attackDamage;
         public float growthAttackDamage;

@@ -51,6 +51,7 @@ namespace Action.Manager
         public ActionTime RefreshTimer => _refreshTimer;
 
         public UnityEvent OnRefresh;
+        public UnityEvent OnFinishLevel;
 
         Vector3 _startPos;
         Vector3 _defenseSpawnPos;
@@ -372,8 +373,7 @@ namespace Action.Manager
                 ChangePhase(_gamePhase);
                 //StartPhase(_gamePhase);
             }
-            else if(_phaseTimer.IsFinished &&
-                _phaseStateMachine.CurState == _defenseState)
+            else if(_phaseStateMachine.CurState == _defenseState)
             {
                 if (_IsClearDefenseEnemies())
                 {
@@ -589,7 +589,11 @@ namespace Action.Manager
                 _LoadData();
             }
             else if (_gamePhase == eGamePhase.Defense)
+            {
                 _phaseStateMachine.ChangeState(_defenseState);
+                _LoadData();
+            }
+                
         }
 
         void _OnStartHuntPhase()

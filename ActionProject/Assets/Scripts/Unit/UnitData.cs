@@ -29,6 +29,7 @@ namespace Action.Units
     {
         public bool isBuilt;
         public int requireGold;
+        public int generateGold;
         public float attackDamage;
         public float attackSpeed;
         public float attackDistance;

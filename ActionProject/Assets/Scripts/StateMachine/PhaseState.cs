@@ -82,6 +82,7 @@ namespace Action.State
         {
             GameManager.Instance.EnemySpawners.Clear();
             GameManager.Instance.SetActiveDefenseSpawner(false);
+            GameManager.Instance.OnFinishLevel?.Invoke();
             base.ExitState();
         }
     }

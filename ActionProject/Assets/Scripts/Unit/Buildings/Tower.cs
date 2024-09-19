@@ -18,9 +18,6 @@ namespace Action.Units
 
         public override void Initialize()
         {
-            //if (_isActive)
-            //    return;
-
             base.Initialize();
             _SetUnitData();
             GameManager.Instance.OnRefresh.AddListener(_FindTarget);
@@ -95,16 +92,15 @@ namespace Action.Units
         protected override void Start()
         {
             base.Start();
-            //Initialize();
         }
 
         // Update is called once per frame
         protected override void Update()
         {
             base.Update();
-            //if (StateMachine.CurState == _doneState &&
-            //    _IsInDistance() && !_attackTime.IsStarted)
-            //    _Attack();
+            if (StateMachine.CurState == _doneState &&
+                _IsInDistance() && !_attackTime.IsStarted)
+                _Attack();
         }
     }
 }

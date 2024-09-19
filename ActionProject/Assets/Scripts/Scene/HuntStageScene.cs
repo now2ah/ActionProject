@@ -38,7 +38,7 @@ namespace Action.Scene
         void Start()
         {
             Initialize();
-            _startTimer.TickStart(3.0f);
+            _startTimer.TickStart(1.0f);
             //temp
             Manager.GameManager.Instance.CommanderUnit.ActivateAutoAttack(0);
         }
