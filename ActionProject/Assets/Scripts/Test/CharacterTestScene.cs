@@ -19,6 +19,7 @@ public class CharacterTestScene : MonoBehaviour
         {
             //GameManager.Instance.AddAllEnemySpawners();
             GameManager.Instance.CreateTestWave();
+            GameManager.Instance.CommanderUnit.ActivateAbility(Action.Enums.eAbility.PHYSICAL);
         }
         GUILayout.EndVertical();
     }

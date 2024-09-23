@@ -233,6 +233,7 @@ namespace Action.Manager
             switch (phase)
             {
                 case eGamePhase.TownBuild:
+                    
                     break;
 
                 case eGamePhase.Hunt:
@@ -355,66 +356,6 @@ namespace Action.Manager
         void _StartGameTimer()
         {
             _gameTimer.TickStart();
-        }
-
-        void _CheckPhaseTime()
-        {
-            UIManager.Instance.RefreshTownStageUI();
-
-            if (_phaseTimer.IsFinished && 
-                _phaseStateMachine.CurState != _defenseState)
-            {
-                if ((int)_gamePhase + 1 > 2)
-                    _gamePhase = 0;
-                else
-                    _gamePhase++;
-
-                _phaseTimer.ResetTimer();
-                ChangePhase(_gamePhase);
-                //StartPhase(_gamePhase);
-            }
-            else if(_phaseStateMachine.CurState == _defenseState)
-            {
-                if (_IsClearDefenseEnemies())
-                {
-                    if ((int)_gamePhase + 1 > 2)
-                        _gamePhase = 0;
-                    else
-                        _gamePhase++;
-
-                    _phaseTimer.ResetTimer();
-                    ChangePhase(_gamePhase);
-                }
-            }
-        }
-
-        void _CheckRefreshTime()
-        {
-            if (null != _refreshTimer)
-            {
-                if (_refreshTimer.IsFinished)
-                {
-                    _refreshTimer.ResetTimer();
-                    _StartRefreshTimer();
-                }
-            }
-        }
-
-        void _StartPhaseTimer(eGamePhase phase)
-        {
-            //Logger.Log(phase.ToString());
-            switch (phase)
-            {
-                case eGamePhase.TownBuild:
-                    _phaseTimer.TickStart(_townBuildPhaseTime);
-                    break;
-                case eGamePhase.Hunt:
-                    _phaseTimer.TickStart(_huntPhaseTime);
-                    break;
-                case eGamePhase.Defense:
-                    _phaseTimer.TickStart(_defensePhaseTime);
-                    break;
-            }
         }
 
         void _StartRefreshTimer()
@@ -591,7 +532,7 @@ namespace Action.Manager
             else if (_gamePhase == eGamePhase.Defense)
             {
                 _phaseStateMachine.ChangeState(_defenseState);
-                _LoadData();
+                //_LoadData();
             }
                 
         }
@@ -601,6 +542,65 @@ namespace Action.Manager
             _SaveData();
             _phaseStateMachine.ChangeState(_huntState);
         }
+
+        void _StartPhaseTimer(eGamePhase phase)
+        {
+            //Logger.Log(phase.ToString());
+            switch (phase)
+            {
+                case eGamePhase.TownBuild:
+                    _phaseTimer.TickStart(_townBuildPhaseTime);
+                    break;
+                case eGamePhase.Hunt:
+                    _phaseTimer.TickStart(_huntPhaseTime);
+                    break;
+                case eGamePhase.Defense:
+                    _phaseTimer.TickStart(_defensePhaseTime);
+                    break;
+            }
+        }
+
+        void _CheckPhaseTime()
+        {
+            UIManager.Instance.RefreshTownStageUI();
+
+            if (_phaseTimer.IsFinished &&
+                _phaseStateMachine.CurState != _defenseState)
+            {
+                if ((int)_gamePhase + 1 > 2)
+                    _gamePhase = 0;
+                else
+                    _gamePhase++;
+
+                _phaseTimer.ResetTimer();
+                ChangePhase(_gamePhase);
+                //StartPhase(_gamePhase);
+            }
+            else if (_IsClearDefenseEnemies() &&
+                _phaseStateMachine.CurState == _defenseState)
+            {
+                if ((int)_gamePhase + 1 > 2)
+                    _gamePhase = 0;
+                else
+                    _gamePhase++;
+
+                _phaseTimer.ResetTimer();
+                ChangePhase(_gamePhase);
+            }
+        }
+
+        void _CheckRefreshTime()
+        {
+            if (null != _refreshTimer)
+            {
+                if (_refreshTimer.IsFinished)
+                {
+                    _refreshTimer.ResetTimer();
+                    _StartRefreshTimer();
+                }
+            }
+        }
+
 
         private void Awake()
         {
