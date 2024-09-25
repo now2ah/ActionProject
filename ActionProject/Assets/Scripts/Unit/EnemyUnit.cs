@@ -197,6 +197,9 @@ namespace Action.Units
                 _GiveGold(EnemyUnitData.goldAmount);
                 //_GiveExp((PlayerUnit)damager, EnemyUnitData.expAmount);
             }
+            int randNum = Random.Range(0, 100);
+            if (randNum > 50)
+                _GenerateCoin();
         }
 
         protected void _DisableMove()
@@ -259,6 +262,13 @@ namespace Action.Units
 
             expOrb.transform.rotation = Quaternion.Euler(rotation);
             expOrb.transform.position = position;
+        }
+
+        protected void _GenerateCoin()
+        {
+            GameObject coinObj = Instantiate(GameManager.Instance.CoinPrefab, new Vector3(transform.position.x, (GameManager.Instance.Constants.HUNT_PROJECTILE_Y_POS) * 1.0f, transform.position.z), Quaternion.identity);
+            if (coinObj.TryGetComponent<Game.Coin>(out Game.Coin comp))
+                comp.Initialize(EnemyUnitData.goldAmount);
         }
 
         void _SetDefaultValue()

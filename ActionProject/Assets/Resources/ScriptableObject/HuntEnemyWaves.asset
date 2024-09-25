@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyWaveList:
   - enemyGroupList:
     - type: 0
-      enemyAmount: 1
+      enemyAmount: 5
   - enemyGroupList:
     - type: 0
       enemyAmount: 1

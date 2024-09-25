@@ -89,6 +89,7 @@ namespace Action.Manager
         GameObject _huntSpawner;
         GameObject _defenseStageSpawnerPrefab;
         GameObject _defenseSpawner;
+        GameObject _coinPrefab;
 
         [SerializeReference]
         GameData _gameData;
@@ -112,6 +113,7 @@ namespace Action.Manager
         public EnemyWaves EnemyWaves { get { return _enemyWaves; } }
         public EnemyWaves HuntEnemyWaves { get { return _huntEnemyWaves; } }
         public GameObject DefenseSpawner => _defenseSpawner;
+        public GameObject CoinPrefab => _coinPrefab;
         public GameObject HitBoxPrefab => _hitBoxPrefab;
         public GameObject HitEffectPrefab => _hitEffectPrefab;
         public Material HitMaterial => _hitMaterial;
@@ -343,6 +345,7 @@ namespace Action.Manager
             _buildingIndicatorPrefab = Resources.Load("Prefabs/Misc/ArrowIcon") as GameObject;
             _huntStageSpawnerPrefab = Resources.Load("Prefabs/Misc/HuntSpawner") as GameObject;
             _defenseStageSpawnerPrefab = Resources.Load("Prefabs/Misc/DefenseSpawner") as GameObject;
+            _coinPrefab = Resources.Load("Prefabs/Misc/Coin") as GameObject;
         }
 
         void _SetUpSpawners()
