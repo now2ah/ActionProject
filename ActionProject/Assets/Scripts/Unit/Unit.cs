@@ -74,9 +74,12 @@ namespace Action.Units
             if (_CheckDead())
                 return;
 
-            StopCoroutine("_ShowPanelForSeconds");
-            StartCoroutine(_ShowPanelForSeconds(1.5f));
-
+            if (this.gameObject != GameManager.Instance.CommanderObj)
+            {
+                StopCoroutine("_ShowPanelForSeconds");
+                StartCoroutine(_ShowPanelForSeconds(1.5f));
+            }
+            
             _unitData.hp -= msg.amount;
             _HitMaterialEffect();
             UnitPanel.ApplyHPValue(_unitData.hp, _unitData.maxHp);
@@ -142,7 +145,7 @@ namespace Action.Units
 
             if (_IsNearPlayerUnit())
                 _unitPanel.Show();
-            else if (_IsNearPlayerUnit() && !_isHit)
+            else if (!_IsNearPlayerUnit() && !_isHit)
                 _unitPanel.Hide();
         }
 

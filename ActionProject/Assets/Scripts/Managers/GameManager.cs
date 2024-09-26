@@ -253,8 +253,8 @@ namespace Action.Manager
             _gameData.curHuntWaveOrder++;
             if (_gameData.curHuntWaveOrder < waves.enemyWaveList.Count)
             {
-                for (int i = 0; i < _enemySpawners.Count; i++)
-                    StartCoroutine(_StartHuntWaveCoroutine(waves, _gameData.curHuntWaveOrder, timeRate, i));
+                int randNum = Random.Range(0, _enemySpawners.Count);
+                StartCoroutine(_StartHuntWaveCoroutine(waves, _gameData.curHuntWaveOrder, timeRate, randNum));
             }
         }
 

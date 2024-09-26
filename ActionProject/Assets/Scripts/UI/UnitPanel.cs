@@ -44,12 +44,13 @@ namespace Action.UI
 
         protected override void Update()
         {
+            if (_isVisible)
+                _FollowTargetPosition(_panelPosition);
         }
 
         private void FixedUpdate()
         {
-            if (_isVisible)
-                _FollowTargetPosition(_panelPosition);
+            
         }
     }
 

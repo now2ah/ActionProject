@@ -16,6 +16,3 @@ MonoBehaviour:
   - enemyGroupList:
     - type: 0
       enemyAmount: 5
-  - enemyGroupList:
-    - type: 0
-      enemyAmount: 1

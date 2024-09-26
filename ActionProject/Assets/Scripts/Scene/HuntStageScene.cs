@@ -18,13 +18,13 @@ namespace Action.Scene
         public void Initialize()
         {
             //GameManager.Instance.ChangePhase(eGamePhase.Hunt);
-            _stageSystem.Initialize(Manager.GameManager.Instance.CommanderUnit);
-            Manager.CameraManager.Instance.CreateFixedVirtualCamera();
+            _stageSystem.Initialize(GameManager.Instance.CommanderUnit);
+            CameraManager.Instance.CreateFixedVirtualCamera();
         }
 
         public void WaveStart()
         {
-            Manager.GameManager.Instance.StartWave(Manager.GameManager.Instance.HuntEnemyWaves, 1.5f);
+            GameManager.Instance.StartWave(GameManager.Instance.HuntEnemyWaves, 1.0f);
         }
 
         private void Awake()
