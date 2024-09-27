@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TowerStats
   m_EditorClassIdentifier: 
   unitName: Tower
-  maxHp: 100
+  maxHp: 300
   growthMaxHp: 0
   speed: 0
   requireGold: 5

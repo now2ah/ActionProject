@@ -15,7 +15,6 @@ namespace Action.Manager
         public UnityEvent OnInGameSceneLoaded;
         public UnityEvent OnHuntStageSceneLoaded;
 
-        GameObject _fadeUI;
         float _fadeSpeed;
 
         public override void Initialize()

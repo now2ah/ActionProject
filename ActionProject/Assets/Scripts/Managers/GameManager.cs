@@ -52,6 +52,7 @@ namespace Action.Manager
 
         public UnityEvent OnRefresh;
         public UnityEvent OnFinishLevel;
+        public UnityEvent OnDefenseDone;
 
         Vector3 _startPos;
         Vector3 _defenseSpawnPos;
@@ -138,7 +139,7 @@ namespace Action.Manager
             _phaseTimer = gameObject.AddComponent<ActionTime>();
             _refreshTimer = gameObject.AddComponent<ActionTime>();
             _startPos = new Vector3(-150.0f, 6.0f, -15.0f);
-            _defenseSpawnPos = new Vector3(0.0f, 7.5f, 0.0f);
+            _defenseSpawnPos = new Vector3(-50.0f, 7.5f, 0.0f);
             _enemySpawners = new List<Spawner>();
             _playerBuildingPrefabs = new List<GameObject>();
             _playerBuildings = new List<GameObject>();
@@ -152,6 +153,7 @@ namespace Action.Manager
 
             SceneManager.Instance.OnInGameSceneLoaded.AddListener(_OnStartInGamePhase);
             SceneManager.Instance.OnHuntStageSceneLoaded.AddListener(_OnStartHuntPhase);
+            OnDefenseDone.AddListener(_OnDefenseDone);
 
             _SetUpSpawners();
         }
@@ -201,7 +203,7 @@ namespace Action.Manager
             _StartRefreshTimer();
 
             _phaseStateMachine.Initialize(_townBuildState);
-            StartPhase(eGamePhase.TownBuild);
+            _StartPhaseTimer(eGamePhase.TownBuild);
             //StartWave(5, 1, 0);
         }
 
@@ -537,13 +539,24 @@ namespace Action.Manager
                 _phaseStateMachine.ChangeState(_defenseState);
                 //_LoadData();
             }
-                
         }
 
         void _OnStartHuntPhase()
         {
             _SaveData();
             _phaseStateMachine.ChangeState(_huntState);
+        }
+
+        void _OnDefenseDone()
+        {
+            if ((int)_gamePhase + 1 > 2)
+                _gamePhase = 0;
+            else
+                _gamePhase++;
+
+            _phaseTimer.ResetTimer();
+            ChangePhase(_gamePhase);
+            _phaseStateMachine.ChangeState(_townBuildState);
         }
 
         void _StartPhaseTimer(eGamePhase phase)
@@ -579,17 +592,6 @@ namespace Action.Manager
                 ChangePhase(_gamePhase);
                 //StartPhase(_gamePhase);
             }
-            else if (_IsClearDefenseEnemies() &&
-                _phaseStateMachine.CurState == _defenseState)
-            {
-                if ((int)_gamePhase + 1 > 2)
-                    _gamePhase = 0;
-                else
-                    _gamePhase++;
-
-                _phaseTimer.ResetTimer();
-                ChangePhase(_gamePhase);
-            }
         }
 
         void _CheckRefreshTime()
@@ -601,6 +603,15 @@ namespace Action.Manager
                     _refreshTimer.ResetTimer();
                     _StartRefreshTimer();
                 }
+            }
+        }
+
+        void _CheckDefenseDone()
+        {
+            if (_IsClearDefenseEnemies() &&
+                _phaseStateMachine.CurState == _defenseState)
+            {
+                OnDefenseDone?.Invoke();
             }
         }
 
@@ -621,6 +632,7 @@ namespace Action.Manager
             {
                 _CheckPhaseTime();
                 _CheckRefreshTime();
+                _CheckDefenseDone();
 
                 if (null != _phaseStateMachine)
                     _phaseStateMachine.Update();
