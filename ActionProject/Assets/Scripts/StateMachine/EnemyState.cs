@@ -20,6 +20,7 @@ namespace Action.State
         {
             if (null != _enemyUnit)
             {
+                _enemyUnit.ResetPath();
                 _enemyUnit.StopAgent();
                 _enemyUnit.FindNearestPlayerBuilding();
                 _enemyUnit.FindNearestTarget(true);
@@ -78,10 +79,7 @@ namespace Action.State
             {
                 _enemyUnit.Look(_enemyUnit.Target);
                 if (_enemyUnit.isTargetInDistance())
-                {
                     _enemyUnit.StateMachine.ChangeState(_enemyUnit.AttackState);
-                    _enemyUnit.StopMove();
-                }
             }
         }
     }
@@ -97,9 +95,9 @@ namespace Action.State
         {
             if (null != _enemyUnit)
             {
-                _enemyUnit.StopAgent();
+                _enemyUnit.Stop();
+                _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, false);
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashAttacking, true);
-                _enemyUnit.StopMove();
                 _enemyUnit.Look(_enemyUnit.Target);
             } 
         }
@@ -113,10 +111,6 @@ namespace Action.State
             base.UpdateState();
             if (null != _enemyUnit && null != _enemyUnit.Target)
             {
-                //Logger.Log("Attack Update");
-                _enemyUnit.StopAgent();
-                _enemyUnit.StopMove();
-
                 _enemyUnit.Look(_enemyUnit.Target);
 
                 if (!_enemyUnit.isAttackCooltime())
@@ -128,7 +122,6 @@ namespace Action.State
                     _enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
                 }
             }
-            //_enemyUnit.StateMachine.ChangeState(_enemyUnit.IdleState);
         }
     }
 
@@ -208,10 +201,7 @@ namespace Action.State
                 _enemyUnit.Look(_enemyUnit.Target);
                 //Logger.Log("Move Update");
                 if (_enemyUnit.isTargetInDistance())
-                {
                     _enemyUnit.StateMachine.ChangeState(_enemyUnit.AttackState);
-                    _enemyUnit.StopMove();
-                }
             }
         }
     }
@@ -228,9 +218,8 @@ namespace Action.State
             if (null != _enemyUnit)
             {
                 //Logger.Log("Attack Enter");
-                _enemyUnit.StopAgent();
+                _enemyUnit.Stop();
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashAttacking, true);
-                _enemyUnit.StopMove();
                 _enemyUnit.Look(_enemyUnit.Target);
             }
         }
@@ -245,10 +234,7 @@ namespace Action.State
             
             if (null != _enemyUnit && null != _enemyUnit.Target)
             {
-                //Logger.Log("Attack Update");
-                _enemyUnit.StopAgent();
-                _enemyUnit.StopMove();
-
+                _enemyUnit.Stop();
                 _enemyUnit.Look(_enemyUnit.Target);
 
                 if (!_enemyUnit.isAttackCooltime())

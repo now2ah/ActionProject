@@ -134,17 +134,24 @@ namespace Action.Units
         {
             if (null != _navMeshAgent)
             {
+                _navMeshAgent.velocity = Vector3.zero;
                 _navMeshAgent.isStopped = true;
                 _navMeshAgent.updateRotation = false;
             }
         }
 
-        public void StopMove()
+        public void ResetPath()
         {
             if (null != _navMeshAgent)
             {
                 _navMeshAgent.ResetPath();
             }
+        }
+
+        public void Stop()
+        {
+            StopAgent();
+            ResetPath();
         }
 
         public void SetDestination(Vector3 vec)
@@ -163,7 +170,15 @@ namespace Action.Units
             if (null != _navMeshAgent)
             {
                 _target = target;
-                _targetPos = target.transform.position;
+                if (_target.TryGetComponent<Building>(out Building comp))
+                {
+                    if (_target.TryGetComponent<Collider>(out Collider col))
+                    {
+                        _targetPos = col.bounds.ClosestPoint(transform.position);
+                    }
+                }
+                else
+                    _targetPos = target.transform.position;
                 _navMeshAgent.SetDestination(_targetPos);
             }
         }
@@ -174,14 +189,6 @@ namespace Action.Units
                 return;
 
             //SetDestinationToTarget(_target);
-        }
-
-        protected void _ResetTarget()
-        {
-            if (!_navMeshAgent.isStopped)
-                StopMove();
-
-            _target = null;
         }
 
         protected override void _Dead(Unit damager)
@@ -301,6 +308,8 @@ namespace Action.Units
             _enemyUnitData = new EnemyUnitData();
             _targetPos = Vector3.zero;
             _SetDefaultValue();
+            _navMeshAgent.acceleration = 60.0f;
+            _navMeshAgent.autoBraking = false;
         }
 
         protected override void Start()

@@ -86,12 +86,6 @@ namespace Action.Units
             }
         }
 
-        public void Stop(float stopTime, UnityAction action = null)
-        {
-            StopCoroutine("StopMoveCoroutine");
-            StartCoroutine(StopMoveCoroutine(stopTime, action));
-        }
-
         public bool isAttackCooltime()
         {
             if (Time.realtimeSinceStartup < _lastAttackTime + EnemyUnitData.attackSpeed)
@@ -102,20 +96,11 @@ namespace Action.Units
 
         public bool isTargetInDistance()
         {
-            float dist = Vector3.Distance(transform.position, _target.transform.position);
-            //Logger.Log(dist.ToString());
+            float dist = Vector3.Distance(transform.position, TargetPos);
             if (dist < EnemyUnitData.attackDistance)
                 return true;
             else
                 return false;
-        }
-
-        IEnumerator StopMoveCoroutine(float stopTime, UnityAction action = null)
-        {
-            _ResetTarget();
-            yield return new WaitForSeconds(stopTime);
-            if (null != action)
-                action.Invoke();
         }
 
         //private void OnCollisionStay(Collision col)
