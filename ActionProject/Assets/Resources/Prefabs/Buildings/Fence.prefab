@@ -28,6 +28,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1149311587965282840}
   - {fileID: 8629136755613482574}
   - {fileID: 1872011457660818310}
   - {fileID: 6929119288811675910}
@@ -42,7 +43,6 @@ Transform:
   - {fileID: 7160701732868410268}
   - {fileID: 1627352174828488259}
   - {fileID: 7445204815382223393}
-  - {fileID: 1149311587965282840}
   m_Father: {fileID: 1829198676882709378}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -700,6 +700,10 @@ PrefabInstance:
     - target: {fileID: 1828137249404456, guid: eb736a11e2ad7564eb316234731e2539, type: 3}
       propertyPath: m_Name
       value: Door
+      objectReference: {fileID: 0}
+    - target: {fileID: 1828137249404456, guid: eb736a11e2ad7564eb316234731e2539, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4865181551282092, guid: eb736a11e2ad7564eb316234731e2539, type: 3}
       propertyPath: m_RootOrder

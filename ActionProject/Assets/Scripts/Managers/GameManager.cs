@@ -81,6 +81,8 @@ namespace Action.Manager
         EnemyWaves _huntEnemyWaves;
         int _curHuntWaveOrder;
 
+        GameObject _waveCam;
+
         GameObject _hitBoxPrefab;
         GameObject _hitEffectPrefab;
         Material _hitMaterial;
@@ -262,6 +264,7 @@ namespace Action.Manager
 
         public void StartWave(List<GameObject> waves, float timeRate, Spawner spawner)
         {
+            UIManager.Instance.WaveCamUI.Show();
             StartCoroutine(_StartDefenseWaveCoroutine(waves, timeRate, spawner));
         }
 
@@ -523,6 +526,9 @@ namespace Action.Manager
 
         void _OnStartInGamePhase()
         {
+            //if (null == _waveCam)
+            //    FindFirstObjectByType<>
+
             if (!_isPlaying)
             {
                 GameStart();

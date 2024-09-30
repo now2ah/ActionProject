@@ -41,6 +41,9 @@ namespace Action.Manager
         GameObject _abilityUpgradePanel;
         AbilityUpgradeUI _abilityUpgradeUI;
         GameObject _pausePanel;
+        GameObject _waveCamPanel;
+        WaveCamUI _waveCamUI;
+
 
         public Canvas MainCanvas => _mainCanvas;
         public Canvas InGameCanvas => _inGameCanvas;
@@ -53,6 +56,8 @@ namespace Action.Manager
         public GameObject AbilityUpgradePanel { get { return _abilityUpgradePanel; } set { _abilityUpgradePanel = value; } }
         public AbilityUpgradeUI AbilityUpgradeUI { get { return _abilityUpgradeUI; } set { _abilityUpgradeUI = value; } }
         public GameObject PausePanel { get { return _pausePanel; } set { _pausePanel = value; } }
+        public GameObject WaveCamPanel { get { return _waveCamPanel; } set { _waveCamPanel = value; } }
+        public WaveCamUI WaveCamUI { get { return _waveCamUI; } set { _waveCamUI = value; } }
 
         public override void Initialize()
         {
@@ -73,6 +78,9 @@ namespace Action.Manager
             _abilityUpgradePanel = CreateUI("AbilityUpgradePanel", _mainCanvas);
             _abilityUpgradeUI = _abilityUpgradePanel.GetComponent<AbilityUpgradeUI>();
             _abilityUpgradeUI.Hide();
+            _waveCamPanel = CreateUI("WaveCamPanel", _mainCanvas);
+            _waveCamUI = _waveCamPanel.GetComponent<WaveCamUI>();
+            _waveCamUI.Hide();
         }
 
         public GameObject CreateUI(string name, Canvas canvas)

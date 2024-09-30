@@ -8,6 +8,7 @@ namespace Action.Units
     public class Fence : Building
     {
         UnitStatsSO _unitStats;
+        GameObject _gate;
 
         public override void Initialize()
         {
@@ -31,10 +32,16 @@ namespace Action.Units
             BuildingData.attackDistance = _unitStats.attackDistance;
         }
 
+        void _ControlGate(bool isOn)
+        {
+            _gate.SetActive(isOn);
+        }
+
         protected override void Awake()
         {
             base.Awake();
             _unitStats = Resources.Load("ScriptableObject/UnitStats/FenceStats") as UnitStatsSO;
+            _gate = transform.GetChild(0).GetChild(0).GetChild(1).gameObject;
         }
 
         // Start is called before the first frame update
@@ -48,6 +55,10 @@ namespace Action.Units
         protected override void Update()
         {
             base.Update();
+            if (BuildingData.isBuilt && _IsNearPlayerUnit())
+                _ControlGate(true);
+            else
+                _ControlGate(false);
         }
     }
 }
