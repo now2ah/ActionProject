@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Action;
 
 namespace Action.Units
 {
@@ -16,6 +17,7 @@ namespace Action.Units
     [System.Serializable]
     public class PlayerUnitData : UnitData
     {
+        public Enums.ePlayerType playerType;
         public float speed;
         public float attackDamage;
         public float growthAttackDamage;
@@ -45,6 +47,14 @@ namespace Action.Units
         public float attackDistance;
         public int expAmount;
         public int goldAmount;
+    }
+
+    [System.Serializable]
+    public class AbilityData
+    {
+        public bool isActivate;
+        public int level;
+        //pulbic 
     }
 }
 

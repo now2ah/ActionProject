@@ -14,6 +14,11 @@ namespace Action
             BOTH
         }
 
+        public enum ePlayerType
+        {
+            COMMANDER
+        }
+
         public enum eEnemyType
         {
             NORMAL,

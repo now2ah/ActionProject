@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -66,11 +67,11 @@ namespace Action.Manager
 
         List<Spawner> _enemySpawners;
 
-        List<GameObject> _playerBuildingPrefabs;
         List<GameObject> _playerBuildings;
 
         List<GameObject> _playerUnitPrefabs;
         List<GameObject> _playerUnits;
+        PlayerUnits _playerUnitsWrap;
 
         List<GameObject> _enemyUnitPrefabs;
         [SerializeReference]
@@ -143,7 +144,6 @@ namespace Action.Manager
             _startPos = new Vector3(-150.0f, 6.0f, -15.0f);
             _defenseSpawnPos = new Vector3(-50.0f, 7.5f, 0.0f);
             _enemySpawners = new List<Spawner>();
-            _playerBuildingPrefabs = new List<GameObject>();
             _playerBuildings = new List<GameObject>();
             _playerUnitPrefabs = new List<GameObject>();
             _playerUnits = new List<GameObject>();
@@ -498,22 +498,46 @@ namespace Action.Manager
 
         void _SaveData()
         {
-            string data = JsonParser.ObjectToJson(_gameData);
-            string path = Path.Combine(Application.dataPath, "autoSave");
+            string gameData = JsonParser.ObjectToJson(_gameData);
+            string gameDataPath = Path.Combine(Application.dataPath, "autoSaveGameData");
 
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            if (!Directory.Exists(gameDataPath))
+                Directory.CreateDirectory(gameDataPath);
 
-            JsonParser.CreateJsonFile(path, "autoSave", data);
+            JsonParser.CreateJsonFile(gameDataPath, "autoSaveGameData", gameData);
+
+
+            List<UnitData> playerUnits = new List<UnitData>();
+            foreach (var obj in _playerUnits)
+                playerUnits.Add(obj.GetComponent<PlayerUnit>().UnitData);
+            _playerUnitsWrap.playerUnits = playerUnits;
+            string unitData = JsonParser.ObjectToJson(_playerUnitsWrap);
+            string unitDataPath = Path.Combine(Application.dataPath, "autoSaveUnitData");
+
+            if (!Directory.Exists(unitDataPath))
+                Directory.CreateDirectory(unitDataPath);
+
+            JsonParser.CreateJsonFile(unitDataPath, "autoSaveUnitData", unitData);
         }
 
         void _LoadData()
         {
-            string path = Path.Combine(Application.dataPath, "autoSave");
+            string gameDataPath = Path.Combine(Application.dataPath, "autoSaveGameData");
 
-            if (!Directory.Exists(path))
+            if (!Directory.Exists(gameDataPath))
                 Logger.Log("file is not exist.");
-            _gameData = JsonParser.LoadJsonFile<GameData>(path, "autoSave");
+            _gameData = JsonParser.LoadJsonFile<GameData>(gameDataPath, "autoSaveGameData");
+
+
+            string unitDataPath = Path.Combine(Application.dataPath, "autoSaveUnitData");
+
+            if (!Directory.Exists(unitDataPath))
+                Logger.Log("file is not exist.");
+
+            _playerUnitsWrap = JsonParser.LoadJsonFile<PlayerUnits>(unitDataPath, "autoSaveUnitData");
+
+            //commander always comes first
+            _commanderUnit.UnitData = _playerUnitsWrap.playerUnits[0];
         }
 
         bool _IsClearDefenseEnemies()
