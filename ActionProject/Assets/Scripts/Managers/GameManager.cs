@@ -160,6 +160,19 @@ namespace Action.Manager
             _SetUpSpawners();
         }
 
+        public Data GetWrappedGameData()
+        {
+            Data data = new Data();
+            data.gameData = _gameData;
+            data.unitDatas = new List<UnitData>();
+            foreach (var unit in _playerUnits)
+            {
+                if (unit.TryGetComponent<Unit>(out Unit comp))
+                    data.unitDatas.Add(comp.UnitData); 
+            }
+            return data;
+        }
+
         public void Stop()
         {
             _isLive = false;

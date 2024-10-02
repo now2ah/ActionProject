@@ -30,7 +30,9 @@ namespace Action.UI
 
         void OnQuitButton()
         {
+            //Reset 구현필요
             SceneManager.Instance.LoadGameScene(1);
+            gameObject.SetActive(false);
         }
     }
 }

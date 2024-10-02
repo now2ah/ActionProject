@@ -43,6 +43,8 @@ namespace Action.Manager
         GameObject _pausePanel;
         GameObject _waveCamPanel;
         WaveCamUI _waveCamUI;
+        GameObject _saveLoadPanel;
+        SaveLoadUI _saveLoadUI;
 
 
         public Canvas MainCanvas => _mainCanvas;
@@ -58,6 +60,8 @@ namespace Action.Manager
         public GameObject PausePanel { get { return _pausePanel; } set { _pausePanel = value; } }
         public GameObject WaveCamPanel { get { return _waveCamPanel; } set { _waveCamPanel = value; } }
         public WaveCamUI WaveCamUI { get { return _waveCamUI; } set { _waveCamUI = value; } }
+        public GameObject SaveLoadPanel { get { return _saveLoadPanel; } set { _saveLoadPanel = value; } }
+        public SaveLoadUI SaveLoadUI { get { return _saveLoadUI; } set { _saveLoadUI = value; } }
 
         public override void Initialize()
         {
@@ -81,6 +85,9 @@ namespace Action.Manager
             _waveCamPanel = CreateUI("WaveCamPanel", _mainCanvas);
             _waveCamUI = _waveCamPanel.GetComponent<WaveCamUI>();
             _waveCamUI.Hide();
+            _saveLoadPanel = CreateUI("SaveLoadPanel", _mainCanvas);
+            _saveLoadUI = _saveLoadPanel.GetComponent<SaveLoadUI>();
+            _saveLoadUI.Hide();
         }
 
         public GameObject CreateUI(string name, Canvas canvas)
