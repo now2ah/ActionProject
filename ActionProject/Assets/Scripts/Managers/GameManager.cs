@@ -29,6 +29,7 @@ namespace Action.Manager
         bool _isLive;
         eGamePhase _gamePhase;
         bool _isPlaying;
+        bool _isPaused;
 
         Vector3 _startPosition;         //베이스 위치
         IEnumerator _waveStartCoroutine;
@@ -98,6 +99,7 @@ namespace Action.Manager
         [SerializeReference]
         GameData _gameData;
 
+        public bool IsPaused { get { return _isPaused; } set { _isPaused = value; } }
         public bool IsLive { get { return _isLive; } set { _isLive = value; } }
         public bool IsPlaying { get { return _isPlaying; } }
         public eGamePhase Phase => _gamePhase;
@@ -163,6 +165,7 @@ namespace Action.Manager
         public Data GetWrappedGameData()
         {
             Data data = new Data();
+            data.date = System.DateTime.Now.ToString();
             data.gameData = _gameData;
             data.unitDatas = new List<UnitData>();
             foreach (var unit in _playerUnits)
@@ -181,19 +184,22 @@ namespace Action.Manager
 
         public void Resume()
         {
+            _isPaused = false;
             _isLive = true;
             Time.timeScale = 1;
         }
 
         public void OnPause(InputAction.CallbackContext context)
         {
-            if (_isPlaying)
+            if (_isPlaying && !_isPaused)
             {
+                _isPaused = true;
                 Stop();
                 if (null == UIManager.Instance.PausePanel)
                     UIManager.Instance.PausePanel = UIManager.Instance.CreateUI("PausePanel", UIManager.Instance.MainCanvas);
 
                 UIManager.Instance.PausePanel.SetActive(true);
+                UIManager.Instance.PausePanel.transform.SetAsLastSibling();
             }
         }
 
@@ -338,6 +344,16 @@ namespace Action.Manager
             {
                 building.gameObject.SetActive(false);
             }
+        }
+
+        public void ResetGame()
+        {
+            _isLive = false;
+            _isPlaying = false;
+            _isPaused = false;
+            _gameTimer.ResetTimer();
+            _refreshTimer.ResetTimer();
+            _phaseTimer.ResetTimer();
         }
 
         Vector3 _FindBasePoint()
@@ -509,49 +525,49 @@ namespace Action.Manager
             }
         }
 
-        void _SaveData()
-        {
-            string gameData = JsonParser.ObjectToJson(_gameData);
-            string gameDataPath = Path.Combine(Application.dataPath, "autoSaveGameData");
+        //void _SaveData()
+        //{
+        //    string gameData = JsonParser.ObjectToJson(_gameData);
+        //    string gameDataPath = Path.Combine(Application.dataPath, "autoSaveGameData");
 
-            if (!Directory.Exists(gameDataPath))
-                Directory.CreateDirectory(gameDataPath);
+        //    if (!Directory.Exists(gameDataPath))
+        //        Directory.CreateDirectory(gameDataPath);
 
-            JsonParser.CreateJsonFile(gameDataPath, "autoSaveGameData", gameData);
-
-
-            List<UnitData> playerUnits = new List<UnitData>();
-            foreach (var obj in _playerUnits)
-                playerUnits.Add(obj.GetComponent<PlayerUnit>().UnitData);
-            _playerUnitsWrap.playerUnits = playerUnits;
-            string unitData = JsonParser.ObjectToJson(_playerUnitsWrap);
-            string unitDataPath = Path.Combine(Application.dataPath, "autoSaveUnitData");
-
-            if (!Directory.Exists(unitDataPath))
-                Directory.CreateDirectory(unitDataPath);
-
-            JsonParser.CreateJsonFile(unitDataPath, "autoSaveUnitData", unitData);
-        }
-
-        void _LoadData()
-        {
-            string gameDataPath = Path.Combine(Application.dataPath, "autoSaveGameData");
-
-            if (!Directory.Exists(gameDataPath))
-                Logger.Log("file is not exist.");
-            _gameData = JsonParser.LoadJsonFile<GameData>(gameDataPath, "autoSaveGameData");
+        //    JsonParser.CreateJsonFile(gameDataPath, "autoSaveGameData", gameData);
 
 
-            string unitDataPath = Path.Combine(Application.dataPath, "autoSaveUnitData");
+        //    List<UnitData> playerUnits = new List<UnitData>();
+        //    foreach (var obj in _playerUnits)
+        //        playerUnits.Add(obj.GetComponent<PlayerUnit>().UnitData);
+        //    _playerUnitsWrap.playerUnits = playerUnits;
+        //    string unitData = JsonParser.ObjectToJson(_playerUnitsWrap);
+        //    string unitDataPath = Path.Combine(Application.dataPath, "autoSaveUnitData");
 
-            if (!Directory.Exists(unitDataPath))
-                Logger.Log("file is not exist.");
+        //    if (!Directory.Exists(unitDataPath))
+        //        Directory.CreateDirectory(unitDataPath);
 
-            _playerUnitsWrap = JsonParser.LoadJsonFile<PlayerUnits>(unitDataPath, "autoSaveUnitData");
+        //    JsonParser.CreateJsonFile(unitDataPath, "autoSaveUnitData", unitData);
+        //}
 
-            //commander always comes first
-            _commanderUnit.UnitData = _playerUnitsWrap.playerUnits[0];
-        }
+        //void _LoadData()
+        //{
+        //    string gameDataPath = Path.Combine(Application.dataPath, "autoSaveGameData");
+
+        //    if (!Directory.Exists(gameDataPath))
+        //        Logger.Log("file is not exist.");
+        //    _gameData = JsonParser.LoadJsonFile<GameData>(gameDataPath, "autoSaveGameData");
+
+
+        //    string unitDataPath = Path.Combine(Application.dataPath, "autoSaveUnitData");
+
+        //    if (!Directory.Exists(unitDataPath))
+        //        Logger.Log("file is not exist.");
+
+        //    _playerUnitsWrap = JsonParser.LoadJsonFile<PlayerUnits>(unitDataPath, "autoSaveUnitData");
+
+        //    //commander always comes first
+        //    _commanderUnit.UnitData = _playerUnitsWrap.playerUnits[0];
+        //}
 
         bool _IsClearDefenseEnemies()
         {
@@ -575,7 +591,7 @@ namespace Action.Manager
             else if (_gamePhase == eGamePhase.TownBuild)
             {
                 _phaseStateMachine.ChangeState(_townBuildState);
-                _LoadData();
+                //_LoadData();
             }
             else if (_gamePhase == eGamePhase.Defense)
             {
@@ -586,7 +602,7 @@ namespace Action.Manager
 
         void _OnStartHuntPhase()
         {
-            _SaveData();
+            //_SaveData();
             _phaseStateMachine.ChangeState(_huntState);
         }
 

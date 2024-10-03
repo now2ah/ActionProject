@@ -23,20 +23,46 @@ namespace Action.UI
         Button[] _buttonSlots;
         TextMeshProUGUI[] _dataSlotText;
 
-        public override void Initialize()
+        public eMode Mode { get { return _mode; } set { _mode = value; } }
+
+        public void Initialize(eMode mode)
         {
-            base.Initialize();
-            _mode = eMode.NONE;
-            _titleText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+            _mode = mode;
+            if (null == _titleText)
+                _titleText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
             _buttonSlots = new Button[5];
+            _dataSlotText = new TextMeshProUGUI[5];
             for (int i=0; i<5; i++)
             {
-                _buttonSlots[i].onClick.AddListener(_OnClick(i));
-                _dataSlotText[i] = transform.GetChild(2).GetChild(i).GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
+                _buttonSlots[i] = transform.GetChild(1).GetChild(i).GetChild(0).GetComponent<Button>();
+                //_buttonSlots[i].onClick.AddListener(_OnClick(i));
+                _dataSlotText[i] = transform.GetChild(1).GetChild(i).GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
+            }
+            _buttonSlots[0].onClick.AddListener(() => _OnClick(0));
+            _buttonSlots[1].onClick.AddListener(() => _OnClick(1));
+            _buttonSlots[2].onClick.AddListener(() => _OnClick(2));
+            _buttonSlots[3].onClick.AddListener(() => _OnClick(3));
+            _buttonSlots[4].onClick.AddListener(() => _OnClick(4));
+
+            if (mode == eMode.SAVE)
+            {
+                _titleText.text = "Select Save data slot";
+            }
+            else if (mode == eMode.LOAD)
+            {
+                _titleText.text = "Select Load data slot";
+            }
+
+            SaveSystem.Instance.LoadSourceData();
+
+            for(int i=0; i<5; i++)
+            {
+                if (null != SaveSystem.Instance.DataSlots[i])
+                    _dataSlotText[i].text = SaveSystem.Instance.DataSlots[i].date;
             }
         }
 
-        UnityAction _OnClick(int num)
+        void _OnClick(int num)
         {
             Logger.Log("SaveLoad : " + num);
             if (eMode.LOAD == _mode)
@@ -48,7 +74,6 @@ namespace Action.UI
                 SaveSystem.Instance.Save(num, GameManager.Instance.GetWrappedGameData());
             }
             gameObject.SetActive(false);
-            return null;
         }
 
         protected override void Awake()
