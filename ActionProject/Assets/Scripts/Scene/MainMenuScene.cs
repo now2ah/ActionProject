@@ -39,8 +39,9 @@ namespace Action.Scene
             _continueButton = _mainMenuPanel.transform.GetChild(1).GetComponent<Button>();
             _continueButton.onClick.AddListener(() =>
             {
+                UIManager.Instance.SaveLoadUI.Initialize(UI.SaveLoadUI.eMode.LOAD);
                 UIManager.Instance.SaveLoadUI.Show();
-                UIManager.Instance.SaveLoadPanel.transform.SetAsFirstSibling();
+                UIManager.Instance.SaveLoadPanel.transform.SetAsLastSibling();
             });
             if (SaveSystem.Instance.HasSaveData())
                 _continueButton.gameObject.SetActive(true);

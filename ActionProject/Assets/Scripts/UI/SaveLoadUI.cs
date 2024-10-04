@@ -22,6 +22,7 @@ namespace Action.UI
         TextMeshProUGUI _titleText;
         Button[] _buttonSlots;
         TextMeshProUGUI[] _dataSlotText;
+        Button _cancelButton;
 
         public eMode Mode { get { return _mode; } set { _mode = value; } }
 
@@ -32,6 +33,7 @@ namespace Action.UI
                 _titleText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
             _buttonSlots = new Button[5];
             _dataSlotText = new TextMeshProUGUI[5];
+            _cancelButton = transform.GetChild(2).GetComponent<Button>();
             for (int i=0; i<5; i++)
             {
                 _buttonSlots[i] = transform.GetChild(1).GetChild(i).GetChild(0).GetComponent<Button>();
@@ -43,6 +45,12 @@ namespace Action.UI
             _buttonSlots[2].onClick.AddListener(() => _OnClick(2));
             _buttonSlots[3].onClick.AddListener(() => _OnClick(3));
             _buttonSlots[4].onClick.AddListener(() => _OnClick(4));
+            _cancelButton.onClick.AddListener(() =>
+            {
+                gameObject.SetActive(false);
+                if (GameManager.Instance.IsPaused)
+                    GameManager.Instance.Resume();
+            });
 
             if (mode == eMode.SAVE)
             {
@@ -55,11 +63,7 @@ namespace Action.UI
 
             SaveSystem.Instance.LoadSourceData();
 
-            for(int i=0; i<5; i++)
-            {
-                if (null != SaveSystem.Instance.DataSlots[i])
-                    _dataSlotText[i].text = SaveSystem.Instance.DataSlots[i].date;
-            }
+            _RefreshSlotText();
         }
 
         void _OnClick(int num)
@@ -74,6 +78,20 @@ namespace Action.UI
                 SaveSystem.Instance.Save(num, GameManager.Instance.GetWrappedGameData());
             }
             gameObject.SetActive(false);
+
+            _RefreshSlotText();
+
+            if (GameManager.Instance.IsPaused)
+                GameManager.Instance.Resume();
+        }
+
+        void _RefreshSlotText()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (null != SaveSystem.Instance.DataSlots[i])
+                    _dataSlotText[i].text = SaveSystem.Instance.DataSlots[i].date;
+            }
         }
 
         protected override void Awake()

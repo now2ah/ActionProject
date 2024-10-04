@@ -45,7 +45,7 @@ public class SaveSystem : Singleton<SaveSystem>
         return dataSlots[index] != null;
     }
 
-    public Data Load(int slotNum)
+    public void Load(int slotNum)
     {
         //string dataPath = Path.Combine(Application.dataPath, "GameData" + slotNum);
 
@@ -53,8 +53,10 @@ public class SaveSystem : Singleton<SaveSystem>
         //    Logger.Log("file is not exist.");
 
         //Data data = JsonParser.LoadJsonFile<Data>(dataPath, "GameData" + slotNum);
-        
-        return dataSlots[slotNum];
+        Data data = dataSlots[slotNum];
+        GameManager.Instance.GameData = data.gameData;
+        GameManager.Instance.UnitDatas = data.unitDatas;
+        SceneManager.Instance.LoadGameScene(2);
     }
 
     public void Save(int slotNum, Data data)
@@ -76,7 +78,7 @@ public class SaveSystem : Singleton<SaveSystem>
         string dataPath = Path.Combine(Application.dataPath, "SaveData");
         string dataFilePath = Path.Combine(dataPath, "SaveData.json");
 
-        if (!Directory.Exists(dataPath) || !Directory.Exists(dataFilePath))    //data가 없으면 경우 추가
+        if (!Directory.Exists(dataPath) || !File.Exists(dataFilePath))    //data가 없으면 경우 추가
         {
             Directory.CreateDirectory(dataPath);
             WrapData emptyWrapData = new WrapData();
@@ -93,6 +95,7 @@ public class SaveSystem : Singleton<SaveSystem>
         dataSlots = data.dataSlots;
     }
 
+    //json 저장에서 resource 배열 저장 포맷 문제
     public void SaveSourceData()
     {
         WrapData data = new WrapData();

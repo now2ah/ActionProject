@@ -96,8 +96,8 @@ namespace Action.Manager
         GameObject _defenseSpawner;
         GameObject _coinPrefab;
 
-        [SerializeReference]
         GameData _gameData;
+        List<UnitData> _unitDatas;
 
         public bool IsPaused { get { return _isPaused; } set { _isPaused = value; } }
         public bool IsLive { get { return _isLive; } set { _isLive = value; } }
@@ -125,7 +125,8 @@ namespace Action.Manager
         public Material HitMaterial => _hitMaterial;
         public GameObject ProjectilePrefab => _projectilePrefab;
         public GameObject BuildingIndicatorPrefab => _buildingIndicatorPrefab;
-        public GameData GameData => _gameData;
+        public GameData GameData { get { return _gameData; } set { _gameData = value; } }
+        public List<UnitData> UnitDatas { get { return _unitDatas; } set { _unitDatas = value; } }
 
         public override void Initialize()
         {
@@ -442,6 +443,8 @@ namespace Action.Manager
                 }
                 _commanderUnitObj = Instantiate(_commanderPrefab, startPos, Quaternion.identity);
                 _commanderUnit = _commanderUnitObj.GetComponent<Commander>();
+                if (null != _unitDatas)
+                    _commanderUnit.UnitData = _unitDatas[0];
                 _playerUnits.Add(_commanderUnitObj);
             }
         }
@@ -506,6 +509,7 @@ namespace Action.Manager
         void _SetBuildingData()
         {
             Building[] buildings = FindObjectsByType<Building>(FindObjectsSortMode.None);
+
             for (int i = 0; i < buildings.Length; i++)
             {
                 string buildingName = buildings[i].name;
@@ -513,13 +517,16 @@ namespace Action.Manager
                 switch(buildingName)
                 {
                     case "Tower_Base_North":
-                        _gameData.towerBaseN = buildings[i].BuildingData;
+                        if (null == _gameData.towerBaseN)
+                            _gameData.towerBaseN = buildings[i].BuildingData;
                         break;
                     case "Tower_Base_South":
-                        _gameData.towerBaseS = buildings[i].BuildingData;
+                        if (null == _gameData.towerBaseS)
+                            _gameData.towerBaseS = buildings[i].BuildingData;
                         break;
                     case "Fence":
-                        _gameData.fence = buildings[i].BuildingData;
+                        if (null == _gameData.fence)
+                            _gameData.fence = buildings[i].BuildingData;
                         break;
                 }
             }
@@ -581,6 +588,8 @@ namespace Action.Manager
         {
             //if (null == _waveCam)
             //    FindFirstObjectByType<>
+            if (!_isLive)
+                _isLive = true;
 
             if (!_isPlaying)
             {
