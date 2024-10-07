@@ -55,7 +55,7 @@ namespace Action.Units
         {
             base.Initialize();
             _SetUnitData();
-            SetNameUI(UnitName);
+            SetNameUI(UnitData.name);
             UnitPanel.Show();
             _indicator = Instantiate(GameManager.Instance.BuildingIndicatorPrefab);
             _indicator.transform.SetParent(transform);
@@ -343,7 +343,7 @@ namespace Action.Units
                 PlayerUnitData.growthAttackDamage = _unitStats.growthAttackDamage;
                 PlayerUnitData.level = 1;
                 PlayerUnitData.exp = 0;
-                PlayerUnitData.nextExp = 50;
+                PlayerUnitData.nextExp = _unitStats.nextExp;
             }
         }
 

@@ -8,7 +8,10 @@ namespace Action.UI
 {
     public class ControlUI : InGameTargetUI
     {
+        ePanelPosition _panelPosition;
         protected bool _isChild = false;
+
+        public ePanelPosition PanelPosition { get { return _panelPosition; } set { _panelPosition = value; } }
 
         public override void SetParent(Transform tr)
         {
@@ -20,6 +23,7 @@ namespace Action.UI
         public override void Initialize(GameObject target, string name = "default")
         {
             base.Initialize(target, name);
+            _panelPosition = ePanelPosition.TOP;
         }
 
         protected override void Awake()
@@ -42,7 +46,9 @@ namespace Action.UI
         protected void FixedUpdate()
         {
             if (!_isChild)
-                _FollowTargetPosition(ePanelPosition.TOP);
+                _FollowTargetPosition(_panelPosition);
+
+            
         }
     }
 }

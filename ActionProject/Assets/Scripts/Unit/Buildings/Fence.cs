@@ -19,6 +19,8 @@ namespace Action.Units
             _SetUnitData();
             Manager.GameManager.Instance.SetBuildingData(this.name);
             RequireTextUI.Text.text = BuildingData.requireGold.ToString();
+            UnitPanel.PanelPosition = UI.ePanelPosition.CENTER;
+            ControlUI.PanelPosition = UI.ePanelPosition.CENTER;
         }
 
         void _SetUnitData()
@@ -43,6 +45,7 @@ namespace Action.Units
             base.Awake();
             _unitStats = Resources.Load("ScriptableObject/UnitStats/FenceStats") as UnitStatsSO;
             _gate = transform.GetChild(0).GetChild(0).GetChild(1).gameObject;
+            
         }
 
         // Start is called before the first frame update
@@ -57,9 +60,9 @@ namespace Action.Units
         {
             base.Update();
             if (BuildingData.isBuilt && _IsNearPlayerUnit())
-                _ControlGate(true);
-            else
                 _ControlGate(false);
+            else
+                _ControlGate(true);
         }
     }
 }

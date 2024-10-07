@@ -40,13 +40,13 @@ namespace Action.Scene
             Initialize();
             _startTimer.TickStart(1.0f);
             //temp
-            Manager.GameManager.Instance.CommanderUnit.ActivateAutoAttack(0);
+            GameManager.Instance.CommanderUnit.ActivateAutoAttack(0);
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (!Manager.GameManager.Instance.IsLive)
+            if (!GameManager.Instance.IsLive)
                 return;
 
             if (_startTimer.IsFinished && !_isStart)

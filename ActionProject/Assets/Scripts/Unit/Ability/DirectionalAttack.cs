@@ -11,6 +11,11 @@ namespace Action.Game
     {
         AbilityItemSO _abilityItem;
 
+        public override void Initialize()
+        {
+            base.Initialize();
+        }
+
         public override void Activate(bool isOn)
         {
             base.Activate(isOn);

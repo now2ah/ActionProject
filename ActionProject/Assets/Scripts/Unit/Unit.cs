@@ -18,11 +18,6 @@ namespace Action.Units
 
         UnitData _unitData;
 
-        [SerializeReference]
-        float _maxHp;
-        float _growthHp;
-        string _unitName;
-
         bool _isHit;
         float _infoActiveDistant;
 
@@ -33,7 +28,6 @@ namespace Action.Units
 
         public GameObject UnitPanelObject { get { return _unitPanelObject; } set { _unitPanelObject = value; } }
         public UnitPanel UnitPanel { get { return _unitPanel; } set { _unitPanel = value; } }
-        public string UnitName { get { return _unitName; } set { _unitName = value; } }
         public Collider UnitCollider { get { return _unitCollider; } set { _unitCollider = value; } }
         public MeshRenderer UnitMeshRenderer { get { return _unitMeshRenderer; } set { _unitMeshRenderer = value; } }
         public SkinnedMeshRenderer UnitSkinnedMeshRenderer { get { return _unitSkinnedMeshRenderer; } set { _unitSkinnedMeshRenderer = value; } }
@@ -181,7 +175,7 @@ namespace Action.Units
 
         protected virtual void Update()
         {
-            if (!Manager.GameManager.Instance.IsLive)
+            if (!GameManager.Instance.IsLive)
                 return;
 
             _VisualizeUnitPanel();

@@ -44,7 +44,7 @@ namespace Action.Units
             _animHashAttacking = Animator.StringToHash("IsAttacking");
             _animHashSpeed = Animator.StringToHash("Speed");
 
-            SetNameUI(UnitName);
+            SetNameUI(UnitData.name);
             StateMachine.Initialize(_idleState);
         }
 

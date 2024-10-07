@@ -15,6 +15,10 @@ namespace Action.Scene
         {
             UIManager.Instance.Initialize();
             SceneManager.Instance.Initialize();
+            CameraManager.Instance.Initialize();
+            InputManager.Instance.Initialize();
+            GameManager.Instance.Initialize();
+            SaveSystem.Instance.Initialize();
         }
 
         IEnumerator IntroCoroutine()

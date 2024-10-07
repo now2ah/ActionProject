@@ -20,6 +20,7 @@ namespace Action.State
 
         public override void ExitState()
         {
+            GameManager.Instance.CheckConstructBuilding();
             foreach (var buildings in GameManager.Instance.PlayerBuildings)
                 buildings.SetActive(false);
             base.ExitState();
@@ -31,6 +32,7 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
+
             GameManager.Instance.AddHuntSpawner();
             GameManager.Instance.SetActiveHuntSpawner(true);
             GameManager.Instance.CommanderUnit.SetEnableAutoAttacks(true);

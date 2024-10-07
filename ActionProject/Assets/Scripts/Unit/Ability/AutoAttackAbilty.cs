@@ -15,6 +15,11 @@ namespace Action.Game
         public float AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
         public ActionTime AttackTimer { get { return _attackTime; } set { _attackTime = value; } }
 
+        public override void Initialize()
+        {
+            base.Initialize();
+        }
+
         protected virtual void _AutoAttack()
         {
 

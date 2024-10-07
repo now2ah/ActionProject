@@ -10,8 +10,11 @@ namespace Action.Manager
     {
         GameObject _mainCameraObj;
         MainCamera _mainCamera;
+        Cinemachine.CinemachineVirtualCameraBase _mainMenuVCam;
+        GameObject _mainMenuVCamObj;
         GameObject _fixedVCamObj;
         FixedVirtualCamera _fixedVCam;
+        
 
         float _vCamOffsetY;
         float _vCamOffsetZ;
@@ -32,16 +35,30 @@ namespace Action.Manager
             _vCamFov = GameManager.Instance.Constants.GAMECAMERA_FOV;
         }
 
+        public void CreateMainMenuVirtualCamera()
+        {
+            if (null == _mainMenuVCamObj)
+            {
+                _mainMenuVCamObj = new GameObject("VirtualCamera");
+                _mainMenuVCam = _mainCameraObj.AddComponent<Cinemachine.CinemachineVirtualCameraBase>();
+                _mainMenuVCamObj.transform.position = new Vector3(-110, 30, 0);
+                _mainMenuVCamObj.transform.rotation = Quaternion.Euler(40, 90, 0);
+            }
+        }
+
         public void CreateFixedVirtualCamera()
         {
-            _fixedVCamObj = new GameObject("VirtualCamera");
-            _fixedVCam = _fixedVCamObj.AddComponent<FixedVirtualCamera>();
-            _fixedVCam.Initialize();
-            _fixedVCam.SetBodyOffset(new Vector3(0.0f, _vCamOffsetY, _vCamOffsetZ));
-            _fixedVCam.SetFov(GameManager.Instance.Constants.GAMECAMERA_FOV);
+            if (null == _fixedVCamObj)
+            {
+                _fixedVCamObj = new GameObject("VirtualCamera");
+                _fixedVCam = _fixedVCamObj.AddComponent<FixedVirtualCamera>();
+                _fixedVCam.Initialize();
+                _fixedVCam.SetBodyOffset(new Vector3(0.0f, _vCamOffsetY, _vCamOffsetZ));
+                _fixedVCam.SetFov(GameManager.Instance.Constants.GAMECAMERA_FOV);
 
-            if (null == _fixedVCam.GetTarget())
-                _fixedVCam.SetTarget(GameManager.Instance.CommanderObj.transform);
+                if (null == _fixedVCam.GetTarget())
+                    _fixedVCam.SetTarget(GameManager.Instance.CommanderObj.transform);
+            }
         }
 
         public void SetVCamOffset(float offsetY, float offsetZ)

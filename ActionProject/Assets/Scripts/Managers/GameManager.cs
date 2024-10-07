@@ -68,6 +68,7 @@ namespace Action.Manager
 
         List<Spawner> _enemySpawners;
 
+        [SerializeReference]
         List<GameObject> _playerBuildings;
 
         List<GameObject> _playerUnitPrefabs;
@@ -218,10 +219,6 @@ namespace Action.Manager
 
             _CreateCommanderUnit();
             _AddBuildings();
-
-            UIManager.Instance.ExpPanel.SetActive(true);
-            UIManager.Instance.ExpBarUI.ApplyExpValue(_commanderUnit.PlayerUnitData.exp, _commanderUnit.PlayerUnitData.nextExp);
-
             _PrepareResource();
 
             _StartGameTimer();
@@ -262,7 +259,7 @@ namespace Action.Manager
             switch (phase)
             {
                 case eGamePhase.TownBuild:
-                    
+
                     break;
 
                 case eGamePhase.Hunt:
@@ -280,8 +277,7 @@ namespace Action.Manager
             _gameData.curHuntWaveOrder++;
             if (_gameData.curHuntWaveOrder < waves.enemyWaveList.Count)
             {
-                int randNum = Random.Range(0, _enemySpawners.Count);
-                StartCoroutine(_StartHuntWaveCoroutine(waves, _gameData.curHuntWaveOrder, timeRate, randNum));
+                StartCoroutine(_StartHuntWaveCoroutine(waves, _gameData.curHuntWaveOrder, timeRate));
             }
         }
 
@@ -367,6 +363,8 @@ namespace Action.Manager
             _gameTimer.ResetTimer();
             _refreshTimer.ResetTimer();
             _phaseTimer.ResetTimer();
+            UIManager.Instance.TownStagePanel.Hide();
+            UIManager.Instance.ExpBarUI.Hide();
         }
 
         public void SetBuildingData(string buildingName)
@@ -401,6 +399,21 @@ namespace Action.Manager
                         if (null == _gameData.barrack)
                             _gameData.barrack = buildings[i].BuildingData;
                         break;
+                }
+            }
+        }
+
+        public void CheckConstructBuilding()
+        {
+            foreach (var building in _playerBuildings)
+            {
+                if (building.TryGetComponent<Building>(out Building comp))
+                {
+                    if (comp.PrepareState == comp.StateMachine.CurState)
+                    {
+                        comp.StateMachine.ChangeState(comp.IdleState);
+                        _gameData.resource.Gold += comp.BuildingData.requireGold;
+                    }
                 }
             }
         }
@@ -487,30 +500,62 @@ namespace Action.Manager
             InputManager.Instance.AddListeners(_commanderUnit);
         }
 
-        IEnumerator _StartHuntWaveCoroutine(EnemyWaves waves, int order, float timeRate, int spawnerIndex)
+        IEnumerator _StartHuntWaveCoroutine(EnemyWaves waves, int order, float timeRate)
         {
             if (0 < _enemySpawners.Count)
             {
-                foreach (var item in waves.enemyWaveList[order].enemyGroupList)
+                int[] enemyCounts = new int[waves.enemyWaveList[order].enemyGroupList.Count];
+                for (int i=0; i< waves.enemyWaveList[order].enemyGroupList.Count; i++)
+                    enemyCounts[i] = waves.enemyWaveList[order].enemyGroupList[i].enemyAmount;
+                int allEnemyCount = 0;
+                foreach (var num in enemyCounts)
+                    allEnemyCount += num;
+
+                while (0 < allEnemyCount)
                 {
-                    int count = item.enemyAmount;
-                    while (count > 0)
+                    int enemyRandNum = Random.Range(0, waves.enemyWaveList[order].enemyGroupList.Count);
+                    GameObject obj = PoolManager.Instance.GetEnemyPool(waves.enemyWaveList[order].enemyGroupList[enemyRandNum].type).GetNew().gameObject;
+
+                    if (obj.TryGetComponent<Unit>(out Unit comp))
                     {
-                        GameObject obj = PoolManager.Instance.GetEnemyPool(item.type).GetNew().gameObject;
-                        if (obj.TryGetComponent<Unit>(out Unit comp))
-                        {
-                            comp.Initialize();
-                            comp.UnitPanel.ApplyHPValue(comp.UnitData.hp, comp.UnitData.maxHp);
-                        }
-
-                        _enemyUnits.Add(obj);
-
-                        _enemySpawners[spawnerIndex].SpawnObject(obj);
-
-                        count--;
-                        yield return new WaitForSeconds(timeRate);
+                        comp.Initialize();
+                        comp.UnitPanel.ApplyHPValue(comp.UnitData.hp, comp.UnitData.maxHp);
                     }
+
+                    _enemyUnits.Add(obj);
+
+                    int spawnerRandNum = Random.Range(0, _enemySpawners.Count);
+                    _enemySpawners[spawnerRandNum].SpawnObject(obj);
+
+                    enemyCounts[enemyRandNum]--;
+
+                    foreach (var num in enemyCounts)
+                        allEnemyCount += num;
+
+                    yield return new WaitForSeconds(timeRate);
                 }
+
+                //foreach (var item in waves.enemyWaveList[order].enemyGroupList)
+                //{
+                //    int count = item.enemyAmount;
+                //    while (count > 0)
+                //    {
+                //        GameObject obj = PoolManager.Instance.GetEnemyPool(item.type).GetNew().gameObject;
+                //        int randNum = Random.Range(0, _enemySpawners.Count);
+                //        if (obj.TryGetComponent<Unit>(out Unit comp))
+                //        {
+                //            comp.Initialize();
+                //            comp.UnitPanel.ApplyHPValue(comp.UnitData.hp, comp.UnitData.maxHp);
+                //        }
+
+                //        _enemyUnits.Add(obj);
+
+                //        _enemySpawners[randNum].SpawnObject(obj);
+
+                //        count--;
+                //        yield return new WaitForSeconds(timeRate);
+                //    }
+                //}
             }
         }
 
@@ -603,6 +648,9 @@ namespace Action.Manager
                 GameStart();
                 CameraManager.Instance.CreateFixedVirtualCamera();
                 UIManager.Instance.CreateTownStagePanel();
+                UIManager.Instance.TownStagePanel.Show();
+                UIManager.Instance.ExpBarUI.Show();
+                UIManager.Instance.ExpBarUI.ApplyExpValue(_commanderUnit.PlayerUnitData.exp, _commanderUnit.PlayerUnitData.nextExp);
             }
             else if (_gamePhase == eGamePhase.TownBuild)
             {

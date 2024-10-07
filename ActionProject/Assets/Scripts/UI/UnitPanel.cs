@@ -26,7 +26,7 @@ namespace Action.UI
             _fillimage = transform.GetChild(0).transform.GetComponent<Image>();
             _fillimage.type = Image.Type.Filled;
             _textMesh = transform.GetChild(2).transform.GetComponent<TextMeshProUGUI>();
-            _textMesh.text = _unit.UnitName;
+            _textMesh.text = _unit.UnitData.name;
             _panelPosition = ePanelPosition.BOTTOM;
             
             ApplyHPValue(_unit.UnitData.hp, _unit.UnitData.maxHp); //default hp

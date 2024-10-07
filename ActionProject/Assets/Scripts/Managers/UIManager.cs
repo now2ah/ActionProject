@@ -53,6 +53,7 @@ namespace Action.Manager
         public GameObject DamagedEffectPanel => _damagedEffectPanel;
         public bool IsShowUnitPanel { get { return _isShowUnitPanel; } set { _isShowUnitPanel = value; } }
         public GameObject TownStageUI { get { return _townStageUI; } set { _townStageUI = value; } }
+        public TownStagePanel TownStagePanel { get { return _townStagePanel; } set { _townStagePanel = value; } }
         public GameObject ExpPanel { get { return _expPanel; } set { _expPanel = value; } }
         public ExpBarUI ExpBarUI { get { return _expBarUI; } set { _expBarUI = value; } }
         public GameObject AbilityUpgradePanel { get { return _abilityUpgradePanel; } set { _abilityUpgradePanel = value; } }
@@ -151,9 +152,12 @@ namespace Action.Manager
 
         public void CreateTownStagePanel()
         {
-            _townStageUI = CreateUI("TownStagePanel", UIManager.Instance.MainCanvas);
-            _townStagePanel = _townStageUI.GetComponent<TownStagePanel>();
-            _townStagePanel.RefreshResource();
+            if (null == _townStageUI)
+            {
+                _townStageUI = CreateUI("TownStagePanel", UIManager.Instance.MainCanvas);
+                _townStagePanel = _townStageUI.GetComponent<TownStagePanel>();
+                _townStagePanel.RefreshResource();
+            }
         }
 
         public void RefreshTownStageUI()

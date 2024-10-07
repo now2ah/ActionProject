@@ -19,17 +19,9 @@ namespace Action.Scene
             SceneManager.Instance.LoadGameScene(2);
         }
 
-        void _InitializeSingletons()
-        {
-            CameraManager.Instance.Initialize();
-            InputManager.Instance.Initialize();
-            GameManager.Instance.Initialize();
-            SaveSystem.Instance.Initialize();
-        }
-
         void Start()
         {
-            _InitializeSingletons();
+            CameraManager.Instance.CreateMainMenuVirtualCamera();
 
             _mainMenuPanel = UIManager.Instance.CreateUI("MainMenuPanel", UIManager.Instance.MainCanvas);
             _titleText = _mainMenuPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>();

@@ -7,7 +7,7 @@ using TMPro;
 
 namespace Action.UI
 {
-    public class TownStagePanel : MonoBehaviour
+    public class TownStagePanel : UI
     {
         GameObject _goldPanel;
         GameObject _foodPanel;
@@ -20,8 +20,9 @@ namespace Action.UI
         TextMeshProUGUI _ironText;
         TextMeshProUGUI _timerText;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _goldPanel = transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
             _foodPanel = transform.GetChild(0).GetChild(0).GetChild(1).gameObject;
             _woodPanel = transform.GetChild(0).GetChild(0).GetChild(2).gameObject;

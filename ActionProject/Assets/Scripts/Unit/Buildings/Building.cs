@@ -171,6 +171,10 @@ namespace Action.Units
         protected override void Update()
         {
             base.Update();
+
+            if (!GameManager.Instance.IsLive)
+                return;
+
             _CheckCommander();
         }
     }

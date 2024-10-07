@@ -25,6 +25,11 @@ namespace Action.Game
         public string Description { get { return _description; } set { _description = value; } }
         public Commander Commander { get { return _commander; } set { _commander = value; } }
 
+        public virtual void Initialize()
+        {
+
+        }
+
         public virtual void LevelUp(int level)
         {
         }
@@ -44,7 +49,7 @@ namespace Action.Game
         // Start is called before the first frame update
         protected virtual void Start()
         {
-
+            Initialize();
         }
 
         // Update is called once per frame

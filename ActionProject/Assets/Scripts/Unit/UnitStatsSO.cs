@@ -20,6 +20,7 @@ namespace Action.SO
         public float attackDistance;
         public int expAmount;
         public int goldAmount;
+        public int nextExp;
     }
 
 }

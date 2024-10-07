@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 7825658878657986790}
   - component: {fileID: 7411182530081218676}
   - component: {fileID: 2402532711145044561}
+  - component: {fileID: 8243791242693434141}
+  - component: {fileID: 3315258141739460309}
   m_Layer: 5
   m_Name: WaveCamPanel
   m_TagString: Untagged
@@ -86,3 +88,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 316d49c4c03021b4ea8432fdf2a53a38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8243791242693434141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8772208372238736831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 5, y: -5}
+  m_UseGraphicAlpha: 1
+--- !u!114 &3315258141739460309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8772208372238736831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
