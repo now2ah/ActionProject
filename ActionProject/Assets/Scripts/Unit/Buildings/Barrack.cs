@@ -13,14 +13,15 @@ namespace Action.Units
         {
             base.Initialize();
             _SetUnitData();
+            Manager.GameManager.Instance.SetBuildingData(this.name);
             RequireTextUI.Text.text = BuildingData.requireGold.ToString();
         }
 
         void _SetUnitData()
         {
-            UnitData.name = _unitStats.unitName;
-            UnitData.hp = _unitStats.maxHp;
-            UnitData.maxHp = _unitStats.maxHp;
+            BuildingData.name = _unitStats.unitName;
+            BuildingData.hp = _unitStats.maxHp;
+            BuildingData.maxHp = _unitStats.maxHp;
             BuildingData.requireGold = _unitStats.requireGold;
             BuildingData.constructTime = _unitStats.constructTime;
         }

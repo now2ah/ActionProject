@@ -10,9 +10,13 @@ namespace Action.Manager
     public class GameData
     {
         public int curHuntWaveOrder;
+        public List<PlayerUnitData> unitData;
+        public BuildingData playerBase;
         public BuildingData towerBaseN;
         public BuildingData towerBaseS;
         public BuildingData fence;
+        public BuildingData house;
+        public BuildingData barrack;
         public Resource resource;
     }
 }

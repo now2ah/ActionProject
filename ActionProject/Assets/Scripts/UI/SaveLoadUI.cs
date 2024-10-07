@@ -80,9 +80,6 @@ namespace Action.UI
             gameObject.SetActive(false);
 
             _RefreshSlotText();
-
-            if (GameManager.Instance.IsPaused)
-                GameManager.Instance.Resume();
         }
 
         void _RefreshSlotText()

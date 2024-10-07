@@ -74,7 +74,7 @@ namespace Action.Util
             _isFinished = false;
         }
         // Update is called once per frame
-        void FixedUpdate()
+        void Update()
         {
             if (!Manager.GameManager.Instance.IsLive)
                 return;

@@ -97,7 +97,7 @@ namespace Action.Manager
         GameObject _coinPrefab;
 
         GameData _gameData;
-        List<UnitData> _unitDatas;
+        List<PlayerUnitData> _unitDatas;
 
         public bool IsPaused { get { return _isPaused; } set { _isPaused = value; } }
         public bool IsLive { get { return _isLive; } set { _isLive = value; } }
@@ -126,7 +126,7 @@ namespace Action.Manager
         public GameObject ProjectilePrefab => _projectilePrefab;
         public GameObject BuildingIndicatorPrefab => _buildingIndicatorPrefab;
         public GameData GameData { get { return _gameData; } set { _gameData = value; } }
-        public List<UnitData> UnitDatas { get { return _unitDatas; } set { _unitDatas = value; } }
+        public List<PlayerUnitData> UnitDatas { get { return _unitDatas; } set { _unitDatas = value; } }
 
         public override void Initialize()
         {
@@ -168,12 +168,6 @@ namespace Action.Manager
             Data data = new Data();
             data.date = System.DateTime.Now.ToString();
             data.gameData = _gameData;
-            data.unitDatas = new List<UnitData>();
-            foreach (var unit in _playerUnits)
-            {
-                if (unit.TryGetComponent<Unit>(out Unit comp))
-                    data.unitDatas.Add(comp.UnitData); 
-            }
             return data;
         }
 
@@ -187,6 +181,7 @@ namespace Action.Manager
         {
             _isPaused = false;
             _isLive = true;
+            _isPlaying = true;
             Time.timeScale = 1;
         }
 
@@ -195,6 +190,7 @@ namespace Action.Manager
             if (_isPlaying && !_isPaused)
             {
                 _isPaused = true;
+                _isPlaying = false;
                 Stop();
                 if (null == UIManager.Instance.PausePanel)
                     UIManager.Instance.PausePanel = UIManager.Instance.CreateUI("PausePanel", UIManager.Instance.MainCanvas);
@@ -206,15 +202,22 @@ namespace Action.Manager
 
         public void GameStart()
         {
+            if (!_isLive)
+                _isLive = true;
+
             _isPlaying = true;
-            _startPosition = _FindBasePoint();
+
+            if (null == _gameData)
+            {
+                _gameData = new GameData();
+                _gameData.unitData = new List<PlayerUnitData>();
+                _gameData.curHuntWaveOrder = -1;
+            }
 
             PoolManager.Instance.Initialize();
 
-            _CreateStartBase();
             _CreateCommanderUnit();
             _AddBuildings();
-            _SetBuildingData();
 
             UIManager.Instance.ExpPanel.SetActive(true);
             UIManager.Instance.ExpBarUI.ApplyExpValue(_commanderUnit.PlayerUnitData.exp, _commanderUnit.PlayerUnitData.nextExp);
@@ -352,18 +355,54 @@ namespace Action.Manager
             _isLive = false;
             _isPlaying = false;
             _isPaused = false;
+            _gameData = null;
+            if (null != _commanderUnit)
+            {
+                InputManager.Instance.RemoveListeners(_commanderUnit);
+                Destroy(_commanderUnit.gameObject);
+                _commanderUnit = null;
+            }
+            foreach (var building in _playerBuildings)
+                building.SetActive(false);
             _gameTimer.ResetTimer();
             _refreshTimer.ResetTimer();
             _phaseTimer.ResetTimer();
         }
 
-        Vector3 _FindBasePoint()
+        public void SetBuildingData(string buildingName)
         {
-            GameObject obj = GameObject.FindWithTag("StartingBasePoint");
-            if (null == obj)
-                return Vector3.zero;
-            else
-                return obj.transform.position;
+            Building[] buildings = FindObjectsByType<Building>(FindObjectsSortMode.None);
+
+            for (int i = 0; i < buildings.Length; i++)
+            {
+                switch (buildingName)
+                {
+                    case "PlayerBase":
+                        if (null == _gameData.playerBase)
+                            _gameData.playerBase = buildings[i].BuildingData;
+                        break;
+                    case "Tower_Base_North":
+                        if (null == _gameData.towerBaseN)
+                            _gameData.towerBaseN = buildings[i].BuildingData;
+                        break;
+                    case "Tower_Base_South":
+                        if (null == _gameData.towerBaseS)
+                            _gameData.towerBaseS = buildings[i].BuildingData;
+                        break;
+                    case "Fence":
+                        if (null == _gameData.fence)
+                            _gameData.fence = buildings[i].BuildingData;
+                        break;
+                    case "House":
+                        if (null == _gameData.house)
+                            _gameData.house = buildings[i].BuildingData;
+                        break;
+                    case "Barrack":
+                        if (null == _gameData.barrack)
+                            _gameData.barrack = buildings[i].BuildingData;
+                        break;
+                }
+            }
         }
 
         void _LoadAssets()
@@ -405,48 +444,47 @@ namespace Action.Manager
             }
         }
 
-        void _CreateStartBase()
-        {
-            if (null == _playerBase)
-            {
-                _playerBase = Instantiate(_playerBasePrefab, _startPosition, Quaternion.identity);
-                _playerBuildings.Add(_playerBase);
-            }
-        }
-
         void _AddBuildings()
         {
-            GameObject obj = new GameObject("Buildings");
-            obj.transform.SetParent(gameObject.transform);
-            Building[] buildings = FindObjectsByType<Building>(FindObjectsSortMode.None);
-            foreach (var building in buildings)
+            if (0 < _playerBuildings.Count)
             {
-                _playerBuildings.Add(building.gameObject);
-                building.transform.SetParent(obj.transform);
+                foreach (var building in _playerBuildings)
+                    building.SetActive(true);
+            }
+            else
+            {
+                GameObject obj = new GameObject("Buildings");
+                obj.transform.SetParent(gameObject.transform);
+                Building[] buildings = FindObjectsByType<Building>(FindObjectsSortMode.None);
+                foreach (var building in buildings)
+                {
+                    _playerBuildings.Add(building.gameObject);
+                    building.transform.SetParent(obj.transform);
+                    if ("PlayerBase" == building.name)
+                        _playerBase = building.gameObject;
+                }
             }
         }
 
         void _CreateCommanderUnit()
         {
-            if (null == _commanderUnitObj)
+            Vector3 startPos = new Vector3(-150.0f, 6.0f, -10.0f);
+            _commanderUnitObj = Instantiate(_commanderPrefab, startPos, Quaternion.identity);
+            _commanderUnit = _commanderUnitObj.GetComponent<Commander>();
+            _playerUnits.Add(_commanderUnitObj);
+
+            if (null != _gameData.unitData)
             {
-                Vector3 startPos = Vector3.zero;
-                if (null != _playerBase)
+                foreach (var data in _gameData.unitData)
                 {
-                    //임시 베이스 사이즈 계산식(에셋 적용 후 변경)
-                    float baseExtentsZ = 0.0f;
-                    if (_playerBase.gameObject.TryGetComponent<BoxCollider>(out BoxCollider comp))
+                    if (Enums.ePlayerType.COMMANDER == data.playerType)
                     {
-                        baseExtentsZ = comp.size.z + 5.0f;     //임시
+                        _commanderUnit.UnitData = data;
+                        break;
                     }
-                    startPos = _playerBase.gameObject.transform.position + new Vector3(0.0f, Constants.GROUND_Y_POS, /*-(baseExtentsZ + 1.0f)*/ -20.0f);
                 }
-                _commanderUnitObj = Instantiate(_commanderPrefab, startPos, Quaternion.identity);
-                _commanderUnit = _commanderUnitObj.GetComponent<Commander>();
-                if (null != _unitDatas)
-                    _commanderUnit.UnitData = _unitDatas[0];
-                _playerUnits.Add(_commanderUnitObj);
             }
+            InputManager.Instance.AddListeners(_commanderUnit);
         }
 
         IEnumerator _StartHuntWaveCoroutine(EnemyWaves waves, int order, float timeRate, int spawnerIndex)
@@ -506,32 +544,6 @@ namespace Action.Manager
             }
         }
 
-        void _SetBuildingData()
-        {
-            Building[] buildings = FindObjectsByType<Building>(FindObjectsSortMode.None);
-
-            for (int i = 0; i < buildings.Length; i++)
-            {
-                string buildingName = buildings[i].name;
-
-                switch(buildingName)
-                {
-                    case "Tower_Base_North":
-                        if (null == _gameData.towerBaseN)
-                            _gameData.towerBaseN = buildings[i].BuildingData;
-                        break;
-                    case "Tower_Base_South":
-                        if (null == _gameData.towerBaseS)
-                            _gameData.towerBaseS = buildings[i].BuildingData;
-                        break;
-                    case "Fence":
-                        if (null == _gameData.fence)
-                            _gameData.fence = buildings[i].BuildingData;
-                        break;
-                }
-            }
-        }
-
         //void _SaveData()
         //{
         //    string gameData = JsonParser.ObjectToJson(_gameData);
@@ -586,11 +598,6 @@ namespace Action.Manager
 
         void _OnStartInGamePhase()
         {
-            //if (null == _waveCam)
-            //    FindFirstObjectByType<>
-            if (!_isLive)
-                _isLive = true;
-
             if (!_isPlaying)
             {
                 GameStart();
@@ -687,8 +694,6 @@ namespace Action.Manager
         private void Awake()
         {
             _isLive = true;
-            _gameData = new GameData();
-            _gameData.curHuntWaveOrder = -1;
         }
 
         private void Update()

@@ -6,7 +6,6 @@ TagManager:
   tags:
   - PlayerObject
   - EnemyObject
-  - StartingBasePoint
   - DefenseSpawnerPoint
   layers:
   - Default

@@ -69,6 +69,9 @@ namespace Action.Units
             _autoAttackSlots = new AutoAttackAbility[GameManager.Instance.Constants.AUTOATTACK_TYPE_COUNT];
             _SetAbilities();
             _SetAutoAttackAbilities();
+
+            GameManager.Instance.GameData.unitData.Add(PlayerUnitData);
+
             DontDestroyOnLoad(this);
         }
 
@@ -153,20 +156,18 @@ namespace Action.Units
             
         }
 
-        void OnMousePosition(InputAction.CallbackContext context)
+        public void OnMousePosition(InputAction.CallbackContext context)
         {
-            Vector3 camPos = CameraManager.Instance.MainCamera.Camera.WorldToScreenPoint(transform.position);
-            _lookInput = context.ReadValue<Vector2>();
-            _lookPos = CameraManager.Instance.MainCamera.Camera.ScreenToWorldPoint(new Vector3(_lookInput.x, _lookInput.y, camPos.z));
+            _CheckMousePosition(context.ReadValue<Vector2>());
         }
 
-        void OnClick(InputAction.CallbackContext context)
+        public void OnClick(InputAction.CallbackContext context)
         {
             Vector3 dir = _lookPos - transform.position;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir.normalized), 0.15f);
         }
 
-        void OnMove(InputAction.CallbackContext context)
+        public void OnMove(InputAction.CallbackContext context)
         {
             if (!_isAttacking)
             {
@@ -175,20 +176,20 @@ namespace Action.Units
             }
         }
 
-        void OnMoveCanceled(InputAction.CallbackContext context)
+        public void OnMoveCanceled(InputAction.CallbackContext context)
         {
             if (!_isAttacking)
                 StateMachine.ChangeState(_idleState);
             //inputVector = Vector3.zero;
         }
 
-        void OnActionPressed(InputAction.CallbackContext context)
+        public void OnActionPressed(InputAction.CallbackContext context)
         {
             if (context.performed)
                 Interact();
         }
 
-        void OnPhysicalAttackPressed(InputAction.CallbackContext context)
+        public void OnPhysicalAttackPressed(InputAction.CallbackContext context)
         {
             if (_abilitySlots[(int)Enums.eAbility.PHYSICAL].IsActivated &&
                 context.performed)
@@ -202,13 +203,20 @@ namespace Action.Units
             }
         }
 
-        void OnTeleport(InputAction.CallbackContext context)
+        public void OnTeleport(InputAction.CallbackContext context)
         {
             if (!_dashTimer.IsStarted)
             {
                 _Dash();
                 _dashTimer.TickStart(_dashCooltime);
             }
+        }
+
+        void _CheckMousePosition(Vector2 lookInput)
+        {
+            Vector3 camPos = CameraManager.Instance.MainCamera.Camera.WorldToScreenPoint(this.transform.position);
+            _lookInput = lookInput;
+            _lookPos = CameraManager.Instance.MainCamera.Camera.ScreenToWorldPoint(new Vector3(_lookInput.x, _lookInput.y, camPos.z));
         }
 
         void _CheckClick()
@@ -304,16 +312,63 @@ namespace Action.Units
 
         void _SetUnitData()
         {
-            UnitData.name = _unitStats.unitName;
-            UnitData.hp = _unitStats.maxHp;
-            UnitData.maxHp = _unitStats.maxHp;
-            UnitData.growthHp = _unitStats.growthMaxHp;
-            PlayerUnitData.speed = _unitStats.speed;
-            PlayerUnitData.attackDamage = _unitStats.attackDamage;
-            PlayerUnitData.growthAttackDamage = _unitStats.growthAttackDamage;
-            PlayerUnitData.level = 1;
-            PlayerUnitData.exp = 0;
-            PlayerUnitData.nextExp = 50;
+            if (0 < GameManager.Instance.GameData.unitData.Count)
+            {
+                foreach (var data in GameManager.Instance.GameData.unitData)
+                {
+                    if (Enums.ePlayerType.COMMANDER == data.playerType)
+                    {
+                        UnitData.name = data.name;
+                        UnitData.hp = data.maxHp;
+                        UnitData.maxHp = data.maxHp;
+                        UnitData.growthHp = data.maxHp;
+                        PlayerUnitData.speed = data.speed;
+                        PlayerUnitData.attackDamage = data.attackDamage;
+                        PlayerUnitData.growthAttackDamage = data.growthAttackDamage;
+                        PlayerUnitData.level = data.level;
+                        PlayerUnitData.exp = data.exp;
+                        PlayerUnitData.nextExp = data.nextExp;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                UnitData.name = _unitStats.unitName;
+                UnitData.hp = _unitStats.maxHp;
+                UnitData.maxHp = _unitStats.maxHp;
+                UnitData.growthHp = _unitStats.growthMaxHp;
+                PlayerUnitData.speed = _unitStats.speed;
+                PlayerUnitData.attackDamage = _unitStats.attackDamage;
+                PlayerUnitData.growthAttackDamage = _unitStats.growthAttackDamage;
+                PlayerUnitData.level = 1;
+                PlayerUnitData.exp = 0;
+                PlayerUnitData.nextExp = 50;
+            }
+        }
+
+        void _AddListener()
+        {
+            InputManager.Instance.MousePosition.performed += ctx => { OnMousePosition(ctx); };
+            InputManager.Instance.Click.performed += ctx => { OnClick(ctx); };
+            InputManager.Instance.Move.performed += ctx => { OnMove(ctx); };
+            InputManager.Instance.Move.canceled += ctx => { OnMoveCanceled(ctx); };
+            InputManager.Instance.Action.performed += ctx => { OnActionPressed(ctx); };
+            InputManager.Instance.PhysicalAttack.performed += ctx => { OnPhysicalAttackPressed(ctx); };
+            InputManager.Instance.Teleport.performed += ctx => { OnTeleport(ctx); };
+            InputManager.Instance.SetActiveActions(true);
+        }
+
+        void _RemoveListener()
+        {
+            InputManager.Instance.MousePosition.performed -= OnMousePosition;
+            InputManager.Instance.Click.performed -= OnClick;
+            InputManager.Instance.Move.performed -= OnMove;
+            InputManager.Instance.Move.canceled -= OnMoveCanceled;
+            InputManager.Instance.Action.performed -= OnActionPressed;
+            InputManager.Instance.PhysicalAttack.performed -= OnPhysicalAttackPressed;
+            InputManager.Instance.Teleport.performed -= OnTeleport;
+            InputManager.Instance.SetActiveActions(false);
         }
 
         protected override void Awake()
@@ -331,13 +386,7 @@ namespace Action.Units
         {
             base.Start();
             //Initialize();
-            InputManager.Instance.MousePosition.performed += ctx => { OnMousePosition(ctx); };
-            InputManager.Instance.Click.performed += ctx => { OnClick(ctx); };
-            InputManager.Instance.Move.performed += ctx => { OnMove(ctx); };
-            InputManager.Instance.Move.canceled += ctx => { OnMoveCanceled(ctx); };
-            InputManager.Instance.Action.performed += ctx => { OnActionPressed(ctx); };
-            InputManager.Instance.PhysicalAttack.performed += ctx => { OnPhysicalAttackPressed(ctx); };
-            InputManager.Instance.Teleport.performed += ctx => { OnTeleport(ctx); };
+            
             _idleState = new CommanderIdleState(this);
             _moveState = new CommanderMoveState(this);
             _attackState = new CommanderAttackState(this);
@@ -350,6 +399,16 @@ namespace Action.Units
             base.Update();
             _CheckUnableInteractBuilding();
             _CheckClick();
+        }
+
+        protected void OnEnable()
+        {
+            //_AddListener();
+        }
+
+        protected void OnDisable()
+        {
+            //_RemoveListener();
         }
     }
 }

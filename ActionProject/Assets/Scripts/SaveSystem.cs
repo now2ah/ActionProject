@@ -11,7 +11,6 @@ public class Data
 {
     public string date; 
     public GameData gameData;
-    public List<UnitData> unitDatas;
 }
 
 [System.Serializable]
@@ -53,9 +52,12 @@ public class SaveSystem : Singleton<SaveSystem>
         //    Logger.Log("file is not exist.");
 
         //Data data = JsonParser.LoadJsonFile<Data>(dataPath, "GameData" + slotNum);
+        GameManager.Instance.ResetGame();
+
         Data data = dataSlots[slotNum];
         GameManager.Instance.GameData = data.gameData;
-        GameManager.Instance.UnitDatas = data.unitDatas;
+        GameManager.Instance.UnitDatas = data.gameData.unitData;
+        
         SceneManager.Instance.LoadGameScene(2);
     }
 

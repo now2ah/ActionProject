@@ -256,7 +256,7 @@ namespace Action.Units
 
         protected void _GiveGold(int gold)
         {
-            GameManager.Instance.GameData.resource.Resources[(int)Game.eResource.GOLD] += gold;
+            GameManager.Instance.GameData.resource.Gold += gold;
         }
 
         protected void _GenerateExpOrb()

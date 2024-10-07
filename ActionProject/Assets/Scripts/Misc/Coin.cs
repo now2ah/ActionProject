@@ -21,7 +21,7 @@ namespace Action.Game
             {
                 if (other.TryGetComponent<Units.Commander>(out Units.Commander comp))
                 {
-                    Manager.GameManager.Instance.GameData.resource.Resources[(int)eResource.GOLD] += _gold;
+                    Manager.GameManager.Instance.GameData.resource.Gold += _gold;
                     Destroy(gameObject);
                 }
             }

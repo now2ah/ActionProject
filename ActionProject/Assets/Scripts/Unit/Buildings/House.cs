@@ -16,15 +16,16 @@ namespace Action.Units
         {
             base.Initialize();
             _SetUnitData();
+            GameManager.Instance.SetBuildingData(this.name);
             RequireTextUI.Text.text = BuildingData.requireGold.ToString();
             GameManager.Instance.OnFinishLevel.AddListener(_GenerateGold);
         }
 
         void _SetUnitData()
         {
-            UnitData.name = _unitStats.unitName;
-            UnitData.hp = _unitStats.maxHp;
-            UnitData.maxHp = _unitStats.maxHp;
+            BuildingData.name = _unitStats.unitName;
+            BuildingData.hp = _unitStats.maxHp;
+            BuildingData.maxHp = _unitStats.maxHp;
             BuildingData.requireGold = _unitStats.requireGold;
             BuildingData.generateGold = _unitStats.generateGold;
             BuildingData.constructTime = _unitStats.constructTime;
@@ -32,7 +33,7 @@ namespace Action.Units
 
         void _GenerateGold()
         {
-            GameManager.Instance.GameData.resource.Resources[(int)Game.eResource.GOLD] += BuildingData.generateGold;
+            GameManager.Instance.GameData.resource.Gold += BuildingData.generateGold;
             _CreateFloatingUI(BuildingData.generateGold);
         }
 

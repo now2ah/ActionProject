@@ -63,10 +63,17 @@ namespace Action.Units
             _idleState = new PlayerBuildingIdleState(this);
             _prepareState = new PlayerBuildingPrepareState(this);
             _doneState = new PlayerBuildingDoneState(this);
-            _buildingData = new BuildingData();
-            _buildingData.isBuilt = false;
+            if (null == _buildingData)
+            {
+                _buildingData = new BuildingData();
+                _buildingData.isBuilt = false;
+            }
 
-            StateMachine.Initialize(_idleState);
+            if (!_buildingData.isBuilt)
+                StateMachine.Initialize(_idleState);
+            else
+                StateMachine.Initialize(_doneState);
+
             _activeDistance = GameManager.Instance.Constants.INGAMEUI_VISIBLE_DISTANT;
             _indicatorPos = transform.position + new Vector3(0, GetComponent<Collider>().bounds.size.y, 0);
         }
