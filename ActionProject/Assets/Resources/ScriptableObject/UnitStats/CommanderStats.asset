@@ -13,9 +13,16 @@ MonoBehaviour:
   m_Name: CommanderStats
   m_EditorClassIdentifier: 
   unitName: Commander
-  maxHp: 150
+  maxHp: 200
+  growthMaxHp: 10
   speed: 5
+  requireGold: 0
+  generateGold: 0
   constructTime: 0
   attackDamage: 20
+  growthAttackDamage: 0
   attackSpeed: 2
   attackDistance: 0
+  expAmount: 0
+  goldAmount: 0
+  nextExp: 50

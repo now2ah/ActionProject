@@ -37,7 +37,6 @@ namespace Action.Units
         int _animHashAttacking;
 
         Ability[] _abilitySlots;
-        AutoAttackAbility[] _autoAttackSlots;
 
         public UnityAction OnDamaged;
         public UnityEvent<int, int> OnGainExp;
@@ -66,12 +65,15 @@ namespace Action.Units
             OnGainExp.AddListener(UIManager.Instance.ExpBarUI.ApplyExpValue);
             OnLevelUp.AddListener(UIManager.Instance.AbilityUpgradeUI.Initialize);
             _abilitySlots = new Ability[GameManager.Instance.Constants.ABILITY_COUNT];
-            _autoAttackSlots = new AutoAttackAbility[GameManager.Instance.Constants.AUTOATTACK_TYPE_COUNT];
             _SetAbilities();
-            _SetAutoAttackAbilities();
+            _abilitySlots[(int)Enums.eAbility.PHYSICAL].LevelUp(1);
+            ActivateAbility(Enums.eAbility.PHYSICAL);
+            _abilitySlots[(int)Enums.eAbility.DIRECTIONAL].LevelUp(1);
+            ActivateAbility(Enums.eAbility.DIRECTIONAL);
+            SetEnableAutoAttacks(false);
 
             GameManager.Instance.GameData.unitData.Add(PlayerUnitData);
-
+            
             DontDestroyOnLoad(this);
         }
 
@@ -119,12 +121,6 @@ namespace Action.Units
                 _abilitySlots[(int)ability].Activate(true);
         }
 
-        public void ActivateAutoAttack(int index)
-        {
-            if (_autoAttackSlots.Length > 0)
-                _autoAttackSlots[index].Activate(true);
-        }
-
         public override void GainExp(int exp)
         {
             base.GainExp(exp);
@@ -142,18 +138,17 @@ namespace Action.Units
         {
             if (false == isOn)
             {
-                foreach (var autoattack in _autoAttackSlots)
-                    autoattack.Activate(isOn);
+                foreach (var autoAttack in _abilitySlots)
+                    autoAttack.Activate(isOn);
             }
             else if (true == isOn)
             {
-                foreach (var autoattack in _autoAttackSlots)
+                foreach (var autoAttack in _abilitySlots)
                 {
-                    if (0 < autoattack.Level)
-                        autoattack.Activate(isOn);
+                    if (0 < autoAttack.abilityData.level)
+                        autoAttack.Activate(isOn);
                 }
             }
-            
         }
 
         public void OnMousePosition(InputAction.CallbackContext context)
@@ -191,16 +186,8 @@ namespace Action.Units
 
         public void OnPhysicalAttackPressed(InputAction.CallbackContext context)
         {
-            if (_abilitySlots[(int)Enums.eAbility.PHYSICAL].IsActivated &&
-                context.performed)
-            {
-                PhysicalAttack ability = _abilitySlots[(int)Enums.eAbility.PHYSICAL] as PhysicalAttack;
-                if (!ability.Timer.IsStarted)
-                {
-                    PhysicalAttack();
-                    ability.Timer.TickStart(ability.CoolTime);
-                }
-            }
+            if (context.performed)
+                _PhysicalAttackCheck();
         }
 
         public void OnTeleport(InputAction.CallbackContext context)
@@ -209,6 +196,19 @@ namespace Action.Units
             {
                 _Dash();
                 _dashTimer.TickStart(_dashCooltime);
+            }
+        }
+
+        void _PhysicalAttackCheck()
+        {
+            if (_abilitySlots[(int)Enums.eAbility.PHYSICAL].abilityData.isActivated)
+            {
+                PhysicalAttack ability = _abilitySlots[(int)Enums.eAbility.PHYSICAL] as PhysicalAttack;
+                if (!ability.Timer.IsStarted)
+                {
+                    PhysicalAttack();
+                    ability.Timer.TickStart(ability.abilityData.attackSpeed);
+                }
             }
         }
 
@@ -267,26 +267,23 @@ namespace Action.Units
         void _SetAbilities()
         {
             PhysicalAttack physical = gameObject.AddComponent<PhysicalAttack>();
+            physical.Initialize();
             _abilitySlots[0] = physical;
             DirectionalAttack directional = gameObject.AddComponent<DirectionalAttack>();
+            directional.Initialize();
             _abilitySlots[1] = directional;
             GuidanceAttack guidance = gameObject.AddComponent<GuidanceAttack>();
+            guidance.Initialize();
             _abilitySlots[2] = guidance;
             DamageUpAbility damageUp = gameObject.AddComponent<DamageUpAbility>();
+            damageUp.Initialize();
             _abilitySlots[3] = damageUp;
             HPUpAbility hpUp = gameObject.AddComponent<HPUpAbility>();
+            hpUp.Initialize();
             _abilitySlots[4] = hpUp;
             SpeedUpAbility speedUpAbility = gameObject.AddComponent<SpeedUpAbility>();
+            speedUpAbility.Initialize();
             _abilitySlots[5] = speedUpAbility;
-        }
-
-        void _SetAutoAttackAbilities()
-        {
-            //test
-            DirectionalAttack directional = gameObject.AddComponent<DirectionalAttack>();
-            _autoAttackSlots[0] = directional;
-            GuidanceAttack guidance = gameObject.AddComponent<GuidanceAttack>();
-            _autoAttackSlots[1] = guidance;
         }
 
         List<Ability> _SetUpAbilityUpgrade()
@@ -296,7 +293,7 @@ namespace Action.Units
             {
                 int num = Random.Range(0, _abilitySlots.Length -1);
                 if (-1 < abilityList.IndexOf(_abilitySlots[num]) || 
-                    _abilitySlots[num].LevelLimit == _abilitySlots[num].Level)
+                    _abilitySlots[num].LevelLimit == _abilitySlots[num].abilityData.level)
                     i--;
                 else
                     abilityList.Add(_abilitySlots[num]);

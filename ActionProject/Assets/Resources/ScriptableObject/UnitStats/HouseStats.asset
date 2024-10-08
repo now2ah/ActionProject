@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: HouseStats
   m_EditorClassIdentifier: 
   unitName: House
-  maxHp: 50
+  maxHp: 100
   growthMaxHp: 0
   speed: 0
   requireGold: 5
+  generateGold: 0
   constructTime: 1.5
   attackDamage: 0
   growthAttackDamage: 0
@@ -24,3 +25,4 @@ MonoBehaviour:
   attackDistance: 0
   expAmount: 0
   goldAmount: 0
+  nextExp: 0

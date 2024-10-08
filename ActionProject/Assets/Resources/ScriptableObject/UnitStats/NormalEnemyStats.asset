@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: NormalEnemyStats
   m_EditorClassIdentifier: 
   unitName: NormalEnemy
-  maxHp: 10
+  maxHp: 30
   growthMaxHp: 0
-  speed: 3
+  speed: 2
   requireGold: 0
   generateGold: 0
   constructTime: 0
-  attackDamage: 10
+  attackDamage: 15
   growthAttackDamage: 0
   attackSpeed: 1
-  attackDistance: 2
-  expAmount: 5
+  attackDistance: 1
+  expAmount: 10
   goldAmount: 1
+  nextExp: 0

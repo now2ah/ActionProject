@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Directional Attack
   abilityDescription: Shoot projectile in direction
-  upgradeInteger: 000000000100000002000000030000000400000005000000
+  attackDamage: 10
+  attackSpeed: 3
+  attackDistance: 0
+  upgradeInteger: 00000000020000000400000006000000080000000a000000

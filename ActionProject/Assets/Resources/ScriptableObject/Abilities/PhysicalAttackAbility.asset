@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Physical Attack
   abilityDescription: Swing Commander's staff to enemy
+  attackDamage: 20
+  attackSpeed: 5
+  attackDistance: 0
   upgradeInteger: 000000000100000002000000030000000400000005000000

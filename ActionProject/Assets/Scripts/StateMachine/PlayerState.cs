@@ -169,12 +169,10 @@ namespace Action.State
 
         public override void EnterState()
         {
-            Debug.Log("Enter Idle");
         }
 
         public override void ExitState()
         {
-            Debug.Log("Exit Idle");
         }
 
         // Update is called once per frame
@@ -221,7 +219,6 @@ namespace Action.State
 
         public override void EnterState()
         {
-            Logger.Log("done");
             _building.SetVisibleBuilding(true);
             _building.SetMaterial();
             //interaction 없을때 if 문 추가

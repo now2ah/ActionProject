@@ -10,6 +10,22 @@ namespace Action.Game
     {
         AbilityItemSO _abilityItem;
 
+        void _SetAbilityData()
+        {
+            abilityData.isActivated = false;
+            abilityData.level = 0;
+            abilityData.abilityName = _abilityItem.abilityName;
+            abilityData.description = _abilityItem.abilityDescription;
+            abilityData.attackDamage = _abilityItem.attackDamage;
+            abilityData.attackSpeed = _abilityItem.attackSpeed;
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            _SetAbilityData();
+        }
+
         public override void Activate(bool isOn)
         {
             base.Activate(isOn);
@@ -48,14 +64,29 @@ namespace Action.Game
         {
             base.Awake();
             _abilityItem = Resources.Load("ScriptableObject/Abilities/DamageUpAbility") as AbilityItemSO;
-            AbilityName = _abilityItem.abilityName;
-            Description = _abilityItem.abilityDescription;
+            IsAutoAttack = false;
         }
     }
 
     public class HPUpAbility : Ability
     {
         AbilityItemSO _abilityItem;
+
+        void _SetAbilityData()
+        {
+            abilityData.isActivated = false;
+            abilityData.level = 0;
+            abilityData.abilityName = _abilityItem.abilityName;
+            abilityData.description = _abilityItem.abilityDescription;
+            abilityData.attackDamage = _abilityItem.attackDamage;
+            abilityData.attackSpeed = _abilityItem.attackSpeed;
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            _SetAbilityData();
+        }
 
         public override void Activate(bool isOn)
         {
@@ -95,13 +126,30 @@ namespace Action.Game
         {
             base.Awake();
             _abilityItem = Resources.Load("ScriptableObject/Abilities/HPUpAbility") as AbilityItemSO;
-            AbilityName = _abilityItem.abilityName;
-            Description = _abilityItem.abilityDescription;
+            IsAutoAttack = false;
         }
     }
 
     public class SpeedUpAbility : Ability
     {
+        AbilityItemSO _abilityItem;
+
+        void _SetAbilityData()
+        {
+            abilityData.isActivated = false;
+            abilityData.level = 0;
+            abilityData.abilityName = _abilityItem.abilityName;
+            abilityData.description = _abilityItem.abilityDescription;
+            abilityData.attackDamage = _abilityItem.attackDamage;
+            abilityData.attackSpeed = _abilityItem.attackSpeed;
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            _SetAbilityData();
+        }
+
         public override void LevelUp(int level)
         {
             base.LevelUp(level);
@@ -126,8 +174,8 @@ namespace Action.Game
         protected override void Awake()
         {
             base.Awake();
-            AbilityName = "SpeedUp";
-            Description = "Increase Commander's speed";
+            _abilityItem = Resources.Load("ScriptableObject/Abilities/DamageUpAbility") as AbilityItemSO;
+            IsAutoAttack = false;
         }
     }
 }

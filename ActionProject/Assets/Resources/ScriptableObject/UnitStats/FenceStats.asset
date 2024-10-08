@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: FenceStats
   m_EditorClassIdentifier: 
   unitName: Fence
-  maxHp: 100
+  maxHp: 500
   growthMaxHp: 0
   speed: 0
   requireGold: 5
+  generateGold: 0
   constructTime: 3
   attackDamage: 0
   growthAttackDamage: 0
@@ -24,3 +25,4 @@ MonoBehaviour:
   attackDistance: 0
   expAmount: 0
   goldAmount: 0
+  nextExp: 0

@@ -12,7 +12,6 @@ namespace Action.Game
     {
         int _expAmount;
         float _absorbDistance;
-        bool _isMoving;
 
         public int ExpAmount { get { return _expAmount; } set { _expAmount = value; } }
 
@@ -36,7 +35,9 @@ namespace Action.Game
 
         void _Absorb()
         {
-            transform.DOMove(GameManager.Instance.CommanderUnit.transform.position, 1.0f).SetEase(Ease.OutSine);
+            //transform.DOMove(GameManager.Instance.CommanderUnit.transform.position, 1.0f).SetEase(Ease.OutSine);
+            transform.LookAt(GameManager.Instance.CommanderUnit.transform);
+            transform.position = transform.position + (transform.forward * Time.deltaTime * 10.0f);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -50,13 +51,12 @@ namespace Action.Game
 
         void Awake()
         {
-            _isMoving = false;
             _absorbDistance = 5;
         }
 
         void Update()
         {
-            if (_IsNearCommander() && !_isMoving)
+            if (_IsNearCommander())
                 _Absorb();
 
         }

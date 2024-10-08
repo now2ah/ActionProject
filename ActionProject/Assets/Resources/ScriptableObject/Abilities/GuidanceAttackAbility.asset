@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Guidance Attack
   abilityDescription: Shoot guided projectile
-  upgradeInteger: 000000000100000002000000030000000400000005000000
+  attackDamage: 5
+  attackSpeed: 5
+  attackDistance: 15
+  upgradeInteger: 00000000020000000400000006000000080000000a000000

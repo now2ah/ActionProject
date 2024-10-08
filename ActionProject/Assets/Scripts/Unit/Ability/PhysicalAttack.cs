@@ -11,15 +11,30 @@ namespace Action.Game
     {
         AbilityItemSO _abilityItem;
         ActionTime _timer;
-        float _coolTime;
 
         public ActionTime Timer => _timer;
-        public float CoolTime => _coolTime;
+
+        void _SetAbilityData()
+        {
+            abilityData.isActivated = false;
+            abilityData.level = 0;
+            abilityData.abilityName = _abilityItem.abilityName;
+            abilityData.description = _abilityItem.abilityDescription;
+            abilityData.attackDamage = _abilityItem.attackDamage;
+            abilityData.attackSpeed = _abilityItem.attackSpeed;
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            _SetAbilityData();
+            Commander = GameManager.Instance.CommanderUnit;
+        }
 
         public override void Activate(bool isOn)
         {
             base.Activate(isOn);
-            Commander = GameManager.Instance.CommanderUnit;
+            
         }
 
         public override void LevelUp(int level)
@@ -55,9 +70,7 @@ namespace Action.Game
             base.Awake();
             _abilityItem = Resources.Load("ScriptableObject/Abilities/PhysicalAttackAbility") as AbilityItemSO;
             _timer = gameObject.AddComponent<ActionTime>();
-            _coolTime = 1.5f;
-            AbilityName = _abilityItem.abilityName;
-            Description = _abilityItem.abilityDescription;
+            IsAutoAttack = false;
         }
         // Start is called before the first frame update
         protected override void Start()

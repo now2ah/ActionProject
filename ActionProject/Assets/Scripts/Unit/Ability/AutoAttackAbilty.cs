@@ -7,13 +7,8 @@ namespace Action.Game
 {
     public class AutoAttackAbility : Ability
     {
-        float _attackPeriod;
-        float _attackDamage;
-        ActionTime _attackTime;
-        
-        public float AttackPeriod { get { return _attackPeriod; } set { _attackPeriod = value; } }
-        public float AttackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
-        public ActionTime AttackTimer { get { return _attackTime; } set { _attackTime = value; } }
+        ActionTime _attackTimer;
+        public ActionTime AttackTimer { get { return _attackTimer; } set { _attackTimer = value; } }
 
         public override void Initialize()
         {
@@ -28,8 +23,6 @@ namespace Action.Game
         protected override void Awake()
         {
             base.Awake();
-            _attackPeriod = 0.0f;
-            _attackDamage = 0.0f;
         }
 
         // Start is called before the first frame update
@@ -43,11 +36,7 @@ namespace Action.Game
         protected override void Update()
         {
             base.Update();
-        }
-
-        private void FixedUpdate()
-        {
-            if (IsActivated)
+            if (abilityData.isActivated)
                 _AutoAttack();
         }
     }

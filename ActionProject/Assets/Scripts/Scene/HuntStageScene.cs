@@ -39,8 +39,6 @@ namespace Action.Scene
         {
             Initialize();
             _startTimer.TickStart(1.0f);
-            //temp
-            GameManager.Instance.CommanderUnit.ActivateAutoAttack(0);
         }
 
         // Update is called once per frame

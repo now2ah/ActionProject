@@ -8,21 +8,15 @@ namespace Action.Game
 {
     public class Ability : MonoBehaviour
     {
-        bool _isActivated;
-        int _level;
-        [SerializeField]
-        int _levelLimit;
+        public AbilityData abilityData;
 
-        string _abilityName;
-        string _description;
+        int _levelLimit;
+        bool _isAutoAttack;
 
         Commander _commander;
 
-        public bool IsActivated { get { return _isActivated; } set { _isActivated = value; } }
-        public int Level { get { return _level; } set { _level = value; } }
         public int LevelLimit { get { return _levelLimit; } set { _levelLimit = value; } }
-        public string AbilityName { get { return _abilityName; } set { _abilityName = value; } }
-        public string Description { get { return _description; } set { _description = value; } }
+        public bool IsAutoAttack { get { return _isAutoAttack; } set { _isAutoAttack = value; } }
         public Commander Commander { get { return _commander; } set { _commander = value; } }
 
         public virtual void Initialize()
@@ -32,24 +26,25 @@ namespace Action.Game
 
         public virtual void LevelUp(int level)
         {
+            if (abilityData.level < _levelLimit)
+                abilityData.level++;
         }
 
         public virtual void Activate(bool isOn)
         {
-            _isActivated = isOn;
+            abilityData.isActivated = isOn;
         }
 
         protected virtual void Awake()
         {
-            _isActivated = false;
-            _level = 0;
+            abilityData = new AbilityData();
             _levelLimit = 5;
         }
 
         // Start is called before the first frame update
         protected virtual void Start()
         {
-            Initialize();
+            //Initialize();
         }
 
         // Update is called once per frame

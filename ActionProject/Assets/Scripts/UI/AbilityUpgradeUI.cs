@@ -24,8 +24,8 @@ namespace Action.UI
             {
                 TextMeshProUGUI nameText = items[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>();
                 TextMeshProUGUI descText = items[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-                nameText.text = _abilityList[i].AbilityName;
-                descText.text = _abilityList[i].Description;
+                nameText.text = _abilityList[i].abilityData.abilityName;
+                descText.text = _abilityList[i].abilityData.description;
 
                 _chooseButton[i] = items[i].transform.GetChild(2).GetComponent<Button>();
             }
@@ -38,10 +38,10 @@ namespace Action.UI
 
         void _ChooseItem(int i)
         {
-            if (0 == _abilityList[i].Level)
+            if (0 == _abilityList[i].abilityData.level)
                 _abilityList[i].Activate(true);
 
-            _abilityList[i].LevelUp(_abilityList[i].Level + 1);
+            _abilityList[i].LevelUp(_abilityList[i].abilityData.level + 1);
             Hide();
             GameManager.Instance.Resume();
         }
