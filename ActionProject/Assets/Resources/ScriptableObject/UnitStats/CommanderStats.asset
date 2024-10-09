@@ -25,4 +25,4 @@ MonoBehaviour:
   attackDistance: 0
   expAmount: 0
   goldAmount: 0
-  nextExp: 50
+  nextExp: 20

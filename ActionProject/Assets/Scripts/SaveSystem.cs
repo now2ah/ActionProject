@@ -46,31 +46,16 @@ public class SaveSystem : Singleton<SaveSystem>
 
     public void Load(int slotNum)
     {
-        //string dataPath = Path.Combine(Application.dataPath, "GameData" + slotNum);
-
-        //if (!Directory.Exists(dataPath))
-        //    Logger.Log("file is not exist.");
-
-        //Data data = JsonParser.LoadJsonFile<Data>(dataPath, "GameData" + slotNum);
         GameManager.Instance.ResetGame();
 
         Data data = dataSlots[slotNum];
         GameManager.Instance.GameData = data.gameData;
-        GameManager.Instance.UnitDatas = data.gameData.unitData;
         
         SceneManager.Instance.LoadGameScene(2);
     }
 
     public void Save(int slotNum, Data data)
     {
-        //string dataString = JsonParser.ObjectToJson(data);
-
-        //string dataPath = Path.Combine(Application.dataPath, "GameData" + slotNum);
-        //if (!Directory.Exists(dataPath))
-        //    Directory.CreateDirectory(dataPath);
-
-        //JsonParser.CreateJsonFile(dataPath, "GameData" + slotNum, dataString);
-
         dataSlots[slotNum] = data;
         SaveSourceData();
     }

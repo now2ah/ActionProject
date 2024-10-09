@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Action.Manager;
 using Action.SO;
+using Action.Units;
 
 namespace Action.Game
 {
@@ -35,24 +36,25 @@ namespace Action.Game
         public override void LevelUp(int level)
         {
             base.LevelUp(level);
+            PlayerUnitData data = Commander.UnitData as PlayerUnitData;
             if (0 < level)
             {
                 switch (level)
                 {
                     case 1:
-                        Commander.PlayerUnitData.attackDamage += _abilityItem.upgradeInteger[1];
+                        data.attackDamage += _abilityItem.upgradeInteger[1];
                         break;
                     case 2:
-                        Commander.PlayerUnitData.attackDamage += _abilityItem.upgradeInteger[2];
+                        data.attackDamage += _abilityItem.upgradeInteger[2];
                         break;
                     case 3:
-                        Commander.PlayerUnitData.attackDamage += _abilityItem.upgradeInteger[3];
+                        data.attackDamage += _abilityItem.upgradeInteger[3];
                         break;
                     case 4:
-                        Commander.PlayerUnitData.attackDamage += _abilityItem.upgradeInteger[4];
+                        data.attackDamage += _abilityItem.upgradeInteger[4];
                         break;
                     case 5:
-                        Commander.PlayerUnitData.attackDamage += _abilityItem.upgradeInteger[5];
+                        data.attackDamage += _abilityItem.upgradeInteger[5];
                         break;
                     default:
                         break;
@@ -153,17 +155,25 @@ namespace Action.Game
         public override void LevelUp(int level)
         {
             base.LevelUp(level);
+            PlayerUnitData data = Commander.UnitData as PlayerUnitData;
             if (1 < level)
             {
                 switch (level)
                 {
+                    case 1:
+                        data.speed += _abilityItem.upgradeInteger[1];
+                        break;
                     case 2:
+                        data.speed += _abilityItem.upgradeInteger[2];
                         break;
                     case 3:
+                        data.speed += _abilityItem.upgradeInteger[3];
                         break;
                     case 4:
+                        data.speed += _abilityItem.upgradeInteger[4];
                         break;
                     case 5:
+                        data.speed += _abilityItem.upgradeInteger[5];
                         break;
                     default:
                         break;

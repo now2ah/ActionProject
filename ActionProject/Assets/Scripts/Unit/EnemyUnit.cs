@@ -16,8 +16,6 @@ namespace Action.Units
         NavMeshAgent _navMeshAgent;
         Rigidbody _rigidBody;
 
-        EnemyUnitData _enemyUnitData;
-
         bool _isDead;
         protected bool _isMoving;
         protected bool _isAttacking;
@@ -28,7 +26,6 @@ namespace Action.Units
         Vector3 _targetPos;
 
         public NavMeshAgent NavMeshAgentComp { get { return _navMeshAgent; } set { _navMeshAgent = value; } }
-        public EnemyUnitData EnemyUnitData { get { return _enemyUnitData; } set { _enemyUnitData = value; } }
         public bool IsDead { get { return _isDead; } set { _isDead = value; } }
         public bool IsMoving { get { return _isMoving; } set { _isMoving = value; } }
         public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; } }
@@ -70,7 +67,8 @@ namespace Action.Units
             {
                 if (GameManager.Instance.PlayerBuildings[i].TryGetComponent<Building>(out Building comp))
                 {
-                    if (!comp.BuildingData.isBuilt)
+                    BuildingData buildingData = comp.UnitData as BuildingData;
+                    if (!buildingData.isBuilt)
                         continue;
                 }
 
@@ -132,7 +130,7 @@ namespace Action.Units
 
         public void StopAgent()
         {
-            if (null != _navMeshAgent)
+            if (null != _navMeshAgent && _navMeshAgent.isOnNavMesh)
             {
                 _navMeshAgent.velocity = Vector3.zero;
                 _navMeshAgent.isStopped = true;
@@ -142,7 +140,7 @@ namespace Action.Units
 
         public void ResetPath()
         {
-            if (null != _navMeshAgent)
+            if (null != _navMeshAgent && _navMeshAgent.isOnNavMesh)
             {
                 _navMeshAgent.ResetPath();
             }
@@ -169,6 +167,8 @@ namespace Action.Units
         {
             if (null != _navMeshAgent)
             {
+                _navMeshAgent.isStopped = false;
+                _navMeshAgent.updateRotation = true;
                 _target = target;
                 if (_target.TryGetComponent<Building>(out Building comp))
                 {
@@ -200,9 +200,8 @@ namespace Action.Units
             _GenerateExpOrb();
             if (damager.TryGetComponent<PlayerUnit>(out PlayerUnit playerUnit))
             {
-                _CreateFloatingUI(EnemyUnitData.goldAmount);
-                _GiveGold(EnemyUnitData.goldAmount);
-                //_GiveExp((PlayerUnit)damager, EnemyUnitData.expAmount);
+                _CreateFloatingUI(((EnemyUnitData)UnitData).goldAmount);
+                _GiveGold(((EnemyUnitData)UnitData).goldAmount);
             }
             int randNum = Random.Range(0, 100);
             if (randNum > 50)
@@ -262,7 +261,7 @@ namespace Action.Units
         protected void _GenerateExpOrb()
         {
             Game.ExpOrb expOrb = PoolManager.Instance.ExpOrbPool.GetNew();
-            expOrb.Initialize(EnemyUnitData.expAmount);
+            expOrb.Initialize(((EnemyUnitData)UnitData).expAmount);
             float angle = Random.Range(0.0f, 360.0f);
             Vector3 rotation = transform.rotation.eulerAngles + new Vector3(0.0f, angle, 0.0f);
             Vector3 position = new Vector3(transform.position.x, (GameManager.Instance.Constants.HUNT_PROJECTILE_Y_POS) * 1.0f, transform.position.z) + Vector3.forward * 1.0f;
@@ -275,17 +274,7 @@ namespace Action.Units
         {
             GameObject coinObj = Instantiate(GameManager.Instance.CoinPrefab, new Vector3(transform.position.x, (GameManager.Instance.Constants.HUNT_PROJECTILE_Y_POS) * 1.0f, transform.position.z), Quaternion.identity);
             if (coinObj.TryGetComponent<Game.Coin>(out Game.Coin comp))
-                comp.Initialize(EnemyUnitData.goldAmount);
-        }
-
-        void _SetDefaultValue()
-        {
-            _enemyUnitData.speed = 1.0f;
-            _enemyUnitData.attackDamage = 1;
-            _enemyUnitData.attackSpeed = 1.0f;
-            _enemyUnitData.attackDistance = 1.0f;
-            _enemyUnitData.expAmount = 1;
-            _enemyUnitData.goldAmount = 1;
+                comp.Initialize(((EnemyUnitData)UnitData).goldAmount);
         }
 
         void _CreateFloatingUI(int gold)
@@ -305,9 +294,8 @@ namespace Action.Units
             base.Awake();
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _rigidBody = GetComponent<Rigidbody>();
-            _enemyUnitData = new EnemyUnitData();
+            UnitData = new EnemyUnitData();
             _targetPos = Vector3.zero;
-            _SetDefaultValue();
             _navMeshAgent.acceleration = 60.0f;
             _navMeshAgent.autoBraking = false;
         }

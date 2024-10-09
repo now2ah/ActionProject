@@ -30,7 +30,7 @@ public class Spawner : MonoBehaviour
     public void SpawnObject(GameObject spawnObj)
     {
         Vector3 spawnPos = new Vector3(Random.Range(col.bounds.min.x, col.bounds.max.x),
-            Random.Range(col.bounds.min.y, col.bounds.max.y),
+            0,
             Random.Range(col.bounds.min.z, col.bounds.max.z));
 
         if (spawnObj.TryGetComponent<NavMeshAgent>(out NavMeshAgent comp))

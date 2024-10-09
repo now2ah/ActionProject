@@ -28,6 +28,15 @@ namespace Action.UI
             _quitButton.onClick.AddListener(OnQuitButton);
         }
 
+        protected void OnEnable()
+        {
+            if (GameManager.Instance.PhaseStateMachine.CurState == GameManager.Instance.HuntState ||
+                GameManager.Instance.PhaseStateMachine.CurState == GameManager.Instance.DefenseState)
+            {
+                _saveButton.gameObject.SetActive(false);
+            }
+        }
+
         void OnResumeButton()
         {
             GameManager.Instance.Resume();
@@ -36,7 +45,6 @@ namespace Action.UI
 
         void OnSaveButton()
         {
-            GameManager.Instance.Resume();
             UIManager.Instance.SaveLoadUI.Initialize(SaveLoadUI.eMode.SAVE);
             UIManager.Instance.SaveLoadUI.Show();
             UIManager.Instance.SaveLoadUI.transform.SetAsLastSibling();
@@ -45,7 +53,6 @@ namespace Action.UI
 
         void OnLoadButton()
         {
-            GameManager.Instance.Resume();
             UIManager.Instance.SaveLoadUI.Initialize(SaveLoadUI.eMode.LOAD);
             UIManager.Instance.SaveLoadUI.Show();
             UIManager.Instance.SaveLoadUI.transform.SetAsLastSibling();

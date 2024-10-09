@@ -56,6 +56,7 @@ namespace Action.Units
             _SetUnitData();
             SetNameUI(UnitData.name);
             UnitPanel.Show();
+            UnitPanel.ApplyHPValue(UnitData.hp, UnitData.maxHp);
             _indicator = Instantiate(GameManager.Instance.BuildingIndicatorPrefab);
             _indicator.transform.SetParent(transform);
             _indicator.SetActive(false);
@@ -72,7 +73,7 @@ namespace Action.Units
             ActivateAbility(Enums.eAbility.DIRECTIONAL);
             SetEnableAutoAttacks(false);
 
-            GameManager.Instance.GameData.unitData.Add(PlayerUnitData);
+            GameManager.Instance.GameData.commanderData = UnitData as CommanderData;
             
             DontDestroyOnLoad(this);
         }
@@ -83,10 +84,11 @@ namespace Action.Units
             {
                 if (_interactingBuilding.TryGetComponent<Building>(out Building comp))
                 {
+                    BuildingData buildingData = comp.UnitData as BuildingData;
                     if (comp.StateMachine.CurState == comp.IdleState &&
-                        GameManager.Instance.GameData.resource.IsValidSpend(comp.BuildingData.requireGold, eResource.GOLD))
+                        GameManager.Instance.GameData.resource.IsValidSpend(buildingData.requireGold, eResource.GOLD))
                     {
-                        GameManager.Instance.GameData.resource.Spend(comp.BuildingData.requireGold, eResource.GOLD);
+                        GameManager.Instance.GameData.resource.Spend(buildingData.requireGold, eResource.GOLD);
                         comp.Interact();
                     }
                 }
@@ -100,7 +102,7 @@ namespace Action.Units
             if (!InputManager.Instance.Click.IsPressed())
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos), 0.15f);
 
-            transform.Translate(movePos * Time.deltaTime * PlayerUnitData.speed, Space.World);
+            transform.Translate(movePos * Time.deltaTime * ((PlayerUnitData)UnitData).speed, Space.World);
         }
 
         public override void ApplyDamage(DamageMessage msg)
@@ -124,7 +126,7 @@ namespace Action.Units
         public override void GainExp(int exp)
         {
             base.GainExp(exp);
-            OnGainExp.Invoke(PlayerUnitData.exp, PlayerUnitData.nextExp);
+            OnGainExp.Invoke(((PlayerUnitData)UnitData).exp, ((PlayerUnitData)UnitData).nextExp);
         }
 
         public override void ModifyLevel(int level)
@@ -259,7 +261,7 @@ namespace Action.Units
             _isAttacking = true;
             _animator.SetBool(_animHashAttacking, _isAttacking);
             yield return new WaitForSeconds(0.2f);
-            _CreateHitBox(PlayerUnitData.attackDamage);
+            _CreateHitBox(((PlayerUnitData)UnitData).attackDamage);
             _isAttacking = false;
             _animator.SetBool(_animHashAttacking, _isAttacking);
         }
@@ -291,8 +293,8 @@ namespace Action.Units
             List<Ability> abilityList = new List<Ability>();
             for (int i = 0; i < 3; i++)
             {
-                int num = Random.Range(0, _abilitySlots.Length -1);
-                if (-1 < abilityList.IndexOf(_abilitySlots[num]) || 
+                int num = Random.Range(0, _abilitySlots.Length - 1);
+                if (-1 < abilityList.IndexOf(_abilitySlots[num]) ||
                     _abilitySlots[num].LevelLimit == _abilitySlots[num].abilityData.level)
                     i--;
                 else
@@ -309,38 +311,35 @@ namespace Action.Units
 
         void _SetUnitData()
         {
-            if (0 < GameManager.Instance.GameData.unitData.Count)
+            if (null != GameManager.Instance.GameData.commanderData)
             {
-                foreach (var data in GameManager.Instance.GameData.unitData)
+                if (UnitData is CommanderData)
                 {
-                    if (Enums.ePlayerType.COMMANDER == data.playerType)
-                    {
-                        UnitData.name = data.name;
-                        UnitData.hp = data.maxHp;
-                        UnitData.maxHp = data.maxHp;
-                        UnitData.growthHp = data.maxHp;
-                        PlayerUnitData.speed = data.speed;
-                        PlayerUnitData.attackDamage = data.attackDamage;
-                        PlayerUnitData.growthAttackDamage = data.growthAttackDamage;
-                        PlayerUnitData.level = data.level;
-                        PlayerUnitData.exp = data.exp;
-                        PlayerUnitData.nextExp = data.nextExp;
-                        break;
-                    }
+                    ((CommanderData)UnitData).name = GameManager.Instance.GameData.commanderData.name;
+                    ((CommanderData)UnitData).hp = GameManager.Instance.GameData.commanderData.maxHp;
+                    ((CommanderData)UnitData).maxHp = GameManager.Instance.GameData.commanderData.maxHp;
+                    ((CommanderData)UnitData).growthHp = GameManager.Instance.GameData.commanderData.maxHp;
+                    ((CommanderData)UnitData).speed = GameManager.Instance.GameData.commanderData.speed;
+                    ((CommanderData)UnitData).attackDamage = GameManager.Instance.GameData.commanderData.attackDamage;
+                    ((CommanderData)UnitData).growthAttackDamage = GameManager.Instance.GameData.commanderData.growthAttackDamage;
+                    ((CommanderData)UnitData).level = GameManager.Instance.GameData.commanderData.level;
+                    ((CommanderData)UnitData).exp = GameManager.Instance.GameData.commanderData.exp;
+                    ((CommanderData)UnitData).nextExp = GameManager.Instance.GameData.commanderData.nextExp;
+                    ((CommanderData)UnitData).abilityData = GameManager.Instance.GameData.commanderData.abilityData;
                 }
             }
             else
             {
-                UnitData.name = _unitStats.unitName;
-                UnitData.hp = _unitStats.maxHp;
-                UnitData.maxHp = _unitStats.maxHp;
-                UnitData.growthHp = _unitStats.growthMaxHp;
-                PlayerUnitData.speed = _unitStats.speed;
-                PlayerUnitData.attackDamage = _unitStats.attackDamage;
-                PlayerUnitData.growthAttackDamage = _unitStats.growthAttackDamage;
-                PlayerUnitData.level = 1;
-                PlayerUnitData.exp = 0;
-                PlayerUnitData.nextExp = _unitStats.nextExp;
+                ((CommanderData)UnitData).name = _unitStats.unitName;
+                ((CommanderData)UnitData).hp = _unitStats.maxHp;
+                ((CommanderData)UnitData).maxHp = _unitStats.maxHp;
+                ((CommanderData)UnitData).growthHp = _unitStats.growthMaxHp;
+                ((CommanderData)UnitData).speed = _unitStats.speed;
+                ((CommanderData)UnitData).attackDamage = _unitStats.attackDamage;
+                ((CommanderData)UnitData).growthAttackDamage = _unitStats.growthAttackDamage;
+                ((CommanderData)UnitData).level = 1;
+                ((CommanderData)UnitData).exp = 0;
+                ((CommanderData)UnitData).nextExp = _unitStats.nextExp;
             }
         }
 
@@ -377,13 +376,14 @@ namespace Action.Units
             _isMoving = false;
             _interactingBuilding = null;
             _animator = GetComponentInChildren<Animator>();
+            UnitData = new CommanderData();
         }
 
         protected override void Start()
         {
             base.Start();
             //Initialize();
-            
+
             _idleState = new CommanderIdleState(this);
             _moveState = new CommanderMoveState(this);
             _attackState = new CommanderAttackState(this);

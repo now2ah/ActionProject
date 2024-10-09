@@ -27,6 +27,12 @@ namespace Action.Units
     }
 
     [System.Serializable]
+    public class CommanderData : PlayerUnitData
+    {
+        public Game.AbilityData abilityData;
+    }
+
+    [System.Serializable]
     public class BuildingData : UnitData
     {
         public bool isBuilt;
@@ -47,14 +53,6 @@ namespace Action.Units
         public float attackDistance;
         public int expAmount;
         public int goldAmount;
-    }
-
-    [System.Serializable]
-    public class AbilityData
-    {
-        public bool isActivate;
-        public int level;
-        //pulbic 
     }
 }
 

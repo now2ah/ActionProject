@@ -76,6 +76,7 @@ namespace Action.UI
             else if (eMode.SAVE == _mode)
             {
                 SaveSystem.Instance.Save(num, GameManager.Instance.GetWrappedGameData());
+                GameManager.Instance.Resume();
             }
             gameObject.SetActive(false);
 

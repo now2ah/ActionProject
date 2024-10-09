@@ -49,6 +49,7 @@ namespace Action.Manager
 
         public Canvas MainCanvas => _mainCanvas;
         public Canvas InGameCanvas => _inGameCanvas;
+        public BaseIndicator BaseIndicatorUI => _BaseIndicator;
         public GameObject FadeUIPanel => _fadeUIPanel;
         public GameObject DamagedEffectPanel => _damagedEffectPanel;
         public bool IsShowUnitPanel { get { return _isShowUnitPanel; } set { _isShowUnitPanel = value; } }
@@ -234,7 +235,8 @@ namespace Action.Manager
 
         void _CalculateOffScreenIndicator()
         {
-            if (null == _BaseIndicatorObj || null == GameManager.Instance.PlayerBase)
+            if (null == _BaseIndicatorObj || null == GameManager.Instance.PlayerBase ||
+                GameManager.Instance.PhaseStateMachine.CurState == GameManager.Instance.HuntState)
                 return;
 
             Vector3 screenPos = CameraManager.Instance.MainCamera.Camera.WorldToScreenPoint(GameManager.Instance.PlayerBase.transform.position);

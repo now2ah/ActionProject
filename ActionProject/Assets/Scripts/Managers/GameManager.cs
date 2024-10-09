@@ -98,13 +98,14 @@ namespace Action.Manager
         GameObject _coinPrefab;
 
         GameData _gameData;
-        List<PlayerUnitData> _unitDatas;
 
         public bool IsPaused { get { return _isPaused; } set { _isPaused = value; } }
         public bool IsLive { get { return _isLive; } set { _isLive = value; } }
         public bool IsPlaying { get { return _isPlaying; } }
         public eGamePhase Phase => _gamePhase;
         public StateMachine PhaseStateMachine => _phaseStateMachine;
+        public HuntState HuntState => _huntState;
+        public DefenseState DefenseState => _defenseState;
         public float TownBuildPhaseTime { get { return _townBuildPhaseTime; } set { _townBuildPhaseTime = value; } }
         public float HuntPhaseTime { get { return _huntPhaseTime; } set { _huntPhaseTime = value; } }
         public float DefensePhaseTime { get { return _defensePhaseTime; } set { _defensePhaseTime = value; } }
@@ -127,7 +128,6 @@ namespace Action.Manager
         public GameObject ProjectilePrefab => _projectilePrefab;
         public GameObject BuildingIndicatorPrefab => _buildingIndicatorPrefab;
         public GameData GameData { get { return _gameData; } set { _gameData = value; } }
-        public List<PlayerUnitData> UnitDatas { get { return _unitDatas; } set { _unitDatas = value; } }
 
         public override void Initialize()
         {
@@ -363,44 +363,10 @@ namespace Action.Manager
             _gameTimer.ResetTimer();
             _refreshTimer.ResetTimer();
             _phaseTimer.ResetTimer();
-            UIManager.Instance.TownStagePanel.Hide();
-            UIManager.Instance.ExpBarUI.Hide();
-        }
-
-        public void SetBuildingData(string buildingName)
-        {
-            Building[] buildings = FindObjectsByType<Building>(FindObjectsSortMode.None);
-
-            for (int i = 0; i < buildings.Length; i++)
-            {
-                switch (buildingName)
-                {
-                    case "PlayerBase":
-                        if (null == _gameData.playerBase)
-                            _gameData.playerBase = buildings[i].BuildingData;
-                        break;
-                    case "Tower_Base_North":
-                        if (null == _gameData.towerBaseN)
-                            _gameData.towerBaseN = buildings[i].BuildingData;
-                        break;
-                    case "Tower_Base_South":
-                        if (null == _gameData.towerBaseS)
-                            _gameData.towerBaseS = buildings[i].BuildingData;
-                        break;
-                    case "Fence":
-                        if (null == _gameData.fence)
-                            _gameData.fence = buildings[i].BuildingData;
-                        break;
-                    case "House":
-                        if (null == _gameData.house)
-                            _gameData.house = buildings[i].BuildingData;
-                        break;
-                    case "Barrack":
-                        if (null == _gameData.barrack)
-                            _gameData.barrack = buildings[i].BuildingData;
-                        break;
-                }
-            }
+            if (null != UIManager.Instance.TownStagePanel)
+                UIManager.Instance.TownStagePanel.Hide();
+            if (null != UIManager.Instance.ExpBarUI)
+                UIManager.Instance.ExpBarUI.Hide();
         }
 
         public void CheckConstructBuilding()
@@ -409,13 +375,19 @@ namespace Action.Manager
             {
                 if (building.TryGetComponent<Building>(out Building comp))
                 {
+                    BuildingData data = comp.UnitData as BuildingData;
                     if (comp.PrepareState == comp.StateMachine.CurState)
                     {
                         comp.StateMachine.ChangeState(comp.IdleState);
-                        _gameData.resource.Gold += comp.BuildingData.requireGold;
+                        _gameData.resource.Gold += data.requireGold;
                     }
                 }
             }
+        }
+
+        public void AutoSave()
+        {
+            SaveSystem.Instance.Save(0, GetWrappedGameData());
         }
 
         void _LoadAssets()
@@ -486,17 +458,6 @@ namespace Action.Manager
             _commanderUnit = _commanderUnitObj.GetComponent<Commander>();
             _playerUnits.Add(_commanderUnitObj);
 
-            if (null != _gameData.unitData)
-            {
-                foreach (var data in _gameData.unitData)
-                {
-                    if (Enums.ePlayerType.COMMANDER == data.playerType)
-                    {
-                        _commanderUnit.UnitData = data;
-                        break;
-                    }
-                }
-            }
             InputManager.Instance.AddListeners(_commanderUnit);
         }
 
@@ -514,6 +475,9 @@ namespace Action.Manager
                 while (0 < allEnemyCount)
                 {
                     int enemyRandNum = Random.Range(0, waves.enemyWaveList[order].enemyGroupList.Count);
+                    if (0 == enemyCounts[enemyRandNum])
+                        continue;
+                    
                     GameObject obj = PoolManager.Instance.GetEnemyPool(waves.enemyWaveList[order].enemyGroupList[enemyRandNum].type).GetNew().gameObject;
 
                     if (obj.TryGetComponent<Unit>(out Unit comp))
@@ -528,9 +492,7 @@ namespace Action.Manager
                     _enemySpawners[spawnerRandNum].SpawnObject(obj);
 
                     enemyCounts[enemyRandNum]--;
-
-                    foreach (var num in enemyCounts)
-                        allEnemyCount += num;
+                    allEnemyCount--;
 
                     yield return new WaitForSeconds(timeRate);
                 }
@@ -649,8 +611,7 @@ namespace Action.Manager
                 CameraManager.Instance.CreateFixedVirtualCamera();
                 UIManager.Instance.CreateTownStagePanel();
                 UIManager.Instance.TownStagePanel.Show();
-                UIManager.Instance.ExpBarUI.Show();
-                UIManager.Instance.ExpBarUI.ApplyExpValue(_commanderUnit.PlayerUnitData.exp, _commanderUnit.PlayerUnitData.nextExp);
+                
             }
             else if (_gamePhase == eGamePhase.TownBuild)
             {
@@ -765,7 +726,7 @@ namespace Action.Manager
         {
             _isPlaying = true;
             PoolManager.Instance.Initialize();
-            _CreateCommanderUnit();
+            //_CreateCommanderUnit();
             //UIManager.Instance.ExpPanel.SetActive(true);
             //UIManager.Instance.ExpBarUI.ApplyExpValue(_commanderUnit.PlayerUnitData.exp, _commanderUnit.PlayerUnitData.nextExp);
             //_PrepareResource();

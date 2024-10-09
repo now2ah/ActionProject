@@ -36,10 +36,12 @@ namespace Action.Units
         {
             base.Initialize();
             _SetUnitData();
+            UnitPanel.ApplyHPValue(UnitData.hp, UnitData.maxHp);
             _animHashMoving = Animator.StringToHash("IsMoving");
             _animHashAttacking = Animator.StringToHash("IsAttacking");
             _animHashSpeed = Animator.StringToHash("Speed");
             SetNameUI(UnitData.name);
+            SetSpeed(((EnemyUnitData)UnitData).speed);
             StateMachine.Initialize(_idleState);
         }
 
@@ -69,7 +71,7 @@ namespace Action.Units
 
         public bool isAttackCooltime()
         {
-            if (Time.realtimeSinceStartup < _lastAttackTime + EnemyUnitData.attackSpeed)
+            if (Time.realtimeSinceStartup < _lastAttackTime + ((EnemyUnitData)UnitData).attackSpeed)
                 return true;
             else
                 return false;
@@ -78,8 +80,7 @@ namespace Action.Units
         public bool isTargetInDistance()
         {
             float dist = Vector3.Distance(transform.position, _target.transform.position);
-            //Logger.Log(dist.ToString());
-            if (dist < EnemyUnitData.attackDistance)
+            if (dist < ((EnemyUnitData)UnitData).attackDistance)
                 return true;
             else
                 return false;
@@ -118,12 +119,12 @@ namespace Action.Units
             UnitData.hp = _unitStats.maxHp;
             UnitData.maxHp = _unitStats.maxHp;
             UnitData.growthHp = _unitStats.growthMaxHp;
-            EnemyUnitData.speed = _unitStats.speed;
-            EnemyUnitData.attackDamage = _unitStats.attackDamage;
-            EnemyUnitData.attackSpeed = _unitStats.attackSpeed;
-            EnemyUnitData.attackDistance = _unitStats.attackDistance;
-            EnemyUnitData.expAmount = _unitStats.expAmount;
-            EnemyUnitData.goldAmount = _unitStats.goldAmount;
+            ((EnemyUnitData)UnitData).speed = _unitStats.speed;
+            ((EnemyUnitData)UnitData).attackDamage = _unitStats.attackDamage;
+            ((EnemyUnitData)UnitData).attackSpeed = _unitStats.attackSpeed;
+            ((EnemyUnitData)UnitData).attackDistance = _unitStats.attackDistance;
+            ((EnemyUnitData)UnitData).expAmount = _unitStats.expAmount;
+            ((EnemyUnitData)UnitData).goldAmount = _unitStats.goldAmount;
         }
         void OnAnimatorMove()
         {

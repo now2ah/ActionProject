@@ -25,8 +25,6 @@ namespace Action.Units
         protected PlayerBuildingDoneState _doneState;
         protected PlayerBuildingCollapseState _collapseState;
 
-        BuildingData _buildingData;
-
         protected float _activeDistance;
 
         Vector3 _indicatorPos;
@@ -39,7 +37,6 @@ namespace Action.Units
         public PlayerBuildingPrepareState PrepareState => _prepareState;
         public PlayerBuildingDoneState DoneState => _doneState;
         public PlayerBuildingCollapseState CollapseState => _collapseState;
-        public BuildingData BuildingData => _buildingData;
 
         public override void Initialize()
         {
@@ -63,13 +60,8 @@ namespace Action.Units
             _idleState = new PlayerBuildingIdleState(this);
             _prepareState = new PlayerBuildingPrepareState(this);
             _doneState = new PlayerBuildingDoneState(this);
-            if (null == _buildingData)
-            {
-                _buildingData = new BuildingData();
-                _buildingData.isBuilt = false;
-            }
 
-            if (!_buildingData.isBuilt)
+            if (!((BuildingData)UnitData).isBuilt)
                 StateMachine.Initialize(_idleState);
             else
                 StateMachine.Initialize(_doneState);
@@ -82,7 +74,7 @@ namespace Action.Units
         {
             if (StateMachine.CurState == _idleState)
             {
-                _buildingData.isBuilt = true;
+                ((BuildingData)UnitData).isBuilt = true;
                 _StartConstruct();
             }
         }
@@ -100,7 +92,7 @@ namespace Action.Units
             TimerUI timerUI = timerObj.GetComponent<TimerUI>();
             timerUI.Initialize(gameObject);
             timerUI.ActionTime = _buildingTimer;
-            _buildingTimer.TickStart(_buildingData.constructTime);
+            _buildingTimer.TickStart(((BuildingData)UnitData).constructTime);
         }
 
         public void SetMaterial()
@@ -149,7 +141,7 @@ namespace Action.Units
 
         IEnumerator StartConstructCoroutine()
         {
-            yield return new WaitForSeconds(_buildingData.constructTime);
+            yield return new WaitForSeconds(((BuildingData)UnitData).constructTime);
             StateMachine.ChangeState(_doneState);
             _indicatorPos = transform.position + new Vector3(0, GetComponent<Collider>().bounds.size.y, 0);
         }
@@ -157,6 +149,7 @@ namespace Action.Units
         protected override void Awake()
         {
             base.Awake();
+            UnitData = new BuildingData();
             IsOnUnitPanel = false;
         }
 

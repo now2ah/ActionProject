@@ -40,11 +40,13 @@ namespace Action.Units
         {
             base.Initialize();
             _SetUnitData();
+            UnitPanel.ApplyHPValue(UnitData.hp, UnitData.maxHp);
             _animHashMoving = Animator.StringToHash("IsMoving");
             _animHashAttacking = Animator.StringToHash("IsAttacking");
             _animHashSpeed = Animator.StringToHash("Speed");
 
             SetNameUI(UnitData.name);
+            SetSpeed(((EnemyUnitData)UnitData).speed);
             StateMachine.Initialize(_idleState);
         }
 
@@ -75,20 +77,20 @@ namespace Action.Units
             DamageMessage msg = new DamageMessage
             {
                 damager = this,
-                amount = EnemyUnitData.attackDamage
+                amount = ((EnemyUnitData)UnitData).attackDamage
             };
 
             if (_target.TryGetComponent<Unit>(out Unit comp))
             {
                 comp.ApplyDamage(msg);
                 _isAttackCooltime = true;
-                _attackTimer.TickStart(EnemyUnitData.attackSpeed);
+                _attackTimer.TickStart(((EnemyUnitData)UnitData).attackSpeed);
             }
         }
 
         public bool isAttackCooltime()
         {
-            if (Time.realtimeSinceStartup < _lastAttackTime + EnemyUnitData.attackSpeed)
+            if (Time.realtimeSinceStartup < _lastAttackTime + ((EnemyUnitData)UnitData).attackSpeed)
                 return true;
             else
                 return false;
@@ -96,8 +98,8 @@ namespace Action.Units
 
         public bool isTargetInDistance()
         {
-            float dist = Vector3.Distance(transform.position, TargetPos);
-            if (dist < EnemyUnitData.attackDistance)
+            float dist = Vector3.Distance(transform.position, Target.transform.position);
+            if (dist < ((EnemyUnitData)UnitData).attackDistance)
                 return true;
             else
                 return false;
@@ -137,12 +139,12 @@ namespace Action.Units
             UnitData.hp = _unitStats.maxHp;
             UnitData.maxHp = _unitStats.maxHp;
             UnitData.growthHp = _unitStats.growthMaxHp;
-            EnemyUnitData.speed = _unitStats.speed;
-            EnemyUnitData.attackDamage = _unitStats.attackDamage;
-            EnemyUnitData.attackSpeed = _unitStats.attackSpeed;
-            EnemyUnitData.attackDistance = _unitStats.attackDistance;
-            EnemyUnitData.expAmount = _unitStats.expAmount;
-            EnemyUnitData.goldAmount = _unitStats.goldAmount;
+            ((EnemyUnitData)UnitData).speed = _unitStats.speed;
+            ((EnemyUnitData)UnitData).attackDamage = _unitStats.attackDamage;
+            ((EnemyUnitData)UnitData).attackSpeed = _unitStats.attackSpeed;
+            ((EnemyUnitData)UnitData).attackDistance = _unitStats.attackDistance;
+            ((EnemyUnitData)UnitData).expAmount = _unitStats.expAmount;
+            ((EnemyUnitData)UnitData).goldAmount = _unitStats.goldAmount;
         }
 
         void OnAnimatorMove()
@@ -176,10 +178,6 @@ namespace Action.Units
         {
             base.Update();
             _CheckAttackCoolTime();
-        }
-
-        protected void FixedUpdate()
-        {
             _animator.SetFloat(_animHashSpeed, NavMeshAgentComp.speed);
         }
     }

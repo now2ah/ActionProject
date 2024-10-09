@@ -20,8 +20,7 @@ namespace Action.State
         {
             if (null != _enemyUnit)
             {
-                _enemyUnit.ResetPath();
-                _enemyUnit.StopAgent();
+                _enemyUnit.Stop();
                 _enemyUnit.FindNearestPlayerBuilding();
                 _enemyUnit.FindNearestTarget(true);
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, false);
@@ -62,7 +61,8 @@ namespace Action.State
         {
             if (null != _enemyUnit && null != _enemyUnit.Target)
             {
-                _enemyUnit.SetDestinationToTarget(_enemyUnit.Target);
+                if (_enemyUnit.NavMeshAgentComp.isOnNavMesh)
+                    _enemyUnit.SetDestinationToTarget(_enemyUnit.Target);
                 _enemyUnit.Look(_enemyUnit.Target);
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, true);
             }
@@ -70,6 +70,7 @@ namespace Action.State
 
         public override void ExitState()
         {
+            _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, false);
         }
 
         public override void UpdateState()
@@ -104,6 +105,7 @@ namespace Action.State
 
         public override void ExitState()
         {
+            _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashAttacking, false);
         }
 
         public override void UpdateState()
@@ -138,7 +140,8 @@ namespace Action.State
             if (null != _enemyUnit)
             {
                 //Logger.Log("Idle Enter");
-                _enemyUnit.StopAgent();
+                if (_enemyUnit.NavMeshAgentComp.isOnNavMesh)
+                    _enemyUnit.StopAgent();
                 _enemyUnit.FindNearestPlayerBuilding();
                 _enemyUnit.FindNearestTarget(true);
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, false);
@@ -182,7 +185,8 @@ namespace Action.State
             if (null != _enemyUnit && null != _enemyUnit.Target)
             {
                 //Logger.Log("Move Enter");
-                _enemyUnit.SetDestinationToTarget(_enemyUnit.Target);
+                if (_enemyUnit.NavMeshAgentComp.isOnNavMesh)
+                    _enemyUnit.SetDestinationToTarget(_enemyUnit.Target);
                 _enemyUnit.Look(_enemyUnit.Target);
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashMoving, true);
             }
@@ -218,7 +222,8 @@ namespace Action.State
             if (null != _enemyUnit)
             {
                 //Logger.Log("Attack Enter");
-                _enemyUnit.Stop();
+                if (_enemyUnit.NavMeshAgentComp.isOnNavMesh)
+                    _enemyUnit.Stop();
                 _enemyUnit.Animator.SetBool(_enemyUnit.AnimHashAttacking, true);
                 _enemyUnit.Look(_enemyUnit.Target);
             }
@@ -234,11 +239,16 @@ namespace Action.State
             
             if (null != _enemyUnit && null != _enemyUnit.Target)
             {
-                _enemyUnit.Stop();
+                if (_enemyUnit.NavMeshAgentComp.isOnNavMesh)
+                    _enemyUnit.Stop();
                 _enemyUnit.Look(_enemyUnit.Target);
 
                 if (!_enemyUnit.isAttackCooltime())
-                    _enemyUnit.Attack(_enemyUnit.EnemyUnitData.attackDamage);
+                {
+                    EnemyUnitData data = _enemyUnit.UnitData as EnemyUnitData;
+                    _enemyUnit.Attack(data.attackDamage);
+                }
+                    
                 
                 if (!_enemyUnit.isTargetInDistance())
                 {

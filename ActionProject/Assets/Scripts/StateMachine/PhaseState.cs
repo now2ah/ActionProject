@@ -23,6 +23,7 @@ namespace Action.State
             GameManager.Instance.CheckConstructBuilding();
             foreach (var buildings in GameManager.Instance.PlayerBuildings)
                 buildings.SetActive(false);
+            GameManager.Instance.AutoSave();
             base.ExitState();
         }
     }
@@ -32,10 +33,13 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
-
+            UIManager.Instance.ExpBarUI.Show();
+            Units.PlayerUnitData data = GameManager.Instance.CommanderUnit.UnitData as Units.PlayerUnitData;
+            UIManager.Instance.ExpBarUI.ApplyExpValue(data.exp, data.nextExp);
             GameManager.Instance.AddHuntSpawner();
             GameManager.Instance.SetActiveHuntSpawner(true);
             GameManager.Instance.CommanderUnit.SetEnableAutoAttacks(true);
+            UIManager.Instance.BaseIndicatorUI.Hide();
         }
 
         public override void UpdateState()
@@ -48,10 +52,9 @@ namespace Action.State
             GameManager.Instance.SetActiveHuntSpawner(false);
             GameManager.Instance.EnemySpawners.Clear();
             foreach (GameObject unit in GameManager.Instance.EnemyUnits)
-            {
                 unit.SetActive(false);
-                //if(unit.TryGetComponent<Units.EnemyUnit>(out Units.EnemyUnit comp))
-            }
+            UIManager.Instance.BaseIndicatorUI.Show();
+            UIManager.Instance.ExpBarUI.Hide();
             base.ExitState();
         }
     }

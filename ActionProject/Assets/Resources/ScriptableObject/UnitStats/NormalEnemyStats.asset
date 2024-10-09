@@ -15,14 +15,14 @@ MonoBehaviour:
   unitName: NormalEnemy
   maxHp: 30
   growthMaxHp: 0
-  speed: 2
+  speed: 1
   requireGold: 0
   generateGold: 0
   constructTime: 0
   attackDamage: 15
   growthAttackDamage: 0
-  attackSpeed: 1
-  attackDistance: 1
+  attackSpeed: 3
+  attackDistance: 1.5
   expAmount: 10
   goldAmount: 1
   nextExp: 0

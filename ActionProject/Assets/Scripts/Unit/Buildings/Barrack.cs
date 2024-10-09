@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Action.SO;
+using Action.Manager;
 
 namespace Action.Units
 {
@@ -13,17 +14,44 @@ namespace Action.Units
         {
             base.Initialize();
             _SetUnitData();
-            Manager.GameManager.Instance.SetBuildingData(this.name);
-            RequireTextUI.Text.text = BuildingData.requireGold.ToString();
+            UnitPanel.ApplyHPValue(UnitData.hp, UnitData.maxHp);
+            Manager.GameManager.Instance.GameData.barrack = UnitData as BuildingData;
+            if (UnitData is BuildingData)
+                RequireTextUI.Text.text = ((BuildingData)UnitData).requireGold.ToString();
+            SetNameUI(UnitData.name);
         }
 
         void _SetUnitData()
         {
-            BuildingData.name = _unitStats.unitName;
-            BuildingData.hp = _unitStats.maxHp;
-            BuildingData.maxHp = _unitStats.maxHp;
-            BuildingData.requireGold = _unitStats.requireGold;
-            BuildingData.constructTime = _unitStats.constructTime;
+            if (null != GameManager.Instance.GameData.barrack)
+            {
+                if (UnitData is BuildingData)
+                {
+                    UnitData.name = GameManager.Instance.GameData.barrack.name;
+                    UnitData.hp = GameManager.Instance.GameData.barrack.hp;
+                    UnitData.maxHp = GameManager.Instance.GameData.barrack.maxHp;
+                    ((BuildingData)UnitData).isBuilt = GameManager.Instance.GameData.barrack.isBuilt;
+                    ((BuildingData)UnitData).requireGold = GameManager.Instance.GameData.barrack.requireGold;
+                    ((BuildingData)UnitData).constructTime = GameManager.Instance.GameData.barrack.constructTime;
+                    ((BuildingData)UnitData).attackDamage = GameManager.Instance.GameData.barrack.attackDamage;
+                    ((BuildingData)UnitData).attackSpeed = GameManager.Instance.GameData.barrack.attackSpeed;
+                    ((BuildingData)UnitData).attackDistance = GameManager.Instance.GameData.barrack.attackDistance;
+                }
+                if (GameManager.Instance.GameData.barrack.isBuilt)
+                    StateMachine.ChangeState(_doneState);
+            }
+            else
+            {
+                UnitData.name = _unitStats.unitName;
+                UnitData.hp = _unitStats.maxHp;
+                UnitData.maxHp = _unitStats.maxHp;
+                ((BuildingData)UnitData).isBuilt = false;
+                ((BuildingData)UnitData).requireGold = _unitStats.requireGold;
+                ((BuildingData)UnitData).constructTime = _unitStats.constructTime;
+                ((BuildingData)UnitData).attackDamage = _unitStats.attackDamage;
+                ((BuildingData)UnitData).attackSpeed = _unitStats.attackSpeed;
+                ((BuildingData)UnitData).attackDistance = _unitStats.attackDistance;
+            }
         }
 
         protected override void Awake()

@@ -28,8 +28,6 @@ namespace Action.UI
             _textMesh = transform.GetChild(2).transform.GetComponent<TextMeshProUGUI>();
             _textMesh.text = _unit.UnitData.name;
             _panelPosition = ePanelPosition.BOTTOM;
-            
-            ApplyHPValue(_unit.UnitData.hp, _unit.UnitData.maxHp); //default hp
         }
 
         public void SetNameText(string name)

@@ -19,7 +19,10 @@ namespace Action.UI
 
         public void ApplyExpValue(int exp, int fullExp)
         {
-           _fillImage.fillAmount = Mathf.Clamp01((float)exp / (float)fullExp);
+            if (0 == exp)
+                _fillImage.fillAmount = 0;
+            else
+            _fillImage.fillAmount = Mathf.Clamp01((float)exp / (float)fullExp);
         }
 
         protected new void Awake()

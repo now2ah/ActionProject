@@ -223,8 +223,9 @@ namespace Action.State
             _building.SetMaterial();
             //interaction 없을때 if 문 추가
             _building.ControlUI.Hide();
-
             _building.IsOnUnitPanel = true;
+            BuildingData data = _building.UnitData as BuildingData;
+            data.isBuilt = true;
         }
 
         public override void ExitState()

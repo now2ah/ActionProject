@@ -15,17 +15,13 @@ MonoBehaviour:
   enemyWaveList:
   - enemyGroupList:
     - type: 0
-      enemyAmount: 15
-  - enemyGroupList:
-    - type: 0
-      enemyAmount: 15
-    - type: 1
       enemyAmount: 5
   - enemyGroupList:
     - type: 0
-      enemyAmount: 20
-    - type: 1
-      enemyAmount: 10
+      enemyAmount: 5
+  - enemyGroupList:
+    - type: 0
+      enemyAmount: 5
   - enemyGroupList:
     - type: 0
       enemyAmount: 25

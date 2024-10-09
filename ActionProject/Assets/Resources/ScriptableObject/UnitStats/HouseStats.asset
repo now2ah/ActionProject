@@ -17,7 +17,7 @@ MonoBehaviour:
   growthMaxHp: 0
   speed: 0
   requireGold: 5
-  generateGold: 0
+  generateGold: 5
   constructTime: 1.5
   attackDamage: 0
   growthAttackDamage: 0

@@ -19,9 +19,10 @@ MonoBehaviour:
   requireGold: 5
   generateGold: 0
   constructTime: 1.5
-  attackDamage: 5
+  attackDamage: 25
   growthAttackDamage: 0
-  attackSpeed: 3
-  attackDistance: 10
+  attackSpeed: 2
+  attackDistance: 15
   expAmount: 0
   goldAmount: 0
+  nextExp: 0
