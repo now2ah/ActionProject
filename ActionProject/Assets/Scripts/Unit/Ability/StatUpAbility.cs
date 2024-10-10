@@ -13,6 +13,7 @@ namespace Action.Game
 
         void _SetAbilityData()
         {
+            abilityData.type = Enums.eAbility.DAMAGEUP;
             abilityData.isActivated = false;
             abilityData.level = 0;
             abilityData.abilityName = _abilityItem.abilityName;
@@ -76,6 +77,7 @@ namespace Action.Game
 
         void _SetAbilityData()
         {
+            abilityData.type = Enums.eAbility.HPUP;
             abilityData.isActivated = false;
             abilityData.level = 0;
             abilityData.abilityName = _abilityItem.abilityName;
@@ -138,6 +140,7 @@ namespace Action.Game
 
         void _SetAbilityData()
         {
+            abilityData.type = Enums.eAbility.SPEEDUP;
             abilityData.isActivated = false;
             abilityData.level = 0;
             abilityData.abilityName = _abilityItem.abilityName;

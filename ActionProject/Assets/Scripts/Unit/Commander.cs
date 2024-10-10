@@ -49,6 +49,7 @@ namespace Action.Units
         public GameObject Indicator { get { return _indicator; } set { _indicator = value; } }
         public int AnimHashMoving => _animHashMoving;
         public int AnimHashAttacking => _animHashAttacking;
+        public Ability[] AbilitySlots { get { return _abilitySlots; } }
 
         public override void Initialize()
         {
@@ -67,10 +68,16 @@ namespace Action.Units
             OnLevelUp.AddListener(UIManager.Instance.AbilityUpgradeUI.Initialize);
             _abilitySlots = new Ability[GameManager.Instance.Constants.ABILITY_COUNT];
             _SetAbilities();
-            _abilitySlots[(int)Enums.eAbility.PHYSICAL].LevelUp(1);
-            ActivateAbility(Enums.eAbility.PHYSICAL);
-            _abilitySlots[(int)Enums.eAbility.DIRECTIONAL].LevelUp(1);
-            ActivateAbility(Enums.eAbility.DIRECTIONAL);
+            if (null == GameManager.Instance.GameData.commanderData)
+            {
+                _abilitySlots[(int)Enums.eAbility.PHYSICAL].LevelUp(1);
+                ActivateAbility(Enums.eAbility.PHYSICAL);
+                _abilitySlots[(int)Enums.eAbility.DIRECTIONAL].LevelUp(1);
+                ActivateAbility(Enums.eAbility.DIRECTIONAL);
+            }
+            else
+                _LoadAbilities();
+            
             SetEnableAutoAttacks(false);
 
             GameManager.Instance.GameData.commanderData = UnitData as CommanderData;
@@ -288,6 +295,64 @@ namespace Action.Units
             _abilitySlots[5] = speedUpAbility;
         }
 
+        void _LoadAbilities()
+        {
+            foreach (var ability in GameManager.Instance.GameData.commanderData.abilityDatas)
+            {
+                switch (ability.type)
+                {
+                    case Enums.eAbility.PHYSICAL:
+                        if (gameObject.TryGetComponent<PhysicalAttack>(out PhysicalAttack physical))
+                        {
+                            physical.Initialize();
+                            physical.abilityData = ability;
+                            _abilitySlots[0] = physical;
+                        }
+                        break;
+                    case Enums.eAbility.DIRECTIONAL:
+                        if (gameObject.TryGetComponent<DirectionalAttack>(out DirectionalAttack directional))
+                        {
+                            directional.Initialize();
+                            directional.abilityData = ability;
+                            _abilitySlots[1] = directional;
+                        }
+                        break;
+                    case Enums.eAbility.GUIDANCE:
+                        if (gameObject.TryGetComponent<GuidanceAttack>(out GuidanceAttack guidance))
+                        {
+                            guidance.Initialize();
+                            guidance.abilityData = ability;
+                            _abilitySlots[2] = guidance;
+                        }
+                        break;
+                    case Enums.eAbility.DAMAGEUP:
+                        if (gameObject.TryGetComponent<DamageUpAbility>(out DamageUpAbility dmg))
+                        {
+                            dmg.Initialize();
+                            dmg.abilityData = ability;
+                            _abilitySlots[3] = dmg;
+                        }
+                        break;
+                    case Enums.eAbility.HPUP:
+                        if (gameObject.TryGetComponent<HPUpAbility>(out HPUpAbility hp))
+                        {
+                            hp.Initialize();
+                            hp.abilityData = ability;
+                            _abilitySlots[4] = hp;
+                        }
+                        break;
+                    case Enums.eAbility.SPEEDUP:
+                        if (gameObject.TryGetComponent<SpeedUpAbility>(out SpeedUpAbility spd))
+                        {
+                            spd.Initialize();
+                            spd.abilityData = ability;
+                            _abilitySlots[5] = spd;
+                        }
+                        break;
+                }
+            }
+        }
+
         List<Ability> _SetUpAbilityUpgrade()
         {
             List<Ability> abilityList = new List<Ability>();
@@ -325,7 +390,7 @@ namespace Action.Units
                     ((CommanderData)UnitData).level = GameManager.Instance.GameData.commanderData.level;
                     ((CommanderData)UnitData).exp = GameManager.Instance.GameData.commanderData.exp;
                     ((CommanderData)UnitData).nextExp = GameManager.Instance.GameData.commanderData.nextExp;
-                    ((CommanderData)UnitData).abilityData = GameManager.Instance.GameData.commanderData.abilityData;
+                    ((CommanderData)UnitData).abilityDatas = GameManager.Instance.GameData.commanderData.abilityDatas;
                 }
             }
             else
@@ -377,6 +442,7 @@ namespace Action.Units
             _interactingBuilding = null;
             _animator = GetComponentInChildren<Animator>();
             UnitData = new CommanderData();
+            ((CommanderData)UnitData).abilityDatas = new List<AbilityData>();
         }
 
         protected override void Start()

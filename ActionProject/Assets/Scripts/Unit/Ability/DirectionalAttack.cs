@@ -13,6 +13,7 @@ namespace Action.Game
 
         void _SetAbilityData()
         {
+            abilityData.type = Enums.eAbility.DIRECTIONAL;
             abilityData.isActivated = false;
             abilityData.level = 0;
             abilityData.abilityName = _abilityItem.abilityName;

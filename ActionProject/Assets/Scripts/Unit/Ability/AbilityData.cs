@@ -7,6 +7,7 @@ namespace Action.Game
     [System.Serializable]
     public class AbilityData
     {
+        public Enums.eAbility type;
         public bool isActivated;
         public int level;
         public string abilityName;

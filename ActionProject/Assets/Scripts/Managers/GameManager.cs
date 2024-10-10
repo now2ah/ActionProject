@@ -169,6 +169,10 @@ namespace Action.Manager
             Data data = new Data();
             data.date = System.DateTime.Now.ToString();
             data.gameData = _gameData;
+            CommanderData commanderData = _commanderUnit.UnitData as CommanderData;
+            for(int i=0; i<_commanderUnit.AbilitySlots.Length; i++)
+                commanderData.abilityDatas.Add(_commanderUnit.AbilitySlots[i].abilityData);
+            data.gameData.commanderData.abilityDatas = commanderData.abilityDatas;
             return data;
         }
 

@@ -17,6 +17,7 @@ namespace Action.Game
 
         void _SetAbilityData()
         {
+            abilityData.type = Enums.eAbility.PHYSICAL;
             abilityData.isActivated = false;
             abilityData.level = 0;
             abilityData.abilityName = _abilityItem.abilityName;

@@ -154,7 +154,7 @@ namespace Action.Units
 
         public void SetDestination(Vector3 vec)
         {
-            if (null != _navMeshAgent)
+            if (null != _navMeshAgent && _navMeshAgent.isOnNavMesh)
             {
                 _navMeshAgent.isStopped = false;
                 _navMeshAgent.updateRotation = true;
@@ -165,7 +165,7 @@ namespace Action.Units
 
         public void SetDestinationToTarget(GameObject target)
         {
-            if (null != _navMeshAgent)
+            if (null != _navMeshAgent && _navMeshAgent.isOnNavMesh)
             {
                 _navMeshAgent.isStopped = false;
                 _navMeshAgent.updateRotation = true;
@@ -179,7 +179,9 @@ namespace Action.Units
                 }
                 else
                     _targetPos = target.transform.position;
-                _navMeshAgent.SetDestination(_targetPos);
+
+                if (_navMeshAgent.isOnNavMesh)
+                    _navMeshAgent.SetDestination(_targetPos);
             }
         }
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Action;
+using Action.Game;
 
 namespace Action.Units
 {
@@ -29,7 +30,7 @@ namespace Action.Units
     [System.Serializable]
     public class CommanderData : PlayerUnitData
     {
-        public Game.AbilityData abilityData;
+        public List<AbilityData> abilityDatas;
     }
 
     [System.Serializable]
