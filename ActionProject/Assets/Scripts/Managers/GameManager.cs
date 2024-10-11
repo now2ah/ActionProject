@@ -70,6 +70,7 @@ namespace Action.Manager
 
         [SerializeReference]
         List<GameObject> _playerBuildings;
+        GameObject _playerBuildingObj;
 
         List<GameObject> _playerUnitPrefabs;
         List<GameObject> _playerUnits;
@@ -367,6 +368,10 @@ namespace Action.Manager
             _gameTimer.ResetTimer();
             _refreshTimer.ResetTimer();
             _phaseTimer.ResetTimer();
+            _playerUnits.Clear();
+            foreach (var building in _playerBuildings)
+                Destroy(building);
+            _playerBuildings.Clear();
             if (null != UIManager.Instance.TownStagePanel)
                 UIManager.Instance.TownStagePanel.Hide();
             if (null != UIManager.Instance.ExpBarUI)
@@ -375,15 +380,18 @@ namespace Action.Manager
 
         public void CheckConstructBuilding()
         {
-            foreach (var building in _playerBuildings)
+            if (0 < _playerBuildings.Count)
             {
-                if (building.TryGetComponent<Building>(out Building comp))
+                foreach (var building in _playerBuildings)
                 {
-                    BuildingData data = comp.UnitData as BuildingData;
-                    if (comp.PrepareState == comp.StateMachine.CurState)
+                    if (building.TryGetComponent<Building>(out Building comp))
                     {
-                        comp.StateMachine.ChangeState(comp.IdleState);
-                        _gameData.resource.Gold += data.requireGold;
+                        BuildingData data = comp.UnitData as BuildingData;
+                        if (comp.PrepareState == comp.StateMachine.CurState)
+                        {
+                            comp.StateMachine.ChangeState(comp.IdleState);
+                            _gameData.resource.Gold += data.requireGold;
+                        }
                     }
                 }
             }
@@ -442,13 +450,17 @@ namespace Action.Manager
             }
             else
             {
-                GameObject obj = new GameObject("Buildings");
-                obj.transform.SetParent(gameObject.transform);
+                if (null == _playerBuildingObj)
+                    _playerBuildingObj = new GameObject("Buildings");
+                
+                _playerBuildingObj.transform.SetParent(gameObject.transform);
                 Building[] buildings = FindObjectsByType<Building>(FindObjectsSortMode.None);
                 foreach (var building in buildings)
                 {
+                    if (building.TryGetComponent<Building>(out Building comp))
+                        comp.Initialize();
                     _playerBuildings.Add(building.gameObject);
-                    building.transform.SetParent(obj.transform);
+                    building.transform.SetParent(_playerBuildingObj.transform);
                     if ("PlayerBase" == building.name)
                         _playerBase = building.gameObject;
                 }

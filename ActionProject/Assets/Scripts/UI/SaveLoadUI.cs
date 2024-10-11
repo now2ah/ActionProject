@@ -71,12 +71,14 @@ namespace Action.UI
             Logger.Log("SaveLoad : " + num);
             if (eMode.LOAD == _mode)
             {
+                GameManager.Instance.Resume();
                 SaveSystem.Instance.Load(num);
+                
             }
             else if (eMode.SAVE == _mode)
             {
-                SaveSystem.Instance.Save(num, GameManager.Instance.GetWrappedGameData());
                 GameManager.Instance.Resume();
+                SaveSystem.Instance.Save(num, GameManager.Instance.GetWrappedGameData());
             }
             gameObject.SetActive(false);
 

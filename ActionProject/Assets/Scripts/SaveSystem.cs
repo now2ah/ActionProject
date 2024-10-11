@@ -47,10 +47,8 @@ public class SaveSystem : Singleton<SaveSystem>
     public void Load(int slotNum)
     {
         GameManager.Instance.ResetGame();
-
         Data data = dataSlots[slotNum];
         GameManager.Instance.GameData = data.gameData;
-        
         SceneManager.Instance.LoadGameScene(2);
     }
 

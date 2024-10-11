@@ -11,6 +11,8 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
+            foreach (var buildings in GameManager.Instance.PlayerBuildings)
+                buildings.SetActive(true);
         }
 
         public override void UpdateState()
@@ -20,11 +22,9 @@ namespace Action.State
 
         public override void ExitState()
         {
-            GameManager.Instance.CheckConstructBuilding();
+            base.ExitState();
             foreach (var buildings in GameManager.Instance.PlayerBuildings)
                 buildings.SetActive(false);
-            GameManager.Instance.AutoSave();
-            base.ExitState();
         }
     }
 
@@ -33,6 +33,8 @@ namespace Action.State
         public override void EnterState()
         {
             base.EnterState();
+            GameManager.Instance.CheckConstructBuilding();
+            GameManager.Instance.AutoSave();
             UIManager.Instance.ExpBarUI.Show();
             Units.PlayerUnitData data = GameManager.Instance.CommanderUnit.UnitData as Units.PlayerUnitData;
             UIManager.Instance.ExpBarUI.ApplyExpValue(data.exp, data.nextExp);
