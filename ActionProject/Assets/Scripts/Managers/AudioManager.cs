@@ -14,7 +14,10 @@ namespace Action.Manager
       
         public enum eSfx
         {
-
+            CLICK,
+            COINPICKUP,
+            POWERUP,
+            SLASH
         }
 
         AudioClip[] _bgmClip;
@@ -27,6 +30,11 @@ namespace Action.Manager
         float _bgmVolume;
         float _sfxVolume;
       
+        void _LoadAssets()
+        {
+            _sfxClip[0] = Resources.Load("Sfx/Click") as AudioClip;
+        }
+
         public override void Initialize()
         {
             base.Initialize();
@@ -58,6 +66,12 @@ namespace Action.Manager
 
         void Awake()
         {
+            _channelCount = 8;
+            _channelIndex = 0;
+            _bgmVolume = 0.3f;
+            _sfxVolume = 1.0f;
+            _bgmClip = new AudioClip[3];
+            _sfxClip = new AudioClip[10];
             _bgmAudioSource = gameObject.AddComponent<AudioSource>();
             _bgmAudioSource.playOnAwake = false;
             _bgmAudioSource.loop = true;
@@ -72,10 +86,7 @@ namespace Action.Manager
                 _sfxAudioSources[i].volume = _sfxVolume;
             }
 
-            _channelCount = 8;
-            _channelIndex = 0;
-            _bgmVolume = 0.3f;
-            _sfxVolume = 1.0f;
+            _LoadAssets();
         }
     }
 }

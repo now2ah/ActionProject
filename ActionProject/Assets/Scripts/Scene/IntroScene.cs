@@ -19,6 +19,7 @@ namespace Action.Scene
             InputManager.Instance.Initialize();
             GameManager.Instance.Initialize();
             SaveSystem.Instance.Initialize();
+            AudioManager.Instance.Initialize();
         }
 
         IEnumerator IntroCoroutine()

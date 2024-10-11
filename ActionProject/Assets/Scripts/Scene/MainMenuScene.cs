@@ -34,6 +34,7 @@ namespace Action.Scene
                 UIManager.Instance.SaveLoadUI.Initialize(UI.SaveLoadUI.eMode.LOAD);
                 UIManager.Instance.SaveLoadUI.Show();
                 UIManager.Instance.SaveLoadPanel.transform.SetAsLastSibling();
+                AudioManager.Instance.PlaySFX(AudioManager.eSfx.CLICK);
             });
             if (SaveSystem.Instance.HasSaveData())
                 _continueButton.gameObject.SetActive(true);

@@ -76,6 +76,7 @@ namespace Action.Units
             {
                 ((BuildingData)UnitData).isBuilt = true;
                 _StartConstruct();
+                AudioManager.Instance.PlaySFX(AudioManager.eSfx.CLICK);
             }
         }
 
