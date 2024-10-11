@@ -85,6 +85,8 @@ namespace Action.Game
         protected override void Update()
         {
             base.Update();
+            if (_timer.IsFinished)
+                UIManager.Instance.SkillIconUI.AttackImage.gameObject.SetActive(true);
         }
     }
 }

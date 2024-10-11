@@ -42,6 +42,7 @@ namespace Action.State
             GameManager.Instance.SetActiveHuntSpawner(true);
             GameManager.Instance.CommanderUnit.SetEnableAutoAttacks(true);
             UIManager.Instance.BaseIndicatorUI.Hide();
+            UIManager.Instance.SkillIconUI.Show();
         }
 
         public override void UpdateState()
@@ -57,6 +58,7 @@ namespace Action.State
                 unit.SetActive(false);
             UIManager.Instance.BaseIndicatorUI.Show();
             UIManager.Instance.ExpBarUI.Hide();
+            UIManager.Instance.SkillIconUI.Hide();
             base.ExitState();
         }
     }

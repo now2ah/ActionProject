@@ -205,6 +205,7 @@ namespace Action.Units
             {
                 _Dash();
                 _dashTimer.TickStart(_dashCooltime);
+                UIManager.Instance.SkillIconUI.DashImage.gameObject.SetActive(false);
             }
         }
 
@@ -217,6 +218,7 @@ namespace Action.Units
                 {
                     PhysicalAttack();
                     ability.Timer.TickStart(ability.abilityData.attackSpeed);
+                    UIManager.Instance.SkillIconUI.AttackImage.gameObject.SetActive(false);
                 }
             }
         }
@@ -462,6 +464,8 @@ namespace Action.Units
             base.Update();
             _CheckUnableInteractBuilding();
             _CheckClick();
+            if (_dashTimer.IsFinished)
+                UIManager.Instance.SkillIconUI.DashImage.gameObject.SetActive(true);
         }
 
         protected void OnEnable()

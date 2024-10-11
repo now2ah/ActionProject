@@ -45,7 +45,8 @@ namespace Action.Manager
         WaveCamUI _waveCamUI;
         GameObject _saveLoadPanel;
         SaveLoadUI _saveLoadUI;
-
+        GameObject _skillIconPanel;
+        SkillIconUI _skillIconUI;
 
         public Canvas MainCanvas => _mainCanvas;
         public Canvas InGameCanvas => _inGameCanvas;
@@ -64,6 +65,7 @@ namespace Action.Manager
         public WaveCamUI WaveCamUI { get { return _waveCamUI; } set { _waveCamUI = value; } }
         public GameObject SaveLoadPanel { get { return _saveLoadPanel; } set { _saveLoadPanel = value; } }
         public SaveLoadUI SaveLoadUI { get { return _saveLoadUI; } set { _saveLoadUI = value; } }
+        public SkillIconUI SkillIconUI { get { return _skillIconUI; } set { _skillIconUI = value; } }
 
         public override void Initialize()
         {
@@ -90,6 +92,9 @@ namespace Action.Manager
             _saveLoadPanel = CreateUI("SaveLoadPanel", _mainCanvas);
             _saveLoadUI = _saveLoadPanel.GetComponent<SaveLoadUI>();
             _saveLoadUI.Hide();
+            _skillIconPanel = CreateUI("SkillIconPanel", _mainCanvas);
+            _skillIconUI = _skillIconPanel.GetComponent<SkillIconUI>();
+            _skillIconUI.Hide();
         }
 
         public GameObject CreateUI(string name, Canvas canvas)
