@@ -39,6 +39,7 @@ namespace Action.Scene
         {
             Initialize();
             _startTimer.TickStart(1.0f);
+            AudioManager.Instance.PlayBGM(AudioManager.eBGM.HUNT);
         }
 
         // Update is called once per frame

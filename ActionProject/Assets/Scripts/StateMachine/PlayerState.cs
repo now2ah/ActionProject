@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Action.State;
 using Action.Units;
+using Action.Manager;
 
 namespace Action.State
 {
@@ -250,6 +251,10 @@ namespace Action.State
 
         public override void EnterState()
         {
+            _building.SetVisibleBuilding(false);
+            BuildingData data = _building.UnitData as BuildingData;
+            data.isBuilt = false;
+            AudioManager.Instance.PlaySFX(AudioManager.eSfx.COLLAPSE);
         }
 
         public override void ExitState()

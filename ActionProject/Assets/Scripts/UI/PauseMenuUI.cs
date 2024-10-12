@@ -39,12 +39,14 @@ namespace Action.UI
 
         void OnResumeButton()
         {
+            AudioManager.Instance.PlaySFX(AudioManager.eSfx.CLICK);
             GameManager.Instance.Resume();
             gameObject.SetActive(false);
         }
 
         void OnSaveButton()
         {
+            AudioManager.Instance.PlaySFX(AudioManager.eSfx.CLICK);
             UIManager.Instance.SaveLoadUI.Initialize(SaveLoadUI.eMode.SAVE);
             UIManager.Instance.SaveLoadUI.Show();
             UIManager.Instance.SaveLoadUI.transform.SetAsLastSibling();
@@ -53,6 +55,7 @@ namespace Action.UI
 
         void OnLoadButton()
         {
+            AudioManager.Instance.PlaySFX(AudioManager.eSfx.CLICK);
             UIManager.Instance.SaveLoadUI.Initialize(SaveLoadUI.eMode.LOAD);
             UIManager.Instance.SaveLoadUI.Show();
             UIManager.Instance.SaveLoadUI.transform.SetAsLastSibling();
@@ -61,6 +64,7 @@ namespace Action.UI
 
         void OnQuitButton()
         {
+            AudioManager.Instance.PlaySFX(AudioManager.eSfx.CLICK);
             GameManager.Instance.Resume();
             GameManager.Instance.ResetGame();
             SceneManager.Instance.LoadGameScene(1);

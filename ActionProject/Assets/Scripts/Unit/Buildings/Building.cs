@@ -80,6 +80,16 @@ namespace Action.Units
             }
         }
 
+        public override void ApplyDamage(DamageMessage msg)
+        {
+            base.ApplyDamage(msg);
+            
+            AudioManager.Instance.PlaySFX(AudioManager.eSfx.BUILDHIT);
+
+            if (_CheckDestroy())
+                StateMachine.ChangeState(_collapseState);
+        }
+
         public void SetVisibleBuilding(bool isOn)
         {
             _building.SetActive(isOn);
@@ -134,6 +144,14 @@ namespace Action.Units
             }
         }
 
+        bool _CheckDestroy()
+        {
+            if (0 >= UnitData.hp)
+                return true;
+            else
+                return false;
+        }
+
         void _StartConstruct()
         {
             StateMachine.ChangeState(_prepareState);
@@ -143,6 +161,7 @@ namespace Action.Units
         IEnumerator StartConstructCoroutine()
         {
             yield return new WaitForSeconds(((BuildingData)UnitData).constructTime);
+            AudioManager.Instance.PlaySFX(AudioManager.eSfx.BUILDDONE);
             StateMachine.ChangeState(_doneState);
             _indicatorPos = transform.position + new Vector3(0, GetComponent<Collider>().bounds.size.y, 0);
         }

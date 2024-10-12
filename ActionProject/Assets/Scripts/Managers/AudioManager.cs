@@ -9,15 +9,27 @@ namespace Action.Manager
     {
         public enum eBGM
         {
-
+            GAMEOVER,
+            MAIN,
+            TOWN,
+            HUNT
         }
       
         public enum eSfx
         {
+            ARROW,
+            BUILDDONE,
+            BUILDHIT,
             CLICK,
             COINPICKUP,
+            COLLAPSE,
+            DEFENSEDONE,
+            EXPPICKUP,
+            FIRE,
+            LEVELUP,
             POWERUP,
-            SLASH
+            SLASH,
+            TOHUNT
         }
 
         AudioClip[] _bgmClip;
@@ -32,7 +44,25 @@ namespace Action.Manager
       
         void _LoadAssets()
         {
-            _sfxClip[0] = Resources.Load("Sfx/Click") as AudioClip;
+            _bgmClip[0] = Resources.Load("Audio/Bgm/GameOver") as AudioClip;
+            _bgmClip[1] = Resources.Load("Audio/Bgm/Main") as AudioClip;
+            _bgmClip[2] = Resources.Load("Audio/Bgm/Town") as AudioClip;
+            _bgmClip[3] = Resources.Load("Audio/Bgm/Hunt") as AudioClip;
+
+            _sfxClip[0] = Resources.Load("Audio/Sfx/Arrow") as AudioClip;
+            _sfxClip[1] = Resources.Load("Audio/Sfx/BuildDone") as AudioClip;
+            _sfxClip[2] = Resources.Load("Audio/Sfx/BuildHit") as AudioClip;
+            _sfxClip[3] = Resources.Load("Audio/Sfx/Click") as AudioClip;
+            _sfxClip[4] = Resources.Load("Audio/Sfx/CoinPickUp") as AudioClip;
+            _sfxClip[5] = Resources.Load("Audio/Sfx/Collapse") as AudioClip;
+            _sfxClip[6] = Resources.Load("Audio/Sfx/DefenseDone") as AudioClip;
+            _sfxClip[7] = Resources.Load("Audio/Sfx/ExpPickUp") as AudioClip;
+            _sfxClip[8] = Resources.Load("Audio/Sfx/Fire") as AudioClip;
+            _sfxClip[9] = Resources.Load("Audio/Sfx/GameOver") as AudioClip;
+            _sfxClip[10] = Resources.Load("Audio/Sfx/LevelUp") as AudioClip;
+            _sfxClip[11] = Resources.Load("Audio/Sfx/PowerUp") as AudioClip;
+            _sfxClip[12] = Resources.Load("Audio/Sfx/Slash") as AudioClip;
+            _sfxClip[13] = Resources.Load("Audio/Sfx/ToHunt") as AudioClip;
         }
 
         public override void Initialize()
@@ -44,7 +74,11 @@ namespace Action.Manager
         public void PlayBGM(eBGM clip)
         {
             if (!_bgmAudioSource.isPlaying || _bgmAudioSource.clip != _bgmClip[(int)clip])
+            {
+                _bgmAudioSource.clip = _bgmClip[(int)clip];
                 _bgmAudioSource.Play();
+            }
+                
         }
 
         public void PlaySFX(eSfx clip)
@@ -68,10 +102,10 @@ namespace Action.Manager
         {
             _channelCount = 8;
             _channelIndex = 0;
-            _bgmVolume = 0.3f;
+            _bgmVolume = 0.5f;
             _sfxVolume = 1.0f;
-            _bgmClip = new AudioClip[3];
-            _sfxClip = new AudioClip[10];
+            _bgmClip = new AudioClip[4];
+            _sfxClip = new AudioClip[14];
             _bgmAudioSource = gameObject.AddComponent<AudioSource>();
             _bgmAudioSource.playOnAwake = false;
             _bgmAudioSource.loop = true;

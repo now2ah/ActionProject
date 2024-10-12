@@ -43,8 +43,11 @@ namespace Action.Scene
             _startButton = _mainMenuPanel.transform.GetChild(2).GetComponent<Button>();
             _startButton.onClick.AddListener(() =>
             {
+                AudioManager.Instance.PlaySFX(AudioManager.eSfx.CLICK);
                 _LoadNextScene();
             });
+
+            AudioManager.Instance.PlayBGM(AudioManager.eBGM.MAIN);
         }
 
         private void OnDestroy()

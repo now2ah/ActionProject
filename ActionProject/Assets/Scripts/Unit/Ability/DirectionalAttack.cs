@@ -71,6 +71,7 @@ namespace Action.Game
                     //attack logic
                     _CreateProjectile(abilityData.attackDamage);
                     AttackTimer.TickStart(abilityData.attackSpeed);
+                    AudioManager.Instance.PlaySFX(AudioManager.eSfx.FIRE);
                 }
 
                 if (AttackTimer.IsFinished)

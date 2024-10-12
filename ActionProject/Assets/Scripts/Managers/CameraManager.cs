@@ -14,6 +14,7 @@ namespace Action.Manager
         GameObject _mainMenuVCamObj;
         GameObject _fixedVCamObj;
         FixedVirtualCamera _fixedVCam;
+        AudioListener _audioListener;
         
 
         float _vCamOffsetY;
@@ -33,13 +34,14 @@ namespace Action.Manager
             _vCamOffsetY = GameManager.Instance.Constants.GAMECAMERA_VERTICAL_DIST;
             _vCamOffsetZ = GameManager.Instance.Constants.GAMECAMERA_HORIZONTAL_DIST;
             _vCamFov = GameManager.Instance.Constants.GAMECAMERA_FOV;
+            
         }
 
         public void CreateMainMenuVirtualCamera()
         {
             if (null == _mainMenuVCamObj)
             {
-                _mainMenuVCamObj = new GameObject("VirtualCamera");
+                _mainMenuVCamObj = GameObject.Find("VirtualCamera");
                 _mainMenuVCam = _mainCameraObj.AddComponent<Cinemachine.CinemachineVirtualCameraBase>();
                 _mainMenuVCamObj.transform.position = new Vector3(-110, 30, 0);
                 _mainMenuVCamObj.transform.rotation = Quaternion.Euler(40, 90, 0);
@@ -55,6 +57,7 @@ namespace Action.Manager
                 _fixedVCam.Initialize();
                 _fixedVCam.SetBodyOffset(new Vector3(0.0f, _vCamOffsetY, _vCamOffsetZ));
                 _fixedVCam.SetFov(GameManager.Instance.Constants.GAMECAMERA_FOV);
+                _audioListener = _fixedVCamObj.AddComponent<AudioListener>();
 
                 if (null == _fixedVCam.GetTarget())
                     _fixedVCam.SetTarget(GameManager.Instance.CommanderObj.transform);

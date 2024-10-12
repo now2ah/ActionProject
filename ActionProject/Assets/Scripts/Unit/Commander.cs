@@ -219,6 +219,7 @@ namespace Action.Units
                     PhysicalAttack();
                     ability.Timer.TickStart(ability.abilityData.attackSpeed);
                     UIManager.Instance.SkillIconUI.AttackImage.gameObject.SetActive(false);
+                    AudioManager.Instance.PlaySFX(AudioManager.eSfx.SLASH);
                 }
             }
         }

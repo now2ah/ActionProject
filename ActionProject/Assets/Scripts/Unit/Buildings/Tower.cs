@@ -104,6 +104,9 @@ namespace Action.Units
             float nearestDist = 10000f;
             for (int i=0; i<GameManager.Instance.EnemyUnits.Count; i++)
             {
+                if (!GameManager.Instance.EnemyUnits[i].activeSelf)
+                    continue;
+
                 float dist = Vector3.Distance(transform.position, GameManager.Instance.EnemyUnits[i].transform.position);
                 if (nearestDist > dist)
                 {
@@ -141,6 +144,7 @@ namespace Action.Units
         {
             _ShootArrow();
             _attackTime.TickStart(((BuildingData)UnitData).attackSpeed);
+            AudioManager.Instance.PlaySFX(AudioManager.eSfx.ARROW);
         }
 
         protected override void Awake()

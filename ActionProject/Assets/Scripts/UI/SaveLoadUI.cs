@@ -68,7 +68,7 @@ namespace Action.UI
 
         void _OnClick(int num)
         {
-            Logger.Log("SaveLoad : " + num);
+            AudioManager.Instance.PlaySFX(AudioManager.eSfx.CLICK);
             if (eMode.LOAD == _mode)
             {
                 GameManager.Instance.Resume();

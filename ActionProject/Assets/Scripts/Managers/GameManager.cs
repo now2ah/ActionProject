@@ -627,6 +627,7 @@ namespace Action.Manager
                 CameraManager.Instance.CreateFixedVirtualCamera();
                 UIManager.Instance.CreateTownStagePanel();
                 UIManager.Instance.TownStagePanel.Show();
+                AudioManager.Instance.PlayBGM(AudioManager.eBGM.TOWN);
                 
             }
             else if (_gamePhase == eGamePhase.TownBuild)

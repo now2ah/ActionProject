@@ -45,6 +45,7 @@ namespace Action.Game
             if (other.gameObject.TryGetComponent<PlayerUnit>(out PlayerUnit comp))
             {
                 comp.GainExp(_expAmount);
+                AudioManager.Instance.PlaySFX(AudioManager.eSfx.EXPPICKUP);
                 Pool.Free(this);
             }
         }

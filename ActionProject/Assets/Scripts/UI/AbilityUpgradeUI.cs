@@ -33,6 +33,7 @@ namespace Action.UI
             _chooseButton[1].onClick.AddListener(() => _ChooseItem(1));
             _chooseButton[2].onClick.AddListener(() => _ChooseItem(2));
             Show();
+            AudioManager.Instance.PlaySFX(AudioManager.eSfx.LEVELUP);
             GameManager.Instance.Stop();
         }
 
@@ -42,6 +43,7 @@ namespace Action.UI
                 _abilityList[i].Activate(true);
 
             _abilityList[i].LevelUp(_abilityList[i].abilityData.level + 1);
+            AudioManager.Instance.PlaySFX(AudioManager.eSfx.POWERUP);
             Hide();
             GameManager.Instance.Resume();
         }

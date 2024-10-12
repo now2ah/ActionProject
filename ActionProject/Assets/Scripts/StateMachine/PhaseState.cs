@@ -43,6 +43,7 @@ namespace Action.State
             GameManager.Instance.CommanderUnit.SetEnableAutoAttacks(true);
             UIManager.Instance.BaseIndicatorUI.Hide();
             UIManager.Instance.SkillIconUI.Show();
+            AudioManager.Instance.PlaySFX(AudioManager.eSfx.TOHUNT);
         }
 
         public override void UpdateState()
