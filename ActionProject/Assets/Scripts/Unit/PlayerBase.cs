@@ -19,12 +19,12 @@ namespace Action.Units
             base.Initialize();
             SetUnitData();
             UnitPanel.ApplyHPValue(UnitData.hp, UnitData.maxHp);
-            Manager.GameManager.Instance.GameData.playerBase = UnitData as BuildingData;
-            StateMachine.ChangeState(_prepareState);
-            StateMachine.ChangeState(_doneState);
+            GameManager.Instance.GameData.playerBase = UnitData as BuildingData;
+            //StateMachine.ChangeState(_prepareState);
+            //StateMachine.ChangeState(_doneState);
             if (UnitData is BuildingData)
             {
-                ((BuildingData)UnitData).isBuilt = true;
+                ((BuildingData)UnitData).isBuilt = false;
                 SetNameUI(UnitData.name);
             }
         }

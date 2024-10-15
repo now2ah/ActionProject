@@ -47,6 +47,10 @@ namespace Action.Manager
         SaveLoadUI _saveLoadUI;
         GameObject _skillIconPanel;
         SkillIconUI _skillIconUI;
+        GameObject _phaseTextPanel;
+        PhaseTextUI _phaseTextUI;
+        GameObject _optionPanel;
+        OptionUI _optionUI;
 
         public Canvas MainCanvas => _mainCanvas;
         public Canvas InGameCanvas => _inGameCanvas;
@@ -66,6 +70,8 @@ namespace Action.Manager
         public GameObject SaveLoadPanel { get { return _saveLoadPanel; } set { _saveLoadPanel = value; } }
         public SaveLoadUI SaveLoadUI { get { return _saveLoadUI; } set { _saveLoadUI = value; } }
         public SkillIconUI SkillIconUI { get { return _skillIconUI; } set { _skillIconUI = value; } }
+        public PhaseTextUI PhaseTextUI { get { return _phaseTextUI; } set { _phaseTextUI = value; } }
+        public OptionUI OptionUI { get { return _optionUI; } set { _optionUI = value; } }
 
         public override void Initialize()
         {
@@ -95,6 +101,12 @@ namespace Action.Manager
             _skillIconPanel = CreateUI("SkillIconPanel", _mainCanvas);
             _skillIconUI = _skillIconPanel.GetComponent<SkillIconUI>();
             _skillIconUI.Hide();
+            _phaseTextPanel = CreateUI("PhaseTextPanel", _mainCanvas);
+            _phaseTextUI = _phaseTextPanel.GetComponent<PhaseTextUI>();
+            _phaseTextUI.Hide();
+            _optionPanel = CreateUI("OptionPanel", _mainCanvas);
+            _optionUI = _optionPanel.GetComponent<OptionUI>();
+            _optionUI.Hide();
         }
 
         public GameObject CreateUI(string name, Canvas canvas)

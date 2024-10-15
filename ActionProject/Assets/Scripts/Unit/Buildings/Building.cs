@@ -60,6 +60,7 @@ namespace Action.Units
             _idleState = new PlayerBuildingIdleState(this);
             _prepareState = new PlayerBuildingPrepareState(this);
             _doneState = new PlayerBuildingDoneState(this);
+            _collapseState = new PlayerBuildingCollapseState(this);
 
             if (!((BuildingData)UnitData).isBuilt)
                 StateMachine.Initialize(_idleState);

@@ -209,6 +209,12 @@ namespace Action.Units
             }
         }
 
+        protected override void _Dead(Unit damager)
+        {
+            GameManager.Instance.Stop();
+            UIManager.Instance.CreateUI("GameOverPanel", UIManager.Instance.MainCanvas);
+        }
+
         void _PhysicalAttackCheck()
         {
             if (_abilitySlots[(int)Enums.eAbility.PHYSICAL].abilityData.isActivated)

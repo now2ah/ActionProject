@@ -13,6 +13,8 @@ namespace Action.State
             base.EnterState();
             foreach (var buildings in GameManager.Instance.PlayerBuildings)
                 buildings.SetActive(true);
+            UIManager.Instance.PhaseTextUI.Text.text = "Town Stage";
+            UIManager.Instance.PhaseTextUI.Show();
         }
 
         public override void UpdateState()
@@ -43,6 +45,8 @@ namespace Action.State
             GameManager.Instance.CommanderUnit.SetEnableAutoAttacks(true);
             UIManager.Instance.BaseIndicatorUI.Hide();
             UIManager.Instance.SkillIconUI.Show();
+            UIManager.Instance.PhaseTextUI.Text.text = "Hunt Stage";
+            UIManager.Instance.PhaseTextUI.Show();
             AudioManager.Instance.PlaySFX(AudioManager.eSfx.TOHUNT);
         }
 
@@ -81,6 +85,8 @@ namespace Action.State
             GameManager.Instance.CommanderUnit.NavMeshAgentComp.Warp(GameManager.Instance.StartPos);
             GameManager.Instance.StartWave(GameManager.Instance.EnemyUnits, 1.0f, GameManager.Instance.DefenseSpawner.GetComponent<Spawner>());
             GameManager.Instance.CommanderUnit.SetEnableAutoAttacks(false);
+            UIManager.Instance.PhaseTextUI.Text.text = "Defense Stage";
+            UIManager.Instance.PhaseTextUI.Show();
         }
 
         public override void UpdateState()

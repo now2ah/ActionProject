@@ -219,11 +219,12 @@ namespace Action.Units
 
         protected void _ApplyPhysicsEffect()
         {
+            _rigidBody.isKinematic = false;
             _rigidBody.useGravity = true;
             //_rigidBody.drag = 0.0f;
             _rigidBody.angularDrag = 0.0f;
             Vector3 explosionPos = transform.position + new Vector3(Random.Range(-5.0f, 5.0f), 0f, Random.Range(-5.0f, 5.0f));
-            _rigidBody.AddExplosionForce(500f, explosionPos, 5.0f, -1.0f);
+            _rigidBody.AddExplosionForce(800f, explosionPos, 5.0f, -1.0f);
         }
 
         protected void _FreeObject()
@@ -232,6 +233,7 @@ namespace Action.Units
             _rigidBody.useGravity = false;
             //_rigidBody.drag = 0.0f;
             _rigidBody.angularDrag = 0.5f;
+            _rigidBody.isKinematic = true;
             _navMeshAgent.enabled = true;
             GameManager.Instance.EnemyUnits.Remove(this.gameObject);
             Pool.Free(this);

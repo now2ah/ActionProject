@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FenceStats
   m_EditorClassIdentifier: 
   unitName: Fence
-  maxHp: 500
+  maxHp: 150
   growthMaxHp: 0
   speed: 0
   requireGold: 5

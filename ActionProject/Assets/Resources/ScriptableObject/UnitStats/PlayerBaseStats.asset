@@ -16,9 +16,13 @@ MonoBehaviour:
   maxHp: 1000
   growthMaxHp: 0
   speed: 0
-  constructTime: 0
+  requireGold: 10
+  generateGold: 1
+  constructTime: 5
   attackDamage: 0
   growthAttackDamage: 0
   attackSpeed: 0
   attackDistance: 0
   expAmount: 0
+  goldAmount: 0
+  nextExp: 0

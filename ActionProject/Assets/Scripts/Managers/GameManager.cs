@@ -469,7 +469,7 @@ namespace Action.Manager
 
         void _CreateCommanderUnit()
         {
-            Vector3 startPos = new Vector3(-150.0f, 6.0f, -10.0f);
+            Vector3 startPos = new Vector3(-85.0f, 6.0f, -10.0f);
             _commanderUnitObj = Instantiate(_commanderPrefab, startPos, Quaternion.identity);
             _commanderUnit = _commanderUnitObj.GetComponent<Commander>();
             _playerUnits.Add(_commanderUnitObj);

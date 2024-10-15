@@ -42,7 +42,7 @@ namespace Action.Manager
             if (null == _mainMenuVCamObj)
             {
                 _mainMenuVCamObj = GameObject.Find("VirtualCamera");
-                _mainMenuVCam = _mainCameraObj.AddComponent<Cinemachine.CinemachineVirtualCameraBase>();
+                //_mainMenuVCam = _mainCameraObj.AddComponent<Cinemachine.CinemachineVirtualCameraBase>();
                 _mainMenuVCamObj.transform.position = new Vector3(-110, 30, 0);
                 _mainMenuVCamObj.transform.rotation = Quaternion.Euler(40, 90, 0);
             }

@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Action.Util;
+
 
 namespace Action.Manager
 {
@@ -41,6 +43,12 @@ namespace Action.Manager
         int _channelIndex;
         float _bgmVolume;
         float _sfxVolume;
+
+        public UnityEvent onBgmVolumeChanged;
+        public UnityEvent onSfxVolumeChanged;
+
+        public float BGMVolume { get { return _bgmVolume; } set { _bgmVolume = value; } }
+        public float SFXVolume { get { return _sfxVolume; } set { _sfxVolume = value; } }
       
         void _LoadAssets()
         {
@@ -98,6 +106,17 @@ namespace Action.Manager
             }
         }
 
+        void _ChangeBgmVolume()
+        {
+            _bgmAudioSource.volume = _bgmVolume;
+        }
+
+        void _ChangeSfxVolume()
+        {
+            for (int i = 0; i < _channelCount; i++)
+                _sfxAudioSources[i].volume = _sfxVolume;
+        }
+
         void Awake()
         {
             _channelCount = 8;
@@ -120,8 +139,14 @@ namespace Action.Manager
                 _sfxAudioSources[i].volume = _sfxVolume;
             }
 
+            onBgmVolumeChanged = new UnityEvent();
+            onSfxVolumeChanged = new UnityEvent();
+            onBgmVolumeChanged.AddListener(_ChangeBgmVolume);
+            onSfxVolumeChanged.AddListener(_ChangeSfxVolume);
+
             _LoadAssets();
         }
+
     }
 }
 

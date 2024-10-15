@@ -13,6 +13,8 @@ namespace Action.Scene
         TextMeshProUGUI _titleText;
         Button _continueButton;
         Button _startButton;
+        Button _optionButton;
+        Button _exitGameButton;
 
         void _LoadNextScene()
         {
@@ -28,7 +30,7 @@ namespace Action.Scene
 
             SaveSystem.Instance.LoadSourceData();
 
-            _continueButton = _mainMenuPanel.transform.GetChild(1).GetComponent<Button>();
+            _continueButton = _mainMenuPanel.transform.GetChild(1).GetChild(0).GetComponent<Button>();
             _continueButton.onClick.AddListener(() =>
             {
                 UIManager.Instance.SaveLoadUI.Initialize(UI.SaveLoadUI.eMode.LOAD);
@@ -40,11 +42,27 @@ namespace Action.Scene
                 _continueButton.gameObject.SetActive(true);
             else
                 _continueButton.gameObject.SetActive(false);
-            _startButton = _mainMenuPanel.transform.GetChild(2).GetComponent<Button>();
+
+            _startButton = _mainMenuPanel.transform.GetChild(1).GetChild(1).GetComponent<Button>();
             _startButton.onClick.AddListener(() =>
             {
                 AudioManager.Instance.PlaySFX(AudioManager.eSfx.CLICK);
                 _LoadNextScene();
+            });
+
+            _optionButton = _mainMenuPanel.transform.GetChild(1).GetChild(2).GetComponent<Button>();
+            _optionButton.onClick.AddListener(() =>
+            {
+                AudioManager.Instance.PlaySFX(AudioManager.eSfx.CLICK);
+                UIManager.Instance.OptionUI.Show();
+                UIManager.Instance.OptionUI.transform.SetAsLastSibling();
+            });
+
+            _exitGameButton = _mainMenuPanel.transform.GetChild(1).GetChild(3).GetComponent<Button>();
+            _exitGameButton.onClick.AddListener(() =>
+            {
+                AudioManager.Instance.PlaySFX(AudioManager.eSfx.CLICK);
+                Application.Quit();
             });
 
             AudioManager.Instance.PlayBGM(AudioManager.eBGM.MAIN);
