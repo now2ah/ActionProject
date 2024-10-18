@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: TowerStats
   m_EditorClassIdentifier: 
   unitName: Tower
-  maxHp: 300
+  maxHp: 150
   growthMaxHp: 0
   speed: 0
   requireGold: 5
   generateGold: 0
   constructTime: 1.5
-  attackDamage: 25
+  attackDamage: 30
   growthAttackDamage: 0
-  attackSpeed: 2
-  attackDistance: 15
+  attackSpeed: 1.5
+  attackDistance: 20
   expAmount: 0
   goldAmount: 0
   nextExp: 0

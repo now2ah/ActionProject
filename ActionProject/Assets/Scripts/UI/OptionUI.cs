@@ -16,6 +16,7 @@ namespace Action.UI
         public Slider sfxSlider;
         public TextMeshProUGUI sfxText;
         public Button backButton;
+        public GameObject windowModeCheckBox;
 
         bool _isWindowed = false;
 
@@ -26,13 +27,13 @@ namespace Action.UI
             switch (change.value)
             {
                 case 0:
-                    Screen.SetResolution(1920, 1080, _isWindowed);
+                    Screen.SetResolution(1920, 1080, !_isWindowed);
                     break;
                 case 1:
-                    Screen.SetResolution(1600, 900, _isWindowed);
+                    Screen.SetResolution(1600, 900, !_isWindowed);
                     break;
                 case 2:
-                    Screen.SetResolution(1280, 720, _isWindowed);
+                    Screen.SetResolution(1280, 720, !_isWindowed);
                     break;
             }
         }
@@ -41,9 +42,16 @@ namespace Action.UI
         {
             _isWindowed = isOn;
             if (isOn)
+            {
                 Screen.fullScreenMode = FullScreenMode.Windowed;
+                windowModeCheckBox.SetActive(true);
+            }
             else
+            {
                 Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+                windowModeCheckBox.SetActive(false);
+            }
+                
         }
 
         void _OnBGMSliderChanged(float volume)
@@ -59,6 +67,11 @@ namespace Action.UI
             AudioManager.Instance.SFXVolume = volume;
             AudioManager.Instance.onSfxVolumeChanged.Invoke();
             sfxText.text = Mathf.Floor(volume * 100).ToString() + "%";
+        }
+
+        private void OnEnable()
+        {
+            transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         }
 
         protected override void Awake()

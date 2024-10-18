@@ -69,16 +69,13 @@ namespace Action.Game
         {
         }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _startSpeed = 0.0f;
             _activeDistance = 20.0f;
         }
 
-        protected new void Start()
-        {
-            base.Start();
-        }
 
         protected new void FixedUpdate()
         {

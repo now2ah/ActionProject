@@ -182,5 +182,10 @@ namespace Action.Units
             if (null != _stateMachine)
                 _stateMachine.Update();
         }
+
+        protected virtual void OnDestroy()
+        {
+            Destroy(UnitPanelObject);
+        }
     }
 }

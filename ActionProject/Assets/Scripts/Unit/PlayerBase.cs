@@ -25,6 +25,7 @@ namespace Action.Units
             if (UnitData is BuildingData)
             {
                 ((BuildingData)UnitData).isBuilt = false;
+                RequireTextUI.Text.text = ((BuildingData)UnitData).requireGold.ToString();
                 SetNameUI(UnitData.name);
             }
         }
@@ -38,18 +39,22 @@ namespace Action.Units
                     UnitData.name = GameManager.Instance.GameData.playerBase.name;
                     UnitData.hp = GameManager.Instance.GameData.playerBase.hp;
                     UnitData.maxHp = GameManager.Instance.GameData.playerBase.maxHp;
+                    ((BuildingData)UnitData).isBuilt = GameManager.Instance.GameData.playerBase.isBuilt;
                     ((BuildingData)UnitData).requireGold = GameManager.Instance.GameData.playerBase.requireGold;
                     ((BuildingData)UnitData).constructTime = GameManager.Instance.GameData.playerBase.constructTime;
                     ((BuildingData)UnitData).attackDamage = GameManager.Instance.GameData.playerBase.attackDamage;
                     ((BuildingData)UnitData).attackSpeed = GameManager.Instance.GameData.playerBase.attackSpeed;
                     ((BuildingData)UnitData).attackDistance = GameManager.Instance.GameData.playerBase.attackDistance;
                 }
+                if (GameManager.Instance.GameData.playerBase.isBuilt)
+                    StateMachine.ChangeState(_doneState);
             }
             else
             {
                 UnitData.name = _unitStats.unitName;
                 UnitData.hp = _unitStats.maxHp;
                 UnitData.maxHp = _unitStats.maxHp;
+                ((BuildingData)UnitData).isBuilt = false;
                 ((BuildingData)UnitData).requireGold = _unitStats.requireGold;
                 ((BuildingData)UnitData).constructTime = _unitStats.constructTime;
                 ((BuildingData)UnitData).attackDamage = _unitStats.attackDamage;
@@ -57,6 +62,15 @@ namespace Action.Units
                 ((BuildingData)UnitData).attackDistance = _unitStats.attackDistance;
             }
         }
+
+        protected override void _Dead(Unit damager)
+        {
+            base._Dead(damager);
+            GameManager.Instance.Stop();
+            GameObject gameOverUI = UIManager.Instance.CreateUI("GameOverPanel", UIManager.Instance.MainCanvas);
+            gameOverUI.transform.SetAsLastSibling();
+        }
+
 
         protected override void Awake()
         {

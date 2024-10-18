@@ -191,6 +191,12 @@ namespace Action.Units
 
             _CheckCommander();
         }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            Destroy(_controlPanel);
+        }
     }
 
 }

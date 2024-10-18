@@ -24,7 +24,7 @@ namespace Action.Scene
 
         public void WaveStart()
         {
-            GameManager.Instance.StartWave(GameManager.Instance.HuntEnemyWaves, 1.0f);
+            GameManager.Instance.StartWave(GameManager.Instance.HuntEnemyWaves, 2.0f);
         }
 
         private void Awake()

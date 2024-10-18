@@ -368,14 +368,23 @@ namespace Action.Manager
             _gameTimer.ResetTimer();
             _refreshTimer.ResetTimer();
             _phaseTimer.ResetTimer();
+
             _playerUnits.Clear();
+
+            foreach (var unit in _enemyUnits)
+                unit.GetComponent<EnemyUnit>().Pool.Free(unit.GetComponent<EnemyUnit>());
+            _enemyUnits.Clear();
+
             foreach (var building in _playerBuildings)
                 Destroy(building);
             _playerBuildings.Clear();
+
             if (null != UIManager.Instance.TownStagePanel)
                 UIManager.Instance.TownStagePanel.Hide();
             if (null != UIManager.Instance.ExpBarUI)
                 UIManager.Instance.ExpBarUI.Hide();
+            if (null != UIManager.Instance.PhaseTextUI)
+                UIManager.Instance.PhaseTextUI.Hide();
         }
 
         public void CheckConstructBuilding()
@@ -469,7 +478,7 @@ namespace Action.Manager
 
         void _CreateCommanderUnit()
         {
-            Vector3 startPos = new Vector3(-85.0f, 6.0f, -10.0f);
+            Vector3 startPos = new Vector3(-100.0f, 6.0f, 0.0f);
             _commanderUnitObj = Instantiate(_commanderPrefab, startPos, Quaternion.identity);
             _commanderUnit = _commanderUnitObj.GetComponent<Commander>();
             _playerUnits.Add(_commanderUnitObj);

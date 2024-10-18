@@ -16,7 +16,8 @@ namespace Action.Manager
         public BuildingData towerBaseN;
         public BuildingData towerBaseS;
         public BuildingData fence;
-        public BuildingData house;
+        public BuildingData houseN;
+        public BuildingData houseS;
         public BuildingData barrack;
         public Resource resource;
     }

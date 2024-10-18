@@ -25,6 +25,7 @@ namespace Action.Manager
             CLICK,
             COINPICKUP,
             COLLAPSE,
+            DASH,
             DEFENSEDONE,
             EXPPICKUP,
             FIRE,
@@ -63,14 +64,15 @@ namespace Action.Manager
             _sfxClip[3] = Resources.Load("Audio/Sfx/Click") as AudioClip;
             _sfxClip[4] = Resources.Load("Audio/Sfx/CoinPickUp") as AudioClip;
             _sfxClip[5] = Resources.Load("Audio/Sfx/Collapse") as AudioClip;
-            _sfxClip[6] = Resources.Load("Audio/Sfx/DefenseDone") as AudioClip;
-            _sfxClip[7] = Resources.Load("Audio/Sfx/ExpPickUp") as AudioClip;
-            _sfxClip[8] = Resources.Load("Audio/Sfx/Fire") as AudioClip;
-            _sfxClip[9] = Resources.Load("Audio/Sfx/GameOver") as AudioClip;
-            _sfxClip[10] = Resources.Load("Audio/Sfx/LevelUp") as AudioClip;
-            _sfxClip[11] = Resources.Load("Audio/Sfx/PowerUp") as AudioClip;
-            _sfxClip[12] = Resources.Load("Audio/Sfx/Slash") as AudioClip;
-            _sfxClip[13] = Resources.Load("Audio/Sfx/ToHunt") as AudioClip;
+            _sfxClip[6] = Resources.Load("Audio/Sfx/Dash") as AudioClip;
+            _sfxClip[7] = Resources.Load("Audio/Sfx/DefenseDone") as AudioClip;
+            _sfxClip[8] = Resources.Load("Audio/Sfx/ExpPickUp") as AudioClip;
+            _sfxClip[9] = Resources.Load("Audio/Sfx/Fire") as AudioClip;
+            _sfxClip[10] = Resources.Load("Audio/Sfx/GameOver") as AudioClip;
+            _sfxClip[11] = Resources.Load("Audio/Sfx/LevelUp") as AudioClip;
+            _sfxClip[12] = Resources.Load("Audio/Sfx/PowerUp") as AudioClip;
+            _sfxClip[13] = Resources.Load("Audio/Sfx/Slash") as AudioClip;
+            _sfxClip[14] = Resources.Load("Audio/Sfx/ToHunt") as AudioClip;
         }
 
         public override void Initialize()
@@ -124,7 +126,7 @@ namespace Action.Manager
             _bgmVolume = 0.5f;
             _sfxVolume = 1.0f;
             _bgmClip = new AudioClip[4];
-            _sfxClip = new AudioClip[14];
+            _sfxClip = new AudioClip[15];
             _bgmAudioSource = gameObject.AddComponent<AudioSource>();
             _bgmAudioSource.playOnAwake = false;
             _bgmAudioSource.loop = true;

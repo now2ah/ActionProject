@@ -17,6 +17,7 @@ namespace Action.UI
             base.Awake();
             _attackImage = transform.GetChild(0).GetComponent<Image>();
             _dashImage = transform.GetChild(1).GetComponent<Image>();
+            transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(-750, -350);
         }
 
     }

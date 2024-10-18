@@ -20,7 +20,7 @@ namespace Action.UI
         protected override void Awake()
         {
             base.Awake();
-            _time = 5.0f;
+            _time = 15.0f;
             _rectTransform = GetComponent<RectTransform>();
         }
 

@@ -19,9 +19,10 @@ namespace Action.UI
 
         void _ToMainMenu()
         {
-            GameManager.Instance.ResetGame();
             GameManager.Instance.Resume();
+            GameManager.Instance.ResetGame();
             SceneManager.Instance.LoadGameScene(1);
+            Destroy(gameObject);
         }
     }
 

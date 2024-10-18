@@ -118,7 +118,7 @@ namespace Action.Units
 
         bool _IsInDistance()
         {
-            if (null == _target)
+            if (null == _target || !_target.activeSelf)
                 return false;
 
             if (((BuildingData)UnitData).attackDistance > Vector3.Distance(transform.position, _target.transform.position))

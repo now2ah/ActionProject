@@ -17,7 +17,10 @@ namespace Action.Units
             base.Initialize();
             _SetUnitData();
             UnitPanel.ApplyHPValue(UnitData.hp, UnitData.maxHp);
-            Manager.GameManager.Instance.GameData.house = UnitData as BuildingData;
+            if ("House_North" == gameObject.name)
+                GameManager.Instance.GameData.houseN = UnitData as BuildingData;
+            else if ("House_South" == gameObject.name)
+                GameManager.Instance.GameData.houseS = UnitData as BuildingData;
             if (UnitData is BuildingData)
                 RequireTextUI.Text.text = ((BuildingData)UnitData).requireGold.ToString();
             SetNameUI(UnitData.name);
@@ -26,34 +29,69 @@ namespace Action.Units
 
         void _SetUnitData()
         {
-            if (null != GameManager.Instance.GameData.house)
+            if ("House_North" == gameObject.name)
             {
-                if (UnitData is BuildingData)
+                if (null != GameManager.Instance.GameData.houseN)
                 {
-                    UnitData.name = GameManager.Instance.GameData.house.name;
-                    UnitData.hp = GameManager.Instance.GameData.house.hp;
-                    UnitData.maxHp = GameManager.Instance.GameData.house.maxHp;
-                    ((BuildingData)UnitData).isBuilt = GameManager.Instance.GameData.house.isBuilt;
-                    ((BuildingData)UnitData).requireGold = GameManager.Instance.GameData.house.requireGold;
-                    ((BuildingData)UnitData).constructTime = GameManager.Instance.GameData.house.constructTime;
-                    ((BuildingData)UnitData).attackDamage = GameManager.Instance.GameData.house.attackDamage;
-                    ((BuildingData)UnitData).attackSpeed = GameManager.Instance.GameData.house.attackSpeed;
-                    ((BuildingData)UnitData).attackDistance = GameManager.Instance.GameData.house.attackDistance;
+                    if (UnitData is BuildingData)
+                    {
+                        UnitData.name = GameManager.Instance.GameData.houseN.name;
+                        UnitData.hp = GameManager.Instance.GameData.houseN.hp;
+                        UnitData.maxHp = GameManager.Instance.GameData.houseN.maxHp;
+                        ((BuildingData)UnitData).isBuilt = GameManager.Instance.GameData.houseN.isBuilt;
+                        ((BuildingData)UnitData).requireGold = GameManager.Instance.GameData.houseN.requireGold;
+                        ((BuildingData)UnitData).constructTime = GameManager.Instance.GameData.houseN.constructTime;
+                        ((BuildingData)UnitData).attackDamage = GameManager.Instance.GameData.houseN.attackDamage;
+                        ((BuildingData)UnitData).attackSpeed = GameManager.Instance.GameData.houseN.attackSpeed;
+                        ((BuildingData)UnitData).attackDistance = GameManager.Instance.GameData.houseN.attackDistance;
+                    }
+                    if (GameManager.Instance.GameData.houseN.isBuilt)
+                        StateMachine.ChangeState(_doneState);
                 }
-                if (GameManager.Instance.GameData.house.isBuilt)
-                    StateMachine.ChangeState(_doneState);
+                else
+                {
+                    UnitData.name = _unitStats.unitName;
+                    UnitData.hp = _unitStats.maxHp;
+                    UnitData.maxHp = _unitStats.maxHp;
+                    ((BuildingData)UnitData).isBuilt = false;
+                    ((BuildingData)UnitData).requireGold = _unitStats.requireGold;
+                    ((BuildingData)UnitData).constructTime = _unitStats.constructTime;
+                    ((BuildingData)UnitData).attackDamage = _unitStats.attackDamage;
+                    ((BuildingData)UnitData).attackSpeed = _unitStats.attackSpeed;
+                    ((BuildingData)UnitData).attackDistance = _unitStats.attackDistance;
+                }
             }
-            else
+            else if ("House_South" == gameObject.name)
             {
-                UnitData.name = _unitStats.unitName;
-                UnitData.hp = _unitStats.maxHp;
-                UnitData.maxHp = _unitStats.maxHp;
-                ((BuildingData)UnitData).isBuilt = false;
-                ((BuildingData)UnitData).requireGold = _unitStats.requireGold;
-                ((BuildingData)UnitData).constructTime = _unitStats.constructTime;
-                ((BuildingData)UnitData).attackDamage = _unitStats.attackDamage;
-                ((BuildingData)UnitData).attackSpeed = _unitStats.attackSpeed;
-                ((BuildingData)UnitData).attackDistance = _unitStats.attackDistance;
+                if (null != GameManager.Instance.GameData.houseS)
+                {
+                    if (UnitData is BuildingData)
+                    {
+                        UnitData.name = GameManager.Instance.GameData.houseS.name;
+                        UnitData.hp = GameManager.Instance.GameData.houseS.hp;
+                        UnitData.maxHp = GameManager.Instance.GameData.houseS.maxHp;
+                        ((BuildingData)UnitData).isBuilt = GameManager.Instance.GameData.houseS.isBuilt;
+                        ((BuildingData)UnitData).requireGold = GameManager.Instance.GameData.houseS.requireGold;
+                        ((BuildingData)UnitData).constructTime = GameManager.Instance.GameData.houseS.constructTime;
+                        ((BuildingData)UnitData).attackDamage = GameManager.Instance.GameData.houseS.attackDamage;
+                        ((BuildingData)UnitData).attackSpeed = GameManager.Instance.GameData.houseS.attackSpeed;
+                        ((BuildingData)UnitData).attackDistance = GameManager.Instance.GameData.houseS.attackDistance;
+                    }
+                    if (GameManager.Instance.GameData.houseS.isBuilt)
+                        StateMachine.ChangeState(_doneState);
+                }
+                else
+                {
+                    UnitData.name = _unitStats.unitName;
+                    UnitData.hp = _unitStats.maxHp;
+                    UnitData.maxHp = _unitStats.maxHp;
+                    ((BuildingData)UnitData).isBuilt = false;
+                    ((BuildingData)UnitData).requireGold = _unitStats.requireGold;
+                    ((BuildingData)UnitData).constructTime = _unitStats.constructTime;
+                    ((BuildingData)UnitData).attackDamage = _unitStats.attackDamage;
+                    ((BuildingData)UnitData).attackSpeed = _unitStats.attackSpeed;
+                    ((BuildingData)UnitData).attackDistance = _unitStats.attackDistance;
+                }
             }
         }
 

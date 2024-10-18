@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerBaseStats
   m_EditorClassIdentifier: 
   unitName: Base
-  maxHp: 1000
+  maxHp: 100
   growthMaxHp: 0
   speed: 0
   requireGold: 10

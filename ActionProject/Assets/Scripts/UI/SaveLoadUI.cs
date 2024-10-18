@@ -28,6 +28,7 @@ namespace Action.UI
 
         public void Initialize(eMode mode)
         {
+            //transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
             _mode = mode;
             if (null == _titleText)
                 _titleText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
@@ -92,6 +93,11 @@ namespace Action.UI
                 if (null != SaveSystem.Instance.DataSlots[i])
                     _dataSlotText[i].text = SaveSystem.Instance.DataSlots[i].date;
             }
+        }
+
+        private void OnEnable()
+        {
+            transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         }
 
         protected override void Awake()
