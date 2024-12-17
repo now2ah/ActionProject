@@ -25,8 +25,6 @@ namespace Action.Util
                     if (FindObjectsOfType(typeof(T)).Length > 1)
                         return _instance;
 
-                    //GameObject _singletonObject;
-
                     var prefab = Resources.Load("Prefabs/Singleton/" + typeof(T).Name);
                     if (null != prefab)
                     {

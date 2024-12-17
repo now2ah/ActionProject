@@ -21,40 +21,40 @@ public class WrapData
 
 public class SaveSystem : Singleton<SaveSystem>
 {
-    List<Data> dataSlots;
-    public List<Data> DataSlots => dataSlots;
+    List<Data> saveDataSlots;
+    public List<Data> DataSlots => saveDataSlots;
 
     public override void Initialize()
     {
         base.Initialize();
-        dataSlots = new List<Data>();
+        saveDataSlots = new List<Data>();
         Data emptyData = new Data();
         emptyData.date = "EMPTY";
         for(int i=0; i<5; i++)
-            dataSlots.Add(emptyData);
+            saveDataSlots.Add(emptyData);
     }
 
     public bool HasSaveData()
     {
-        return dataSlots != null && "EMPTY" != dataSlots[0].date;
+        return saveDataSlots != null && "EMPTY" != saveDataSlots[0].date;
     }
 
     public bool HasSaveDataInSlot(int index)
     {
-        return dataSlots[index] != null;
+        return saveDataSlots[index] != null;
     }
 
     public void Load(int slotNum)
     {
         GameManager.Instance.ResetGame();
-        Data data = dataSlots[slotNum];
+        Data data = saveDataSlots[slotNum];
         GameManager.Instance.GameData = data.gameData;
         SceneManager.Instance.LoadGameScene(2);
     }
 
     public void Save(int slotNum, Data data)
     {
-        dataSlots[slotNum] = data;
+        saveDataSlots[slotNum] = data;
         SaveSourceData();
     }
 
@@ -77,14 +77,13 @@ public class SaveSystem : Singleton<SaveSystem>
         }
 
         WrapData data = JsonParser.LoadJsonFile<WrapData>(dataPath, "SaveData");
-        dataSlots = data.dataSlots;
+        saveDataSlots = data.dataSlots;
     }
 
-    //json 저장에서 resource 배열 저장 포맷 문제
     public void SaveSourceData()
     {
         WrapData data = new WrapData();
-        data.dataSlots = dataSlots;
+        data.dataSlots = saveDataSlots;
         string dataString = JsonParser.ObjectToJson(data);
 
         string dataPath = Path.Combine(Application.dataPath, "SaveData");
