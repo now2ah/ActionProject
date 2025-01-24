@@ -165,6 +165,8 @@ namespace Action.Manager
             _SetUpSpawners();
         }
 
+
+        //-> Save System
         public Data GetWrappedGameData()
         {
             Data data = new Data();
@@ -206,6 +208,7 @@ namespace Action.Manager
             }
         }
 
+        // -> 수정
         public void GameStart()
         {
             if (!_isLive)
@@ -213,6 +216,7 @@ namespace Action.Manager
 
             _isPlaying = true;
 
+            //-> Save system
             if (null == _gameData)
             {
                 _gameData = new GameData();
@@ -220,8 +224,10 @@ namespace Action.Manager
                 _gameData.curHuntWaveOrder = -1;
             }
 
+            //Mode Manager? Mode 시작마다?
             PoolManager.Instance.Initialize();
 
+            //-> Mode 관련 클래스
             _CreateCommanderUnit();
             _AddBuildings();
             _PrepareResource();
@@ -277,6 +283,7 @@ namespace Action.Manager
             }
         }
 
+        //-> Defense Mode
         public void StartWave(EnemyWaves waves, float timeRate)
         {
             _gameData.curHuntWaveOrder++;
@@ -286,23 +293,14 @@ namespace Action.Manager
             }
         }
 
+        //-> Defense Mode
         public void StartWave(List<GameObject> waves, float timeRate, Spawner spawner)
         {
             UIManager.Instance.WaveCamUI.Show();
             StartCoroutine(_StartDefenseWaveCoroutine(waves, timeRate, spawner));
         }
 
-        //public void AddAllEnemySpawners()
-        //{
-        //    _enemySpawners.Clear();
-        //    Spawner[] objs = FindObjectsByType<Spawner>(FindObjectsSortMode.None);
-        //    if (0 < objs.Length)
-        //    {
-        //        for (int i = 0; i < objs.Length; i++)
-        //            _enemySpawners.Add(objs[i]);
-        //    }
-        //}
-
+        //-> Defense Mode
         public void AddHuntSpawner()
         {
             Spawner[] spawners = _huntSpawner.GetComponentsInChildren<Spawner>();
@@ -310,6 +308,7 @@ namespace Action.Manager
                 _enemySpawners.Add(spawner);
         }
 
+        //-> Defense Mode
         public void SetActiveHuntSpawner(bool isOn)
         {
             if (null != _commanderUnit)
@@ -318,30 +317,35 @@ namespace Action.Manager
             }
         }
 
+        //-> Defense Mode
         public void AddDefenseSpawner()
         {
             if (_defenseSpawner.TryGetComponent<Spawner>(out Spawner comp))
                 _enemySpawners.Add(comp);
         }
 
+        //-> Defense Mode
         public void SetActiveDefenseSpawner(bool isOn)
         {
             if (null != _defenseSpawner)
                 _defenseSpawner.SetActive(isOn);
         }
 
+        //-> Defense Mode
         public void SetDefenseSpawner()
         {
             if (null != _defenseSpawner)
                 _defenseSpawner.transform.position = _defenseSpawnPos;
         }
 
+        //-> Defense Mode
         public void FindSpawnerPoint()
         {
             GameObject obj = GameObject.FindWithTag("DefenseSpawnerPoint");
             _defenseSpawner.transform.position = obj.transform.position;
         }
 
+        //-> Defense Mode
         public void InactiveDefaultBuildings()
         {
             Building[] buildings = FindObjectsByType<Building>(FindObjectsSortMode.None);
@@ -387,6 +391,7 @@ namespace Action.Manager
                 UIManager.Instance.PhaseTextUI.Hide();
         }
 
+        //-> Defense or City builder Mode
         public void CheckConstructBuilding()
         {
             if (0 < _playerBuildings.Count)
@@ -406,6 +411,7 @@ namespace Action.Manager
             }
         }
 
+        //-> Save System
         public void AutoSave()
         {
             SaveSystem.Instance.Save(0, GetWrappedGameData());
@@ -428,6 +434,7 @@ namespace Action.Manager
             _coinPrefab = Resources.Load("Prefabs/Misc/Coin") as GameObject;
         }
 
+        //-> Defense Mode
         void _SetUpSpawners()
         {
             _huntSpawner = Instantiate<GameObject>(_huntStageSpawnerPrefab, transform);
@@ -450,6 +457,7 @@ namespace Action.Manager
             }
         }
 
+        //-> Defense, CityBuilder Mode
         void _AddBuildings()
         {
             if (0 < _playerBuildings.Count)
@@ -476,6 +484,7 @@ namespace Action.Manager
             }
         }
 
+        //-> GameMode
         void _CreateCommanderUnit()
         {
             Vector3 startPos = new Vector3(-100.0f, 6.0f, 0.0f);
@@ -486,6 +495,7 @@ namespace Action.Manager
             InputManager.Instance.AddListeners(_commanderUnit);
         }
 
+        //-> GameMode
         IEnumerator _StartHuntWaveCoroutine(EnemyWaves waves, int order, float timeRate)
         {
             if (0 < _enemySpawners.Count)
@@ -521,31 +531,10 @@ namespace Action.Manager
 
                     yield return new WaitForSeconds(timeRate);
                 }
-
-                //foreach (var item in waves.enemyWaveList[order].enemyGroupList)
-                //{
-                //    int count = item.enemyAmount;
-                //    while (count > 0)
-                //    {
-                //        GameObject obj = PoolManager.Instance.GetEnemyPool(item.type).GetNew().gameObject;
-                //        int randNum = Random.Range(0, _enemySpawners.Count);
-                //        if (obj.TryGetComponent<Unit>(out Unit comp))
-                //        {
-                //            comp.Initialize();
-                //            comp.UnitPanel.ApplyHPValue(comp.UnitData.hp, comp.UnitData.maxHp);
-                //        }
-
-                //        _enemyUnits.Add(obj);
-
-                //        _enemySpawners[randNum].SpawnObject(obj);
-
-                //        count--;
-                //        yield return new WaitForSeconds(timeRate);
-                //    }
-                //}
             }
         }
 
+        //-> Defense Mode
         IEnumerator _StartDefenseWaveCoroutine(List<GameObject> waves, float timeRate, Spawner spawner)
         {
             if (0 < _enemySpawners.Count)
@@ -576,50 +565,7 @@ namespace Action.Manager
             }
         }
 
-        //void _SaveData()
-        //{
-        //    string gameData = JsonParser.ObjectToJson(_gameData);
-        //    string gameDataPath = Path.Combine(Application.dataPath, "autoSaveGameData");
-
-        //    if (!Directory.Exists(gameDataPath))
-        //        Directory.CreateDirectory(gameDataPath);
-
-        //    JsonParser.CreateJsonFile(gameDataPath, "autoSaveGameData", gameData);
-
-
-        //    List<UnitData> playerUnits = new List<UnitData>();
-        //    foreach (var obj in _playerUnits)
-        //        playerUnits.Add(obj.GetComponent<PlayerUnit>().UnitData);
-        //    _playerUnitsWrap.playerUnits = playerUnits;
-        //    string unitData = JsonParser.ObjectToJson(_playerUnitsWrap);
-        //    string unitDataPath = Path.Combine(Application.dataPath, "autoSaveUnitData");
-
-        //    if (!Directory.Exists(unitDataPath))
-        //        Directory.CreateDirectory(unitDataPath);
-
-        //    JsonParser.CreateJsonFile(unitDataPath, "autoSaveUnitData", unitData);
-        //}
-
-        //void _LoadData()
-        //{
-        //    string gameDataPath = Path.Combine(Application.dataPath, "autoSaveGameData");
-
-        //    if (!Directory.Exists(gameDataPath))
-        //        Logger.Log("file is not exist.");
-        //    _gameData = JsonParser.LoadJsonFile<GameData>(gameDataPath, "autoSaveGameData");
-
-
-        //    string unitDataPath = Path.Combine(Application.dataPath, "autoSaveUnitData");
-
-        //    if (!Directory.Exists(unitDataPath))
-        //        Logger.Log("file is not exist.");
-
-        //    _playerUnitsWrap = JsonParser.LoadJsonFile<PlayerUnits>(unitDataPath, "autoSaveUnitData");
-
-        //    //commander always comes first
-        //    _commanderUnit.UnitData = _playerUnitsWrap.playerUnits[0];
-        //}
-
+        //-> Defense Mode
         bool _IsClearDefenseEnemies()
         {
             if (0 == _enemyUnits.Count)
