@@ -74,7 +74,6 @@ namespace Action.Manager
 
         List<GameObject> _playerUnitPrefabs;
         List<GameObject> _playerUnits;
-        PlayerUnits _playerUnitsWrap;
 
         List<GameObject> _enemyUnitPrefabs;
         [SerializeReference]
