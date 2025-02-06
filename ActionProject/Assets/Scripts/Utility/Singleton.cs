@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Action.Util
 {
-    public class Singleton<T> : MonoBehaviour where T : Component
+    public abstract class Singleton<T> : MonoBehaviour where T : Component
     {
         static T _instance = null;
         static bool isQuitting = false;
@@ -45,10 +45,7 @@ namespace Action.Util
             }
         }
 
-        public virtual void Initialize()
-        {
-
-        }
+        public abstract void Initialize();
 
         private void OnDestroy()
         {

@@ -13,7 +13,7 @@ namespace Action.UI
 
         public override void Initialize()
         {
-            base.Initialize();
+            
             
         }
 

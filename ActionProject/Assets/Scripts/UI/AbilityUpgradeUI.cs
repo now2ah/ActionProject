@@ -16,6 +16,10 @@ namespace Action.UI
         List<Ability> _abilityList;
         Button[] _chooseButton;
 
+        public override void Initialize()
+        {
+        }
+
         public void Initialize(List<Ability> abilityList)
         {
             transform.SetAsFirstSibling();

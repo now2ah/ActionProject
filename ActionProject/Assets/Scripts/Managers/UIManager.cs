@@ -54,6 +54,7 @@ namespace Action.Manager
 
         public Canvas MainCanvas => _mainCanvas;
         public Canvas InGameCanvas => _inGameCanvas;
+        public GameObject EventSystemObject => _eventSystemObject;
         public BaseIndicator BaseIndicatorUI => _BaseIndicator;
         public GameObject FadeUIPanel => _fadeUIPanel;
         public GameObject DamagedEffectPanel => _damagedEffectPanel;
@@ -75,10 +76,9 @@ namespace Action.Manager
 
         public override void Initialize()
         {
-            base.Initialize();
             _CreateMainCanvas();
             _CreateInGameCanvas();
-            _CreateEventSystem();
+            CreateEventSystem();
             _BaseIndicatorObj = CreateUI("BaseIndicator", _inGameCanvas);
             _BaseIndicator = _BaseIndicatorObj.GetComponent<BaseIndicator>();
             _BaseIndicator.Hide();
@@ -121,6 +121,12 @@ namespace Action.Manager
                 obj.transform.SetParent(canvas.transform, false);
 
             return obj;
+        }
+
+        public void CreateEventSystem()
+        {
+            _eventSystemObject = Instantiate(Resources.Load("Prefabs/UI/EventSystem") as GameObject);
+            _eventSystemObject.transform.SetParent(this.transform, false);
         }
 
         public void SetUnitInfoRect(float width, float height)
@@ -230,7 +236,7 @@ namespace Action.Manager
 
         void _CreateMainCanvas()
         {
-            _mainCanvasObject = Instantiate(Resources.Load("Prefabs/UI/CanvasObject") as GameObject);
+            _mainCanvasObject = Instantiate(Resources.Load("Prefabs/UI/Canvas") as GameObject);
             _mainCanvasObject.name = "MainCanvas";
             _mainCanvasObject.transform.SetParent(this.transform, false);
             _mainCanvas = _mainCanvasObject.GetComponentInChildren<Canvas>();
@@ -242,12 +248,6 @@ namespace Action.Manager
             _inGameCanvasObject.name = "InGameCanvas";
             _inGameCanvasObject.transform.SetParent(this.transform, false);
             _inGameCanvas = _inGameCanvasObject.GetComponentInChildren<Canvas>();
-        }
-
-        void _CreateEventSystem()
-        {
-            _eventSystemObject = Instantiate(Resources.Load("Prefabs/UI/EventSystem") as GameObject);
-            _eventSystemObject.transform.SetParent(this.transform, false);
         }
 
         void _CalculateOffScreenIndicator()

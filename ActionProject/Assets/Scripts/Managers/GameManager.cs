@@ -131,8 +131,6 @@ namespace Action.Manager
 
         public override void Initialize()
         {
-            base.Initialize();
-
             _LoadAssets();
             InputManager.Instance.PauseMenu.performed += ctx => { OnPause(ctx); };
             _phaseStateMachine = new StateMachine();

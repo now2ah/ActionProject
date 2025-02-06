@@ -15,6 +15,10 @@ namespace Action.UI
         Button _loadButton;
         Button _quitButton;
 
+        public override void Initialize()
+        {
+        }
+
         protected override void Awake()
         {
             base.Awake();

@@ -11,6 +11,10 @@ namespace Action.UI
         TextMeshProUGUI _text;
         public TextMeshProUGUI Text { get { return _text; } set { _text = value; } }
 
+        public override void Initialize()
+        {
+        }
+
         protected override void Awake()
         {
             base.Awake();

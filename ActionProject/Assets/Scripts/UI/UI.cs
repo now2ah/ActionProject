@@ -4,15 +4,12 @@ using UnityEngine;
 
 namespace Action.UI
 {
-    public class UI : MonoBehaviour
+    public abstract class UI : MonoBehaviour
     {
         protected bool _isShow = false;
         public bool isShow => _isShow;
 
-        public virtual void Initialize()
-        {
-
-        }
+        public abstract void Initialize();
 
         public void Show()
         {

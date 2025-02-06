@@ -12,7 +12,7 @@ namespace Action.UI
 
         public override void Initialize()
         {
-            base.Initialize();
+            
         }
 
         public override void SetParent(Transform parent)

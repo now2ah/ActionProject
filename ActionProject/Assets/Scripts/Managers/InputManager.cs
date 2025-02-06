@@ -18,7 +18,6 @@ namespace Action.Manager
 
         public override void Initialize()
         {
-            base.Initialize();
             //MousePosition.Enable();
             //Click.Enable();
             //Move.Enable();

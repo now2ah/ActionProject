@@ -20,6 +20,10 @@ namespace Action.UI
         TextMeshProUGUI _ironText;
         TextMeshProUGUI _timerText;
 
+        public override void Initialize()
+        {
+        }
+
         protected override void Awake()
         {
             base.Awake();

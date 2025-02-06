@@ -19,7 +19,6 @@ namespace Action.Manager
 
         public override void Initialize()
         {
-            base.Initialize();
             _sceneNumToLoad = 0;
             _LoadFadeImage();
             _fadeSpeed = 0.5f;

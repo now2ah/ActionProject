@@ -10,6 +10,11 @@ namespace Action.UI
     {
         Button _toMainButton;
 
+        public override void Initialize()
+        {
+            
+        }
+
         protected override void Awake()
         {
             base.Awake();

@@ -77,8 +77,7 @@ namespace Action.Manager
 
         public override void Initialize()
         {
-            base.Initialize();
-
+            _LoadAssets();
         }
 
         public void PlayBGM(eBGM clip)
@@ -145,8 +144,6 @@ namespace Action.Manager
             onSfxVolumeChanged = new UnityEvent();
             onBgmVolumeChanged.AddListener(_ChangeBgmVolume);
             onSfxVolumeChanged.AddListener(_ChangeSfxVolume);
-
-            _LoadAssets();
         }
 
     }

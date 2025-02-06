@@ -12,6 +12,10 @@ namespace Action.UI
         public Image AttackImage => _attackImage;
         public Image DashImage => _dashImage;
 
+        public override void Initialize()
+        {
+        }
+
         protected override void Awake()
         {
             base.Awake();

@@ -26,7 +26,6 @@ public class SaveSystem : Singleton<SaveSystem>
 
     public override void Initialize()
     {
-        base.Initialize();
         saveDataSlots = new List<Data>();
         Data emptyData = new Data();
         emptyData.date = "EMPTY";

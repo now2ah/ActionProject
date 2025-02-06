@@ -26,6 +26,11 @@ namespace Action.UI
 
         public eMode Mode { get { return _mode; } set { _mode = value; } }
 
+        public override void Initialize()
+        {
+            
+        }
+
         public void Initialize(eMode mode)
         {
             //transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;

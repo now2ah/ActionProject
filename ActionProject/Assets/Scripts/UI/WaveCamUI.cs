@@ -9,6 +9,10 @@ namespace Action.UI
         float _time;
         RectTransform _rectTransform;
 
+        public override void Initialize()
+        {
+        }
+
         IEnumerator _ShowForTime(float time)
         {
             _rectTransform.anchoredPosition = new Vector3(710, 315);

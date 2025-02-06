@@ -52,8 +52,6 @@ namespace Action.Manager
 
         public override void Initialize()
         {
-            base.Initialize();
-            
             _normalEnemyPool = new ObjectPooler<EnemyUnit>();
             _rangeEnemyPool = new ObjectPooler<EnemyUnit>();
             _normalProjectilePool = new ObjectPooler<Projectile>();

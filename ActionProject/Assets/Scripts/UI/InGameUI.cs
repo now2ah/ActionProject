@@ -11,7 +11,7 @@ namespace Action.UI
 
         public override void Initialize()
         {
-            base.Initialize();
+            
         }
 
         public void ApplyRect(float width, float height)

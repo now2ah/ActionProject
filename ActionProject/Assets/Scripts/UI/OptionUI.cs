@@ -20,6 +20,11 @@ namespace Action.UI
 
         bool _isWindowed = false;
 
+        public override void Initialize()
+        {
+            
+        }
+
         void _OnResolutionChanged(TMP_Dropdown change)
         {
             change.value = resolutionDropdown.value;

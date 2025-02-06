@@ -29,7 +29,6 @@ namespace Action.Manager
 
         public override void Initialize()
         {
-            base.Initialize();
             _CreateMainCamera();
             _vCamOffsetY = GameManager.Instance.Constants.GAMECAMERA_VERTICAL_DIST;
             _vCamOffsetZ = GameManager.Instance.Constants.GAMECAMERA_HORIZONTAL_DIST;
