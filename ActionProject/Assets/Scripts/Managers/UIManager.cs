@@ -74,6 +74,11 @@ namespace Action.Manager
         public PhaseTextUI PhaseTextUI { get { return _phaseTextUI; } set { _phaseTextUI = value; } }
         public OptionUI OptionUI { get { return _optionUI; } set { _optionUI = value; } }
 
+        #region RENEWAL
+
+
+        #endregion
+
         public override void Initialize()
         {
             _CreateMainCanvas();

@@ -80,7 +80,6 @@ namespace Action.Manager
         List<GameObject> _enemyUnits;
 
         EnemyWaves _enemyWaves;
-        int _curWaveOrder;
         EnemyWaves _huntEnemyWaves;
         int _curHuntWaveOrder;
 
@@ -153,7 +152,6 @@ namespace Action.Manager
             _enemyUnits = new List<GameObject>();
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/NormalEnemy") as GameObject);
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/RangeEnemy") as GameObject);
-            _curWaveOrder = -1;
 
             SceneManager.Instance.OnInGameSceneLoaded.AddListener(_OnStartInGamePhase);
             SceneManager.Instance.OnHuntStageSceneLoaded.AddListener(_OnStartHuntPhase);

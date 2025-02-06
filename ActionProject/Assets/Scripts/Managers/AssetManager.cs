@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Events;
+using Cysharp.Threading.Tasks;
 
 namespace Action.Manager
 {
@@ -26,6 +28,23 @@ namespace Action.Manager
 
         public GameObject LoadAsset(eAssetType type, string prefabName)
         {
+            string path = GetAssetPath(type, prefabName);
+
+            GameObject ret = Instantiate(Resources.Load(path)) as GameObject;
+            return ret;
+        }
+
+        public async UniTask<GameObject> LoadAssetAsync(eAssetType type, string prefabName)
+        {
+            string path = GetAssetPath(type, prefabName);
+            ResourceRequest request = Resources.LoadAsync<GameObject>(path);
+            await request;
+            GameObject ret = request.asset as GameObject;
+            return ret;
+        }
+
+        string GetAssetPath(eAssetType type, string prefabName)
+        {
             StringBuilder stringBuilder = new StringBuilder();
 
             string mainPath = "Prefabs/";
@@ -44,11 +63,8 @@ namespace Action.Manager
                     break;
             }
 
-            stringBuilder.Append(mainPath).Append(typePath).Append(prefabName);
-
-            GameObject ret = Instantiate(Resources.Load(stringBuilder.ToString())) as GameObject;
+            string ret = stringBuilder.Append(mainPath).Append(typePath).Append(prefabName).ToString();
             return ret;
         }
     }
-
 }
