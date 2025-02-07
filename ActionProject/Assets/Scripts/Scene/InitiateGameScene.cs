@@ -12,6 +12,7 @@ namespace Action.Scene
         void _InitializeSingletons()
         {
             AssetManager.Instance.Initialize();
+            UIManager.Instance.Initialize();
         }
 
         void Awake()

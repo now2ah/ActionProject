@@ -8,10 +8,22 @@ using Action.Util;
 
 namespace Action.Manager
 {
+    public class SceneUIList
+    {
+        List<UI.UI> _uiList;
+
+        public virtual void Initialize()
+        {
+            List<UI.UI> _ui = new List<UI.UI>();
+        }
+    }
+
     public class SceneManager : Singleton<SceneManager>
     {
         int _sceneNumToLoad;
+
         public int SceneNumToLoad => _sceneNumToLoad;
+        
         public UnityEvent OnInGameSceneLoaded;
         public UnityEvent OnHuntStageSceneLoaded;
 

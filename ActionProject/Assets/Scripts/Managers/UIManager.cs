@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using Action.Util;
 using Action.UI;
 using Action.Units;
+using UnityEngine.EventSystems;
 
 namespace Action.Manager
 {
@@ -17,13 +18,9 @@ namespace Action.Manager
             FadeOut,
         }
 
-        GameObject _mainCanvasObject;
-        Canvas _mainCanvas;
-
-        GameObject _inGameCanvasObject;
-        Canvas _inGameCanvas;
-
-        GameObject _eventSystemObject;
+        CanvasUI _mainCanvas;
+        CanvasUI _inGameCanvas;
+        EventSystem _eventSystem;
 
         GameObject _BaseIndicatorObj;
         BaseIndicator _BaseIndicator;
@@ -52,9 +49,10 @@ namespace Action.Manager
         GameObject _optionPanel;
         OptionUI _optionUI;
 
-        public Canvas MainCanvas => _mainCanvas;
-        public Canvas InGameCanvas => _inGameCanvas;
-        public GameObject EventSystemObject => _eventSystemObject;
+        public CanvasUI MainCanvas => _mainCanvas;
+        public CanvasUI InGameCanvas => _inGameCanvas;
+        public EventSystem EventSystem => _eventSystem;
+
         public BaseIndicator BaseIndicatorUI => _BaseIndicator;
         public GameObject FadeUIPanel => _fadeUIPanel;
         public GameObject DamagedEffectPanel => _damagedEffectPanel;
@@ -83,7 +81,8 @@ namespace Action.Manager
         {
             _CreateMainCanvas();
             _CreateInGameCanvas();
-            CreateEventSystem();
+            _CreateEventSystem();
+
             _BaseIndicatorObj = CreateUI("BaseIndicator", _inGameCanvas);
             _BaseIndicator = _BaseIndicatorObj.GetComponent<BaseIndicator>();
             _BaseIndicator.Hide();
@@ -126,12 +125,6 @@ namespace Action.Manager
                 obj.transform.SetParent(canvas.transform, false);
 
             return obj;
-        }
-
-        public void CreateEventSystem()
-        {
-            _eventSystemObject = Instantiate(Resources.Load("Prefabs/UI/EventSystem") as GameObject);
-            _eventSystemObject.transform.SetParent(this.transform, false);
         }
 
         public void SetUnitInfoRect(float width, float height)
@@ -239,20 +232,28 @@ namespace Action.Manager
             }
         }
 
+        void _CreateEventSystem()
+        {
+            GameObject eventSystemObject = AssetManager.Instance.LoadAsset(eAssetType.UI, "EventSystem");
+            eventSystemObject.transform.SetParent(this.transform, false);
+            _eventSystem = eventSystemObject.GetComponent<EventSystem>();
+        }
+
+
         void _CreateMainCanvas()
         {
-            _mainCanvasObject = Instantiate(Resources.Load("Prefabs/UI/Canvas") as GameObject);
-            _mainCanvasObject.name = "MainCanvas";
-            _mainCanvasObject.transform.SetParent(this.transform, false);
-            _mainCanvas = _mainCanvasObject.GetComponentInChildren<Canvas>();
+            GameObject mainCanvasObject = AssetManager.Instance.LoadAsset(eAssetType.UI, "Canvas");
+            mainCanvasObject.name = "MainCanvas";
+            mainCanvasObject.transform.SetParent(this.transform, false);
+            _mainCanvas = mainCanvasObject.AddComponent<CanvasUI>();
         }
 
         void _CreateInGameCanvas()
         {
-            _inGameCanvasObject = Instantiate(Resources.Load("Prefabs/UI/CanvasObject") as GameObject);
-            _inGameCanvasObject.name = "InGameCanvas";
-            _inGameCanvasObject.transform.SetParent(this.transform, false);
-            _inGameCanvas = _inGameCanvasObject.GetComponentInChildren<Canvas>();
+            GameObject inGameCanvasObject = AssetManager.Instance.LoadAsset(eAssetType.UI, "Canvas");
+            inGameCanvasObject.name = "InGameCanvas";
+            inGameCanvasObject.transform.SetParent(this.transform, false);
+            _inGameCanvas = inGameCanvasObject.AddComponent<CanvasUI>();
         }
 
         void _CalculateOffScreenIndicator()
