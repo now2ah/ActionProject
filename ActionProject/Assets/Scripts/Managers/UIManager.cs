@@ -12,15 +12,19 @@ namespace Action.Manager
 {
     public class UIManager : Singleton<UIManager>
     {
+        #region PRIVATE
+
+        CanvasUI _mainCanvas;
+        CanvasUI _inGameCanvas;
+        EventSystem _eventSystem;
+
+        #endregion
+
         public enum eFade
         {
             FadeIn,
             FadeOut,
         }
-
-        CanvasUI _mainCanvas;
-        CanvasUI _inGameCanvas;
-        EventSystem _eventSystem;
 
         GameObject _BaseIndicatorObj;
         BaseIndicator _BaseIndicator;
@@ -72,45 +76,40 @@ namespace Action.Manager
         public PhaseTextUI PhaseTextUI { get { return _phaseTextUI; } set { _phaseTextUI = value; } }
         public OptionUI OptionUI { get { return _optionUI; } set { _optionUI = value; } }
 
-        #region RENEWAL
-
-
-        #endregion
-
         public override void Initialize()
         {
             _CreateMainCanvas();
             _CreateInGameCanvas();
             _CreateEventSystem();
 
-            _BaseIndicatorObj = CreateUI("BaseIndicator", _inGameCanvas);
-            _BaseIndicator = _BaseIndicatorObj.GetComponent<BaseIndicator>();
-            _BaseIndicator.Hide();
-            _fadeUIPanel = CreateUI("FadeInNOutPanel", _mainCanvas);
-            _damagedEffectPanel = CreateUI("DamagedEffectPanel", _mainCanvas);
-            _fadeUIPanel.SetActive(false);
-            _damagedEffectPanel.SetActive(false);
-            _expPanel = CreateUI("ExpPanel", _mainCanvas);
-            _expBarUI = _expPanel.GetComponent<ExpBarUI>();
-            _expBarUI.Hide();
-            _abilityUpgradePanel = CreateUI("AbilityUpgradePanel", _mainCanvas);
-            _abilityUpgradeUI = _abilityUpgradePanel.GetComponent<AbilityUpgradeUI>();
-            _abilityUpgradeUI.Hide();
-            _waveCamPanel = CreateUI("WaveCamPanel", _mainCanvas);
-            _waveCamUI = _waveCamPanel.GetComponent<WaveCamUI>();
-            _waveCamUI.Hide();
-            _saveLoadPanel = CreateUI("SaveLoadPanel", _mainCanvas);
-            _saveLoadUI = _saveLoadPanel.GetComponent<SaveLoadUI>();
-            _saveLoadUI.Hide();
-            _skillIconPanel = CreateUI("SkillIconPanel", _mainCanvas);
-            _skillIconUI = _skillIconPanel.GetComponent<SkillIconUI>();
-            _skillIconUI.Hide();
-            _phaseTextPanel = CreateUI("PhaseTextPanel", _mainCanvas);
-            _phaseTextUI = _phaseTextPanel.GetComponent<PhaseTextUI>();
-            _phaseTextUI.Hide();
-            _optionPanel = CreateUI("OptionPanel", _mainCanvas);
-            _optionUI = _optionPanel.GetComponent<OptionUI>();
-            _optionUI.Hide();
+            //_BaseIndicatorObj = CreateUI("BaseIndicator", _inGameCanvas);
+            //_BaseIndicator = _BaseIndicatorObj.GetComponent<BaseIndicator>();
+            //_BaseIndicator.Hide();
+            //_fadeUIPanel = CreateUI("FadeInNOutPanel", _mainCanvas);
+            //_damagedEffectPanel = CreateUI("DamagedEffectPanel", _mainCanvas);
+            //_fadeUIPanel.SetActive(false);
+            //_damagedEffectPanel.SetActive(false);
+            //_expPanel = CreateUI("ExpPanel", _mainCanvas);
+            //_expBarUI = _expPanel.GetComponent<ExpBarUI>();
+            //_expBarUI.Hide();
+            //_abilityUpgradePanel = CreateUI("AbilityUpgradePanel", _mainCanvas);
+            //_abilityUpgradeUI = _abilityUpgradePanel.GetComponent<AbilityUpgradeUI>();
+            //_abilityUpgradeUI.Hide();
+            //_waveCamPanel = CreateUI("WaveCamPanel", _mainCanvas);
+            //_waveCamUI = _waveCamPanel.GetComponent<WaveCamUI>();
+            //_waveCamUI.Hide();
+            //_saveLoadPanel = CreateUI("SaveLoadPanel", _mainCanvas);
+            //_saveLoadUI = _saveLoadPanel.GetComponent<SaveLoadUI>();
+            //_saveLoadUI.Hide();
+            //_skillIconPanel = CreateUI("SkillIconPanel", _mainCanvas);
+            //_skillIconUI = _skillIconPanel.GetComponent<SkillIconUI>();
+            //_skillIconUI.Hide();
+            //_phaseTextPanel = CreateUI("PhaseTextPanel", _mainCanvas);
+            //_phaseTextUI = _phaseTextPanel.GetComponent<PhaseTextUI>();
+            //_phaseTextUI.Hide();
+            //_optionPanel = CreateUI("OptionPanel", _mainCanvas);
+            //_optionUI = _optionPanel.GetComponent<OptionUI>();
+            //_optionUI.Hide();
         }
 
         public GameObject CreateUI(string name, Canvas canvas)
@@ -176,7 +175,7 @@ namespace Action.Manager
         {
             if (null == _townStageUI)
             {
-                _townStageUI = CreateUI("TownStagePanel", UIManager.Instance.MainCanvas);
+                //_townStageUI = CreateUI("TownStagePanel", UIManager.Instance.MainCanvas);
                 _townStagePanel = _townStageUI.GetComponent<TownStagePanel>();
                 _townStagePanel.RefreshResource();
             }

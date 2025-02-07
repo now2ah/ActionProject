@@ -7,6 +7,12 @@ namespace Action
 {
     public static class Enums
     {
+        public enum eScene
+        {
+            INIT,
+            INTRO
+        }
+
         public enum eHitBoxType
         {
             ONLY_ENEMY,

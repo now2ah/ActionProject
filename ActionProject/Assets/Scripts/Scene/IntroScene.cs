@@ -6,46 +6,39 @@ using Action.Manager;
 
 namespace Action.Scene
 {
-
-    public class IntroScene : MonoBehaviour
+    public class IntroScene : SceneObject
     {
-        GameObject _introPanel;
-
-        void _InitializeSingletons()
+        public override void Initialize()
         {
-            UIManager.Instance.Initialize();
-            SceneManager.Instance.Initialize();
-            CameraManager.Instance.Initialize();
-            InputManager.Instance.Initialize();
-            GameManager.Instance.Initialize();
-            SaveSystem.Instance.Initialize();
-            AudioManager.Instance.Initialize();
+            base.Initialize();
+            AddUIObjects(_GetAllUIs(_LoadUIAssets()));
         }
 
-        IEnumerator IntroCoroutine()
+        protected override List<GameObject> _LoadUIAssets()
         {
-            SceneManager.Instance.Fade(UIManager.eFade.FadeIn);
-            yield return new WaitForSeconds(1.5f);
-            SceneManager.Instance.Fade(UIManager.eFade.FadeOut, () => 
+            List<GameObject> gameObjects = new List<GameObject>();
+
+            gameObjects.Add(AssetManager.Instance.LoadAsset(eAssetType.UI, "IntroPanel"));
+
+            return gameObjects;
+        }
+
+        protected override List<UI.UI> _GetAllUIs(List<GameObject> gameObjects)
+        {
+            List<UI.UI> uiList = new List<UI.UI>();
+            foreach (GameObject gameObject in gameObjects)
             {
-                SceneManager.Instance.LoadGameScene(1);
-            });
+                if (TryGetComponent<UI.UI>(out  UI.UI ui))
+                {
+                    uiList.Add(ui);
+                }
+            }
+            return uiList;
         }
 
         private void Awake()
         {
-            _InitializeSingletons();
-        }
-
-        void Start()
-        {
-            _introPanel = UIManager.Instance.CreateUI("IntroPanel", UIManager.Instance.MainCanvas);
-            StartCoroutine(IntroCoroutine());
-        }
-
-        private void OnDestroy()
-        {
-            Destroy(_introPanel);
+            Initialize();
         }
     }
 }

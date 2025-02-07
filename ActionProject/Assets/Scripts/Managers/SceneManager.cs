@@ -8,13 +8,24 @@ using Action.Util;
 
 namespace Action.Manager
 {
+    
     public class SceneUIList
     {
         List<UI.UI> _uiList;
 
-        public virtual void Initialize()
+        public void Initialize()
         {
             List<UI.UI> _ui = new List<UI.UI>();
+        }
+
+        public void AddUI(UI.UI uiObj)
+        {
+            if (null == uiObj) { Logger.LogError("UI is null"); }
+
+            if (null != _uiList)
+            {
+                _uiList.Add(uiObj);
+            }
         }
     }
 
@@ -23,47 +34,53 @@ namespace Action.Manager
         int _sceneNumToLoad;
 
         public int SceneNumToLoad => _sceneNumToLoad;
-        
-        public UnityEvent OnInGameSceneLoaded;
-        public UnityEvent OnHuntStageSceneLoaded;
 
-        float _fadeSpeed;
+        #region SCENE_LOADED_EVENT
+        
+        public UnityEvent onIntroSceneLoaded;
+
+        #endregion
 
         public override void Initialize()
         {
             _sceneNumToLoad = 0;
-            _LoadFadeImage();
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+
             _fadeSpeed = 0.5f;
-            UnityEngine.SceneManagement.SceneManager.sceneLoaded += _OnSceneLoaded;
         }
 
-        public void LoadGameScene(int sceneNumber, LoadSceneMode mode = LoadSceneMode.Single)
+        public void LoadGameScene(Enums.eScene scene, LoadSceneMode mode = LoadSceneMode.Single)
         {
-            _sceneNumToLoad = sceneNumber;
+            _sceneNumToLoad = (int)scene;
             UnityEngine.SceneManagement.SceneManager.LoadScene("99.Loading", mode);
         }
 
-        void _OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+        //working on...
+        //public void LoadNextScene()
+        //{
+        //    _sceneNumToLoad++;
+        //}
+
+        void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
         {
-            if ("2.InGame" == scene.name)
-                OnInGameSceneLoaded.Invoke();
-            else if ("3.HuntStage" == scene.name)
-                OnHuntStageSceneLoaded.Invoke();
+            switch (scene.buildIndex)
+            {
+                case (int)Enums.eScene.INTRO:
+                    onIntroSceneLoaded.Invoke();
+                    break;
+            }
+            //... so on
         }
 
-        #region FADE IN AND OUT
+        #region FADE_IN_AND_OUT
+
+        float _fadeSpeed;
+
         public void Fade(UIManager.eFade fade, UnityAction action = null)
         {
             UIManager.Instance.Fade(fade, UIManager.Instance.FadeUIPanel, _fadeSpeed, action);
         }
 
-        void _LoadFadeImage()
-        {
-            //_fadeUI = UIManager.Instance.CreateUI("FadeInNOutPanel", UIManager.Instance.MainCanvas);
-            //_fadeUI.SetActive(false);
-        }
         #endregion
-
-
     }
 }

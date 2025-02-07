@@ -13,11 +13,16 @@ namespace Action.Scene
         {
             AssetManager.Instance.Initialize();
             UIManager.Instance.Initialize();
+            SceneManager.Instance.Initialize();
         }
 
         void Awake()
         {
             _InitializeSingletons();
+        }
+
+        private void Start()
+        {
         }
     }
 }
