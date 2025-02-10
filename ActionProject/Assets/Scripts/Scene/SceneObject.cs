@@ -16,7 +16,28 @@ namespace Action.Scene
         }
 
         protected abstract List<GameObject> _LoadUIAssets();
-        protected abstract List<UI.UI> _GetAllUIs(List<GameObject> gameObjects);
+
+        protected List<UI.UI> _GetAllUIs(List<GameObject> gameObjects)
+        {
+            List<UI.UI> uiList = new List<UI.UI>();
+
+            if (null != gameObjects && gameObjects.Count > 0)
+            {
+                foreach (GameObject gameObject in gameObjects)
+                {
+                    if (TryGetComponent<UI.UI>(out UI.UI ui))
+                    {
+                        uiList.Add(ui);
+                    }
+                }
+            }
+            else
+            {
+                Logger.LogError("can't load scene UI Assets");
+            }
+
+            return uiList;
+        }
 
         public void AddUIObjects(List<UI.UI> uiList)
         {
@@ -28,6 +49,19 @@ namespace Action.Scene
                 }
             }
         }
+
+
+        //working on... shoud UIList be public??
+        //public void ShowUIObjects(bool isOn)
+        //{
+        //    if (null != _uiList && _uiList.GetUICount() > 0)
+        //    {
+        //        for (int i=0; i< _uiList.GetUICount(); i++)
+        //        {
+        //            _uiList[i].ShowUIObjects(isOn);
+        //        }
+        //    }
+        //}
     }
 
 }

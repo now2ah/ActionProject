@@ -23,19 +23,6 @@ namespace Action.Scene
             return gameObjects;
         }
 
-        protected override List<UI.UI> _GetAllUIs(List<GameObject> gameObjects)
-        {
-            List<UI.UI> uiList = new List<UI.UI>();
-            foreach (GameObject gameObject in gameObjects)
-            {
-                if (TryGetComponent<UI.UI>(out  UI.UI ui))
-                {
-                    uiList.Add(ui);
-                }
-            }
-            return uiList;
-        }
-
         private void Awake()
         {
             Initialize();

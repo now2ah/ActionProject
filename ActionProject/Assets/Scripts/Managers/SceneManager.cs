@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using Action.Util;
+using Action.Scene;
+using Cysharp.Threading.Tasks;
 
 namespace Action.Manager
 {
@@ -12,6 +14,8 @@ namespace Action.Manager
     public class SceneUIList
     {
         List<UI.UI> _uiList;
+        
+        public int GetUICount() => _uiList.Count;
 
         public void Initialize()
         {
@@ -32,8 +36,10 @@ namespace Action.Manager
     public class SceneManager : Singleton<SceneManager>
     {
         int _sceneNumToLoad;
+        SceneObject _currentSceneObj;
 
         public int SceneNumToLoad => _sceneNumToLoad;
+        public SceneObject CurrentSceneObj { get { return _currentSceneObj; } set { _currentSceneObj = value; } }
 
         #region SCENE_LOADED_EVENT
         
@@ -55,11 +61,20 @@ namespace Action.Manager
             UnityEngine.SceneManagement.SceneManager.LoadScene("99.Loading", mode);
         }
 
-        //working on...
-        //public void LoadNextScene()
-        //{
-        //    _sceneNumToLoad++;
-        //}
+        public async UniTask<AsyncOperation> LoadGameSceneAsync(Enums.eScene scene, LoadSceneMode mode = LoadSceneMode.Single)
+        {
+            AsyncOperation op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync((int)scene);
+            await op;
+            return op;
+        }
+
+        
+        public void LoadNextScene()
+        {
+            if (_sceneNumToLoad < UnityEngine.SceneManagement.SceneManager.sceneCount) { _sceneNumToLoad++; }
+
+            LoadGameScene((Enums.eScene)_sceneNumToLoad);
+        }
 
         void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
         {

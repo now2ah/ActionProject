@@ -1,36 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using Action.Manager;
+using Cysharp.Threading.Tasks;
 
 namespace Action.Scene
 {
-    public class LoadingScene : MonoBehaviour
+    public class LoadingScene : SceneObject
     {
         GameObject _loadingPanel;
         Image _fillImage;
 
-        IEnumerator LoadGameSceneAsync(int sceneNumber)
+        public override void Initialize()
         {
-            AsyncOperation op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneNumber);
+            base.Initialize();
+            AddUIObjects(_GetAllUIs(_LoadUIAssets()));
+        }
+
+        protected override List<GameObject> _LoadUIAssets()
+        {
+            List<GameObject> gameObjects = new List<GameObject>();
+
+            _loadingPanel = AssetManager.Instance.LoadAsset(eAssetType.UI, "LoadingPanel");
+            _fillImage = _loadingPanel.transform.GetChild(1).GetChild(0).GetComponent<Image>();
+
+            gameObjects.Add(_loadingPanel);
+
+            return gameObjects;
+        }
+
+        async UniTask<AsyncOperation> LoadGameSceneAsync(Enums.eScene scene)
+        {
+            UniTask<AsyncOperation> task = SceneManager.Instance.LoadGameSceneAsync(scene);
+
+            ValueTask<AsyncOperation> valueTask = task.AsValueTask();
+
+            AsyncOperation op = valueTask.Result;
 
             while (!op.isDone)
             {
                 float progressValue = Mathf.Clamp01(op.progress / 0.9f);
 
                 _fillImage.fillAmount = progressValue;
-
-                yield return null;
             }
+            await task;
+            return op;
         }
 
         // Start is called before the first frame update
-        void Start()
+        async void Start()
         {
-            _loadingPanel = UIManager.Instance.CreateUI("LoadingPanel", UIManager.Instance.MainCanvas);
-            _fillImage = _loadingPanel.transform.GetChild(1).GetChild(0).GetComponent<Image>();
-            StartCoroutine(LoadGameSceneAsync(SceneManager.Instance.SceneNumToLoad));
+            await LoadGameSceneAsync((Enums.eScene)SceneManager.Instance.SceneNumToLoad);
         }
 
         private void OnDestroy()
@@ -38,5 +60,4 @@ namespace Action.Scene
             Destroy(_loadingPanel);
         }
     }
-
 }
