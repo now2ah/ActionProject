@@ -1,3 +1,5 @@
+--- :construction_worker: 현재 게임 프로그램에 가까운 포트폴리오를 나의 개발 기술을 잘 보일 수 있도록 바꾸는 작업중 ---
+
 # ActionProject
 
 > :video_game: 게임의 전체적인 구조나 범용성, 재사용성을 염두해 Custom 클래스를 만들거나 <br>
