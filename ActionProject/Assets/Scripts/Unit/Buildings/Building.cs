@@ -43,16 +43,16 @@ namespace Action.Units
             base.Initialize();
 
             _building = transform.GetChild(0).gameObject;
-            _controlPanel = UIManager.Instance.CreateUI("ControlPanel", UIManager.Instance.InGameCanvas);
+            _controlPanel = UIManager.Instance.CreateUI("ControlPanel", UIManager.Instance.InGameCanvas.Canvas);
             _controlUI = _controlPanel.GetComponent<ControlUI>();
             _controlUI.Initialize(this.gameObject);
             _controlUI.Hide();
-            _buildButton = UIManager.Instance.CreateUI("BuildButton", UIManager.Instance.InGameCanvas);
+            _buildButton = UIManager.Instance.CreateUI("BuildButton", UIManager.Instance.InGameCanvas.Canvas);
             _buildButtonUI = _buildButton.GetComponent<BuildButtonUI>();
             _buildButtonUI.Initialize();
             _buildButtonUI.SetParent(_controlPanel.transform);
             _buildButtonUI.Hide();
-            _requirePanel = UIManager.Instance.CreateUI("RequireText", UIManager.Instance.InGameCanvas);
+            _requirePanel = UIManager.Instance.CreateUI("RequireText", UIManager.Instance.InGameCanvas.Canvas);
             _requireTextUI = _requirePanel.GetComponent<RequireTextUI>();
             _requireTextUI.SetParent(_controlPanel.transform);
             _requireTextUI.Initialize();
@@ -100,7 +100,7 @@ namespace Action.Units
         {
             _buildingTimer = gameObject.AddComponent<ActionTime>();
             
-            GameObject timerObj = UIManager.Instance.CreateUI("TimerPanel", UIManager.Instance.InGameCanvas);
+            GameObject timerObj = UIManager.Instance.CreateUI("TimerPanel", UIManager.Instance.InGameCanvas.Canvas);
             TimerUI timerUI = timerObj.GetComponent<TimerUI>();
             timerUI.Initialize(gameObject);
             timerUI.ActionTime = _buildingTimer;

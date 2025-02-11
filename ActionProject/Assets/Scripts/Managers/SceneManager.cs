@@ -13,22 +13,40 @@ namespace Action.Manager
     
     public class SceneUIList
     {
-        List<UI.UI> _uiList;
-        
-        public int GetUICount() => _uiList.Count;
+        List<UI.UI> _list;
+        Dictionary<string, Enums.eScene> _uiDic;
+
+        public List<UI.UI> List => _list;
+        public Dictionary<string, Enums.eScene> UIDic => _uiDic;
 
         public void Initialize()
         {
-            List<UI.UI> _ui = new List<UI.UI>();
+            List<UI.UI> _list = new List<UI.UI>();
+            Dictionary<string, Enums.eScene> _uiDic = new Dictionary<string, Enums.eScene>();
         }
 
-        public void AddUI(UI.UI uiObj)
+        public void AddUI(UI.UI uiObj, string uiName, Enums.eScene sceneType)
         {
             if (null == uiObj) { Logger.LogError("UI is null"); }
 
-            if (null != _uiList)
+            if (null != _list)
             {
-                _uiList.Add(uiObj);
+                _list.Add(uiObj);
+                _uiDic.Add(uiName, sceneType);
+            }
+        }
+
+        public void ShowAllUI(bool isOn)
+        {
+            if (null != _list)
+            {
+                foreach (UI.UI ui in _list)
+                {
+                    if (isOn) 
+                    { ui.Show(); } 
+                    else if (!isOn) 
+                    {  ui.Hide(); }
+                }
             }
         }
     }
@@ -44,6 +62,7 @@ namespace Action.Manager
         #region SCENE_LOADED_EVENT
         
         public UnityEvent onIntroSceneLoaded;
+        //... so on
 
         #endregion
 

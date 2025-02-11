@@ -14,6 +14,7 @@ namespace Action.Scene
             AddUIObjects(_GetAllUIs(_LoadUIAssets()));
         }
 
+        //change return type with pair <string, Enums.eScene>
         protected override List<GameObject> _LoadUIAssets()
         {
             List<GameObject> gameObjects = new List<GameObject>();
@@ -26,6 +27,7 @@ namespace Action.Scene
         private void Awake()
         {
             Initialize();
+            ShowUIObjects(true);
         }
     }
 }

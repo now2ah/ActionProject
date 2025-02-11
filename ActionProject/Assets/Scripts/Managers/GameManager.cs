@@ -153,8 +153,8 @@ namespace Action.Manager
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/NormalEnemy") as GameObject);
             _enemyUnitPrefabs.Add(Resources.Load("Prefabs/Units/Enemy/RangeEnemy") as GameObject);
 
-            SceneManager.Instance.OnInGameSceneLoaded.AddListener(_OnStartInGamePhase);
-            SceneManager.Instance.OnHuntStageSceneLoaded.AddListener(_OnStartHuntPhase);
+            //SceneManager.Instance.OnInGameSceneLoaded.AddListener(_OnStartInGamePhase);
+            //SceneManager.Instance.OnHuntStageSceneLoaded.AddListener(_OnStartHuntPhase);
             OnDefenseDone.AddListener(_OnDefenseDone);
 
             _SetUpSpawners();
@@ -196,7 +196,7 @@ namespace Action.Manager
                 _isPlaying = false;
                 Stop();
                 if (null == UIManager.Instance.PausePanel)
-                    UIManager.Instance.PausePanel = UIManager.Instance.CreateUI("PausePanel", UIManager.Instance.MainCanvas);
+                    UIManager.Instance.PausePanel = UIManager.Instance.CreateUI("PausePanel", UIManager.Instance.MainCanvas.Canvas);
 
                 UIManager.Instance.PausePanel.SetActive(true);
                 UIManager.Instance.PausePanel.transform.SetAsLastSibling();
@@ -269,11 +269,11 @@ namespace Action.Manager
                     break;
 
                 case eGamePhase.Hunt:
-                    SceneManager.Instance.LoadGameScene(3);
+                    //SceneManager.Instance.LoadGameScene(3);
                     break;
 
                 case eGamePhase.Defense:
-                    SceneManager.Instance.LoadGameScene(2);
+                    //SceneManager.Instance.LoadGameScene(2);
                     break;
             }
         }

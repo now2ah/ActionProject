@@ -25,7 +25,18 @@ namespace Action.UI
 
         public virtual void SetParent(Transform tr)
         {
-            transform.SetParent(tr);
+            if (null != tr)
+            {
+                transform.SetParent(tr);
+            }
+        }
+
+        public virtual void AddToCanvas(CanvasUI canvas)
+        {
+            if (null != canvas)
+            {
+                transform.SetParent(canvas.transform);
+            }
         }
 
         protected virtual void Awake()

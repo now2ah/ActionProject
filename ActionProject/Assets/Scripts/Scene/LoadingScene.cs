@@ -33,23 +33,22 @@ namespace Action.Scene
 
         async UniTask<AsyncOperation> LoadGameSceneAsync(Enums.eScene scene)
         {
-            UniTask<AsyncOperation> task = SceneManager.Instance.LoadGameSceneAsync(scene);
-
-            ValueTask<AsyncOperation> valueTask = task.AsValueTask();
-
-            AsyncOperation op = valueTask.Result;
-
-            while (!op.isDone)
+            AsyncOperation op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync((int)scene);
+            while (op.progress < 0.9f)
             {
                 float progressValue = Mathf.Clamp01(op.progress / 0.9f);
 
                 _fillImage.fillAmount = progressValue;
             }
-            await task;
+            await op;
             return op;
         }
 
-        // Start is called before the first frame update
+        private void Awake()
+        {
+            Initialize();
+        }
+
         async void Start()
         {
             await LoadGameSceneAsync((Enums.eScene)SceneManager.Instance.SceneNumToLoad);

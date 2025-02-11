@@ -5,6 +5,7 @@ using UnityEngine;
 using Action.Manager;
 using Action.Units;
 using Action.Util;
+using Action;
 
 [System.Serializable]
 public class Data
@@ -48,7 +49,7 @@ public class SaveSystem : Singleton<SaveSystem>
         GameManager.Instance.ResetGame();
         Data data = saveDataSlots[slotNum];
         GameManager.Instance.GameData = data.gameData;
-        SceneManager.Instance.LoadGameScene(2);
+        SceneManager.Instance.LoadGameScene(Enums.eScene.INGAME);
     }
 
     public void Save(int slotNum, Data data)

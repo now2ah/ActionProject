@@ -26,7 +26,7 @@ namespace Action.UI
         {
             GameManager.Instance.Resume();
             GameManager.Instance.ResetGame();
-            SceneManager.Instance.LoadGameScene(1);
+            SceneManager.Instance.LoadGameScene(Enums.eScene.INTRO);
             Destroy(gameObject);
         }
     }

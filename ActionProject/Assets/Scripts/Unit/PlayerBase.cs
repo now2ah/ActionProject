@@ -67,7 +67,7 @@ namespace Action.Units
         {
             base._Dead(damager);
             GameManager.Instance.Stop();
-            GameObject gameOverUI = UIManager.Instance.CreateUI("GameOverPanel", UIManager.Instance.MainCanvas);
+            GameObject gameOverUI = UIManager.Instance.CreateUI("GameOverPanel", UIManager.Instance.MainCanvas.Canvas);
             gameOverUI.transform.SetAsLastSibling();
         }
 

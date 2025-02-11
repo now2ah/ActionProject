@@ -45,23 +45,18 @@ namespace Action.Scene
             {
                 foreach (UI.UI ui in uiList)
                 {
-                    _uiList.AddUI(ui);
+                    //_uiList.AddUI(ui);
                 }
             }
         }
 
-
-        //working on... shoud UIList be public??
-        //public void ShowUIObjects(bool isOn)
-        //{
-        //    if (null != _uiList && _uiList.GetUICount() > 0)
-        //    {
-        //        for (int i=0; i< _uiList.GetUICount(); i++)
-        //        {
-        //            _uiList[i].ShowUIObjects(isOn);
-        //        }
-        //    }
-        //}
+        public void ShowUIObjects(bool isOn)
+        {
+            if (null != _uiList)
+            {
+                _uiList.ShowAllUI(isOn);
+            }
+        }
     }
 
 }

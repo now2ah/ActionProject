@@ -213,7 +213,7 @@ namespace Action.Units
         protected override void _Dead(Unit damager)
         {
             GameManager.Instance.Stop();
-            GameObject gameOverUI = UIManager.Instance.CreateUI("GameOverPanel", UIManager.Instance.MainCanvas);
+            GameObject gameOverUI = UIManager.Instance.CreateUI("GameOverPanel", UIManager.Instance.MainCanvas.Canvas);
             gameOverUI.transform.SetAsLastSibling();
         }
 

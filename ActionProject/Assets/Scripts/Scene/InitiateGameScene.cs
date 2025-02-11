@@ -23,6 +23,7 @@ namespace Action.Scene
 
         private void Start()
         {
+            SceneManager.Instance.LoadNextScene();
         }
     }
 }

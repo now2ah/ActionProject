@@ -71,7 +71,7 @@ namespace Action.UI
             AudioManager.Instance.PlaySFX(AudioManager.eSfx.CLICK);
             GameManager.Instance.Resume();
             GameManager.Instance.ResetGame();
-            SceneManager.Instance.LoadGameScene(1);
+            SceneManager.Instance.LoadGameScene(Enums.eScene.INTRO);
             gameObject.SetActive(false);
         }
     }

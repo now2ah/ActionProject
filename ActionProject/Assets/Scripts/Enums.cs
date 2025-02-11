@@ -10,7 +10,8 @@ namespace Action
         public enum eScene
         {
             INIT,
-            INTRO
+            INTRO,
+            INGAME,
         }
 
         public enum eHitBoxType

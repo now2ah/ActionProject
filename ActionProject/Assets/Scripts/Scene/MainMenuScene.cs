@@ -18,14 +18,14 @@ namespace Action.Scene
 
         void _LoadNextScene()
         {
-            SceneManager.Instance.LoadGameScene(2);
+            SceneManager.Instance.LoadGameScene(Enums.eScene.INGAME);
         }
 
         void Start()
         {
             CameraManager.Instance.CreateMainMenuVirtualCamera();
 
-            _mainMenuPanel = UIManager.Instance.CreateUI("MainMenuPanel", UIManager.Instance.MainCanvas);
+            _mainMenuPanel = UIManager.Instance.CreateUI("MainMenuPanel", UIManager.Instance.MainCanvas.Canvas);
             _titleText = _mainMenuPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
             SaveSystem.Instance.LoadSourceData();

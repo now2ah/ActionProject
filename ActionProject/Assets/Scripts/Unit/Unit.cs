@@ -46,7 +46,7 @@ namespace Action.Units
 
             _infoActiveDistant = GameManager.Instance.Constants.INGAMEUI_VISIBLE_DISTANT;
             if (null == _unitPanelObject)
-                _unitPanelObject = UIManager.Instance.CreateUI("UnitPanel", UIManager.Instance.InGameCanvas);
+                _unitPanelObject = UIManager.Instance.CreateUI("UnitPanel", UIManager.Instance.InGameCanvas.Canvas);
             _unitPanel = _unitPanelObject.GetComponent<UnitPanel>();
             _unitPanel.Initialize(gameObject);
             _unitPanel.Hide();
