@@ -3,18 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Action.Manager;
+using System;
 
 namespace Action.Scene
 {
     public class IntroScene : SceneObject
     {
+        List<GameObject> _uiAssets;
+
         public override void Initialize()
         {
             base.Initialize();
-            AddUIObjects(_GetAllUIs(_LoadUIAssets()));
+            _uiAssets = new List<GameObject>();
+            _uiAssets = _LoadUIAssets();
+            _AddToUIList(_uiAssets);
+            _InitializeUIList();
+
+            //how to initialize UIs with name and type...???
+            //check the UI prefab
         }
 
-        //change return type with pair <string, Enums.eScene>
         protected override List<GameObject> _LoadUIAssets()
         {
             List<GameObject> gameObjects = new List<GameObject>();
@@ -27,6 +35,10 @@ namespace Action.Scene
         private void Awake()
         {
             Initialize();
+        }
+
+        private void Start()
+        {
             ShowUIObjects(true);
         }
     }

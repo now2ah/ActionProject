@@ -16,7 +16,7 @@ namespace Action.Scene
         public override void Initialize()
         {
             base.Initialize();
-            AddUIObjects(_GetAllUIs(_LoadUIAssets()));
+            //AddUIObjects(_GetAllUIs(_LoadUIAssets()));
         }
 
         protected override List<GameObject> _LoadUIAssets()

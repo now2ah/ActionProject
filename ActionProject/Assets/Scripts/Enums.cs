@@ -7,11 +7,13 @@ namespace Action
 {
     public static class Enums
     {
+        //need to check specific order that as same as scene order when it built. 
         public enum eScene
         {
             INIT,
             INTRO,
             INGAME,
+            NONE,
         }
 
         public enum eHitBoxType

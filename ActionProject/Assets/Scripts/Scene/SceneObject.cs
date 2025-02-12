@@ -1,4 +1,5 @@
 using Action.Manager;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,45 +8,38 @@ namespace Action.Scene
 {
     public abstract class SceneObject : MonoBehaviour
     {
-        SceneUIList _uiList;
+        List<UI.UI> _uiList;
+        public List<UI.UI> UIList => _uiList;
 
         public virtual void Initialize()
         {
-            _uiList = new SceneUIList();
-            _uiList.Initialize();
+            _uiList = new List<UI.UI>();
         }
 
+        /// <summary>
+        /// Load UI Assets that Scene needed
+        /// </summary>
+        /// <returns></returns>
         protected abstract List<GameObject> _LoadUIAssets();
 
-        protected List<UI.UI> _GetAllUIs(List<GameObject> gameObjects)
+        protected void _AddToUIList(List<GameObject> uiAssets)
         {
-            List<UI.UI> uiList = new List<UI.UI>();
-
-            if (null != gameObjects && gameObjects.Count > 0)
+            foreach (GameObject uiAsset in uiAssets)
             {
-                foreach (GameObject gameObject in gameObjects)
+                if (uiAsset.TryGetComponent<UI.UI>(out UI.UI ui))
                 {
-                    if (TryGetComponent<UI.UI>(out UI.UI ui))
-                    {
-                        uiList.Add(ui);
-                    }
+                    _uiList.Add(ui);
                 }
             }
-            else
-            {
-                Logger.LogError("can't load scene UI Assets");
-            }
-
-            return uiList;
         }
 
-        public void AddUIObjects(List<UI.UI> uiList)
+        protected void _InitializeUIList()
         {
-            if (null != _uiList)
+            if (null != _uiList && _uiList.Count > 0)
             {
-                foreach (UI.UI ui in uiList)
+                foreach (UI.UI ui in _uiList)
                 {
-                    //_uiList.AddUI(ui);
+                    ui.Initialize();
                 }
             }
         }
@@ -54,7 +48,13 @@ namespace Action.Scene
         {
             if (null != _uiList)
             {
-                _uiList.ShowAllUI(isOn);
+                foreach(UI.UI ui in _uiList)
+                {
+                    if (isOn)
+                    { ui.Show(); }
+                    else if (!isOn)
+                    { ui.Hide(); }
+                }
             }
         }
     }

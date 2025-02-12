@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,10 +7,21 @@ namespace Action.UI
 {
     public abstract class UI : MonoBehaviour
     {
-        protected bool _isShow = false;
+        string _uiName;
+        Enums.eScene _sceneType;
+        bool _isShow;
+
+        public string UIName { get => _uiName; set => _uiName = value; }
+        public Enums.eScene SceneType { get => _sceneType; set => _sceneType = value; }
         public bool isShow => _isShow;
 
-        public abstract void Initialize();
+        public virtual void Initialize()
+        {
+            _uiName = "";
+            _sceneType = Enums.eScene.NONE;
+            _isShow = false;
+            gameObject.SetActive(_isShow);
+        }
 
         public void Show()
         {
@@ -37,21 +49,6 @@ namespace Action.UI
             {
                 transform.SetParent(canvas.transform);
             }
-        }
-
-        protected virtual void Awake()
-        {
-            
-        }
-
-        protected virtual void Start()
-        {
-            
-        }
-
-        protected virtual void Update()
-        {
-            
         }
     }
 
