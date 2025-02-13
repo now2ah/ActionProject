@@ -17,10 +17,7 @@ namespace Action.Scene
             _uiAssets = new List<GameObject>();
             _uiAssets = _LoadUIAssets();
             _AddToUIList(_uiAssets);
-            _InitializeUIList();
-
-            //how to initialize UIs with name and type...???
-            //check the UI prefab
+            _AddToOwnCanvas(UIList);
         }
 
         protected override List<GameObject> _LoadUIAssets()

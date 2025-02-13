@@ -18,7 +18,7 @@ namespace Action.UI
 
         public override void Initialize()
         {
-            if (null == _canvas) { _canvas.GetComponent<Canvas>(); } 
+            if (null == _canvas) { _canvas = transform.GetComponent<Canvas>(); } 
             if (null == _uiList) { _uiList = new List<UI>(); }
 
             _canvas.renderMode = RenderMode.ScreenSpaceOverlay;

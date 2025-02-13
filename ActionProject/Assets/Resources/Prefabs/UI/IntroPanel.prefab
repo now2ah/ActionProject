@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 322481532571954071}
   - component: {fileID: 108995611188933546}
   - component: {fileID: 3777710048284764139}
+  - component: {fileID: 3633832248787005456}
   m_Layer: 5
   m_Name: IntroPanel
   m_TagString: Untagged
@@ -173,3 +174,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3633832248787005456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6031024399115987561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a51de11b0d672ea45830d1170f80fe89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace Action.UI
 {
-    public class IntroPanelUI : UI
+    public class LoadingPanelUI : UI
     {
         public override void Initialize()
         {
             base.Initialize();
-            UIName = "IntroPanel";
-            SceneType = Enums.eScene.INTRO;
+            UIName = "LoadingPanel";
+            SceneType = Enums.eScene.LOADING;
             CanvasType = Enums.eCanvasType.MAIN;
         }
     }

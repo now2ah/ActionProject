@@ -13,7 +13,15 @@ namespace Action
             INIT,
             INTRO,
             INGAME,
+            LOADING,
             NONE,
+        }
+
+        public enum eCanvasType
+        {
+            NONE,
+            MAIN,
+            INGAME,
         }
 
         public enum eHitBoxType

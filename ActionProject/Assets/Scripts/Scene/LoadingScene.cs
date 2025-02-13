@@ -10,13 +10,23 @@ namespace Action.Scene
 {
     public class LoadingScene : SceneObject
     {
+        List<GameObject> _uiAssets;
+
         GameObject _loadingPanel;
         Image _fillImage;
 
         public override void Initialize()
         {
             base.Initialize();
-            //AddUIObjects(_GetAllUIs(_LoadUIAssets()));
+            _uiAssets = new List<GameObject>();
+            _uiAssets = _LoadUIAssets();
+            _AddToUIList(_uiAssets);
+            _AddToOwnCanvas(UIList);
+
+            if (null != _loadingPanel)
+            {
+                _fillImage = _loadingPanel.transform.GetChild(1).GetChild(0).GetComponent<Image>();
+            }
         }
 
         protected override List<GameObject> _LoadUIAssets()
@@ -24,7 +34,6 @@ namespace Action.Scene
             List<GameObject> gameObjects = new List<GameObject>();
 
             _loadingPanel = AssetManager.Instance.LoadAsset(eAssetType.UI, "LoadingPanel");
-            _fillImage = _loadingPanel.transform.GetChild(1).GetChild(0).GetComponent<Image>();
 
             gameObjects.Add(_loadingPanel);
 

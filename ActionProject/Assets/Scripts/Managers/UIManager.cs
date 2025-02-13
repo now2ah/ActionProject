@@ -244,7 +244,14 @@ namespace Action.Manager
             GameObject mainCanvasObject = AssetManager.Instance.LoadAsset(eAssetType.UI, "Canvas");
             mainCanvasObject.name = "MainCanvas";
             mainCanvasObject.transform.SetParent(this.transform, false);
-            _mainCanvas = mainCanvasObject.AddComponent<CanvasUI>();
+            if (mainCanvasObject.TryGetComponent<CanvasUI>(out CanvasUI canvasUI))
+            {
+                _mainCanvas = canvasUI;
+            }
+            else
+            {
+                _mainCanvas = mainCanvasObject.AddComponent<CanvasUI>();
+            }
         }
 
         void _CreateInGameCanvas()
@@ -252,7 +259,14 @@ namespace Action.Manager
             GameObject inGameCanvasObject = AssetManager.Instance.LoadAsset(eAssetType.UI, "Canvas");
             inGameCanvasObject.name = "InGameCanvas";
             inGameCanvasObject.transform.SetParent(this.transform, false);
-            _inGameCanvas = inGameCanvasObject.AddComponent<CanvasUI>();
+            if (inGameCanvasObject.TryGetComponent<CanvasUI>(out CanvasUI canvasUI))
+            {
+                _inGameCanvas = canvasUI;
+            }
+            else
+            {
+                _inGameCanvas = inGameCanvasObject.AddComponent<CanvasUI>();
+            }
         }
 
         void _CalculateOffScreenIndicator()

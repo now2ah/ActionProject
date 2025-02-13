@@ -33,13 +33,13 @@ namespace Action.Scene
             }
         }
 
-        protected void _InitializeUIList()
+        protected void _AddToOwnCanvas(List<UI.UI> uiList)
         {
-            if (null != _uiList && _uiList.Count > 0)
+            if (null != uiList)
             {
-                foreach (UI.UI ui in _uiList)
+                foreach(var ui in uiList)
                 {
-                    ui.Initialize();
+                    ui.AddToCanvas();
                 }
             }
         }
