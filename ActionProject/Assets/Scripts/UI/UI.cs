@@ -18,10 +18,6 @@ namespace Action.UI
         public Enums.eCanvasType CanvasType { get => _canvasType; set => _canvasType = value; }
         public bool isShow => _isShow;
 
-
-        /// <summary>
-        /// Initialize UI with UIName, SceneType
-        /// </summary>
         public virtual void Initialize()
         {
             _uiName = "";

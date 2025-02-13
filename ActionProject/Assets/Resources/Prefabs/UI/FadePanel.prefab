@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 6742303521484649367}
   - component: {fileID: 8123006624061578259}
   - component: {fileID: 4695554506869699746}
+  - component: {fileID: 7380182700713535847}
   m_Layer: 5
-  m_Name: FadeInNOutPanel
+  m_Name: FadePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,3 +77,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7380182700713535847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3237123548008442251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b4ff50016a271c4eace23d089b66650, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

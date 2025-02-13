@@ -29,14 +29,18 @@ namespace Action.Scene
             return gameObjects;
         }
 
-        private void Awake()
+        protected override void Awake()
         {
             Initialize();
         }
 
-        private void Start()
+        protected override void Start()
         {
             ShowUIObjects(true);
+            SceneManager.Instance.Fade(UIManager.eFade.FadeIn, () =>
+            {
+                SceneManager.Instance.Fade(UIManager.eFade.FadeOut);
+            });
         }
     }
 }

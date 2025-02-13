@@ -53,14 +53,19 @@ namespace Action.Scene
             return op;
         }
 
-        private void Awake()
+        async void _StartLoadGameScene()
+        {
+            await LoadGameSceneAsync((Enums.eScene)SceneManager.Instance.SceneNumToLoad);
+        }
+
+        protected override void Awake()
         {
             Initialize();
         }
 
-        async void Start()
+        protected override void Start()
         {
-            await LoadGameSceneAsync((Enums.eScene)SceneManager.Instance.SceneNumToLoad);
+            _StartLoadGameScene();
         }
 
         private void OnDestroy()

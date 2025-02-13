@@ -17,6 +17,8 @@ namespace Action.Manager
         CanvasUI _mainCanvas;
         CanvasUI _inGameCanvas;
         EventSystem _eventSystem;
+        List<GameObject> _miscUIAssets;
+        Dictionary<string, UI.UI> _miscUIDic;
 
         #endregion
 
@@ -56,6 +58,7 @@ namespace Action.Manager
         public CanvasUI MainCanvas => _mainCanvas;
         public CanvasUI InGameCanvas => _inGameCanvas;
         public EventSystem EventSystem => _eventSystem;
+        public Dictionary<string, UI.UI> MiscUIDic => _miscUIDic;
 
         public BaseIndicator BaseIndicatorUI => _BaseIndicator;
         public GameObject FadeUIPanel => _fadeUIPanel;
@@ -81,6 +84,9 @@ namespace Action.Manager
             _CreateMainCanvas();
             _CreateInGameCanvas();
             _CreateEventSystem();
+
+            _LoadMiscUIs();
+            
 
             //_BaseIndicatorObj = CreateUI("BaseIndicator", _inGameCanvas);
             //_BaseIndicator = _BaseIndicatorObj.GetComponent<BaseIndicator>();
@@ -110,6 +116,12 @@ namespace Action.Manager
             //_optionPanel = CreateUI("OptionPanel", _mainCanvas);
             //_optionUI = _optionPanel.GetComponent<OptionUI>();
             //_optionUI.Hide();
+        }
+
+        public UI.UI GetMiscUI(string uiName)
+        {
+            _miscUIDic.TryGetValue(uiName, out UI.UI ret);
+            return ret;
         }
 
         public GameObject CreateUI(string name, Canvas canvas)
@@ -266,6 +278,26 @@ namespace Action.Manager
             else
             {
                 _inGameCanvas = inGameCanvasObject.AddComponent<CanvasUI>();
+            }
+        }
+
+        void _LoadMiscUIs()
+        {
+            if (null == _miscUIAssets)
+                _miscUIAssets = new List<GameObject>();
+
+            if (null == _miscUIDic)
+                _miscUIDic = new Dictionary<string, UI.UI>();
+
+            _miscUIAssets.Add(AssetManager.Instance.LoadAsset(eAssetType.UI, "FadePanel"));
+
+            foreach(var uiAsset in _miscUIAssets)
+            {
+                if (uiAsset.TryGetComponent<UI.UI>(out UI.UI ui))
+                {
+                    ui.Initialize();
+                    _miscUIDic.Add(ui.UIName, ui);
+                }
             }
         }
 
