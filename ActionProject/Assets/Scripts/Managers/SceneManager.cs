@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using Action.Util;
 using Action.Scene;
 using Cysharp.Threading.Tasks;
+using Action.UI;
 
 namespace Action.Manager
 {
@@ -71,7 +72,7 @@ namespace Action.Manager
 
         public void Fade(UIManager.eFade fade, UnityAction action = null)
         {
-            UIManager.Instance.Fade(fade, UIManager.Instance.FadeUIPanel, _fadeSpeed, action);
+            UIManager.Instance.Fade(fade, (FadePanelUI)UIManager.Instance.GetMiscUI("FadePanelUI"), _fadeSpeed, action);
         }
 
         #endregion

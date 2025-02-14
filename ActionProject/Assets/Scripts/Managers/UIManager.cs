@@ -120,7 +120,11 @@ namespace Action.Manager
 
         public UI.UI GetMiscUI(string uiName)
         {
-            _miscUIDic.TryGetValue(uiName, out UI.UI ret);
+            UI.UI ret = null;
+            if (null != _miscUIDic && _miscUIDic.Count > 0)
+            {
+                ret = _miscUIDic[uiName];
+            }
             return ret;
         }
 
@@ -176,11 +180,11 @@ namespace Action.Manager
 
         public void ShowDamagedEffect()
         {
-            _damagedEffectPanel.SetActive(true);
-            Fade(eFade.FadeOut, _damagedEffectPanel, 0.1f, () =>
-            {
-                _damagedEffectPanel.SetActive(false);
-            });
+            //_damagedEffectPanel.SetActive(true);
+            //Fade(eFade.FadeOut, _damagedEffectPanel, 0.1f, () =>
+            //{
+            //    _damagedEffectPanel.SetActive(false);
+            //});
         }
 
         public void CreateTownStagePanel()
@@ -202,18 +206,18 @@ namespace Action.Manager
             }
         }
 
-        public void Fade(eFade fade, GameObject fadeUI, float fadeSpeed, UnityAction action = null)
+        public void Fade(eFade fade, FadePanelUI fadeUI, float fadeSpeed, UnityAction action = null)
         {
             StopCoroutine("FadeCoroutine");
             StartCoroutine(FadeCoroutine(fade, fadeUI, fadeSpeed, action));
         }
 
-        IEnumerator FadeCoroutine(eFade fade, GameObject fadeUI, float fadeSpeed, UnityAction action = null)
+        IEnumerator FadeCoroutine(eFade fade, FadePanelUI fadeUI, float fadeSpeed, UnityAction action = null)
         {
             if (null != fadeUI)
             {
-                fadeUI?.SetActive(true);
-                fadeUI.transform.SetSiblingIndex(UIManager.Instance.MainCanvas.transform.childCount - 1);
+                fadeUI.Show();
+                fadeUI.SetParent(_mainCanvas.transform);
                 float startValue = (fade == eFade.FadeIn) ? 1f : 0f;
                 float endValue = (fade == eFade.FadeIn) ? 0f : 1f;
                 float alpha = startValue;
@@ -239,7 +243,7 @@ namespace Action.Manager
                     }
                 }
                 action?.Invoke();
-                fadeUI?.SetActive(false);
+                fadeUI.Hide();
             }
         }
 
@@ -289,6 +293,7 @@ namespace Action.Manager
             if (null == _miscUIDic)
                 _miscUIDic = new Dictionary<string, UI.UI>();
 
+            //load misc ui assets here
             _miscUIAssets.Add(AssetManager.Instance.LoadAsset(eAssetType.UI, "FadePanel"));
 
             foreach(var uiAsset in _miscUIAssets)
