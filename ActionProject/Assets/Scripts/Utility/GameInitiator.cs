@@ -15,10 +15,10 @@ namespace Action.Util
             UIManager.Instance.Initialize();
             SceneManager.Instance.Initialize();
             CameraManager.Instance.Initialize();
-            InputManager.Instance.Initialize();
-            GameManager.Instance.Initialize();
-            SaveSystem.Instance.Initialize();
-            AudioManager.Instance.Initialize();
+            //InputManager.Instance.Initialize();
+            //GameManager.Instance.Initialize();
+            //SaveSystem.Instance.Initialize();
+            //AudioManager.Instance.Initialize();
             callback.Invoke();
         }
 

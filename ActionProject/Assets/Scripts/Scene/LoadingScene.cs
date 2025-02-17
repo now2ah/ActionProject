@@ -65,6 +65,7 @@ namespace Action.Scene
 
         protected override void Start()
         {
+            ShowUIObjects(true);
             _StartLoadGameScene();
         }
 

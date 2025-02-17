@@ -22,6 +22,7 @@ namespace Action.Manager
         #region SCENE_LOADED_EVENT
         
         public UnityEvent onIntroSceneLoaded;
+        public UnityEvent onLoadingSceneLoaded;
         //... so on
 
         #endregion
@@ -34,10 +35,10 @@ namespace Action.Manager
             _fadeSpeed = 0.5f;
         }
 
-        public void LoadGameScene(Enums.eScene scene, LoadSceneMode mode = LoadSceneMode.Single)
+        public void LoadGameScene(Enums.eScene scene)
         {
             _sceneNumToLoad = (int)scene;
-            UnityEngine.SceneManagement.SceneManager.LoadScene("99.Loading", mode);
+            UnityEngine.SceneManagement.SceneManager.LoadScene("99.Loading", LoadSceneMode.Additive);
         }
 
         public async UniTask<AsyncOperation> LoadGameSceneAsync(Enums.eScene scene, LoadSceneMode mode = LoadSceneMode.Single)
@@ -46,7 +47,6 @@ namespace Action.Manager
             await op;
             return op;
         }
-
         
         public void LoadNextScene()
         {
@@ -62,6 +62,9 @@ namespace Action.Manager
                 case (int)Enums.eScene.INTRO:
                     onIntroSceneLoaded.Invoke();
                     break;
+                case (int)Enums.eScene.LOADING:
+                    onLoadingSceneLoaded.Invoke();
+                    break;
             }
             //... so on
         }
@@ -72,7 +75,7 @@ namespace Action.Manager
 
         public void Fade(UIManager.eFade fade, UnityAction action = null)
         {
-            UIManager.Instance.Fade(fade, (FadePanelUI)UIManager.Instance.GetMiscUI("FadePanelUI"), _fadeSpeed, action);
+            UIManager.Instance.Fade(fade, UIManager.Instance.GetMiscUI("FadePanelUI") as FadePanelUI, _fadeSpeed, action);
         }
 
         #endregion

@@ -9,7 +9,7 @@ namespace Action.UI
         public override void Initialize()
         {
             base.Initialize();
-            UIName = "FadePanel";
+            UIName = "FadePanelUI";
             SceneType = Enums.eScene.INTRO;
             CanvasType = Enums.eCanvasType.MAIN;
         }

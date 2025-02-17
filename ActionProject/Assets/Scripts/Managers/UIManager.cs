@@ -19,6 +19,7 @@ namespace Action.Manager
         EventSystem _eventSystem;
         List<GameObject> _miscUIAssets;
         Dictionary<string, UI.UI> _miscUIDic;
+        Coroutine _fadeCoroutine;
 
         #endregion
 
@@ -208,7 +209,7 @@ namespace Action.Manager
 
         public void Fade(eFade fade, FadePanelUI fadeUI, float fadeSpeed, UnityAction action = null)
         {
-            StopCoroutine("FadeCoroutine");
+            StopCoroutine(FadeCoroutine(fade, fadeUI, fadeSpeed, action));
             StartCoroutine(FadeCoroutine(fade, fadeUI, fadeSpeed, action));
         }
 
@@ -217,7 +218,7 @@ namespace Action.Manager
             if (null != fadeUI)
             {
                 fadeUI.Show();
-                fadeUI.SetParent(_mainCanvas.transform);
+                fadeUI.AddToCanvas(_mainCanvas);
                 float startValue = (fade == eFade.FadeIn) ? 1f : 0f;
                 float endValue = (fade == eFade.FadeIn) ? 0f : 1f;
                 float alpha = startValue;
@@ -293,11 +294,15 @@ namespace Action.Manager
             if (null == _miscUIDic)
                 _miscUIDic = new Dictionary<string, UI.UI>();
 
+            GameObject miscObjects = new GameObject("MiscUIObject");
+            miscObjects.transform.SetParent(this.transform);
+
             //load misc ui assets here
             _miscUIAssets.Add(AssetManager.Instance.LoadAsset(eAssetType.UI, "FadePanel"));
 
             foreach(var uiAsset in _miscUIAssets)
             {
+                uiAsset.transform.SetParent(miscObjects.transform);
                 if (uiAsset.TryGetComponent<UI.UI>(out UI.UI ui))
                 {
                     ui.Initialize();

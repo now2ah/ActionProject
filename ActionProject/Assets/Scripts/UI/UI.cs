@@ -68,7 +68,7 @@ namespace Action.UI
         {
             if (null != canvas)
             {
-                transform.SetParent(canvas.transform);
+                transform.SetParent(canvas.transform, false);
             }
         }
 
