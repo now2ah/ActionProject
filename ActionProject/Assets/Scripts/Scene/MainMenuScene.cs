@@ -18,7 +18,7 @@ namespace Action.Scene
 
         void _LoadNextScene()
         {
-            SceneManager.Instance.LoadGameScene(Enums.eScene.INGAME);
+            //SceneManager.Instance.LoadGameScene(Enums.eScene.INGAME);
         }
 
         void Start()

@@ -53,8 +53,14 @@ namespace Action.Manager
         
         public void LoadNextScene()
         {
-            if (_sceneNumToLoad < UnityEngine.SceneManagement.SceneManager.sceneCount) { _sceneNumToLoad++; }
+            if ((_sceneNumToLoad + 1) == (int)Enums.eScene.NONE ||
+                (_sceneNumToLoad + 1) == (int)Enums.eScene.LOADING)
+            {
+                Logger.LogError("can't load the scene. scene number is out of range.");
+                return;
+            }
 
+            _sceneNumToLoad++;
             LoadGameScene((Enums.eScene)_sceneNumToLoad);
         }
 

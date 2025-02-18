@@ -12,7 +12,7 @@ namespace Action
         {
             INIT,
             INTRO,
-            INGAME,
+            MENU,
             LOADING,
             NONE,
         }

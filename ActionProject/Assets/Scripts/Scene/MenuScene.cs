@@ -1,15 +1,15 @@
+using Action.Manager;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using Action.Manager;
-using System;
+using UnityEngine.UI;
 
 namespace Action.Scene
 {
-    public class IntroScene : SceneObject
+    public class MenuScene : SceneObject
     {
         List<GameObject> _uiAssets;
+        
 
         public override void Initialize()
         {
@@ -24,7 +24,7 @@ namespace Action.Scene
         {
             List<GameObject> gameObjects = new List<GameObject>();
 
-            gameObjects.Add(AssetManager.Instance.LoadAsset(eAssetType.UI, "IntroPanel"));
+            gameObjects.Add(AssetManager.Instance.LoadAsset(eAssetType.UI, "MenuPanel"));
 
             return gameObjects;
         }
@@ -34,13 +34,10 @@ namespace Action.Scene
             Initialize();
         }
 
-        protected override async void Start()
+        protected override void Start()
         {
             ShowUIObjects(true);
-            await SceneManager.Instance.Fade(UIManager.eFade.FadeIn);
-            await SceneManager.Instance.Fade(UIManager.eFade.FadeOut);
-            SceneManager.Instance.LoadNextScene();
-            ShowUIObjects(false);
         }
     }
 }
+

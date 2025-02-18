@@ -49,7 +49,7 @@ public class SaveSystem : Singleton<SaveSystem>
         GameManager.Instance.ResetGame();
         Data data = saveDataSlots[slotNum];
         GameManager.Instance.GameData = data.gameData;
-        SceneManager.Instance.LoadGameScene(Enums.eScene.INGAME);
+        //SceneManager.Instance.LoadGameScene(Enums.eScene.INGAME);
     }
 
     public void Save(int slotNum, Data data)

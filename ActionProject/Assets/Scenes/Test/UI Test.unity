@@ -243,6 +243,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4775184095745842329, guid: 35351235ac1d2f5429684a2296dea8e6, type: 3}
   m_PrefabInstance: {fileID: 1041863469245108383}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &585168983 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+  m_PrefabInstance: {fileID: 47712954172994211}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &662274240
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,7 +724,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2010457416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -815,6 +820,7 @@ RectTransform:
   - {fileID: 8173644846535984671}
   - {fileID: 298214914}
   - {fileID: 527875091}
+  - {fileID: 585168983}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -823,6 +829,107 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1001 &47712954172994211
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2010457419}
+    m_Modifications:
+    - target: {fileID: 2731580017767868386, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_Name
+      value: MenuPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_RootOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517655314286877642, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 006f95d991ac0884eacebc20ad7972a3, type: 3}
 --- !u!1001 &960350882241633845
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1028,6 +1135,10 @@ PrefabInstance:
     - target: {fileID: 4100133141134547002, guid: 35351235ac1d2f5429684a2296dea8e6, type: 3}
       propertyPath: m_Name
       value: OptionPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4100133141134547002, guid: 35351235ac1d2f5429684a2296dea8e6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4761867072945087146, guid: 35351235ac1d2f5429684a2296dea8e6, type: 3}
       propertyPath: m_AnchorMax.x
