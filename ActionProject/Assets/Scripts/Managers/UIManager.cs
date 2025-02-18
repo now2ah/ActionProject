@@ -7,6 +7,8 @@ using Action.Util;
 using Action.UI;
 using Action.Units;
 using UnityEngine.EventSystems;
+using Cysharp.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Action.Manager
 {
@@ -19,7 +21,7 @@ namespace Action.Manager
         EventSystem _eventSystem;
         List<GameObject> _miscUIAssets;
         Dictionary<string, UI.UI> _miscUIDic;
-        Coroutine _fadeCoroutine;
+        GameObject _miscUIGameObject;
 
         #endregion
 
@@ -129,6 +131,15 @@ namespace Action.Manager
             return ret;
         }
 
+        public void ReturnToMiscUI(UI.UI ui)
+        {
+            if (null != _miscUIDic && _miscUIDic.Count > 0)
+            {
+                ui.transform.SetParent(_miscUIGameObject.transform);
+                _miscUIDic[ui.UIName] = ui;
+            }
+        }
+
         public GameObject CreateUI(string name, Canvas canvas)
         {
             string uiPath = "Prefabs/UI/";
@@ -207,43 +218,44 @@ namespace Action.Manager
             }
         }
 
-        public void Fade(eFade fade, FadePanelUI fadeUI, float fadeSpeed, UnityAction action = null)
+        public async UniTask Fade(eFade fade, float fadeSpeed)
         {
-            StopCoroutine(FadeCoroutine(fade, fadeUI, fadeSpeed, action));
-            StartCoroutine(FadeCoroutine(fade, fadeUI, fadeSpeed, action));
-        }
+            FadePanelUI fadeUI = GetMiscUI("FadePanelUI") as FadePanelUI;
 
-        IEnumerator FadeCoroutine(eFade fade, FadePanelUI fadeUI, float fadeSpeed, UnityAction action = null)
-        {
-            if (null != fadeUI)
+            fadeUI.AddToCanvas(MainCanvas);
+            fadeUI.SetPriorityTop();
+            fadeUI.Show();
+
+            if (fade == eFade.FadeIn)
             {
-                fadeUI.Show();
-                fadeUI.AddToCanvas(_mainCanvas);
-                float startValue = (fade == eFade.FadeIn) ? 1f : 0f;
-                float endValue = (fade == eFade.FadeIn) ? 0f : 1f;
-                float alpha = startValue;
-
-                Image fadeImage = fadeUI.GetComponent<Image>();
-
-                if (fade == eFade.FadeIn)
+                float endValue = 0f;
+                
+                Color newColor = fadeUI.FadeImage.color;
+                float alpha = newColor.a;
+                
+                while (alpha > endValue)
                 {
-                    while (alpha >= endValue)
-                    {
-                        alpha += Time.deltaTime * (1.0f / fadeSpeed) * ((fade == eFade.FadeIn) ? -1 : 1);
-                        fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, alpha);
-                        yield return null;
-                    }
+                    alpha += -1f * fadeSpeed * Time.deltaTime;
+                    fadeUI.FadeImage.color = new Color(fadeUI.FadeImage.color.r, fadeUI.FadeImage.color.g, fadeUI.FadeImage.color.b, alpha);
+                    await UniTask.Delay(1);
                 }
-                else if (fade == eFade.FadeOut)
+                ReturnToMiscUI(fadeUI);
+                fadeUI.Hide();
+            }
+            else if (fade == eFade.FadeOut)
+            {
+                float endValue = 1f;
+
+                Color newColor = fadeUI.FadeImage.color;
+                float alpha = newColor.a;
+
+                while (alpha < endValue)
                 {
-                    while (alpha <= endValue)
-                    {
-                        alpha += Time.deltaTime * (1.0f / fadeSpeed) * ((fade == eFade.FadeIn) ? -1 : 1);
-                        fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, alpha);
-                        yield return null;
-                    }
+                    alpha += 1f * fadeSpeed * Time.deltaTime;
+                    fadeUI.FadeImage.color = new Color(fadeUI.FadeImage.color.r, fadeUI.FadeImage.color.g, fadeUI.FadeImage.color.b, alpha);
+                    await UniTask.Delay(1);
                 }
-                action?.Invoke();
+                ReturnToMiscUI(fadeUI);
                 fadeUI.Hide();
             }
         }
@@ -289,20 +301,27 @@ namespace Action.Manager
         void _LoadMiscUIs()
         {
             if (null == _miscUIAssets)
+            {
                 _miscUIAssets = new List<GameObject>();
+            }
 
             if (null == _miscUIDic)
+            {
                 _miscUIDic = new Dictionary<string, UI.UI>();
-
-            GameObject miscObjects = new GameObject("MiscUIObject");
-            miscObjects.transform.SetParent(this.transform);
-
+            }
+            
+            if (null == _miscUIGameObject)
+            {
+                _miscUIGameObject = new GameObject("MiscUIObject");
+                _miscUIGameObject.transform.SetParent(this.transform);
+            }
+            
             //load misc ui assets here
             _miscUIAssets.Add(AssetManager.Instance.LoadAsset(eAssetType.UI, "FadePanel"));
 
             foreach(var uiAsset in _miscUIAssets)
             {
-                uiAsset.transform.SetParent(miscObjects.transform);
+                uiAsset.transform.SetParent(_miscUIGameObject.transform);
                 if (uiAsset.TryGetComponent<UI.UI>(out UI.UI ui))
                 {
                     ui.Initialize();

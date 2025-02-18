@@ -8,6 +8,7 @@ using Action.Util;
 using Action.Scene;
 using Cysharp.Threading.Tasks;
 using Action.UI;
+using System.Threading.Tasks;
 
 namespace Action.Manager
 {
@@ -15,6 +16,8 @@ namespace Action.Manager
     {
         int _sceneNumToLoad;
         SceneObject _currentSceneObj;
+
+        float _fadeSpeed;
 
         public int SceneNumToLoad => _sceneNumToLoad;
         public SceneObject CurrentSceneObj { get { return _currentSceneObj; } set { _currentSceneObj = value; } }
@@ -32,7 +35,7 @@ namespace Action.Manager
             _sceneNumToLoad = 0;
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
 
-            _fadeSpeed = 0.5f;
+            _fadeSpeed = 1f;
         }
 
         public void LoadGameScene(Enums.eScene scene)
@@ -71,11 +74,9 @@ namespace Action.Manager
 
         #region FADE_IN_AND_OUT
 
-        float _fadeSpeed;
-
-        public void Fade(UIManager.eFade fade, UnityAction action = null)
+        public async UniTask Fade(UIManager.eFade fade, UnityAction action = null)
         {
-            UIManager.Instance.Fade(fade, UIManager.Instance.GetMiscUI("FadePanelUI") as FadePanelUI, _fadeSpeed, action);
+            await UIManager.Instance.Fade(fade, _fadeSpeed);
         }
 
         #endregion

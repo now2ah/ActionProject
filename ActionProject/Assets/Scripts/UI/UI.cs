@@ -72,6 +72,11 @@ namespace Action.UI
             }
         }
 
+        public void SetPriorityTop()
+        {
+            transform.SetAsLastSibling();
+        }
+
         protected virtual void Awake()
         {
             Initialize();

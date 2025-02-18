@@ -34,13 +34,11 @@ namespace Action.Scene
             Initialize();
         }
 
-        protected override void Start()
+        protected override async void Start()
         {
             ShowUIObjects(true);
-            SceneManager.Instance.Fade(UIManager.eFade.FadeIn, () =>
-            {
-                SceneManager.Instance.Fade(UIManager.eFade.FadeOut);
-            });
+            await SceneManager.Instance.Fade(UIManager.eFade.FadeIn);
+            await SceneManager.Instance.Fade(UIManager.eFade.FadeOut);
         }
     }
 }
