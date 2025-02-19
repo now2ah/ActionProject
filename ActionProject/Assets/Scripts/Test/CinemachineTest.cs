@@ -7,21 +7,28 @@ using Action.SO;
 
 public class CinemachineTest : MonoBehaviour
 {
-    public CinemachineVirtualCamera vCam1;
-    public CinemachineVirtualCamera vCam2;
     public InputManagerSO inputManager;
+    public GameObject _vCam1Obj;
 
-    CinemachineBrain brain;
+    GameObject _target;
+    CinemachineBrain _brain;
+    CinemachineVirtualCamera _vCam1;
 
     void _OnMoveAction(object o, Vector2 value)
     {
-        Debug.Log(value);
+        _target.transform.position += new Vector3(value.x, 0, value.y) * 50f * Time.deltaTime;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        brain = Camera.main.GetComponent<CinemachineBrain>();
+        _target = new GameObject("vCamTarget");
+        _target.transform.position = Vector3.zero;
+        _brain = Camera.main.GetComponent<CinemachineBrain>();
+        //_vCam1Obj = new GameObject("vCam1");
+        _vCam1 = _vCam1Obj.GetComponent<CinemachineVirtualCamera>();
+        _vCam1.Follow = _target.transform;
+        _vCam1.LookAt = _target.transform;
         inputManager.OnMoveAction += _OnMoveAction;
     }
 
