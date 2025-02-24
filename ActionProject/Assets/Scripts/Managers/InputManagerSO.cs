@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 namespace Action.SO
 {
@@ -22,18 +23,18 @@ namespace Action.SO
         {
             moveAction = IAAsset.FindAction("Move");
 
-            //moveAction.started += OnMoveActionStarted;
+            moveAction.started += OnMoveActionStarted;
             moveAction.performed += OnMoveActionPerformed;
-            //moveAction.canceled += OnMoveActionCanceled;
+            moveAction.canceled += OnMoveActionCanceled;
 
             moveAction.Enable();
         }
 
         private void OnDisable()
         {
-            //moveAction.started -= OnMoveActionStarted;
+            moveAction.started -= OnMoveActionStarted;
             moveAction.performed -= OnMoveActionPerformed;
-            //moveAction.canceled -= OnMoveActionCanceled;
+            moveAction.canceled -= OnMoveActionCanceled;
 
             moveAction.Disable();
         }
