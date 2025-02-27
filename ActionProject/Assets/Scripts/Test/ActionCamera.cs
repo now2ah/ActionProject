@@ -37,12 +37,42 @@ namespace Action.CameraSystem
             _isMoving = false;
         }
 
+        void InputManager_OnWheel(object sender, float v)
+        {
+            //Logger.Log(v.ToString());
+        }
+
+        void InputManager_OnMouseLook(object sender, Vector2 v)
+        {
+            //Logger.Log(v.ToString());
+        }
+
+        void InputManager_OnLeftClickDown(object sender, bool b)
+        {
+            //Logger.Log("Down : " + b.ToString());
+        }
+
+        void InputManager_OnLeftClick(object sender, bool b)
+        {
+            //Logger.Log(b.ToString());
+        }
+
+        void InputManager_OnLeftClickUp(object sender, bool b)
+        {
+            //Logger.Log("Up" + b.ToString());
+        }
+
         // Start is called before the first frame update
         void Start()
         {
             inputManager.OnMoveActionDown += InputManager_OnMoveActionDown;
             inputManager.OnMoveAction += InputManager_OnMoveAction;
             inputManager.OnMoveActionUp += InputManager_OnMoveActionUp;
+            inputManager.OnWheelAction += InputManager_OnWheel;
+            inputManager.OnMouseLookAction += InputManager_OnMouseLook;
+            inputManager.OnAttackActionDown += InputManager_OnLeftClickDown;
+            inputManager.OnAttackAction += InputManager_OnLeftClick;
+            inputManager.OnAttackActionUp += InputManager_OnLeftClickUp;
         }
 
         // Update is called once per frame
